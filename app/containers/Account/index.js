@@ -2,18 +2,18 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Image } from 'react-native'
 import { connect } from 'react-redux'
 
-import { Button } from '../components'
+import { Button } from '../../components'
 
-import { createAction, NavigationActions } from '../utils'
+import { createAction, NavigationActions } from '../../utils'
 
 @connect(({ app }) => ({ ...app }))
 class Account extends Component {
   static navigationOptions = {
-    tabBarLabel: 'Account',
+    tabBarLabel: '个人中心',
     tabBarIcon: ({ focused, tintColor }) => (
       <Image
         style={[styles.icon, { tintColor: focused ? tintColor : 'gray' }]}
-        source={require('../images/person.png')}
+        source={require('../../images/person.png')}
       />
     ),
   }

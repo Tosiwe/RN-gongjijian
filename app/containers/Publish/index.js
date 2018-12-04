@@ -2,18 +2,18 @@ import React, { Component } from 'react'
 import { StyleSheet, View, Image } from 'react-native'
 import { connect } from 'react-redux'
 
-import { Button } from '../components'
+import { Button } from '../../components'
 
-import { NavigationActions } from '../utils'
+import { NavigationActions } from '../../utils'
 
 @connect()
-class Home extends Component {
+class Publish extends Component {
   static navigationOptions = {
-    tabBarLabel: 'Home',
+    tabBarLabel: '发布',  
     tabBarIcon: ({ focused, tintColor }) => (
       <Image
         style={[styles.icon, { tintColor: focused ? tintColor : 'gray' }]}
-        source={require('../images/house.png')}
+        source={require('../../images/house.png')}
       />
     ),
   }
@@ -25,7 +25,7 @@ class Home extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Button text="Goto Detail" onPress={this.gotoDetail} />
+        <Button text="转到详情页" onPress={this.gotoDetail} />
       </View>
     )
   }
@@ -43,4 +43,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default Home
+export default Publish
