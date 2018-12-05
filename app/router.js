@@ -1,5 +1,6 @@
 import React, { PureComponent } from "react"
 import { BackHandler, Animated, Easing } from "react-native"
+
 import {
   createStackNavigator,
   createBottomTabNavigator,
@@ -14,15 +15,21 @@ import { connect } from "react-redux"
 
 import Loading from "./containers/Loading"
 import Login from "./containers/Login"
-import Home from "./containers/Home/index"
-import Publish from "./containers/Publish/index"
-import Account from "./containers/Account/index"
+import Home from "./containers/Home/Home"
+import Publish from "./containers/Publish/Publish"
+import Account from "./containers/Account/Account"
 import Detail from "./containers/Detail"
+import AddButton from "./components/AddButton"
 
 const HomeNavigator = createBottomTabNavigator(
   {
     Home: { screen: Home },
-    Publish: { screen: Publish },
+    Publish: { screen: Publish,
+      navigationOptions: () => ({
+        tabBarButtonComponent: () => (
+          <AddButton/>
+        ),
+      }), },
     Account: { screen: Account }
   },
   {
