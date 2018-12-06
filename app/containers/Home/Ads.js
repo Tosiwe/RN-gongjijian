@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    height: 150,
+    height: 200,
   }
 })
 export default Ads

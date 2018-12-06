@@ -1,9 +1,16 @@
 import React, { Component } from "react"
-import { StyleSheet, View, Image } from "react-native"
+import {
+  StyleSheet,
+  View,
+  Image,
+} from "react-native"
+
 import { connect } from "react-redux"
 
-import { WingBlank, SearchBar, Picker } from "antd-mobile-rn"
+// import { WingBlank,  } from "antd-mobile-rn"
 import Ads from "./Ads"
+import Top from "./Top"
+import Entries from "./Entries"
 import { NavigationActions } from "../../utils"
 
 @connect()
@@ -25,14 +32,9 @@ class Home extends Component {
   render() {
     return (
       <View style={styles.home}>
-        <WingBlank>
-          <Picker 
-          title="城市"
-          />
-          <SearchBar style={styles.searchBar} />
-        </WingBlank>
+        <Top />
         <Ads />
-        <WingBlank />
+        <Entries />
       </View>
     )
   }
@@ -40,10 +42,9 @@ class Home extends Component {
 
 const styles = StyleSheet.create({
   home: {
-    marginTop: 20
-  },
-  searchBar: {
-    height: 40
+    marginTop: 20,
+    flex: 1,
+    flexDirection: "column"
   },
   icon: {
     width: 32,
