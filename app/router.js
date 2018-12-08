@@ -19,7 +19,7 @@ import Home from "./containers/Home/Home"
 import Publish from "./containers/Publish/Publish"
 import Account from "./containers/Account/Account"
 import Detail from "./containers/Detail"
-import AddButton from "./components/AddButton"
+import AddButton from "./components/AddButton/AddButton"
 
 const HomeNavigator = createBottomTabNavigator(
   {
