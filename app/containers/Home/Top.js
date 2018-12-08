@@ -5,11 +5,10 @@ import { View, StyleSheet,Text ,TouchableOpacity,TextInput} from "react-native"
 import { WingBlank } from "antd-mobile-rn"
 import Icon from "react-native-vector-icons/AntDesign"
 
-class Ads extends Component {
+class Top extends Component {
 
   render() {
     return (
-      <WingBlank>
       <View style={styles.top}>
         <TouchableOpacity style={styles.cityButton} onPress={this.onPress}>
           <Icon name="down" size={10} color="#000" />
@@ -23,17 +22,17 @@ class Ads extends Component {
             style={{ marginRight: 10 }}
           />
         </TextInput>
-        {/* <SearchBar style={styles.searchBar} /> */}
       </View>
-    </WingBlank>
     )
   }
 }
 const styles = StyleSheet.create({
     top: {
         flexDirection: "row",
-        height: 40
-        // backgroundColor:'red',
+        height: 40,
+        backgroundColor:'#fff',
+        paddingLeft:10,
+        paddingRight:10,
       },
       cityButton: {
         height: 40,
@@ -46,10 +45,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "#999",
         paddingLeft: 3,
-        margin: 2,
+        height:30,
+        margin: 5,
         borderRadius: 10,
         borderStyle: "solid"
         // backgroundColor:'blue',
       },
 })
-export default Ads
+export default Top

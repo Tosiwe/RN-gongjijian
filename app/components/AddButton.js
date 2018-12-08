@@ -33,23 +33,23 @@ class AddButton extends Component {
         Animated.timing(this.animatedValue, {
           toValue,
           duration: animateTime,
-          easing: Easing.exp
+          // easing: Easing.exp
         }),
         Animated.timing(this.topLeftValue, {
           toValue,
           duration: animateTime,
-          easing: easingType
+          // easing: easingType
         })
       ]),
       Animated.timing(this.topLeftValue, {
         toValue,
         duration: animateTime,
-        easing: easingType
+        // easing: easingType
       }),
       Animated.timing(this.topLeftValue, {
         toValue,
         duration: animateTime,
-        easing: easingType
+        // easing: easingType
       })
     ]).start()
   };
