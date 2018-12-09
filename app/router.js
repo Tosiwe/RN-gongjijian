@@ -24,7 +24,7 @@ import AddButton from "./components/AddButton/AddButton"
 const HomeNavigator = createBottomTabNavigator(
   {
     Home: { screen: Home },
-    Publish: { screen: Publish,
+    Add: { screen: AddButton,
       navigationOptions: () => ({
         tabBarButtonComponent: () => (
           <AddButton/>
@@ -52,11 +52,11 @@ const MainNavigator = createStackNavigator(
     headerMode: "float"
   }
 )
-
 const AppNavigator = createStackNavigator(
   {
     Main: { screen: MainNavigator },
-    Login: { screen: Login }
+    Publish: { screen: Publish },
+    Login: { screen: Login },
   },
   {
     headerMode: "none",
@@ -124,6 +124,9 @@ class Router extends PureComponent {
   backHandle = () => {
     const currentScreen = getActiveRouteName(this.props.router)
     if (currentScreen === "Login") {
+      return true
+    }
+    if (currentScreen === "Publish") {
       return true
     }
     if (currentScreen !== "Home") {
