@@ -75,7 +75,8 @@ const styles = StyleSheet.create({
   itemDes: {
     fontSize: 14,
     color: "#999",
-    maxHeight: 45
+    maxHeight: 45,
+    overflow:"scroll",
   },
   title: {
     fontSize: 16,

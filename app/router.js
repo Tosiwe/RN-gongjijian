@@ -34,7 +34,7 @@ const HomeNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      // showLabel: false
+      
     }
   }
 )

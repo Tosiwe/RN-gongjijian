@@ -2,22 +2,22 @@ import { Easing } from 'react-native'
 
 // Layout constants
 export const center = {
-	top: 8,
+	top: 128,
 	left: -10,
 }
 
 export const topCenter = {
-	top: -90,
+	top: 30,
 	left: -10,
 }
 
 export const topLeft = {
-	top: -60,
+	top: 60,
 	left: -60,
 }
 
 export const topRight = {
-	top: -60,
+	top: 60,
 	left: 40,
 }
 

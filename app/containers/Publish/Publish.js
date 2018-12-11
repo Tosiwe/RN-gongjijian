@@ -15,7 +15,6 @@ import { NavigationActions } from "react-navigation"
 
 import FAwesomeIcon from "react-native-vector-icons/FontAwesome"
 
-import { BlurView } from "react-native-blur"
 
 // constants
 import {
