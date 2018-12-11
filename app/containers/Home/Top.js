@@ -2,7 +2,6 @@
 // native
 import React, { Component } from 'react'
 import { View, StyleSheet,Text ,TouchableOpacity,TextInput} from "react-native"
-import { WingBlank } from "antd-mobile-rn"
 import Icon from "react-native-vector-icons/AntDesign"
 
 class Top extends Component {

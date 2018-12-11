@@ -7,11 +7,10 @@ import {
   View,
   StyleSheet,
   Text,
-  Dimensions
 } from "react-native"
 import { connect } from "react-redux"
 
-import { NavigationActions } from "react-navigation"
+// import { NavigationActions } from "react-navigation"
 
 import FAwesomeIcon from "react-native-vector-icons/FontAwesome"
 
@@ -25,9 +24,9 @@ import {
   bubbleColor,
   animateTime,
   easingType,
-  delay
-} from "../../containers/Publish/constants"
-
+  delay,
+ 
+} from "./styles"
 
 @connect(({ app }) => ({ ...app }))
 class AddButton extends Component {
@@ -37,20 +36,20 @@ class AddButton extends Component {
     this.topLeftValue = new Animated.Value(0)
     this.topCenterValue = new Animated.Value(0)
     this.topRightValue = new Animated.Value(0)
-    this.state = {
-      pressed: false
-    }
+    // this.state = {
+    //   pressed: false
+    // }
   }
 
   handleAddButtonPress = () => {
-	const { pressed } = this.state
-	if(pressed) {
-		this.animateReverse(0)
-	}
-	else {
-		this.animate(1)
-	}
-	this.setState({pressed: !pressed})
+	// const { pressed } = this.state
+	// if(pressed) {
+	// 	this.animateReverse(0)
+	// }
+	// else {
+	// 	this.animate(1)
+	// }
+	// this.setState({pressed: !pressed})
    
     // const { login } = this.props
 
@@ -115,8 +114,6 @@ class AddButton extends Component {
       Animated.add(this.topLeftValue, this.topRightValue),
       this.topCenterValue
     )
-    const { width, height } = Dimensions.get("window")
-
     return (
       <View >
         <Animated.View
@@ -282,7 +279,7 @@ const style = StyleSheet.create({
     height: bigBubbleSize,
     width: bigBubbleSize,
     borderRadius: bigBubbleSize / 2,
-    top: -15
+    top: 3
   },
   smallBubble: {
     justifyContent: "center",

@@ -1,5 +1,5 @@
 import { Easing } from 'react-native'
-
+import {primaryColor} from '../../styles/common'
 // Layout constants
 export const center = {
 	top: 128,
@@ -24,7 +24,7 @@ export const topRight = {
 // Style constants
 export const bigBubbleSize = 40
 export const smallBubbleSize = 40
-export const bubbleColor = 'rgb(40, 155, 238)'
+export const bubbleColor = primaryColor
 
 // Animate Constants
 export const animateTime = 800

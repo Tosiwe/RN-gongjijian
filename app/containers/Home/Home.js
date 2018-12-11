@@ -3,31 +3,29 @@ import {
   StyleSheet,
   View,
   Image,
-  Text,
-  RefreshControl,
+  TouchableOpacity,
   ScrollView,
 } from "react-native"
 
 import { connect } from "react-redux"
 
-// import { WingBlank,  } from "antd-mobile-rn"
-import { Toast } from "antd-mobile-rn"
 import Ads from "./Ads"
 import Top from "./Top"
 import Entries from "./Entries"
 import MsgList from "./MsgList"
-import { NavigationActions } from "../../utils"
+import {primaryColor,statusBarHeight,iconSize} from '../../styles/common'
 
 @connect()
 class Home extends Component {
   static navigationOptions = {
     tabBarLabel: "首页",
-    tabBarIcon: ({ focused, tintColor }) => (
+    tabBarIcon: ({ focused }) => (
       <Image
-        style={[styles.icon, { tintColor: focused ? tintColor : "gray" }]}
+        style={[styles.icon, { tintColor: focused ? primaryColor : "gray" }]}
         source={require("../../images/house.png")}
       />
-    )
+    ),
+    tabBarButtonComponent: TouchableOpacity,
   };
 
   constructor(props) {
@@ -75,13 +73,13 @@ class Home extends Component {
 
 const styles = StyleSheet.create({
   home: {
-    marginTop: 20,
+    marginTop: statusBarHeight,
     flex: 1,
     flexDirection: "column"
   },
   icon: {
-    width: 32,
-    height: 32
+    width: iconSize,
+    height: iconSize
   }
 })
 

@@ -1,9 +1,10 @@
 /* eslint-disable react/prefer-stateless-function */
 // native
 import React, { Component } from "react"
-import { View, StyleSheet, Dimensions, Image } from "react-native"
+import { View, StyleSheet, Image } from "react-native"
 import { Carousel } from "antd-mobile-rn"
 import { adsList } from "./data"
+import {screenWidth} from '../../styles/common'
 
 class Ads extends Component {
   render() {
@@ -23,7 +24,6 @@ class Ads extends Component {
     )
   }
 }
-const { width } = Dimensions.get("window")
 const styles = StyleSheet.create({
   ads: {},
 
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     height: 200
   },
   item: {
-    width,
+    width:screenWidth,
     height: 200
   }
 })

@@ -1,5 +1,5 @@
 import React, { PureComponent } from "react"
-import { BackHandler, Animated, Easing } from "react-native"
+import { BackHandler, Animated, Easing ,TouchableOpacity} from "react-native"
 
 import {
   createStackNavigator,
@@ -20,27 +20,30 @@ import Publish from "./containers/Publish/Publish"
 import Account from "./containers/Account/Account"
 import Detail from "./containers/Detail"
 import AddButton from "./components/AddButton/AddButton"
+import { primaryColor } from "./styles/common"
 
+// 底部标签导航
 const HomeNavigator = createBottomTabNavigator(
   {
     Home: { screen: Home },
-    Add: { screen: AddButton,
+    Add: {
+      screen: AddButton,
       navigationOptions: () => ({
-        tabBarButtonComponent: () => (
-          <AddButton/>
-        ),
-      }), },
+        tabBarButtonComponent: () => <AddButton />
+      })
+    },
     Account: { screen: Account }
   },
   {
-    tabBarOptions: {
-      
-    }
+    tabBarOptions: {}
   }
 )
 
+// 底部导航属性设置
 HomeNavigator.navigationOptions = {
-  header: null
+  header: null,
+  tabBarButtonComponent: TouchableOpacity,
+  tabBarIcon: { tintColor: primaryColor }
 }
 
 const MainNavigator = createStackNavigator(
@@ -56,7 +59,7 @@ const AppNavigator = createStackNavigator(
   {
     Main: { screen: MainNavigator },
     Publish: { screen: Publish },
-    Login: { screen: Login },
+    Login: { screen: Login }
   },
   {
     headerMode: "none",
