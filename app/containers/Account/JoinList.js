@@ -11,6 +11,7 @@ const { Brief } = Item
 
 class JoinList extends Component {
   render() {
+      
     return (
       <View>
         <View style={styles.listHeader}>
