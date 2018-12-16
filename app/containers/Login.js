@@ -24,7 +24,7 @@ class Login extends Component {
     const { fetching } = this.props
     return (
       <View style={styles.container}>
-        <Text style={styles.logoText}>工基建</Text>
+        <Text style={styles.logoText}>工基建-test</Text>
         <View>
           <List style={styles.list}>
             <InputItem

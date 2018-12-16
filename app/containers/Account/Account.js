@@ -42,7 +42,7 @@ class Account extends Component {
     return (
       <View style={styles.container}>
         <ScrollView
-          style={{ flex: 1}}
+          style={{ flex: 1 }}
           automaticallyAdjustContentInsets={false}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}

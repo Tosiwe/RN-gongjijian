@@ -1,9 +1,7 @@
+/* eslint-disable react/prefer-stateless-function */
 // native
 import React, { Component } from "react"
-import {
-  View,
-  StyleSheet
-} from "react-native"
+import { View, StyleSheet } from "react-native"
 import { Grid, Toast } from "antd-mobile-rn"
 import { myList } from "./data"
 

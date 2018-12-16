@@ -57,9 +57,9 @@ const MainNavigator = createStackNavigator(
 )
 const AppNavigator = createStackNavigator(
   {
-    Login: { screen: Login },
     Main: { screen: MainNavigator },
     Publish: { screen: Publish },
+    Login: { screen: Login },
   },
   {
     headerMode: "none",
