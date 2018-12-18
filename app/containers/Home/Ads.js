@@ -2,7 +2,7 @@
 // native
 import React, { Component } from "react"
 import { View, StyleSheet, Image } from "react-native"
-import { Carousel } from "antd-mobile-rn"
+import { Carousel } from "@ant-design/react-native"
 import { adsList } from "./data"
 import {screenWidth} from '../../styles/common'
 

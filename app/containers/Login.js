@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native"
 import { connect } from "react-redux"
-import { InputItem, Button, List } from "antd-mobile-rn"
+import { InputItem, Button, List } from "@ant-design/react-native"
 import Icon from "react-native-vector-icons/AntDesign"
 import {primaryColor} from '../styles/common'
 import { createAction, NavigationActions } from "../utils"

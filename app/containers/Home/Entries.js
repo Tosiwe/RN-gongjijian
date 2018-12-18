@@ -2,7 +2,7 @@
 // native
 import React, { Component } from "react"
 import { StyleSheet,View } from "react-native"
-import { Grid, WingBlank, Toast } from "antd-mobile-rn"
+import { Grid, WingBlank, Toast } from "@ant-design/react-native"
 import { entriesData } from "./data"
 
 class Entries extends Component {

@@ -2,12 +2,11 @@
 // native
 import React, { Component } from "react"
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native"
-import { List, Toast } from "antd-mobile-rn"
+import { List,  } from "@ant-design/react-native"
 import Icon from "react-native-vector-icons/AntDesign"
 import { joinList } from "./data"
 
 const { Item } = List
-const { Brief } = Item
 
 class JoinList extends Component {
   render() {

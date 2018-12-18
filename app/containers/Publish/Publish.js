@@ -13,7 +13,6 @@ import { connect } from "react-redux"
 
 import { NavigationActions } from "react-navigation"
 
-import FAwesomeIcon from "react-native-vector-icons/FontAwesome"
 
 
 // constants
@@ -175,7 +174,6 @@ class AddButton extends Component {
                     ]
                   }}
                 >
-                  <FAwesomeIcon name="plus" size={35} color="#FFF" />
                 </Animated.View>
               </TouchableOpacity>
             </View>

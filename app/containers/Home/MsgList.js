@@ -10,7 +10,7 @@ import {
   RefreshControl,
   Text
 } from "react-native"
-import { WingBlank, List, Toast } from "antd-mobile-rn"
+import { WingBlank, List, Toast } from "@ant-design/react-native"
 import { homeList } from "./data"
 
 // const { Item } = List

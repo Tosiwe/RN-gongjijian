@@ -1,31 +1,15 @@
 // native
 import React, { Component } from "react"
-import {
-  TouchableOpacity,
-  Animated,
-  Easing,
-  View,
-  StyleSheet,
-  Text
-} from "react-native"
+import { TouchableOpacity, View, StyleSheet, Text } from "react-native"
 import { connect } from "react-redux"
-import { Modal, Button } from "antd-mobile-rn"
+
+import { Modal, Button, Toast } from "@ant-design/react-native"
 // import { NavigationActions } from "react-navigation"
 
-import FAwesomeIcon from "react-native-vector-icons/FontAwesome"
+import Icon from "react-native-vector-icons/AntDesign"
 
 // constants
-import {
-  center,
-  topLeft,
-  topRight,
-  bigBubbleSize,
-  smallBubbleSize,
-  bubbleColor,
-  animateTime,
-  easingType,
-  delay
-} from "./styles"
+import { bigBubbleSize, bubbleColor } from "./styles"
 
 @connect(({ app }) => ({ ...app }))
 class AddButton extends Component {
@@ -36,18 +20,21 @@ class AddButton extends Component {
     }
   }
 
-  onClose = () => {
+  handleAddButtonPress = () => {
+    this.setState({
+      visible: true
+    })
+    // Modal.operation([
+    //   { text: '标为未读', onPress: () => console.log('标为未读被点击了') },
+    //   { text: '置顶聊天', onPress: () => console.log('置顶聊天被点击了') },
+    // ])
+  };
+
+  onClose=()=>{
     this.setState({
       visible: false
     })
-  };
-
-  handleAddButtonPress = () => {
-    Modal.operation([
-      { text: '标为未读', onPress: () => console.log('标为未读被点击了') },
-      { text: '置顶聊天', onPress: () => console.log('置顶聊天被点击了') },
-    ])
-  };
+  }
 
   render() {
     return (
@@ -62,8 +49,19 @@ class AddButton extends Component {
           }}
           onPress={this.handleAddButtonPress}
         >
-          <FAwesomeIcon name="plus" size={35} color="#FFF" />
+          <Icon name="plus" size={35} color="#FFF" />
         </TouchableOpacity>
+        <Modal
+          transparent
+          visible={this.state.visible}
+          animationType="slide"
+          maskClosable
+          onClose={this.onClose}
+          footer={null}
+        >
+           <Button style={style.btn}>发布需求</Button>
+           <Button style={style.btn} >发布信息</Button>
+        </Modal>
       </View>
     )
   }
@@ -78,6 +76,9 @@ const style = StyleSheet.create({
     width: bigBubbleSize,
     borderRadius: bigBubbleSize / 2,
     top: 3
+  },
+  btn:{
+    // backgroundColor:"red"
   }
 })
 
