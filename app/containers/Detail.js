@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { connect } from 'react-redux'
 
-import { Button } from '../components'
+// import { Button } from '../components'
 
 import { NavigationActions } from '../utils'
 
@@ -19,7 +19,7 @@ class Detail extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Button text="Go Back" onPress={this.goBack} />
+        {/* <Button text="Go Back" onPress={this.goBack} /> */}
       </View>
     )
   }

@@ -11,7 +11,7 @@ class Ads extends Component {
     return (
       <Carousel style={styles.ads} selectedIndex={2} autoplay infinite>
         {adsList.map(item => (
-          <View style={styles.containerHorizontal}>
+          <View style={styles.containerHorizontal} key={Math.random()}>
             <Image
               style={styles.item}
               source={{

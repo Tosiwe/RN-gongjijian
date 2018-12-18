@@ -8,7 +8,6 @@ import {
 } from "react-native"
 import { connect } from "react-redux"
 
-import { Button } from "../../components"
 import { primaryColor, statusBarHeight, iconSize } from "../../styles/common"
 
 import { createAction, NavigationActions } from "../../utils"
@@ -38,7 +37,6 @@ class Account extends Component {
   };
 
   render() {
-    const { login } = this.props
     return (
       <View style={styles.container}>
         <ScrollView
