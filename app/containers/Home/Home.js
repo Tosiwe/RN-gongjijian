@@ -73,9 +73,12 @@ class Home extends Component {
 
 const styles = StyleSheet.create({
   home: {
-    marginTop: statusBarHeight,
+    paddingTop: statusBarHeight,
     flex: 1,
-    flexDirection: "column"
+    flexDirection: "column",
+    backgroundColor:'#fff',
+    paddingLeft: 20,
+    paddingRight: 20
   },
   icon: {
     width: iconSize,

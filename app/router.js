@@ -1,4 +1,4 @@
-import React, { PureComponent } from "react"
+import React, { Component } from "react"
 import { BackHandler, Animated, Easing, TouchableOpacity } from "react-native"
 
 import {
@@ -118,7 +118,7 @@ function getActiveRouteName(navigationState) {
 }
 
 @connect(({ app, router }) => ({ app, router }))
-class Router extends PureComponent {
+class Router extends Component {
   componentWillMount() {
     BackHandler.addEventListener("hardwareBackPress", this.backHandle)
   }

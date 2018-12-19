@@ -43,8 +43,6 @@ class MsgList extends Component {
 const styles = StyleSheet.create({
   wrap: {
     backgroundColor: "#fff",
-    paddingLeft: 10,
-    paddingRight: 10
   },
   item: {
     flexDirection: "row",

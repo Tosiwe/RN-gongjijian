@@ -14,7 +14,7 @@ class Entries extends Component {
             hasLine={false}
             columnNum={5}
             itemStyle={{ width: 80, height: 80 }}
-            onClick={el => Toast.info(el.text, 1)}
+            onPress={el => Toast.info(el.text, 1)}
             styles={styles}
           />
         </View>
@@ -26,7 +26,8 @@ const styles = StyleSheet.create({
       backgroundColor:'#fff',
       marginTop:10,
       marginBottom:10,
-      padding:10,
+      paddingTop:10,
+      paddingBottom:10,
   },
   icon: {
     width: 40,
