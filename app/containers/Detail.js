@@ -9,7 +9,8 @@ import { NavigationActions } from '../utils'
 @connect()
 class Detail extends Component {
   static navigationOptions = {
-    title: 'Detail',
+    // title: '搜索',
+    // header:null,
   }
 
   goBack = () => {

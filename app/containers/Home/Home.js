@@ -4,7 +4,7 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ScrollView,
+  ScrollView
 } from "react-native"
 
 import { connect } from "react-redux"
@@ -13,7 +13,7 @@ import Ads from "./Ads"
 import Top from "./Top"
 import Entries from "./Entries"
 import MsgList from "./MsgList"
-import {primaryColor,statusBarHeight,iconSize} from '../../styles/common'
+import { primaryColor, statusBarHeight, iconSize } from "../../styles/common"
 
 @connect()
 class Home extends Component {
@@ -25,7 +25,7 @@ class Home extends Component {
         source={require("../../images/house.png")}
       />
     ),
-    tabBarButtonComponent: TouchableOpacity,
+    tabBarButtonComponent: TouchableOpacity
   };
 
   constructor(props) {
@@ -35,9 +35,7 @@ class Home extends Component {
     }
   }
 
-
-
-  handleScrollEnd = (event) => {
+  handleScrollEnd = event => {
     const contentHeight = event.nativeEvent.contentSize.height
     const scrollViewHeight = event.nativeEvent.layoutMeasurement.height
     const scrollOffset = event.nativeEvent.contentOffset.y
@@ -50,7 +48,6 @@ class Home extends Component {
     }
   };
 
-
   render() {
     const { msgList } = this.state
     return (
@@ -61,9 +58,12 @@ class Home extends Component {
           showsVerticalScrollIndicator={false}
           onScrollEndDrag={this.handleScrollEnd}
         >
-          <Top />
-          <Ads />
-          <Entries />
+          <View style={styles.topWrap}>
+            <Top />
+            <Ads />
+            <Entries />
+          </View>
+          <View style={styles.gap} />
           <MsgList data={msgList} />
         </ScrollView>
       </View>
@@ -76,13 +76,19 @@ const styles = StyleSheet.create({
     paddingTop: statusBarHeight,
     flex: 1,
     flexDirection: "column",
-    backgroundColor:'#fff',
+    backgroundColor: "#fff"
+  },
+  topWrap: {
     paddingLeft: 20,
     paddingRight: 20
   },
   icon: {
     width: iconSize,
     height: iconSize
+  },
+  gap: {
+    backgroundColor: "#EEEEEE",
+    height: 10
   }
 })
 

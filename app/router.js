@@ -23,6 +23,7 @@ import Publish from "./containers/Publish/Publish"
 import Account from "./containers/Account/Account"
 import Detail from "./containers/Detail"
 import AddButton from "./components/AddButton/AddButton"
+import Search from "./components/Search/Search"
 import { primaryColor } from "./styles/common"
 
 // 底部标签导航
@@ -52,7 +53,8 @@ HomeNavigator.navigationOptions = {
 const MainNavigator = createStackNavigator(
   {
     HomeNavigator: { screen: HomeNavigator },
-    Detail: { screen: Detail }
+    Detail: { screen: Detail },
+    Search: { screen: Search ,navigationOptions:{header:null}},
   },
   {
     headerMode: "float"

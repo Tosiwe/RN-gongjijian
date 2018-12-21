@@ -6,10 +6,13 @@ import { View, StyleSheet, Text, TouchableOpacity } from "react-native"
 import Icon from "react-native-vector-icons/AntDesign"
 
 import { Picker, List, Button } from "@ant-design/react-native"
+import { NavigationActions } from "react-navigation"
+import { connect } from "react-redux"
 
 const area = require("./data.json")
 
 const FOUR_CITY = ["11", "50", "31", "12"]
+@connect()
 class Top extends Component {
   constructor(props) {
     super(props)
@@ -39,19 +42,23 @@ class Top extends Component {
     this.setState({ area: label.substr(0, label.length - 1) })
   };
 
+  toSearch = () => {
+    this.props.dispatch(NavigationActions.navigate({ routeName: "Search" }))
+  };
+
   render() {
     return (
       <View style={styles.top}>
-          <Picker
-            data={area}
-            cols={2}
-            value={this.state.value}
-            onChange={this.onChangeArea}
-          >
-            <AreaBtn area={this.state.area} />
-          </Picker>
+        <Picker
+          data={area}
+          cols={2}
+          value={this.state.value}
+          onChange={this.onChangeArea}
+        >
+          <AreaBtn area={this.state.area} />
+        </Picker>
 
-        <TouchableOpacity style={styles.searchBar}>
+        <TouchableOpacity style={styles.searchBar} onPress={this.toSearch}>
           <Icon
             name="search1"
             size={16}
@@ -66,9 +73,7 @@ class Top extends Component {
 }
 const AreaBtn = props => (
   <TouchableOpacity style={styles.cityButton} onPress={props.onPress}>
-    <Text style={{ fontSize: 14, marginLeft: 5 }}>
-      {props.area}
-    </Text>
+    <Text style={{ fontSize: 14, marginLeft: 5 }}>{props.area}</Text>
     <Icon name="down" size={14} color="#000" />
   </TouchableOpacity>
 )

@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
   item: {
-    // width: screenWidth,
+    width: screenWidth,
     height: 200,
     // borderWidth: 1,
   }
