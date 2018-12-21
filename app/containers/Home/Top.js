@@ -36,18 +36,12 @@ class Top extends Component {
         }
       }
     })
-    // for (const a of area){
-    //   if(a.children.value === city){
-    //     label = a.children.label
-    //   }
-    // }
     this.setState({ area: label.substr(0, label.length - 1) })
   };
 
   render() {
     return (
       <View style={styles.top}>
-        <List>
           <Picker
             data={area}
             cols={2}
@@ -56,18 +50,15 @@ class Top extends Component {
           >
             <AreaBtn area={this.state.area} />
           </Picker>
-        </List>
 
         <TouchableOpacity style={styles.searchBar}>
           <Icon
             name="search1"
             size={16}
             color="#000000"
-            style={{ width: 20,}}
+            style={{ width: 20 }}
           />
-          <Text style={{ color: "#636363", fontSize: 14 }}>
-            搜索
-          </Text>
+          <Text style={{ color: "#636363", fontSize: 14 }}>搜索</Text>
         </TouchableOpacity>
       </View>
     )
@@ -75,7 +66,7 @@ class Top extends Component {
 }
 const AreaBtn = props => (
   <TouchableOpacity style={styles.cityButton} onPress={props.onPress}>
-    <Text style={{ fontSize: 14, marginRight: 10, marginLeft: 5 }}>
+    <Text style={{ fontSize: 14, marginLeft: 5 }}>
       {props.area}
     </Text>
     <Icon name="down" size={14} color="#000" />
@@ -86,7 +77,8 @@ const styles = StyleSheet.create({
   top: {
     flexDirection: "row",
     height: 40,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    marginBottom: 10
   },
   cityButton: {
     height: 40,
@@ -100,17 +92,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#fff",
+    borderColor: "#ddd",
     paddingLeft: 3,
     height: 30,
     margin: 5,
-    // boxShadow: "0 0 20 0 rgba(230,230,230,1)",
-    borderRadius: 30,
-    shadowColor: '#000',
-    shadowOffset: { width: -1, height: 2 }, 
-    shadowOpacity: 0.5, 
-    shadowRadius: 2, 
-    elevation: 4
+    borderRadius: 30
+    // shadowColor: '#000',
+    // shadowOffset: { width: -1, height: 2 },
+    // shadowOpacity: 0.5,
+    // shadowRadius: 2,
+    // elevation: 4
   }
 })
 export default Top

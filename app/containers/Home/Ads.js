@@ -4,7 +4,7 @@ import React, { Component } from "react"
 import { View, StyleSheet, Image } from "react-native"
 import { Carousel } from "@ant-design/react-native"
 import { adsList } from "./data"
-import {screenWidth} from '../../styles/common'
+import { screenWidth } from "../../styles/common"
 
 class Ads extends Component {
   render() {
@@ -14,6 +14,7 @@ class Ads extends Component {
           <View style={styles.containerHorizontal} key={Math.random()}>
             <Image
               style={styles.item}
+              imageStyle={{ borderRadius: 20 }}
               source={{
                 uri: item.url
               }}
@@ -25,17 +26,20 @@ class Ads extends Component {
   }
 }
 const styles = StyleSheet.create({
-  ads: {},
+  ads: {
+    borderRadius:20
+  },
 
   containerHorizontal: {
     flexGrow: 1,
     alignItems: "center",
     justifyContent: "center",
-    height: 200
+    height: 200,
   },
   item: {
-    width:screenWidth,
-    height: 200
+    // width: screenWidth,
+    height: 200,
+    // borderWidth: 1,
   }
 })
 export default Ads
