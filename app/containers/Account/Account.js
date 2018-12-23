@@ -4,7 +4,8 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Text
 } from "react-native"
 import { connect } from "react-redux"
 
@@ -18,13 +19,19 @@ import JoinList from "./JoinList"
 @connect(({ app }) => ({ ...app }))
 class Account extends Component {
   static navigationOptions = {
-    tabBarLabel: "个人中心",
-    tabBarIcon: ({ focused }) => (
-      <Image
-        style={[styles.icon, { tintColor: focused ? primaryColor : "gray" }]}
-        source={require("../../images/person.png")}
-      />
+    tabBarLabel: ({ focused }) => (
+      <Text
+        style={[{ fontSize: 12 }, { color: focused ? primaryColor : "#D5D5D5" }]}
+      >
+        首页
+      </Text>
     ),
+    tabBarIcon: ({focused} )=>
+        <Image
+          style={styles.icon}
+          source={focused ? require("./images/icon_tag_personal_pre.png"):require("./images/icon_tag_personal_nor.png")}
+        />
+      ,
     tabBarButtonComponent: TouchableOpacity
   };
 

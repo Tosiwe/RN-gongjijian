@@ -4,7 +4,8 @@ import {
   View,
   Image,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  Text
 } from "react-native"
 
 import { connect } from "react-redux"
@@ -18,13 +19,19 @@ import { primaryColor, statusBarHeight, iconSize } from "../../styles/common"
 @connect()
 class Home extends Component {
   static navigationOptions = {
-    tabBarLabel: "首页",
-    tabBarIcon: ({ focused }) => (
-      <Image
-        style={[styles.icon, { tintColor: focused ? primaryColor : "gray" }]}
-        source={require("../../images/house.png")}
-      />
+    tabBarLabel: ({ focused }) => (
+      <Text
+        style={[{ fontSize: 12 }, { color: focused ? primaryColor : "#D5D5D5" }]}
+      >
+        首页
+      </Text>
     ),
+    tabBarIcon: ({focused} )=>
+        <Image
+          style={styles.icon}
+          source={focused ? require("./images/icon_tag_home_pre.png"):require("./images/icon_tag_home_nor.png")}
+        />
+      ,
     tabBarButtonComponent: TouchableOpacity
   };
 

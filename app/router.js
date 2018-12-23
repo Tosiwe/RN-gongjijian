@@ -16,6 +16,7 @@ import {
 import { Provider } from "@ant-design/react-native"
 import { connect } from "react-redux"
 
+import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator"
 import Loading from "./containers/Loading"
 import Login from "./containers/Login"
 import Home from "./containers/Home/Home"
@@ -24,7 +25,7 @@ import Account from "./containers/Account/Account"
 import Detail from "./containers/Detail"
 import AddButton from "./components/AddButton/AddButton"
 import Search from "./components/Search/Search"
-import { primaryColor } from "./styles/common"
+// import { primaryColor } from "./styles/common"
 
 // 底部标签导航
 const HomeNavigator = createBottomTabNavigator(
@@ -39,25 +40,29 @@ const HomeNavigator = createBottomTabNavigator(
     Account: { screen: Account }
   },
   {
-    tabBarOptions: {}
+    tabBarOptions: {
+    
+    }
   }
 )
 
 // 底部导航属性设置
 HomeNavigator.navigationOptions = {
   header: null,
-  tabBarButtonComponent: TouchableOpacity,
-  tabBarIcon: { tintColor: primaryColor }
+  tabBarButtonComponent: TouchableOpacity
 }
 
 const MainNavigator = createStackNavigator(
   {
     HomeNavigator: { screen: HomeNavigator },
     Detail: { screen: Detail },
-    Search: { screen: Search ,navigationOptions:{header:null}},
+    Search: { screen: Search, navigationOptions: { header: null } }
   },
   {
-    headerMode: "float"
+    headerMode: "none",
+    transitionConfig: () => ({
+      screenInterpolator: StackViewStyleInterpolator.forVertical
+    })
   }
 )
 const AppNavigator = createStackNavigator(
@@ -73,28 +78,7 @@ const AppNavigator = createStackNavigator(
       gesturesEnabled: false
     },
     transitionConfig: () => ({
-      transitionSpec: {
-        duration: 300,
-        easing: Easing.out(Easing.poly(4)),
-        timing: Animated.timing
-      },
-      screenInterpolator: sceneProps => {
-        const { layout, position, scene } = sceneProps
-        const { index } = scene
-
-        const height = layout.initHeight
-        const translateY = position.interpolate({
-          inputRange: [index - 1, index, index + 1],
-          outputRange: [height, 0, 0]
-        })
-
-        const opacity = position.interpolate({
-          inputRange: [index - 1, index - 0.99, index],
-          outputRange: [0, 1, 1]
-        })
-
-        return { opacity, transform: [{ translateY }] }
-      }
+      screenInterpolator: StackViewStyleInterpolator.forVertical
     })
   }
 )
