@@ -1,5 +1,10 @@
 import React, { Component } from "react"
-import { BackHandler, Animated, Easing, TouchableOpacity } from "react-native"
+import {
+  BackHandler,
+  StyleSheet,
+  Easing,
+  TouchableOpacity
+} from "react-native"
 
 import {
   createStackNavigator,
@@ -25,26 +30,20 @@ import Account from "./containers/Account/Account"
 import Detail from "./containers/Detail"
 import AddButton from "./components/AddButton/AddButton"
 import Search from "./components/Search/Search"
+import Entry from "./containers/Entry/Entry"
 // import { primaryColor } from "./styles/common"
 
 // 底部标签导航
-const HomeNavigator = createBottomTabNavigator(
-  {
-    Home: { screen: Home },
-    Add: {
-      screen: AddButton,
-      navigationOptions: () => ({
-        tabBarButtonComponent: () => <AddButton />
-      })
-    },
-    Account: { screen: Account }
+const HomeNavigator = createBottomTabNavigator({
+  Home: { screen: Home },
+  Add: {
+    screen: AddButton,
+    navigationOptions: () => ({
+      tabBarButtonComponent: () => <AddButton />
+    })
   },
-  {
-    tabBarOptions: {
-    
-    }
-  }
-)
+  Account: { screen: Account }
+})
 
 // 底部导航属性设置
 HomeNavigator.navigationOptions = {
@@ -56,12 +55,19 @@ const MainNavigator = createStackNavigator(
   {
     HomeNavigator: { screen: HomeNavigator },
     Detail: { screen: Detail },
-    Search: { screen: Search, navigationOptions: { header: null } }
+    Entry: {
+      screen: Entry,
+      navigationOptions: ({ navigation }) => ({
+        title: `${navigation.state.params.name}`,
+        headerStyle:{backgroundColor:"#F9F9F9"}
+        // headerLeftContainerStyle: { color: "#000" }
+      })
+    }
   },
   {
-    headerMode: "none",
     transitionConfig: () => ({
-      screenInterpolator: StackViewStyleInterpolator.forVertical
+      // 水平切换
+      screenInterpolator: StackViewStyleInterpolator.forHorizontal
     })
   }
 )
@@ -69,6 +75,7 @@ const AppNavigator = createStackNavigator(
   {
     Main: { screen: MainNavigator },
     Publish: { screen: Publish },
+    Search: { screen: Search },
     Login: { screen: Login }
   },
   {
@@ -78,6 +85,7 @@ const AppNavigator = createStackNavigator(
       gesturesEnabled: false
     },
     transitionConfig: () => ({
+      // 垂直切换
       screenInterpolator: StackViewStyleInterpolator.forVertical
     })
   }

@@ -10,8 +10,9 @@ import {
   Image
 } from "react-native"
 import Icon from "react-native-vector-icons/AntDesign"
-import { iconSize, primaryColor, screenWidth } from "../../styles/common"
+import { iconSize, screenWidth } from "../../styles/common"
 
+const iconColor = "#FFF"
 class Top extends Component {
   render() {
     return (
@@ -27,7 +28,7 @@ class Top extends Component {
             <Icon
               name="setting"
               size={iconSize}
-              color={primaryColor}
+              color={iconColor}
               style={{ width: 100 }}
             />
           </TouchableOpacity>
@@ -43,12 +44,12 @@ class Top extends Component {
               <Icon
                 name="customerservice"
                 size={iconSize}
-                color={primaryColor}
+                color={iconColor}
                 style={{ marginRight: 15 }}
               />
             </TouchableOpacity>
             <TouchableOpacity>
-              <Icon name="message1" size={iconSize} color={primaryColor} />
+              <Icon name="message1" size={iconSize} color={iconColor} />
             </TouchableOpacity>
           </View>
         </View>
