@@ -3,7 +3,10 @@ import { connect } from "react-redux"
 
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native"
 import { NavigationActions } from "react-navigation"
-import { Tabs } from "@ant-design/react-native"
+import { List } from "@ant-design/react-native"
+import { screenHeight } from "../../styles/common"
+
+const {Item} = List
 
 const tabs = [
   { title: "公司" },
@@ -24,41 +27,59 @@ class IndustryEntry extends Component {
     const { type } = this.props
     return (
       <View style={styles.container}>
-        <Tabs 
-        tabs={tabs} 
-        styles={{topTabBarSplitLine:"#000"}}
-        tabBarUnderlineStyle={{ backgroundColor: "#FF7720" }} 
-        // renderTab={tab=>(<Text style={{color:"red",borderBottomWidth:0}}>123</Text>   )}
-        >
-          <View style={styles.content}>
-            <Text>Content of First Tab</Text>
-          </View>
-          <View style={styles.content}>
-            <Text>Content of Second Tab</Text>
-          </View>
-          <View style={styles.content}>
-            <Text>Content of Third Tab</Text>
-          </View>
-          <View style={styles.content}>
-            <Text>Content of First Tab</Text>
-          </View>
-          <View style={styles.content}>
-            <Text>Content of Second Tab</Text>
-          </View>
-          <View style={styles.content}>
-            <Text>Content of Third Tab</Text>
-          </View>
-        </Tabs>
+        <View style={styles.left}>
+          <List style={{fontSize:12,backgroundColor:"#E1E1E1"}} renderHeader="商家">
+            <Item style={styles.item}>
+              <Text>公司</Text>
+            </Item>
+            <Item style={styles.item}>
+              <Text style={styles.itemText}>材料供应</Text>
+            </Item>
+            <Item style={styles.item}>
+              <Text style={styles.itemText}>设备租赁</Text>
+            </Item>
+          </List>
+          <List style={{fontSize:12,backgroundColor:"#E1E1E1"}} renderHeader="个人">
+            <Item style={styles.item}>
+              <Text style={styles.itemText}>人才</Text>
+            </Item>
+            <Item style={styles.item}>
+              <Text style={styles.itemText}>施工队伍</Text>
+            </Item>
+            <Item style={styles.item}>
+              <Text style={styles.itemText}>项目信息</Text>
+            </Item>
+          </List>
+        </View>
+        <View style={styles.right}>
+          <View>123</View>
+        </View>
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
-    content:{
-        backgroundColor:"#FFF",
-        flex:1,
-    }
+  container: {
+    backgroundColor: "#FFF",
+    // width:50,
+
+    flexDirection: "row"
+  },
+  left: {
+    width: 90,
+    height:screenHeight,
+    backgroundColor:"#EFEFEF"
+  },
+  right: {
+    flex: 1
+  },
+  item:{
+    backgroundColor:"#EFEFEF"
+  },
+  itemText: {
+    fontSize: 14,
+  }
 })
 
 export default IndustryEntry
