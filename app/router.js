@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import {
   BackHandler,
   StyleSheet,
-  Easing,
+  Text,
   TouchableOpacity
 } from "react-native"
 
@@ -22,6 +22,7 @@ import { Provider } from "@ant-design/react-native"
 import { connect } from "react-redux"
 
 import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator"
+import Icon from "react-native-vector-icons/AntDesign"
 import Loading from "./containers/Loading"
 import Login from "./containers/Login"
 import Home from "./containers/Home/Home"
@@ -31,8 +32,6 @@ import Detail from "./containers/Detail"
 import AddButton from "./components/AddButton/AddButton"
 import Search from "./components/Search/Search"
 import Entry from "./containers/Entry/Entry"
-// import { primaryColor } from "./styles/common"
-
 // 底部标签导航
 const HomeNavigator = createBottomTabNavigator({
   Home: { screen: Home },
@@ -59,8 +58,21 @@ const MainNavigator = createStackNavigator(
       screen: Entry,
       navigationOptions: ({ navigation }) => ({
         title: `${navigation.state.params.name}`,
-        headerStyle:{backgroundColor:"#F9F9F9"}
-        // headerLeftContainerStyle: { color: "#000" }
+        headerStyle: { backgroundColor: "#F9F9F9" },
+        headerLeft: 
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack()
+            }}
+          >
+            <Icon
+              name="left"
+              size={24}
+              color="black"
+              style={{ marginLeft: 13 }}
+            />
+          </TouchableOpacity>
+        
       })
     }
   },
