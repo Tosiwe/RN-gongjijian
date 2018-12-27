@@ -12,15 +12,27 @@ import {
 } from "react-native"
 import { WingBlank, List, Toast } from "@ant-design/react-native"
 import { homeList } from "./data"
-
+import ListItem from "../Entry/ListItem"
 // const { Item } = List
 // const { Brief } = Item
 
 class MsgList extends Component {
+
+  renderItem = ({ item }) => (
+    <ListItem
+      id={Math.random()}
+      onPressItem={this.onPressItem}
+      //   selected={!!this.state.selected.get(item.id)}
+      title={item.title}
+      url={item.url}
+      des={item.des}
+    />
+  );
+
   render() {
     return (
       <View style={styles.wrap}>
-        <View style={{alignItems:"center"}}>
+        <View style={styles.head}>
           <ImageBackground
             style={styles.imgBg}
             source={require("../../images/title_bg.png")}
@@ -28,61 +40,23 @@ class MsgList extends Component {
             <Text style={styles.title}>猜你喜欢</Text>
           </ImageBackground>
         </View>
-        <FlatList
-          data={homeList}
-          renderItem={({ item }) => (
-            <View style={styles.item}>
-              <Image style={styles.itemImg} source={{ uri: item.url }} />
-              <View style={{ flex: 1 }}>
-                <View style={styles.itemTitle}>
-                  <Text style={{ fontSize: 18 }}> {item.title}</Text>
-                  <Image style={styles.itemIcon} source={{ uri: item.url }} />
-                </View>
-                <Text style={styles.itemDes}>{item.des}</Text>
-              </View>
-            </View>
-          )}
-        />
+
+        <FlatList data={homeList} renderItem={this.renderItem} />
+
       </View>
     )
   }
 }
 const styles = StyleSheet.create({
   wrap: {
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
+    paddingHorizontal:10,
   },
-  item: {
-    flexDirection: "row",
-    paddingTop: 10,
-    paddingBottom: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
-    borderStyle: "solid"
+  head:{
+    alignItems:"center",
+    marginBottom:10,
   },
-  itemImg: {
-    width: 70,
-    height: 70,
-    marginRight: 10
-  },
-  itemIcon: {
-    width: 20,
-    height: 20,
-    marginRight: 10,
-    position: "absolute",
-    right: 0
-  },
-  itemTitle: {
-    maxHeight: 18,
-    flexDirection: "row",
-    marginBottom: 5,
-    position: "relative"
-  },
-  itemDes: {
-    fontSize: 14,
-    color: "#999",
-    maxHeight: 45,
-    overflow: "scroll"
-  },
+  
   imgBg: {
     width: 100,
     height: 25,

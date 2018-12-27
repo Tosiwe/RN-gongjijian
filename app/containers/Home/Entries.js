@@ -84,7 +84,7 @@ class Entries extends Component {
             onPress={() => this.toEntry(11)}
           >
             <Image source={require("../../images/icon_register_b.png")} />
-            <Text style={styles.itemText}>注册市场</Text>
+            <Text style={styles.itemText}>注册人员</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.item}

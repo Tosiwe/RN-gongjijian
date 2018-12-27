@@ -97,16 +97,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: "#fff",
     paddingLeft: 3,
     height: 30,
     margin: 5,
-    borderRadius: 30
-    // shadowColor: '#000',
-    // shadowOffset: { width: -1, height: 2 },
-    // shadowOpacity: 0.5,
-    // shadowRadius: 2,
-    // elevation: 4
+    borderRadius: 30,
+    backgroundColor:"#fff",
+    shadowColor: '#ddd',
+    shadowOffset: { width: 0, height:2}, 
+    shadowOpacity: 0.8, 
+    shadowRadius: 4, 
+    elevation: 4 
   }
 })
 export default Top

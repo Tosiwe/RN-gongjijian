@@ -1,52 +1,88 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native"
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  FlatList
+} from "react-native"
 import { NavigationActions } from "react-navigation"
 import { Tabs } from "@ant-design/react-native"
+import ListItem from "./ListItem"
 
 const tabs = [
-  { title: "公司" },
-  { title: "材料供应" },
-  { title: "设备租赁" },
-  { title: "人才" },
-  { title: "施工队伍" },
-  { title: "项目信息" }
+  { title: "二手钢材" },
+  { title: "二手木材" },
+  { title: "二手机械" }
 ]
 
+const list = [
+  {
+    id: Math.random(),
+    url: "https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png",
+    title: "Meet hotel",
+    des:
+      "《海王》是一部轻灵、浅显、奢华的娱乐片，轻灵与浅显，是对《海王》最喜欢的优点。《海王》是一部轻灵、浅显、奢华的娱乐片，轻灵与浅显，是对《海王》最喜欢的优点。《海王》是一部轻灵、浅显、奢华的娱乐片，轻灵与浅显，是对《海王》最喜欢的优点。《海王》是一部轻灵、浅显、奢华的娱乐片，轻灵与浅显，是对《海王》最喜欢的优点。《海王》是一部轻灵、浅显、奢华的娱乐片，轻灵与浅显，是对《海王》最喜欢的优点。"
+  },
+  {
+    id: Math.random(),
+    url: "https://zos.alipayobjects.com/rmsportal/XmwCzSeJiqpkuMB.png",
+    title: "McDonald's invites you",
+    des:
+      "《海王》是一部轻灵、浅显、奢华的娱乐片，轻灵与浅显，是对《海王》最喜欢的优点。"
+  },
+  {
+    id: Math.random(),
+    url: "https://zos.alipayobjects.com/rmsportal/hfVtzEhPzTUewPm.png",
+    title: "Eat the week",
+    des:
+      "《海王》是一部轻灵、浅显、奢华的娱乐片，轻灵与浅显，是对《海王》最喜欢的优点。"
+  },
+  {
+    id: Math.random(),
+    url: "https://zos.alipayobjects.com/rmsportal/dKbkpPXKfvZzWCM.png",
+    title: "Meet hotel",
+    des:
+      "《海王》是一部轻灵、浅显、奢华的娱乐片，轻灵与浅显，是对《海王》最喜欢的优点。"
+  }
+]
 @connect()
 class SecondEntry extends Component {
   //   constructor(props) {
   //     super(props)
   //   }
 
+  renderItem = ({ item }) => (
+    <ListItem
+      id={item.id}
+      onPressItem={this.onPressItem}
+      //   selected={!!this.state.selected.get(item.id)}
+      title={item.title}
+      url={item.url}
+      des={item.des}
+    />
+  );
+
   render() {
     const { type } = this.props
     return (
       <View style={styles.container}>
-        <Tabs 
-        tabs={tabs} 
-        styles={{topTabBarSplitLine:"#000"}}
-        tabBarUnderlineStyle={{ backgroundColor: "#FF7720" }} 
-        // renderTab={tab=>(<Text style={{color:"red",borderBottomWidth:0}}>123</Text>   )}
+        <Tabs
+          tabs={tabs}
+          styles={{ topTabBarSplitLine: "#000" }}
+          tabBarUnderlineStyle={{ backgroundColor: "#FF7720" }}
+          // renderTab={tab=>(<Text style={{color:"red",borderBottomWidth:0}}>123</Text>   )}
         >
           <View style={styles.content}>
-            <Text>Content of First Tab</Text>
+            <FlatList data={list} renderItem={this.renderItem} />
           </View>
           <View style={styles.content}>
-            <Text>Content of Second Tab</Text>
+            <FlatList data={list} renderItem={this.renderItem} />
           </View>
           <View style={styles.content}>
-            <Text>Content of Third Tab</Text>
-          </View>
-          <View style={styles.content}>
-            <Text>Content of First Tab</Text>
-          </View>
-          <View style={styles.content}>
-            <Text>Content of Second Tab</Text>
-          </View>
-          <View style={styles.content}>
-            <Text>Content of Third Tab</Text>
+            <FlatList data={list} renderItem={this.renderItem} />
           </View>
         </Tabs>
       </View>
@@ -55,10 +91,15 @@ class SecondEntry extends Component {
 }
 
 const styles = StyleSheet.create({
-    content:{
-        backgroundColor:"#FFF",
-        flex:1,
-    }
+  container:{
+    paddingHorizontal:10,
+    backgroundColor:"#FFF"
+  },
+  content: {
+    backgroundColor: "#FFF",
+    flex: 1,
+    paddingTop:20,
+  }
 })
 
 export default SecondEntry
