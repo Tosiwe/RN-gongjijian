@@ -12,7 +12,7 @@ import {
 } from "react-native"
 import { WingBlank, List, Toast } from "@ant-design/react-native"
 import { homeList } from "./data"
-import ListItem from "../Entry/ListItem"
+import ListItem from "../../components/ListIem/ListItem"
 // const { Item } = List
 // const { Brief } = Item
 
