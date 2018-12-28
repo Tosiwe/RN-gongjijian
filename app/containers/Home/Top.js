@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     height: 40,
     backgroundColor: "#fff",
-    marginBottom: 10
+    marginBottom: 10,
   },
   cityButton: {
     height: 40,

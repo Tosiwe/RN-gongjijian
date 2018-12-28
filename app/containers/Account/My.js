@@ -1,27 +1,63 @@
 /* eslint-disable react/prefer-stateless-function */
 // native
 import React, { Component } from "react"
-import { View, StyleSheet } from "react-native"
+import { View, StyleSheet, TouchableOpacity, Image, Text,ImageBackground } from "react-native"
 import { Grid, Toast } from "@ant-design/react-native"
 import { myList } from "./data"
 
 class My extends Component {
+  toEntry=key=>{
+    Toast.info(key)
+  }
+
   render() {
     return (
-      <View>
-        <Grid
-          data={myList}
-          hasLine={false}
-          columnNum={4}
-          onClick={el => Toast.info(el.text, 1)}
-          styles={styles}
-        />
+      <View style={styles.wrap}>
+        {/* <ImageBackground> */}
+          <TouchableOpacity style={styles.item} onPress={() => this.toEntry(5)}>
+            <Image source={require("./images/icon_tool_release.png")} />
+            <Text style={styles.itemText}>我的发布</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.item} onPress={() => this.toEntry(6)}>
+            <Image source={require("./images/icon_tool_collection.png")} />
+            <Text style={styles.itemText}>我的收藏</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.item} onPress={() => this.toEntry(7)}>
+            <Image source={require("./images/icon_tool_download.png")} />
+            <Text style={styles.itemText}>我的下载</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.item} onPress={() => this.toEntry(8)}>
+            <Image source={require("./images/icon_tool_history.png")} />
+            <Text style={styles.itemText}>历史记录</Text>
+          </TouchableOpacity>
+        {/* </ImageBackground> */}
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  wrap: {
+    flexDirection: "row",
+    backgroundColor: "#FFF",
+    borderRadius: 10,
+    padding: 20,
+    shadowColor: "#ddd",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 4,
+    marginHorizontal: 16,
+    top: -100
+  },
+  item: {
+    flex: 1,
+    alignItems: "center"
+  },
+  itemText: {
+    fontSize: 12,
+    color: "#727272"
+  },
   icon: {
     width: 40,
     height: 40,

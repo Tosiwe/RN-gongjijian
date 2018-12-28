@@ -83,8 +83,8 @@ const style = StyleSheet.create({
     backgroundColor: "transparent",
   },
   addImage:{
-    width:50,
-    height:50
+    width:60,
+    height:60
   },
   btn: {
     borderRadius: 40,

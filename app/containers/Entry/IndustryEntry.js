@@ -10,7 +10,7 @@ import {
   FlatList
 } from "react-native"
 import { NavigationActions } from "react-navigation"
-import { List } from "@ant-design/react-native"
+import { List, ActivityIndicator } from "@ant-design/react-native"
 import { screenHeight, primaryColor } from "../../styles/common"
 import ListItem from "../../components/ListIem/ListItem"
 import {list} from "./data"
@@ -22,7 +22,8 @@ class IndustryEntry extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeKey: 0
+      activeKey: 0,
+      loading:false,
     }
   }
 
@@ -45,11 +46,15 @@ class IndustryEntry extends Component {
     />
   );
 
-  onPress = key => this.setState({ activeKey: key });
+  onPress = key => {
+      const self = this
+      this.setState({ activeKey: key, loading:true, })
+      setTimeout(()=>{self.setState({loading:false})},1000)
+    };
 
   render() {
     const { type } = this.props
-    const { activeKey } = this.state
+    const { activeKey,loading } = this.state
     return (
       <View style={styles.container}>
         <View style={styles.left}>
@@ -95,6 +100,7 @@ class IndustryEntry extends Component {
           </List>
         </View>
         <View style={styles.right}>
+        <ActivityIndicator animating={loading}/>
           <FlatList data={list} renderItem={this.renderItem} />
         </View>
       </View>

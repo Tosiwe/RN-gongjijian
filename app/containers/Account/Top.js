@@ -10,7 +10,7 @@ import {
   Image
 } from "react-native"
 import Icon from "react-native-vector-icons/AntDesign"
-import { iconSize, screenWidth } from "../../styles/common"
+import { iconSize, screenWidth, statusBarHeight } from "../../styles/common"
 
 const iconColor = "#FFF"
 class Top extends Component {
@@ -18,43 +18,36 @@ class Top extends Component {
     return (
       <ImageBackground
         style={styles.wrap}
-        source={{
-          uri:
-            "https://wx2.sinaimg.cn/mw1024/ad38de43ly1fpewixt9zoj21cs0qndti.jpg"
-        }}
+        imageStyle={styles.bgStyle}
+        source={require("./images/bg_personal.png")}
       >
         <View style={styles.head}>
           <TouchableOpacity onPress={this.onPress}>
-            <Icon
-              name="setting"
-              size={iconSize}
-              color={iconColor}
-              style={{ width: 100 }}
-            />
+            <Image source={require("./images/icon_nav_set.png")} />
           </TouchableOpacity>
-          <Text style={styles.text}>username</Text>
           <View
             style={{
               flexDirection: "row",
-              width: 100,
+              // width: 100,
               justifyContent: "flex-end"
             }}
           >
             <TouchableOpacity>
-              <Icon
-                name="customerservice"
-                size={iconSize}
-                color={iconColor}
-                style={{ marginRight: 15 }}
-              />
+              <Image source={require("./images/icon_nav_service.png")} />
             </TouchableOpacity>
             <TouchableOpacity>
-              <Icon name="message1" size={iconSize} color={iconColor} />
+              <Image source={require("./images/icon_nav_news.png")} />
             </TouchableOpacity>
           </View>
         </View>
         <TouchableOpacity style={styles.vipPay}>
-          <Text style={{ color: "yellow" }}>VIP-充值</Text>
+          <ImageBackground
+            style={styles.vipBg}
+            source={require("./images/btn_vip_bg.png")}
+          >
+            <Image source={require("./images/icon_vip1.png")} />
+            <Text style={{ color: "#F8E4B3" }}>VIP充值</Text>
+          </ImageBackground>
         </TouchableOpacity>
         <Image
           style={styles.avator}
@@ -63,6 +56,7 @@ class Top extends Component {
               "https://wx4.sinaimg.cn/mw1024/ad38de43ly1fpewj6ks53j23u2227qvb.jpg"
           }}
         />
+        <Text style={styles.text}>username</Text>
       </ImageBackground>
     )
   }
@@ -70,37 +64,45 @@ class Top extends Component {
 
 const styles = StyleSheet.create({
   wrap: {
-    height: 240,
-    alignItems: "center"
+    height: 300,
+    alignItems: "center",
+    paddingTop: statusBarHeight,
+    textAlign: "center"
+  },
+  bgStyle: {
+    resizeMode: Image.resizeMode.stretch
   },
   head: {
-    width: screenWidth,
+    width: "100%",
     flexDirection: "row",
     height: 60,
-    // backgroundColor: "rgba(255,255,255,0.1)",
-    paddingLeft: 10,
-    paddingRight: 10,
+    paddingHorizontal: 16,
     alignItems: "center",
     justifyContent: "space-between"
   },
   text: {
-    fontSize: 24,
-    textShadowColor: "#fff",
-    textShadowRadius: 5,
-    textShadowOffset: { width: 1, height: 1 }
+    fontSize: 20,
+    color: "#FFF",
+    top: -10
   },
   vipPay: {
     position: "absolute",
-    right: 10,
-    top: 70,
-    backgroundColor: "#FF2D2D",
-    padding: 5
+    top: 90,
+    right: 0
+  },
+  vipBg: {
+    width: 100,
+    height: 28,
+    padding: 5,
+    flexDirection:"row",
   },
   avator: {
-    width: 100,
-    height: 100,
-    borderRadius: 5,
-    marginTop: 10
+    width: 70,
+    height: 70,
+    borderRadius: 35,
+    borderWidth: 3,
+    borderColor: "#FFF",
+    top: -15
   }
 })
 export default Top

@@ -38,6 +38,7 @@ class RegisterEntry extends Component {
           tabs={tabs}
           styles={{ topTabBarSplitLine: "#000" }}
           tabBarUnderlineStyle={{ backgroundColor: "#FF7720" }}
+          initialPage={type===10 ? 0:1}
           // renderTab={tab=>(<Text style={{color:"red",borderBottomWidth:0}}>123</Text>   )}
         >
           <View style={styles.content}>
@@ -78,7 +79,6 @@ const styles = StyleSheet.create({
     borderRadius:10,
   },
   title: {
-    // textAlign: "center",
     fontSize: 16,
     marginBottom:10,
   },

@@ -21,17 +21,24 @@ class Account extends Component {
   static navigationOptions = {
     tabBarLabel: ({ focused }) => (
       <Text
-        style={[{ fontSize: 12 }, { color: focused ? primaryColor : "#D5D5D5" }]}
+        style={[
+          { fontSize: 12 },
+          { color: focused ? primaryColor : "#D5D5D5" }
+        ]}
       >
-        首页
+        个人中心
       </Text>
     ),
-    tabBarIcon: ({focused} )=>
-        <Image
-          style={styles.icon}
-          source={focused ? require("./images/icon_tag_personal_pre.png"):require("./images/icon_tag_personal_nor.png")}
-        />
-      ,
+    tabBarIcon: ({ focused }) => (
+      <Image
+        style={styles.icon}
+        source={
+          focused
+            ? require("./images/icon_tag_personal_pre.png")
+            : require("./images/icon_tag_personal_nor.png")
+        }
+      />
+    ),
     tabBarButtonComponent: TouchableOpacity
   };
 
@@ -68,9 +75,7 @@ class Account extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: statusBarHeight,
     flex: 1,
-    backgroundColor: "#fff"
   },
   icon: {
     width: iconSize,
