@@ -14,23 +14,22 @@ class My extends Component {
     return (
       <View style={styles.wrap}>
         {/* <ImageBackground> */}
-          <TouchableOpacity style={styles.item} onPress={() => this.toEntry(5)}>
+          <TouchableOpacity style={styles.item} onPress={() => this.toEntry(0)}>
             <Image source={require("./images/icon_tool_release.png")} />
             <Text style={styles.itemText}>我的发布</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.item} onPress={() => this.toEntry(6)}>
+          <TouchableOpacity style={styles.item} onPress={() => this.toEntry(1)}>
             <Image source={require("./images/icon_tool_collection.png")} />
             <Text style={styles.itemText}>我的收藏</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.item} onPress={() => this.toEntry(7)}>
+          <TouchableOpacity style={styles.item} onPress={() => this.toEntry(2)}>
             <Image source={require("./images/icon_tool_download.png")} />
             <Text style={styles.itemText}>我的下载</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.item} onPress={() => this.toEntry(8)}>
+          <TouchableOpacity style={styles.item} onPress={() => this.toEntry(3)}>
             <Image source={require("./images/icon_tool_history.png")} />
             <Text style={styles.itemText}>历史记录</Text>
           </TouchableOpacity>
-        {/* </ImageBackground> */}
       </View>
     )
   }

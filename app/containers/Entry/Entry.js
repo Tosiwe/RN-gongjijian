@@ -11,10 +11,10 @@ import PaperEntry from "./PaperEntry"
 
 @connect()
 class Entry extends Component {
-  static navigationOptions ={
-    title:"123",
-    headerLeftContainerStyle:{color:"#000"},
-  }
+  // static navigationOptions ={
+  //   title:"123",
+  //   headerLeftContainerStyle:{color:"#000"},
+  // }
   
   constructor(props) {
     super(props)
@@ -57,7 +57,7 @@ class Entry extends Component {
       )
     }
 
-    // 资质、注册人员
+    // 资质、注册市场
       return (
         <View style={styles.container}>
           <RegisterEntry type={type} />

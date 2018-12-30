@@ -12,7 +12,7 @@ import { connect } from "react-redux"
 
 import Ads from "./Ads"
 import Top from "./Top"
-import Entries from "./Entries"
+import Entries from "../../components/Entries/Entries"
 import MsgList from "./MsgList"
 import { primaryColor, statusBarHeight, iconSize } from "../../styles/common"
 
@@ -68,7 +68,9 @@ class Home extends Component {
           <View style={styles.topWrap}>
             <Top />
             <Ads />
+            <View style={{paddingVertical:10}}>
             <Entries />
+            </View>
           </View>
           <View style={styles.gap} />
           <MsgList data={msgList} />

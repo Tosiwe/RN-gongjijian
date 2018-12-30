@@ -1,10 +1,5 @@
 import React, { Component } from "react"
-import {
-  BackHandler,
-  StyleSheet,
-  Text,
-  TouchableOpacity
-} from "react-native"
+import { BackHandler, StyleSheet, Text, TouchableOpacity } from "react-native"
 
 import {
   createStackNavigator,
@@ -26,12 +21,12 @@ import Icon from "react-native-vector-icons/AntDesign"
 import Loading from "./containers/Loading"
 import Login from "./containers/Login"
 import Home from "./containers/Home/Home"
-import Publish from "./containers/Publish/Publish"
 import Account from "./containers/Account/Account"
 import Detail from "./containers/Detail"
 import AddButton from "./components/AddButton/AddButton"
 import Search from "./components/Search/Search"
 import Entry from "./containers/Entry/Entry"
+import Publish from "./components/Publish/Publish"
 // 底部标签导航
 const HomeNavigator = createBottomTabNavigator({
   Home: { screen: Home },
@@ -50,30 +45,33 @@ HomeNavigator.navigationOptions = {
   tabBarButtonComponent: TouchableOpacity
 }
 
+// 主要业务页面页内路由设置
+const mainNavigationOptions = ({ navigation }) => ({
+  title: `${navigation.state.params.name}`,
+  headerStyle: { backgroundColor: "#F9F9F9" },
+  headerLeft: (
+    <TouchableOpacity
+      onPress={() => {
+        navigation.goBack()
+      }}
+    >
+      <Icon name="left" size={24} color="black" style={{ marginLeft: 13 }} />
+    </TouchableOpacity>
+  )
+})
+
+// 主要业务页面
 const MainNavigator = createStackNavigator(
   {
     HomeNavigator: { screen: HomeNavigator },
     Detail: { screen: Detail },
     Entry: {
       screen: Entry,
-      navigationOptions: ({ navigation }) => ({
-        title: `${navigation.state.params.name}`,
-        headerStyle: { backgroundColor: "#F9F9F9" },
-        headerLeft: 
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack()
-            }}
-          >
-            <Icon
-              name="left"
-              size={24}
-              color="black"
-              style={{ marginLeft: 13 }}
-            />
-          </TouchableOpacity>
-        
-      })
+      navigationOptions: mainNavigationOptions
+    },
+    Publish: {
+      screen: Publish,
+      navigationOptions: mainNavigationOptions
     }
   },
   {
@@ -83,6 +81,8 @@ const MainNavigator = createStackNavigator(
     })
   }
 )
+
+// 基础页面
 const AppNavigator = createStackNavigator(
   {
     Main: { screen: MainNavigator },

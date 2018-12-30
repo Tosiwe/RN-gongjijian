@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   bottom:{
-    height:40,
+    height:60,
     borderRadius:20,
   }
 })

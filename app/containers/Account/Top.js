@@ -88,13 +88,15 @@ const styles = StyleSheet.create({
   vipPay: {
     position: "absolute",
     top: 90,
-    right: 0
+    right: 0,
+    width: 80
   },
   vipBg: {
     width: 100,
     height: 28,
     padding: 5,
-    flexDirection:"row",
+    // resizeMode: Image.resizeMode.contain,
+    flexDirection: "row"
   },
   avator: {
     width: 70,
