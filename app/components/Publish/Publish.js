@@ -21,7 +21,7 @@ class Publish extends Component {
     // 选择发布分类
     return (
       <View style={styles.wrap}>
-        <Entries columnNum={3} onPress={this.fillForm} />
+        <Entries columnNum={4} onPress={this.fillForm} />
       </View>
     )
   }
@@ -30,7 +30,9 @@ class Publish extends Component {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    backgroundColor: "#FFF"
+    backgroundColor: "#FFF",
+    paddingTop: 20,
+    
   }
 })
 

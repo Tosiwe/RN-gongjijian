@@ -1,7 +1,7 @@
 /* eslint-disable react/prefer-stateless-function */
 // native
 import React, { Component } from "react"
-import { StyleSheet, View, Image } from "react-native"
+import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native"
 import { Grid } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import { connect } from "react-redux"
@@ -94,25 +94,26 @@ class Entries extends Component {
   render() {
     const { columnNum, onPress } = this.props
     return (
-      <View style={styles.wrap}>
         <Grid
           data={ENTRY_ARRAY}
           columnNum={columnNum || 5}
           hasLine={false}
-          onPress={onPress || this.toEntry}
+          renderItem={el => (
+            <TouchableOpacity
+              style={styles.item}
+              onPress={onPress ? () => onPress(el) : () => this.toEntry(el)}
+            >
+              {el.icon}
+              <Text style={styles.itemText}>{el.text}</Text>
+            </TouchableOpacity>
+          )}
         />
-      </View>
     )
   }
 }
 const styles = StyleSheet.create({
-  row: {
-    flexDirection: "row",
-    marginBottom: 20
-  },
   item: {
-    flex: 1,
-    alignItems: "center"
+    alignItems: "center",
   },
   itemText: {
     fontSize: 12
