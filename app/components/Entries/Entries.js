@@ -78,7 +78,19 @@ const ENTRY_ARRAY = [
 class Entries extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      data: []
+    }
+  }
+
+  componentDidMount() {
+    // 发布页面移除 "图纸下载"
+    const { isPublish } = this.props
+    const data = [...ENTRY_ARRAY]
+    if (isPublish) {
+      data.pop()
+    }
+    this.setState({ data })
   }
 
   // 默认点击进入各个频道
@@ -93,27 +105,29 @@ class Entries extends Component {
 
   render() {
     const { columnNum, onPress } = this.props
+    const { data } = this.state
     return (
-        <Grid
-          data={ENTRY_ARRAY}
-          columnNum={columnNum || 5}
-          hasLine={false}
-          renderItem={el => (
-            <TouchableOpacity
-              style={styles.item}
-              onPress={onPress ? () => onPress(el) : () => this.toEntry(el)}
-            >
-              {el.icon}
-              <Text style={styles.itemText}>{el.text}</Text>
-            </TouchableOpacity>
-          )}
-        />
+      <Grid
+        styles={{ styles }}
+        data={data}
+        columnNum={columnNum || 5}
+        hasLine={false}
+        renderItem={el => (
+          <TouchableOpacity
+            style={styles.item}
+            onPress={onPress ? () => onPress(el) : () => this.toEntry(el)}
+          >
+            {el.icon}
+            <Text style={styles.itemText}>{el.text}</Text>
+          </TouchableOpacity>
+        )}
+      />
     )
   }
 }
 const styles = StyleSheet.create({
   item: {
-    alignItems: "center",
+    alignItems: "center"
   },
   itemText: {
     fontSize: 12

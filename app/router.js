@@ -27,6 +27,8 @@ import AddButton from "./components/AddButton/AddButton"
 import Search from "./components/Search/Search"
 import Entry from "./containers/Entry/Entry"
 import Publish from "./components/Publish/Publish"
+import CompanyOrPerson from "./components/Publish/CompanyOrPerson"
+import FormDemand from "./components/Publish/FormDemand"
 // 底部标签导航
 const HomeNavigator = createBottomTabNavigator({
   Home: { screen: Home },
@@ -63,14 +65,32 @@ const mainNavigationOptions = ({ navigation }) => ({
 // 主要业务页面
 const MainNavigator = createStackNavigator(
   {
-    HomeNavigator: { screen: HomeNavigator },
-    Detail: { screen: Detail },
+    HomeNavigator: {
+      // 首页
+      screen: HomeNavigator
+    },
+    Detail: {
+      // 详情页
+      screen: Detail
+    },
     Entry: {
+      // 频道页
       screen: Entry,
       navigationOptions: mainNavigationOptions
     },
     Publish: {
+      // 发布页-类型选择
       screen: Publish,
+      navigationOptions: mainNavigationOptions
+    },
+    CompanyOrPerson: {
+      // 发布页-商户选择
+      screen: CompanyOrPerson,
+      navigationOptions: {...mainNavigationOptions,title:"选择发布分类"}
+    },
+    FormDemand: {
+      // 发布页-编辑需求
+      screen: FormDemand,
       navigationOptions: mainNavigationOptions
     }
   },
