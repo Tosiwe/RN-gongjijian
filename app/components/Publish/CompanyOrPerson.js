@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 
 import { StyleSheet, View, Image, Text } from "react-native"
-import { Toast, List } from "@ant-design/react-native"
+import { Toast, List, NoticeBar } from "@ant-design/react-native"
 
 const { Item } = List
 const { Brief } = Item
@@ -16,6 +16,9 @@ class CompanyOrPerson extends Component {
     // 选择发布分类
     return (
       <View style={styles.wrap}>
+        <NoticeBar mode="closable">
+          请正确选择发布信息分类，分类与信息不匹配将无法通过审核！
+        </NoticeBar>
         <List
           style={styles.list}
           renderHeader={
@@ -68,14 +71,13 @@ class CompanyOrPerson extends Component {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    backgroundColor: "#FFF",
-    paddingTop: 20
+    backgroundColor: "#FFF"
   },
   list: {
-    marginBottom: 20
+    marginTop: 20
   },
   item: {
-    paddingTop:10 
+    paddingTop: 10
   },
   listHeader: {
     flexDirection: "row",
@@ -88,7 +90,7 @@ const styles = StyleSheet.create({
   },
   brief: {
     fontSize: 12,
-    paddingBottom:10
+    paddingBottom: 10
   }
 })
 

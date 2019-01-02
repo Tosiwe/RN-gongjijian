@@ -86,7 +86,24 @@ const MainNavigator = createStackNavigator(
     CompanyOrPerson: {
       // 发布页-商户选择
       screen: CompanyOrPerson,
-      navigationOptions: {...mainNavigationOptions,title:"选择发布分类"}
+      navigationOptions: ({ navigation }) => ({
+        title: "选择发布分类",
+        headerStyle: { backgroundColor: "#F9F9F9" },
+        headerLeft: (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack()
+            }}
+          >
+            <Icon
+              name="left"
+              size={24}
+              color="black"
+              style={{ marginLeft: 13 }}
+            />
+          </TouchableOpacity>
+        )
+      })
     },
     FormDemand: {
       // 发布页-编辑需求
