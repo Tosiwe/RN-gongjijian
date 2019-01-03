@@ -2,51 +2,12 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 
 import { StyleSheet, View, Image, Text } from "react-native"
-import { Toast, List, InputItem,  } from "@ant-design/react-native"
-import ImagePicker from 'react-native-image-picker'
+import { Toast, List, InputItem,TextareaItem  } from "@ant-design/react-native"
+// import ImagePicker from 'react-native-image-picker'
+import ImagePicker from "../ImagePicker/ImagePicker"
 
 const { Item } = List
 const { Brief } = Item
-
-const options = {
-  title: 'Select Avatar',
-  customButtons: [{ name: 'fb', title: 'Choose Photo from Facebook' }],
-  storageOptions: {
-    skipBackup: true,
-    path: 'images',
-  },
-}
-
-ImagePicker.showImagePicker(options, (response) => {
-  console.log('Response = ', response)
- 
-  if (response.didCancel) {
-    console.log('User cancelled image picker')
-  } else if (response.error) {
-    console.log('ImagePicker Error: ', response.error)
-  } else if (response.customButton) {
-    console.log('User tapped custom button: ', response.customButton)
-  } else {
-    const source = { uri: response.uri }
- 
-    // You can also display the image using data:
-    // const source = { uri: 'data:image/jpeg;base64,' + response.data };
- 
-    this.setState({
-      avatarSource: source,
-    })
-  }
-})
-
-// Launch Camera:
-ImagePicker.launchCamera(options, (response) => {
-  // Same code as in above section!
-})
- 
-// Open Image Library:
-ImagePicker.launchImageLibrary(options, (response) => {
-  // Same code as in above section!
-})
 
 
 @connect()
@@ -89,11 +50,6 @@ class FormDemand extends Component {
     Toast.info(el.type)
   };
 
-  handleFileChange= file=>{
-    Toast.info("file")
-
-  }
-
   render() {
     // 选择发布分类
     return (
@@ -107,7 +63,16 @@ class FormDemand extends Component {
             placeholder="请输入标题10~28个字"
           />
         </List>
-        <Image source={this.state.avatarSource} style={styles.uploadAvatar} />
+        <ImagePicker />
+        <List style={styles.inputBox}>
+          <TextareaItem
+            style={styles.input}
+            rows={5}
+            clear
+            onChange={this.handleInput}
+            placeholder="请输入详情描述，至少50字。"
+          />
+        </List>
       </View>
     )
   }
@@ -127,7 +92,12 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   input: {
-    fontSize: 10
+    // fontSize: 10
+  },
+  uploadImg:{
+    width:40,
+    height:40,
+
   }
 })
 
