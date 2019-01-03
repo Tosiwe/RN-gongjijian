@@ -67,7 +67,7 @@ const MainNavigator = createStackNavigator(
   {
     HomeNavigator: {
       // 首页
-      screen: HomeNavigator
+      screen: FormDemand
     },
     Detail: {
       // 详情页
@@ -125,7 +125,7 @@ const AppNavigator = createStackNavigator(
     Main: { screen: MainNavigator },
     Publish: { screen: Publish },
     Search: { screen: Search },
-    Login: { screen: Login }
+    Login: { screen: Login },
   },
   {
     headerMode: "none",
