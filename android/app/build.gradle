@@ -153,6 +153,7 @@ android {
 }
 
 dependencies {
+    compile project(':react-native-file-selector')
     compile project(':react-native-image-picker')
     compile project(':react-native-vector-icons')
     implementation project(':react-native-vector-icons')
