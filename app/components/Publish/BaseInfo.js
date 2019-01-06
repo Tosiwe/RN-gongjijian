@@ -7,7 +7,6 @@ import {
   TextareaItem,
   InputItem,
   WhiteSpace,
-  Button
 } from "@ant-design/react-native"
 import RNFileSelector from "react-native-file-selector"
 import ImagePicker from "../ImagePicker/ImagePicker"
@@ -22,17 +21,23 @@ export default class BaseInfo extends Component {
   }
 
   showFileSelector = () => {
-    this.setState({ visible: true })
+    RNFileSelector.Show({
+      title: "Select File",
+      onDone: this.onDone
+      // onCancel: () => {
+      //     console.log('cancelled')
+      // }
+    })
   };
 
-  onDone=path=>{
-    this.setState({path})
-  }
+  onDone = path => {
+    this.setState({ path })
+  };
 
   render() {
-    const {path} = this.state
+    const { path } = this.state
     return (
-      <View>
+      <View style={styles.wrap}>
         <ImagePicker />
         <List style={styles.inputBox}>
           <TextareaItem
@@ -43,7 +48,6 @@ export default class BaseInfo extends Component {
             placeholder="请输入详情描述，至少50字。"
           />
         </List>
-        <WhiteSpace size="sm" />
         <List>
           <InputItem
             style={styles.input}
@@ -53,6 +57,7 @@ export default class BaseInfo extends Component {
           />
           <InputItem
             style={styles.input}
+            type="phone"
             clear
             onChange={this.handleInput}
             placeholder="请填写联系人电话"
@@ -78,14 +83,14 @@ export default class BaseInfo extends Component {
         </List>
         <View>
           <Text style={styles.selectorTitle}>附件上传</Text>
-          <Button style={{color:"#737373"}} onPress={this.showFileSelector}>选择文件</Button>
-          <Text style={{color:"#737373"}}>{path}</Text>
+          <TouchableOpacity
+            style={styles.selectBtn}
+            onPress={this.showFileSelector}
+          >
+            <Text style={styles.selectBtnText}>选择文件</Text>
+          </TouchableOpacity>
+          <Text style={{ color: "#737373" }}>{path}</Text>
         </View>
-        <RNFileSelector
-          title="Select File"
-          visible={this.state.visible}
-          onDone={this.onDone}
-        />
       </View>
     )
   }
@@ -108,8 +113,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center"
   },
-  selectorTitle:{
-    paddingVertical:10,
-    color:"#737373"
+  selectorTitle: {
+    paddingVertical: 10,
+    color: "#737373",
+    marginLeft: 15
+  },
+  selectBtn: {
+    backgroundColor: "#FFF",
+    alignItems: "center",
+    padding: 15
+  },
+  selectBtnText: {
+    color: "#737373"
+  },
+  inputBox:{
+    marginBottom:10
   }
 })

@@ -29,6 +29,7 @@ import Entry from './containers/Entry/Entry'
 import Publish from './components/Publish/Publish'
 import CompanyOrPerson from './components/Publish/CompanyOrPerson'
 import FormDemand from './components/Publish/FormDemand'
+import FormInfo from './components/Publish/FormInfo'
 // 底部标签导航
 const HomeNavigator = createBottomTabNavigator({
   Home: { screen: Home },
@@ -67,7 +68,7 @@ const MainNavigator = createStackNavigator(
   {
     HomeNavigator: {
       // 首页
-      screen: FormDemand,
+      screen: HomeNavigator,
     },
     Detail: {
       // 详情页
@@ -107,6 +108,11 @@ const MainNavigator = createStackNavigator(
     },
     FormDemand: {
       // 发布页-编辑需求
+      screen: FormDemand,
+      navigationOptions: mainNavigationOptions,
+    },
+    FormInfo: {
+      // 发布页-编辑信息
       screen: FormDemand,
       navigationOptions: mainNavigationOptions,
     },
