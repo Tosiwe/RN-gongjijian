@@ -1,8 +1,8 @@
-import React, { Component } from "react"
-import { connect } from "react-redux"
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
-import { StyleSheet, View, Image, Text } from "react-native"
-import { Toast, List, NoticeBar } from "@ant-design/react-native"
+import { StyleSheet, View, Image, Text } from 'react-native'
+import { Toast, List, NoticeBar } from '@ant-design/react-native'
 
 const { Item } = List
 const { Brief } = Item
@@ -10,7 +10,7 @@ const { Brief } = Item
 class CompanyOrPerson extends Component {
   fillForm = el => {
     Toast.info(el.type)
-  };
+  }
 
   render() {
     // 选择发布分类
@@ -23,7 +23,7 @@ class CompanyOrPerson extends Component {
           style={styles.list}
           renderHeader={
             <View style={styles.listHeader}>
-              <Image source={require("./images/icon_merchant.png")} />
+              <Image source={require('./images/icon_merchant.png')} />
               <Text style={styles.listHeaderText}>商家</Text>
             </View>
           }
@@ -45,7 +45,7 @@ class CompanyOrPerson extends Component {
           style={styles.list}
           renderHeader={
             <View style={styles.listHeader}>
-              <Image source={require("./images/icon_user.png")} />
+              <Image source={require('./images/icon_user.png')} />
               <Text style={styles.listHeaderText}>非商户（游客及个人）</Text>
             </View>
           }
@@ -71,27 +71,27 @@ class CompanyOrPerson extends Component {
 const styles = StyleSheet.create({
   wrap: {
     flex: 1,
-    backgroundColor: "#FFF"
+    backgroundColor: '#FFF',
   },
   list: {
-    marginTop: 20
+    marginTop: 20,
   },
   item: {
-    paddingTop: 10
+    paddingTop: 10,
   },
   listHeader: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingLeft: 15,
     paddingBottom: 10,
-    alignItems: "center"
+    alignItems: 'center',
   },
   listHeaderText: {
-    marginLeft: 5
+    marginLeft: 5,
   },
   brief: {
     fontSize: 12,
-    paddingBottom: 10
-  }
+    paddingBottom: 10,
+  },
 })
 
 export default CompanyOrPerson

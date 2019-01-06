@@ -1,7 +1,7 @@
 /* eslint-disable react/prefer-stateless-function */
 // native
-import React, { Component } from "react"
-import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native"
+import React, { Component } from 'react'
+import { View, StyleSheet, Text, Image } from 'react-native'
 
 class ListItem extends Component {
   render() {
@@ -13,7 +13,9 @@ class ListItem extends Component {
         </View>
         <View style={styles.right}>
           <Text style={styles.title}>{title}</Text>
-          <Text ellipsizeMode="tail" numberOfLines={2} style={styles.des}>{des}</Text>
+          <Text ellipsizeMode="tail" numberOfLines={2} style={styles.des}>
+            {des}
+          </Text>
         </View>
       </View>
     )
@@ -22,32 +24,32 @@ class ListItem extends Component {
 
 const styles = StyleSheet.create({
   wrap: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginBottom: 15,
-    flex: 1
+    flex: 1,
   },
   left: {
     width: 65,
-    height: 60
+    height: 60,
   },
   right: {
     height: 60,
-    flex: 1
+    flex: 1,
   },
   img: {
     width: 60,
     height: 60,
-    backgroundColor: "#ddd",
-    marginBottom: 5
+    backgroundColor: '#ddd',
+    marginBottom: 5,
   },
   title: {
     fontSize: 16,
-    marginBottom: 5
+    marginBottom: 5,
   },
   des: {
     height: 40,
     fontSize: 12,
-    color: "#727272"
-  }
+    color: '#727272',
+  },
 })
 export default ListItem

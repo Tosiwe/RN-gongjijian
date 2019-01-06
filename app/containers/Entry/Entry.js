@@ -1,13 +1,13 @@
-import React, { Component } from "react"
-import { connect } from "react-redux"
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native"
-import { NavigationActions } from "react-navigation"
+import { StyleSheet, View } from 'react-native'
+// import { NavigationActions } from 'react-navigation'
 
-import IndustryEntry from "./IndustryEntry"
-import SecondEntry from "./SecondEntry"
-import RegisterEntry from "./RegisterEntry"
-import PaperEntry from "./PaperEntry"
+import IndustryEntry from './IndustryEntry'
+import SecondEntry from './SecondEntry'
+import RegisterEntry from './RegisterEntry'
+import PaperEntry from './PaperEntry'
 
 @connect()
 class Entry extends Component {
@@ -15,11 +15,11 @@ class Entry extends Component {
   //   title:"123",
   //   headerLeftContainerStyle:{color:"#000"},
   // }
-  
+
   constructor(props) {
     super(props)
     this.state = {
-      type: 0
+      type: 0,
     }
   }
 
@@ -43,7 +43,7 @@ class Entry extends Component {
     if (type === 9) {
       return (
         <View style={styles.container}>
-         <SecondEntry type={type}/>
+          <SecondEntry type={type} />
         </View>
       )
     }
@@ -58,11 +58,11 @@ class Entry extends Component {
     }
 
     // 资质、注册市场
-      return (
-        <View style={styles.container}>
-          <RegisterEntry type={type} />
-        </View>
-      )
+    return (
+      <View style={styles.container}>
+        <RegisterEntry type={type} />
+      </View>
+    )
   }
 }
 
@@ -72,10 +72,10 @@ const styles = StyleSheet.create({
     // paddingTop: 40,
     // paddingLeft: 20,
     // paddingRight: 20,
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    backgroundColor: "#eeeeee"
-  }
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    backgroundColor: '#eeeeee',
+  },
 })
 
 export default Entry

@@ -1,31 +1,31 @@
 /* eslint-disable prefer-destructuring */
 /* eslint-disable react/prefer-stateless-function */
 // native
-import React, { Component } from "react"
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native"
-import Icon from "react-native-vector-icons/AntDesign"
+import React, { Component } from 'react'
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native'
+import Icon from 'react-native-vector-icons/AntDesign'
 
-import { Picker, List, Button } from "@ant-design/react-native"
-import { NavigationActions } from "react-navigation"
-import { connect } from "react-redux"
+import { Picker } from '@ant-design/react-native'
+import { NavigationActions } from 'react-navigation'
+import { connect } from 'react-redux'
 
-const area = require("./data.json")
+const area = require('./data.json')
 
-const FOUR_CITY = ["11", "50", "31", "12"]
+const FOUR_CITY = ['11', '50', '31', '12']
 @connect()
 class Top extends Component {
   constructor(props) {
     super(props)
     this.state = {
       value: [],
-      area: "城市"
+      area: '城市',
     }
   }
 
   onChangeArea = v => {
     const provice = v[0]
     const city = v[1]
-    let label = ""
+    let label = ''
     area.forEach(item => {
       if (item.value === provice) {
         if (FOUR_CITY.includes(provice)) {
@@ -40,11 +40,11 @@ class Top extends Component {
       }
     })
     this.setState({ area: label.substr(0, label.length - 1) })
-  };
+  }
 
   toSearch = () => {
-    this.props.dispatch(NavigationActions.navigate({ routeName: "Search" }))
-  };
+    this.props.dispatch(NavigationActions.navigate({ routeName: 'Search' }))
+  }
 
   render() {
     return (
@@ -65,7 +65,7 @@ class Top extends Component {
             color="#000000"
             style={{ width: 20 }}
           />
-          <Text style={{ color: "#636363", fontSize: 14 }}>搜索</Text>
+          <Text style={{ color: '#636363', fontSize: 14 }}>搜索</Text>
         </TouchableOpacity>
       </View>
     )
@@ -80,34 +80,34 @@ const AreaBtn = props => (
 
 const styles = StyleSheet.create({
   top: {
-    flexDirection: "row",
+    flexDirection: 'row',
     height: 40,
-    backgroundColor: "#fff",
+    backgroundColor: '#fff',
     marginBottom: 10,
   },
   cityButton: {
     height: 40,
     width: 73,
-    flexDirection: "row",
-    alignItems: "center"
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   searchBar: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     borderWidth: 1,
-    borderColor: "#fff",
+    borderColor: '#fff',
     paddingLeft: 3,
     height: 30,
     margin: 5,
     borderRadius: 30,
-    backgroundColor:"#fff",
+    backgroundColor: '#fff',
     shadowColor: '#ddd',
-    shadowOffset: { width: 0, height:2}, 
-    shadowOpacity: 0.8, 
-    shadowRadius: 4, 
-    elevation: 4 
-  }
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.8,
+    shadowRadius: 4,
+    elevation: 4,
+  },
 })
 export default Top

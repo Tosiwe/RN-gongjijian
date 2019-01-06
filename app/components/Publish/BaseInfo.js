@@ -1,23 +1,36 @@
+/* eslint-disable react/sort-comp */
 import React, { Component } from "react"
 
-import { StyleSheet, View, TouchableOpacity, Image } from "react-native"
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native"
 import {
   List,
   TextareaItem,
   InputItem,
-  WhiteSpace
+  WhiteSpace,
+  Button
 } from "@ant-design/react-native"
+import RNFileSelector from "react-native-file-selector"
 import ImagePicker from "../ImagePicker/ImagePicker"
 
 export default class BaseInfo extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      visible: false
       // avatarSource: null
     }
   }
 
+  showFileSelector = () => {
+    this.setState({ visible: true })
+  };
+
+  onDone=path=>{
+    this.setState({path})
+  }
+
   render() {
+    const {path} = this.state
     return (
       <View>
         <ImagePicker />
@@ -63,6 +76,16 @@ export default class BaseInfo extends Component {
             placeholder="请填写地域，如：全国、沧州市、河北省"
           />
         </List>
+        <View>
+          <Text style={styles.selectorTitle}>附件上传</Text>
+          <Button style={{color:"#737373"}} onPress={this.showFileSelector}>选择文件</Button>
+          <Text style={{color:"#737373"}}>{path}</Text>
+        </View>
+        <RNFileSelector
+          title="Select File"
+          visible={this.state.visible}
+          onDone={this.onDone}
+        />
       </View>
     )
   }
@@ -84,5 +107,9 @@ const styles = StyleSheet.create({
   imgBtn: {
     justifyContent: "center",
     alignItems: "center"
+  },
+  selectorTitle:{
+    paddingVertical:10,
+    color:"#737373"
   }
 })

@@ -1,24 +1,18 @@
+/* eslint-disable react/jsx-no-bind */
 import React, { Component } from "react"
 
 import ImagePicker from "react-native-image-picker"
 import Icon from "react-native-vector-icons/AntDesign"
 
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image
-} from "react-native"
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native"
 
 export default class App extends Component {
-    constructor(props){
-        super(props)
-        this.state = {
-            avatarSource: null
-          }
+  constructor(props) {
+    super(props)
+    this.state = {
+      avatarSource: null
     }
-  
+  }
 
   // 选择图片
   selectPhotoTapped() {
@@ -65,24 +59,28 @@ export default class App extends Component {
 
   render() {
     return (
-      // eslint-disable-next-line react/jsx-no-bind
-      <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)}>
-        <View style={[styles.avatar, styles.avatarContainer]}>
-          {this.state.avatarSource === null ? (
-            <View style={styles.imgBtn}>
-              <Icon name="plus" color="#737373" size={16} />
-              <Text style={{ color: "#737373" }}>选择照片</Text>
-            </View>
-          ) : (
-            <Image style={styles.avatar} source={this.state.avatarSource} />
-          )}
-        </View>
-      </TouchableOpacity>
+      <View>
+        <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)} style={styles.btn}>
+          <View style={[styles.avatar, styles.avatarContainer]}>
+            {this.state.avatarSource === null ? (
+              <View style={styles.imgBtn}>
+                <Icon name="plus" color="#737373" size={16} />
+                <Text style={{ color: "#737373" }}>选择照片</Text>
+              </View>
+            ) : (
+              <Image style={styles.avatar} source={this.state.avatarSource} />
+            )}
+          </View>
+        </TouchableOpacity>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  btn:{
+    width:100,
+  },
   avatarContainer: {
     justifyContent: "center",
     alignItems: "center",
@@ -93,7 +91,7 @@ const styles = StyleSheet.create({
   avatar: {
     width: 100,
     height: 100,
-    borderRadius: 10,
+    borderRadius: 10
   },
   imgBtn: {
     justifyContent: "center",

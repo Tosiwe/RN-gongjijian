@@ -1,20 +1,20 @@
-import React, { Component } from "react"
-import { connect } from "react-redux"
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native"
-import { SearchBar } from "@ant-design/react-native"
-import { NavigationActions } from "react-navigation"
-import { screenWidth } from "../../styles/common"
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native'
+import { SearchBar } from '@ant-design/react-native'
+import { NavigationActions } from 'react-navigation'
+import { screenWidth } from '../../styles/common'
 
 @connect()
 class Search extends Component {
   static navigationOptions = {
-    title: "Detail"
-  };
+    title: 'Detail',
+  }
 
   goBack = () => {
-    this.props.dispatch(NavigationActions.back({ routeName: "Home" }))
-  };
+    this.props.dispatch(NavigationActions.back({ routeName: 'Home' }))
+  }
 
   render() {
     return (
@@ -49,35 +49,35 @@ const styles = StyleSheet.create({
     paddingTop: 40,
     paddingLeft: 20,
     paddingRight: 20,
-    alignItems: "flex-start",
-    justifyContent: "flex-start",
-    backgroundColor: "#eeeeee"
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    backgroundColor: '#eeeeee',
   },
   wrap: {
     borderRadius: 20,
     flex: 1,
     width: screenWidth - 40,
-    backgroundColor: "#FFF",
+    backgroundColor: '#FFF',
     padding: 20,
-    paddingTop: 30
+    paddingTop: 30,
   },
   history: {
-    marginBottom: 40
+    marginBottom: 40,
   },
   title: {
     marginBottom: 10,
-    fontWeight: "bold"
+    fontWeight: 'bold',
   },
   tags: {
-    flexDirection: "row"
+    flexDirection: 'row',
   },
   tag: {
     borderRadius: 10,
-    backgroundColor: "#eee",
-    alignItems: "center",
+    backgroundColor: '#eee',
+    alignItems: 'center',
     paddingVertical: 5,
-    paddingHorizontal: 10
-  }
+    paddingHorizontal: 10,
+  },
 })
 
 export default Search

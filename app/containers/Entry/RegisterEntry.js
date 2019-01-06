@@ -1,18 +1,11 @@
-import React, { Component } from "react"
-import { connect } from "react-redux"
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
 
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList
-} from "react-native"
-import { NavigationActions } from "react-navigation"
-import { Tabs } from "@ant-design/react-native"
-import { list } from "./data"
+import { StyleSheet, View, Text, FlatList } from 'react-native'
+import { Tabs } from '@ant-design/react-native'
+import { list } from './data'
 
-const tabs = [{ title: "资质" }, { title: "注册人员" }]
+const tabs = [{ title: '资质' }, { title: '注册人员' }]
 
 @connect()
 class RegisterEntry extends Component {
@@ -22,13 +15,13 @@ class RegisterEntry extends Component {
 
   renderItem = ({ item }) => (
     <View style={styles.wrap}>
-      <Text style={styles.title}>现有一名工程师</Text>
+      <Text style={styles.title}>{item || '现有一名工程师'}</Text>
       <View style={styles.info}>
         <Text style={styles.infoText}>沧州市</Text>
         <Text style={styles.infoText}>15小时前</Text>
       </View>
     </View>
-  );
+  )
 
   render() {
     const { type } = this.props
@@ -36,9 +29,9 @@ class RegisterEntry extends Component {
       <View style={styles.container}>
         <Tabs
           tabs={tabs}
-          styles={{ topTabBarSplitLine: "#000" }}
-          tabBarUnderlineStyle={{ backgroundColor: "#FF7720" }}
-          initialPage={type===10 ? 0:1}
+          styles={{ topTabBarSplitLine: '#000' }}
+          tabBarUnderlineStyle={{ backgroundColor: '#FF7720' }}
+          initialPage={type === 10 ? 0 : 1}
           // renderTab={tab=>(<Text style={{color:"red",borderBottomWidth:0}}>123</Text>   )}
         >
           <View style={styles.content}>
@@ -55,20 +48,20 @@ class RegisterEntry extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#FFF",
-    paddingHorizontal: 10
+    backgroundColor: '#FFF',
+    paddingHorizontal: 10,
   },
   content: {
     // backgroundColor: "#FFF",
     flex: 1,
     paddingTop: 10,
-    paddingHorizontal:10,
+    paddingHorizontal: 10,
   },
   wrap: {
     borderWidth: 1,
-    borderColor: "#efefef",
-    backgroundColor: "#fff",
-    shadowColor: "#ddd",
+    borderColor: '#efefef',
+    backgroundColor: '#fff',
+    shadowColor: '#ddd',
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.8,
     shadowRadius: 4,
@@ -76,20 +69,20 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     padding: 10,
-    borderRadius:10,
+    borderRadius: 10,
   },
   title: {
     fontSize: 16,
-    marginBottom:10,
+    marginBottom: 10,
   },
   info: {
-    flexDirection: "row"
+    flexDirection: 'row',
   },
   infoText: {
-    color: "#727272",
+    color: '#727272',
     fontSize: 12,
-    marginRight: 30
-  }
+    marginRight: 30,
+  },
 })
 
 export default RegisterEntry

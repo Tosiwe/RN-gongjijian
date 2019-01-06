@@ -1,20 +1,20 @@
-import React, { Component } from "react"
+import React, { Component } from 'react'
 import {
   StyleSheet,
   View,
   Image,
   TouchableOpacity,
   ScrollView,
-  Text
-} from "react-native"
-import { connect } from "react-redux"
+  Text,
+} from 'react-native'
+import { connect } from 'react-redux'
 
-import { primaryColor, statusBarHeight, iconSize } from "../../styles/common"
+import { primaryColor, iconSize } from '../../styles/common'
 
-import { createAction, NavigationActions } from "../../utils"
-import Top from "./Top"
-import My from "./My"
-import JoinList from "./JoinList"
+import { createAction, NavigationActions } from '../../utils'
+import Top from './Top'
+import My from './My'
+import JoinList from './JoinList'
 
 @connect(({ app }) => ({ ...app }))
 class Account extends Component {
@@ -23,7 +23,7 @@ class Account extends Component {
       <Text
         style={[
           { fontSize: 12 },
-          { color: focused ? primaryColor : "#D5D5D5" }
+          { color: focused ? primaryColor : '#D5D5D5' },
         ]}
       >
         个人中心
@@ -34,21 +34,21 @@ class Account extends Component {
         style={styles.icon}
         source={
           focused
-            ? require("./images/icon_tag_personal_pre.png")
-            : require("./images/icon_tag_personal_nor.png")
+            ? require('./images/icon_tag_personal_pre.png')
+            : require('./images/icon_tag_personal_nor.png')
         }
       />
     ),
-    tabBarButtonComponent: TouchableOpacity
-  };
+    tabBarButtonComponent: TouchableOpacity,
+  }
 
   gotoLogin = () => {
-    this.props.dispatch(NavigationActions.navigate({ routeName: "Login" }))
-  };
+    this.props.dispatch(NavigationActions.navigate({ routeName: 'Login' }))
+  }
 
   logout = () => {
-    this.props.dispatch(createAction("app/logout")())
-  };
+    this.props.dispatch(createAction('app/logout')())
+  }
 
   render() {
     return (
@@ -79,8 +79,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     width: iconSize,
-    height: iconSize
-  }
+    height: iconSize,
+  },
 })
 
 export default Account

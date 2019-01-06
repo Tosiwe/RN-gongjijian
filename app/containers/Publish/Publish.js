@@ -1,5 +1,5 @@
 // native
-import React, { Component } from "react"
+import React, { Component } from 'react'
 import {
   TouchableOpacity,
   Animated,
@@ -7,13 +7,11 @@ import {
   View,
   StyleSheet,
   Text,
-  Dimensions
-} from "react-native"
-import { connect } from "react-redux"
+  Dimensions,
+} from 'react-native'
+import { connect } from 'react-redux'
 
-import { NavigationActions } from "react-navigation"
-
-
+import { NavigationActions } from 'react-navigation'
 
 // constants
 import {
@@ -25,8 +23,8 @@ import {
   bubbleColor,
   animateTime,
   easingType,
-  delay
-} from "./constants"
+  delay,
+} from './constants'
 
 @connect(({ app }) => ({ ...app }))
 class AddButton extends Component {
@@ -40,12 +38,12 @@ class AddButton extends Component {
 
   componentDidMount = () => {
     this.animate(1)
-  };
+  }
 
   handleAddButtonPress = () => {
     this.animateReverse(0)
     this.props.dispatch(NavigationActions.back())
-  };
+  }
 
   animate = toValue => {
     Animated.stagger(delay, [
@@ -53,48 +51,48 @@ class AddButton extends Component {
         Animated.timing(this.animatedValue, {
           toValue,
           duration: animateTime,
-          easing: Easing.exp
+          easing: Easing.exp,
         }),
         Animated.timing(this.topLeftValue, {
           toValue,
           duration: animateTime,
-          easing: easingType
-        })
+          easing: easingType,
+        }),
       ]),
       Animated.timing(this.topRightValue, {
         toValue,
         duration: animateTime,
-        easing: easingType
-      })
+        easing: easingType,
+      }),
     ]).start()
-  };
+  }
 
   animateReverse = toValue => {
     Animated.stagger(delay, [
       Animated.timing(this.topRightValue, {
         toValue,
         duration: animateTime,
-        easing: easingType
+        easing: easingType,
       }),
       Animated.timing(this.topCenterValue, {
         toValue,
         duration: animateTime,
-        easing: easingType
+        easing: easingType,
       }),
       Animated.parallel([
         Animated.timing(this.animatedValue, {
           toValue,
           duration: animateTime,
-          easing: easingType
+          easing: easingType,
         }),
         Animated.timing(this.topLeftValue, {
           toValue,
           duration: animateTime,
-          easing: easingType
-        })
-      ])
+          easing: easingType,
+        }),
+      ]),
     ]).start()
-  };
+  }
 
   render() {
     const springValue = Animated.add(
@@ -102,10 +100,17 @@ class AddButton extends Component {
       this.topCenterValue
     )
 
-    const { width, height } = Dimensions.get("window")
+    const { width, height } = Dimensions.get('window')
     return (
-      <View style={{ backgroundColor: "rgba(255, 255, 255, 0)",opacity:0, width, height, }}>
-        <View style={{ position: "absolute", bottom: 0 }}>
+      <View
+        style={{
+          backgroundColor: 'rgba(255, 255, 255, 0)',
+          opacity: 0,
+          width,
+          height,
+        }}
+      >
+        <View style={{ position: 'absolute', bottom: 0 }}>
           <Animated.View
             style={[
               style.bigBubble,
@@ -114,17 +119,17 @@ class AddButton extends Component {
                   {
                     rotateZ: springValue.interpolate({
                       inputRange: [0, 1, 2, 3],
-                      outputRange: ["-45deg", "-45deg", "0deg", "45deg"]
-                    })
+                      outputRange: ['-45deg', '-45deg', '0deg', '45deg'],
+                    }),
                   },
                   {
                     scaleY: springValue.interpolate({
                       inputRange: [0, 0.65, 1, 1.65, 2, 2.65, 3],
-                      outputRange: [1, 1.1, 1, 1.1, 1, 1.1, 1]
-                    })
-                  }
-                ]
-              }
+                      outputRange: [1, 1.1, 1, 1.1, 1, 1.1, 1],
+                    }),
+                  },
+                ],
+              },
             ]}
           >
             <View
@@ -158,7 +163,7 @@ class AddButton extends Component {
                   left: 20,
                   right: 20,
                   top: 20,
-                  bottom: 20
+                  bottom: 20,
                 }}
                 onPress={this.handleAddButtonPress}
               >
@@ -168,13 +173,12 @@ class AddButton extends Component {
                       {
                         rotateZ: springValue.interpolate({
                           inputRange: [0, 1, 2, 3],
-                          outputRange: ["45deg", "45deg", "45deg", "0deg"]
-                        })
-                      }
-                    ]
+                          outputRange: ['45deg', '45deg', '45deg', '0deg'],
+                        }),
+                      },
+                    ],
                   }}
-                >
-                </Animated.View>
+                />
               </TouchableOpacity>
             </View>
           </Animated.View>
@@ -182,36 +186,36 @@ class AddButton extends Component {
             style={[
               style.smallBubble,
               {
-                position: "absolute",
+                position: 'absolute',
                 transform: [
                   {
                     translateX: this.topLeftValue.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [center.left, topLeft.left]
-                    })
+                      outputRange: [center.left, topLeft.left],
+                    }),
                   },
                   {
                     translateY: this.topLeftValue.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [center.top, topLeft.top]
-                    })
+                      outputRange: [center.top, topLeft.top],
+                    }),
                   },
                   {
                     rotateZ: this.topLeftValue.interpolate({
                       inputRange: [0, 0.6, 1],
-                      outputRange: ["-90deg", "-45deg", "0deg"]
-                    })
+                      outputRange: ['-90deg', '-45deg', '0deg'],
+                    }),
                   },
                   {
                     scaleY: this.topLeftValue.interpolate({
                       inputRange: [0, 0.8, 0.9, 1],
-                      outputRange: [1, 1.5, 1.5, 1]
-                    })
-                  }
+                      outputRange: [1, 1.5, 1.5, 1],
+                    }),
+                  },
                 ],
                 opacity: this.topLeftValue,
-                zIndex: -1
-              }
+                zIndex: -1,
+              },
             ]}
           >
             <Text style={style.smallText}>发布需求</Text>
@@ -220,36 +224,36 @@ class AddButton extends Component {
             style={[
               style.smallBubble,
               {
-                position: "absolute",
+                position: 'absolute',
                 transform: [
                   {
                     translateX: this.topRightValue.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [center.left, topRight.left]
-                    })
+                      outputRange: [center.left, topRight.left],
+                    }),
                   },
                   {
                     translateY: this.topRightValue.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [center.top, topRight.top]
-                    })
+                      outputRange: [center.top, topRight.top],
+                    }),
                   },
                   {
                     rotateZ: this.topRightValue.interpolate({
                       inputRange: [0, 0.6, 1],
-                      outputRange: ["90deg", "45deg", "0deg"]
-                    })
+                      outputRange: ['90deg', '45deg', '0deg'],
+                    }),
                   },
                   {
                     scaleY: this.topRightValue.interpolate({
                       inputRange: [0, 0.8, 0.9, 1],
-                      outputRange: [1, 1.5, 1.5, 1]
-                    })
-                  }
+                      outputRange: [1, 1.5, 1.5, 1],
+                    }),
+                  },
                 ],
                 opacity: this.topRightValue,
-                zIndex: -1
-              }
+                zIndex: -1,
+              },
             ]}
           >
             <Text style={style.smallText}>发布信息</Text>
@@ -262,32 +266,32 @@ class AddButton extends Component {
 
 const style = StyleSheet.create({
   bigBubble: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: bubbleColor,
     height: bigBubbleSize,
     width: bigBubbleSize,
     borderRadius: bigBubbleSize / 2,
-    top: -15
+    top: -15,
   },
   smallBubble: {
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: bubbleColor,
     height: smallBubbleSize,
     width: smallBubbleSize * 2,
-    borderRadius: smallBubbleSize / 2
+    borderRadius: smallBubbleSize / 2,
   },
   smallText: {
-    color: "#fff"
+    color: '#fff',
   },
   absolute: {
-    position: "absolute",
+    position: 'absolute',
     top: 0,
     left: 0,
     bottom: 0,
-    right: 0
-  }
+    right: 0,
+  },
 })
 
 export default AddButton

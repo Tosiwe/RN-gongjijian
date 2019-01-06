@@ -1,24 +1,24 @@
 import { Easing } from 'react-native'
-import {primaryColor} from '../../styles/common'
+import { primaryColor } from '../../styles/common'
 // Layout constants
 export const center = {
-	top: 128,
-	left: -10,
+  top: 128,
+  left: -10,
 }
 
 export const topCenter = {
-	top: 30,
-	left: -10,
+  top: 30,
+  left: -10,
 }
 
 export const topLeft = {
-	top: 60,
-	left: -60,
+  top: 60,
+  left: -60,
 }
 
 export const topRight = {
-	top: 60,
-	left: 40,
+  top: 60,
+  left: 40,
 }
 
 // Style constants

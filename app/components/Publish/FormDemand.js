@@ -1,8 +1,8 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import { StyleSheet,  ScrollView, Text } from "react-native"
-import { Toast, List, InputItem,  } from "@ant-design/react-native"
+import { StyleSheet, ScrollView, Text, View } from "react-native"
+import { Toast, List, InputItem, Button } from "@ant-design/react-native"
 // import ImagePicker from 'react-native-image-picker'
 import BaseInfo from "./BaseInfo"
 
@@ -10,8 +10,7 @@ import BaseInfo from "./BaseInfo"
 class FormDemand extends Component {
   constructor(props) {
     super(props)
-    this.state = {
-      }
+    this.state = {}
   }
 
   fillForm = el => {
@@ -38,6 +37,10 @@ class FormDemand extends Component {
           />
         </List>
         <BaseInfo />
+        <View style={styles.btns}>
+          <Button>保存</Button>
+          <Button>发布</Button>
+        </View>
       </ScrollView>
     )
   }
@@ -62,6 +65,9 @@ const styles = StyleSheet.create({
   uploadImg: {
     width: 40,
     height: 40
+  },
+  btns: {
+    flexDirection: "row"
   }
 })
 
