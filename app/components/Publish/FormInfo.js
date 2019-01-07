@@ -8,6 +8,8 @@ import { Toast, List, InputItem, WhiteSpace } from "@ant-design/react-native"
 import BaseInfo from "./BaseInfo"
 import Buttons from "./Buttons"
 
+const LABEL = ["名称", "品牌", "规格", "单位"]
+
 @connect()
 class FormInfo extends Component {
   constructor(props) {
@@ -28,6 +30,7 @@ class FormInfo extends Component {
   };
 
   render() {
+    const { name, title, type } = this.props.navigation.state.params
     // 选择发布分类
     return (
       <ScrollView
@@ -37,7 +40,8 @@ class FormInfo extends Component {
         showsVerticalScrollIndicator={false}
         onScrollEndDrag={this.handleScrollEnd}
       >
-        <Text style={styles.title}>注册人员、资质、（所有行业）需求</Text>
+        <Text style={styles.title}>{`${name}-${title}`}</Text>
+
         <List style={styles.inputBox}>
           <InputItem
             clear
@@ -46,32 +50,24 @@ class FormInfo extends Component {
           />
         </List>
         <List style={styles.inputBox}>
-          <InputItem
-            clear
-            onChange={this.handleInput}
-            placeholder="请输入材料名称|租赁设备名称"
-          />
-          <InputItem
-            clear
-            onChange={this.handleInput}
-            placeholder="请输入材料品牌|租赁设备品牌"
-          />
-          <InputItem
-            clear
-            onChange={this.handleInput}
-            placeholder="请输入材料规格|租赁设备规格"
-          />
-          <InputItem
-            clear
-            onChange={this.handleInput}
-            placeholder="请输入材料单位|租赁设备单位"
-          />
+          {LABEL.map(text => (
+            <InputItem
+              clear
+              onChange={this.handleInput}
+              placeholder={
+                type === 9
+                  ? `二手物品${text}`
+                  : `请输入材料${text}|租赁设备${text}`
+              }
+            />
+          ))}
+
           <InputItem
             clear
             type="number"
             onChange={this.handleInput}
             extra="元"
-            placeholder="请输入材料价格|租赁设备价格"
+            placeholder={type === 9 ? "二手物品价格" : "请输入材料价格|租赁设备价格"}
           />
         </List>
         <BaseInfo />

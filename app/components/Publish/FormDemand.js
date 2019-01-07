@@ -28,6 +28,8 @@ class FormDemand extends Component {
   };
 
   render() {
+    const { type } = this.props.navigation.state.params
+
     // 选择发布分类
     return (
       <ScrollView
@@ -37,7 +39,11 @@ class FormDemand extends Component {
         showsVerticalScrollIndicator={false}
         onScrollEndDrag={this.handleScrollEnd}
       >
-        <Text style={styles.title}>注册人员、资质、（所有行业）需求</Text>
+        <Text style={styles.title}>
+          {type === 10 || type === 11
+            ? "注册人员、资质"
+            : "注册人员、资质、（所有行业）需求"}
+        </Text>
         <List style={styles.inputBox}>
           <InputItem
             style={styles.input}
@@ -58,7 +64,7 @@ const styles = StyleSheet.create({
   wrap: {
     flex: 1,
     backgroundColor: "#EFEFEF",
-    paddingTop: 20,
+    paddingTop: 20
   },
   title: {
     paddingHorizontal: 15,
@@ -74,9 +80,9 @@ const styles = StyleSheet.create({
     width: 40,
     height: 40
   },
-  bottom:{
-    backgroundColor:"#FFF",
-    height:40
+  bottom: {
+    backgroundColor: "#FFF",
+    height: 40
   }
 })
 

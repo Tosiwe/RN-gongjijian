@@ -30,6 +30,7 @@ import Publish from './components/Publish/Publish'
 import CompanyOrPerson from './components/Publish/CompanyOrPerson'
 import FormDemand from './components/Publish/FormDemand'
 import FormInfo from './components/Publish/FormInfo'
+import Seconds from './components/Publish/Seconds'
 // 底部标签导航
 const HomeNavigator = createBottomTabNavigator({
   Home: { screen: Home },
@@ -113,9 +114,31 @@ const MainNavigator = createStackNavigator(
     },
     FormInfo: {
       // 发布页-编辑信息
-      screen: FormDemand,
-      navigationOptions: mainNavigationOptions,
+      screen: FormInfo,
+      navigationOptions: ({ navigation }) => ({
+        title: `信息编辑`,
+        headerStyle: { backgroundColor: '#F9F9F9' },
+        headerLeft: (
+          <TouchableOpacity
+            onPress={() => {
+              navigation.goBack()
+            }}
+          >
+            <Icon
+              name="left"
+              size={24}
+              color="black"
+              style={{ marginLeft: 13 }}
+            />
+          </TouchableOpacity>
+        ),
+      }),
     },
+    Seconds:{
+      // 发布页-二手信息分类
+      screen: Seconds,
+      navigationOptions: mainNavigationOptions,
+    }
   },
   {
     transitionConfig: () => ({
