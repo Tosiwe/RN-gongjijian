@@ -22,7 +22,7 @@ import Loading from './containers/Loading'
 import Login from './containers/Login'
 import Home from './containers/Home/Home'
 import Account from './containers/Account/Account'
-import Detail from './containers/Detail'
+import Detail from './components/Detail/Detail'
 import AddButton from './components/AddButton/AddButton'
 import Search from './components/Search/Search'
 import Entry from './containers/Entry/Entry'
@@ -151,7 +151,7 @@ const MainNavigator = createStackNavigator(
 // 基础页面
 const AppNavigator = createStackNavigator(
   {
-    Main: { screen: MainNavigator },
+    Main: { screen: Detail },
     Publish: { screen: Publish },
     Search: { screen: Search },
     Login: { screen: Login },

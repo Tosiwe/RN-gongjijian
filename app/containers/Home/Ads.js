@@ -9,7 +9,7 @@ import { screenWidth } from '../../styles/common'
 class Ads extends Component {
   render() {
     return (
-      <Carousel style={styles.ads} selectedIndex={2} autoplay infinite>
+      <Carousel style={this.props.noRadius ? "":styles.ads} selectedIndex={2} autoplay infinite>
         {adsList.map(item => (
           <View style={styles.containerHorizontal} key={Math.random()}>
             <Image
