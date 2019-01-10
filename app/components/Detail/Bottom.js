@@ -46,7 +46,8 @@ const styles = StyleSheet.create({
     height: 80,
     width: "100%",
     justifyContent:"space-around",
-    alignItems:"flex-start"
+    alignItems:"flex-start",
+    backgroundColor:"#fff"
   },
   img:{
       width:30,

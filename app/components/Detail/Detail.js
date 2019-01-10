@@ -38,7 +38,7 @@ class Detail extends Component {
         >
           <Pics noRadius />
           <Auth />
-          <BaseInfo />
+          <BaseInfo type={3}/>
         </ScrollView>
         <Bottom />
       </View>

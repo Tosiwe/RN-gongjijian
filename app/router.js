@@ -23,6 +23,7 @@ import Login from './containers/Login'
 import Home from './containers/Home/Home'
 import Account from './containers/Account/Account'
 import Detail from './components/Detail/Detail'
+import PaperDetail from './components/Detail/PaperDetail'
 import AddButton from './components/AddButton/AddButton'
 import Search from './components/Search/Search'
 import Entry from './containers/Entry/Entry'
@@ -74,6 +75,10 @@ const MainNavigator = createStackNavigator(
     Detail: {
       // 详情页
       screen: Detail,
+    },
+    PaperDetail: {
+      // 图纸详情页
+      screen: PaperDetail,
     },
     Entry: {
       // 频道页
@@ -151,7 +156,7 @@ const MainNavigator = createStackNavigator(
 // 基础页面
 const AppNavigator = createStackNavigator(
   {
-    Main: { screen: Detail },
+    Main: { screen: MainNavigator },
     Publish: { screen: Publish },
     Search: { screen: Search },
     Login: { screen: Login },

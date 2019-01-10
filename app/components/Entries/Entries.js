@@ -87,7 +87,7 @@ class Entries extends Component {
     // 发布页面移除 "图纸下载"
     const { isPublish } = this.props
     const data = [...ENTRY_ARRAY]
-    if (isPublish) {
+    if (isPublish) { 
       data.pop()
     }
     this.setState({ data })

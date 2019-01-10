@@ -32,7 +32,8 @@ class Auth extends Component {
 
 const styles = StyleSheet.create({
   title: {
-    padding: 20
+    padding: 20,
+    paddingBottom:10,
   },
   authTitle: {
     paddingBottom: 10
