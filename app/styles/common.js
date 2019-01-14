@@ -6,7 +6,7 @@ const { StatusBarManager } = NativeModules
 export const { width: screenWidth } = Dimensions.get('window')
 export const { height: screenHeight } = Dimensions.get('window')
 
-// 蓝色
+// 橙色
 export const primaryColor = '#FF7720'
 
 // 状态栏高度

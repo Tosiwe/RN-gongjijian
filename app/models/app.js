@@ -19,6 +19,7 @@ export default {
       yield put(createAction('updateState')({ login, loading: false }))
     },
     *login({ payload }, { call, put }) {
+      debugger
       yield put(createAction('updateState')({ fetching: true }))
       const login = yield call(authService.login, payload)
       if (login) {

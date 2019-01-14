@@ -156,10 +156,10 @@ const MainNavigator = createStackNavigator(
 // 基础页面
 const AppNavigator = createStackNavigator(
   {
+    Login: { screen: Login },
     Main: { screen: MainNavigator },
     Publish: { screen: Publish },
     Search: { screen: Search },
-    Login: { screen: Login },
   },
   {
     headerMode: 'none',
