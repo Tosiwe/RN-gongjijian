@@ -33,8 +33,8 @@ class Login extends Component {
 
   login = () => {
     const { dispatch } = this.props;
-    const { params } = this.state;
-    this.props.dispatch(createAction('app/login')())
+    const { params:payload } = this.state;
+    this.props.dispatch(createAction('app/login')(payload))
     // dispatch({
     //   type: "baseQuery/login",
     //   payload: params,
@@ -45,7 +45,7 @@ class Login extends Component {
   };
 
   onChange = (value, name) => {
-    const params = this.state;
+    const {params} = this.state;
     params[name] = value;
   };
 
