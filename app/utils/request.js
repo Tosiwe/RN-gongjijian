@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 
 // import fetch from "dva/fetch";
 // const apiorigin = window.SSystem.apiOrigin;
@@ -20,9 +21,11 @@ export default function request(url, options) {
   options.body = JSON.stringify(options.body);
 
   options.headers = {
-    Accept: "application/json;charset=utf-8",
-    "Content-Type": "application/x-www-form-urlencoded",
-    ...options.headers
+  //   Accept: "application/json;charset=utf-8",
+    "Access-Control-Allow-Origin": "*",
+    'Access-Control-Allow-Methods': 'OPTIONS, GET, PUT, POST, DELETE',
+    "Content-Type": "application/json;charset=utf-8",
+    ...options.headers,
   };
 
   return fetch(url, options)
@@ -34,7 +37,7 @@ export default function request(url, options) {
         }
     })
     .catch(error => {
-      callback(error);
+      // callback(error);
       return null;
     });
 }
