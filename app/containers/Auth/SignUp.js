@@ -1,59 +1,68 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native";
-import { connect } from "react-redux";
-import { InputItem, Button, List } from "@ant-design/react-native";
-import Icon from "react-native-vector-icons/AntDesign";
-import { primaryColor } from "../styles/common";
-import { createAction, NavigationActions } from "../utils";
-@connect(({ baseQuery }) => ({
-  baseQuery,
-  // loading: loading.models.baseQuery
-}))
-// @connect(({ baseQuery }) => ({ ...baseQuery }))
-@connect(({ app }) => ({ ...app }))
+import React, { Component } from "react"
+import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native"
+import { connect } from "react-redux"
+import { InputItem, Button, List, Toast } from "@ant-design/react-native"
+import Icon from "react-native-vector-icons/AntDesign"
+import { primaryColor } from "../../styles/common"
+import { createAction, NavigationActions } from "../../utils"
 
-class Login extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      params: {}
-    };
-  }
+let counter
+@connect(({ app }) => ({ ...app }))
+class SignUp extends Component {
   static navigationOptions = {
-    title: "Login"
+    title: "SignUp"
   };
 
-  // onLogin = () => {
-  //   this.props.dispatch(createAction("app/login")());
-  // };
+  constructor(props) {
+    super(props)
+    this.state = {
+      params: {},
+      codeBtnDisable: false,
+      count: 0
+    }
+  }
 
   onClose = () => {
-    this.props.dispatch(NavigationActions.back());
+    this.props.dispatch(NavigationActions.back())
   };
 
   login = () => {
-    const { dispatch } = this.props;
-    const { params:payload } = this.state;
-    this.props.dispatch(createAction('app/login')(payload))
-    // dispatch({
-    //   type: "baseQuery/login",
-    //   payload: params,
-    //   callback: result => {
-    //     alert("OK");
-    //   }
-    // });
+    const { params: payload } = this.state
+    this.props.dispatch(createAction("app/register")(payload))
   };
 
   onChange = (value, name) => {
-    const {params} = this.state;
-    params[name] = value;
+    const { params } = this.state
+    params[name] = value.toString().replace(/\s*/g, "")
+  };
+
+  getCode = () => {
+    const { params } = this.state
+    if (params.phone) {
+      counter = setInterval(() => {
+        const { count } = this.state
+        const time = count + 1
+        if (count === 60) {
+          clearInterval(counter)
+          this.setState({ codeBtnDisable: false })
+        } else {
+          this.setState({ count: time })
+        }
+      }, 1000)
+      this.setState({ codeBtnDisable: true })
+      const payload = { phone: params.phone }
+      this.props.dispatch(createAction("app/sendCode")(payload))
+    } else {
+      Toast.info("请输入电话号码")
+    }
   };
 
   render() {
-    const { fetching } = this.props;
+    const { fetching } = this.props
+    const { codeBtnDisable, count } = this.state
     return (
       <View style={styles.container}>
-        <Image source={require("./img/img_logo.png")} />
+        <Image source={require("../img/img_logo.png")} />
         <View>
           <List style={styles.list}>
             <InputItem
@@ -65,6 +74,32 @@ class Login extends Component {
               onChange={value => this.onChange(value, "phone")}
             >
               <Icon style={styles.inputIcon} name="phone" />
+            </InputItem>
+            <InputItem
+              clear
+              type="number"
+              placeholder="验证码"
+              maxLength={11}
+              style={styles.input}
+              extra={
+                codeBtnDisable ? (
+                  <Text style={styles.disableText}>{`${count}秒后重试`}</Text>
+                ) : (
+                  <TouchableOpacity onPress={this.getCode} style={styles.code}>
+                    <Text
+                      style={[
+                        styles.codeText,
+                        codeBtnDisable && styles.disableText
+                      ]}
+                    >
+                      {"获取验证码"}
+                    </Text>
+                  </TouchableOpacity>
+                )
+              }
+              onChange={value => this.onChange(value, "verifyCode")}
+            >
+              <Icon style={styles.inputIcon} name="mobile1" />
             </InputItem>
             <InputItem
               clear
@@ -84,21 +119,19 @@ class Login extends Component {
           activeStyle={styles.activeLoginBtn}
           onPress={this.login}
         >
-          登录
+          注册
         </Button>
         <View style={styles.actions}>
           <TouchableOpacity>
-            <Text style={{ color: primaryColor }}>注册账号</Text>
+            <Text style={{ color: primaryColor }}>已有账号登录</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={{ color: primaryColor }}>忘记密码</Text>
-          </TouchableOpacity>
+          <TouchableOpacity />
         </View>
         <View style={styles.thirdLogin}>
           <Text style={{ color: "#666" }}>第三方登录</Text>
           <View style={styles.thirdIconWrap}>
             <TouchableOpacity>
-              <Image source={require("./img/login_btn_wechat.png")} />
+              <Image source={require("../img/login_btn_wechat.png")} />
             </TouchableOpacity>
             {/* <TouchableOpacity>
               <Icon name="QQ" style={styles.thirdIcon} />
@@ -109,12 +142,12 @@ class Login extends Component {
           <TouchableOpacity style={styles.close} onPress={this.onClose}>
             <Image
               style={styles.closeIcon}
-              source={require("../images/close.png")}
+              source={require("../../images/close.png")}
             />
           </TouchableOpacity>
         )}
       </View>
-    );
+    )
   }
 }
 
@@ -176,6 +209,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     width: 20
   },
+  codeText: {
+    color: "#FF7720"
+  },
+  disableText: {
+    color: "#ccc"
+  },
   thirdIcon: {
     fontSize: 28,
     marginTop: 20
@@ -186,6 +225,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     paddingTop: 10
   }
-});
+})
 
-export default Login;
+export default SignUp

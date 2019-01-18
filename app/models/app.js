@@ -21,12 +21,20 @@ export default {
     *login({ payload }, { call, put }) {
       yield put(createAction('updateState')({ fetching: true }))
       const login = yield call(authService.login, payload)
-      debugger
       if (login) {
         yield put(NavigationActions.back())
       }
-      // yield put(createAction('updateState')({ login, fetching: false }))
-      // Storage.set('login', login)
+      yield put(createAction('updateState')({ login, fetching: false }))
+      Storage.set('login', login)
+    },
+    *sendCode({ payload }, { call, put }) {
+      const code = yield call(authService.sendCode, payload)
+      yield put(createAction('updateState')({ code, fetching: false }))
+    },
+    *register({ payload }, { call, put }) {
+      yield put(createAction('updateState')({ fetching: true }))
+      const code = yield call(authService.register, payload)
+      yield put(createAction('updateState')({ code, fetching: false }))
     },
     *logout(action, { call, put }) {
       yield call(Storage.set, 'login', false)
