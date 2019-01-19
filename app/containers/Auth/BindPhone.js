@@ -3,14 +3,13 @@ import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native"
 import { connect } from "react-redux"
 import { InputItem, Button, List, Toast } from "@ant-design/react-native"
 import Icon from "react-native-vector-icons/AntDesign"
-import { primaryColor } from "../../styles/common"
 import { createAction, NavigationActions } from "../../utils"
 
 let counter
 @connect(({ app }) => ({ ...app }))
-class SignUp extends Component {
+class BindPhone extends Component {
   static navigationOptions = {
-    title: "SignUp"
+    title: "BindPhone"
   };
 
   constructor(props) {
@@ -28,7 +27,9 @@ class SignUp extends Component {
 
   handlePress = () => {
     const { params: payload } = this.state
-    this.props.dispatch(createAction("app/register")(payload))
+    if (payload.password === payload.verifyPassword) {
+      this.props.dispatch(createAction("app/register")(payload))
+    }
   };
 
   onChange = (value, name) => {
@@ -101,15 +102,6 @@ class SignUp extends Component {
             >
               <Icon style={styles.inputIcon} name="mobile1" />
             </InputItem>
-            <InputItem
-              clear
-              type="password"
-              placeholder="密码"
-              style={styles.input}
-              onChange={value => this.onChange(value, "password")}
-            >
-              <Icon style={styles.inputIcon} name="lock" />
-            </InputItem>
           </List>
         </View>
         <Button
@@ -119,25 +111,10 @@ class SignUp extends Component {
           activeStyle={styles.activeLoginBtn}
           onPress={this.handlePress}
         >
-          注册
+          绑定手机
         </Button>
-        <View style={styles.actions}>
-          <TouchableOpacity>
-            <Text style={{ color: primaryColor }}>已有账号登录</Text>
-          </TouchableOpacity>
-          <TouchableOpacity />
-        </View>
-        <View style={styles.thirdLogin}>
-          <Text style={{ color: "#666" }}>第三方登录</Text>
-          <View style={styles.thirdIconWrap}>
-            <TouchableOpacity>
-              <Image source={require("../img/login_btn_wechat.png")} />
-            </TouchableOpacity>
-            {/* <TouchableOpacity>
-              <Icon name="QQ" style={styles.thirdIcon} />
-            </TouchableOpacity> */}
-          </View>
-        </View>
+        <View style={styles.actions} />
+        <View style={styles.thirdLogin} />
         {!fetching && (
           <TouchableOpacity style={styles.close} onPress={this.onClose}>
             <Image
@@ -227,4 +204,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default SignUp
+export default BindPhone

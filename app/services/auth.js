@@ -18,8 +18,15 @@ export async function sendCode(params) {
 
 // 注册
 export async function register(params) {
-  debugger
   return request(`http://118.24.107.177:7001/auth/register`, {
+      method: "POST",
+      body: params,
+  })
+}
+
+// 重设密码
+export async function resetPwd(params) {
+  return request(`127.0.0.1:7001/auth/resetPwd`, {
       method: "POST",
       body: params,
   })

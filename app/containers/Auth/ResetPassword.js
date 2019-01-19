@@ -8,9 +8,9 @@ import { createAction, NavigationActions } from "../../utils"
 
 let counter
 @connect(({ app }) => ({ ...app }))
-class SignUp extends Component {
+class ResetPassword extends Component {
   static navigationOptions = {
-    title: "SignUp"
+    title: "ResetPassword"
   };
 
   constructor(props) {
@@ -28,7 +28,9 @@ class SignUp extends Component {
 
   handlePress = () => {
     const { params: payload } = this.state
-    this.props.dispatch(createAction("app/register")(payload))
+    if (payload.password === payload.verifyPassword) {
+      this.props.dispatch(createAction("app/register")(payload))
+    }
   };
 
   onChange = (value, name) => {
@@ -110,6 +112,15 @@ class SignUp extends Component {
             >
               <Icon style={styles.inputIcon} name="lock" />
             </InputItem>
+            <InputItem
+              clear
+              type="password"
+              placeholder="确认密码"
+              style={styles.input}
+              onChange={value => this.onChange(value, "verifyPassword")}
+            >
+              <Icon style={styles.inputIcon} name="lock" />
+            </InputItem>
           </List>
         </View>
         <Button
@@ -119,7 +130,7 @@ class SignUp extends Component {
           activeStyle={styles.activeLoginBtn}
           onPress={this.handlePress}
         >
-          注册
+          修改密码
         </Button>
         <View style={styles.actions}>
           <TouchableOpacity>
@@ -127,17 +138,7 @@ class SignUp extends Component {
           </TouchableOpacity>
           <TouchableOpacity />
         </View>
-        <View style={styles.thirdLogin}>
-          <Text style={{ color: "#666" }}>第三方登录</Text>
-          <View style={styles.thirdIconWrap}>
-            <TouchableOpacity>
-              <Image source={require("../img/login_btn_wechat.png")} />
-            </TouchableOpacity>
-            {/* <TouchableOpacity>
-              <Icon name="QQ" style={styles.thirdIcon} />
-            </TouchableOpacity> */}
-          </View>
-        </View>
+        <View style={styles.thirdLogin} />
         {!fetching && (
           <TouchableOpacity style={styles.close} onPress={this.onClose}>
             <Image
@@ -227,4 +228,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default SignUp
+export default ResetPassword

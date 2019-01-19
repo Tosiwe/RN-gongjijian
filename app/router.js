@@ -21,6 +21,8 @@ import Icon from 'react-native-vector-icons/AntDesign'
 import Loading from './containers/Loading'
 import Login from './containers/Auth/Login'
 import SignUp from './containers/Auth/SignUp'
+import ResetPassword from './containers/Auth/ResetPassword'
+import RelatePhone from './containers/Auth/RelatePhone'
 import Home from './containers/Home/Home'
 import Account from './containers/Account/Account'
 import Detail from './components/Detail/Detail'
@@ -157,6 +159,8 @@ const MainNavigator = createStackNavigator(
 // 基础页面
 const AppNavigator = createStackNavigator(
   {
+    RelatePhone: { screen: RelatePhone },
+    ResetPassword: { screen: ResetPassword },
     SignUp: { screen: SignUp },
     Login: { screen: Login },
     Main: { screen: MainNavigator },
