@@ -20,6 +20,7 @@ export default {
       yield put(createAction('updateState')({ login, loading: false }))
     },
 
+    // 登陆
     *login({ payload }, { call, put }) {
       yield put(createAction('updateState')({ fetching: true }))
       const login = yield call(authService.login, payload)

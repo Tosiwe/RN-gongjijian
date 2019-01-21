@@ -22,7 +22,7 @@ import Loading from './containers/Loading'
 import Login from './containers/Auth/Login'
 import SignUp from './containers/Auth/SignUp'
 import ResetPassword from './containers/Auth/ResetPassword'
-import RelatePhone from './containers/Auth/RelatePhone'
+import BindPhone from './containers/Auth/BindPhone'
 import Home from './containers/Home/Home'
 import Account from './containers/Account/Account'
 import Detail from './components/Detail/Detail'
@@ -159,11 +159,11 @@ const MainNavigator = createStackNavigator(
 // 基础页面
 const AppNavigator = createStackNavigator(
   {
-    RelatePhone: { screen: RelatePhone },
+    Main: { screen: MainNavigator },
+    BindPhone: { screen: BindPhone },
     ResetPassword: { screen: ResetPassword },
     SignUp: { screen: SignUp },
     Login: { screen: Login },
-    Main: { screen: MainNavigator },
     Publish: { screen: Publish },
     Search: { screen: Search },
   },
