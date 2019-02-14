@@ -6,7 +6,6 @@ import {
   List,
   TextareaItem,
   InputItem,
-  WhiteSpace,
 } from "@ant-design/react-native"
 import RNFileSelector from "react-native-file-selector"
 import ImagePicker from "../ImagePicker/ImagePicker"
@@ -15,7 +14,8 @@ export default class BaseInfo extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      visible: false
+      // params:{}
+      // visible: false
       // avatarSource: null
     }
   }
@@ -34,8 +34,17 @@ export default class BaseInfo extends Component {
     this.setState({ path })
   };
 
+  handleInput =(value,name)=>{
+    const {params} = this.props
+    const p = {...params}
+    p[name]=value
+    debugger
+    this.props.onChange(p)
+  }
+
   render() {
     const { path } = this.state
+    
     return (
       <View style={styles.wrap}>
         <ImagePicker />
@@ -44,7 +53,7 @@ export default class BaseInfo extends Component {
             style={styles.input}
             rows={5}
             clear
-            onChange={this.handleInput}
+            onChange={v=>this.handleInput(v,"desc")}
             placeholder="请输入详情描述，至少50字。"
           />
         </List>
@@ -52,32 +61,32 @@ export default class BaseInfo extends Component {
           <InputItem
             style={styles.input}
             clear
-            onChange={this.handleInput}
+            onChange={v=>this.handleInput(v,"contact")}
             placeholder="请填写联系人姓名"
           />
           <InputItem
             style={styles.input}
             type="phone"
             clear
-            onChange={this.handleInput}
+            onChange={v=>this.handleInput(v,"phone")}
             placeholder="请填写联系人电话"
           />
           <InputItem
             style={styles.input}
             clear
-            onChange={this.handleInput}
+            onChange={v=>this.handleInput(v,"wechat")}
             placeholder="请填写联系人微信"
           />
           <InputItem
             style={styles.input}
             clear
-            onChange={this.handleInput}
+            onChange={v=>this.handleInput(v,"qq")}
             placeholder="请填写联系人QQ"
           />
           <InputItem
             style={styles.input}
             clear
-            onChange={this.handleInput}
+            onChange={v=>this.handleInput(v,"region")}
             placeholder="请填写地域，如：全国、沧州市、河北省"
           />
         </List>

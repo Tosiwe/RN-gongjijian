@@ -30,7 +30,7 @@ class FormInfo extends Component {
   };
 
   render() {
-    const { name, title, type } = this.props.navigation.state.params
+    const { name, title, id } = this.props.navigation.state.params
     // 选择发布分类
     return (
       <ScrollView
@@ -55,7 +55,7 @@ class FormInfo extends Component {
               clear
               onChange={this.handleInput}
               placeholder={
-                type === 9
+                id === 'smarket'
                   ? `二手物品${text}`
                   : `请输入材料${text}|租赁设备${text}`
               }
@@ -67,7 +67,7 @@ class FormInfo extends Component {
             type="number"
             onChange={this.handleInput}
             extra="元"
-            placeholder={type === 9 ? "二手物品价格" : "请输入材料价格|租赁设备价格"}
+            placeholder={id === 'smarket' ? "二手物品价格" : "请输入材料价格|租赁设备价格"}
           />
         </List>
         <BaseInfo />

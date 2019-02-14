@@ -8,67 +8,67 @@ import { connect } from 'react-redux'
 
 const ENTRY_ARRAY = [
   {
-    type: 0,
+    id: 'hbuilding',
     text: '房建',
     icon: <Image source={require(`../../images/icon_building_b.png`)} />,
   },
   {
-    type: 1,
+    id: 'steel',
     text: '钢结构',
     icon: <Image source={require(`../../images/icon_structure_b.png`)} />,
   },
   {
-    type: 2,
+    id: 'bridge',
     text: '桥梁隧道',
     icon: <Image source={require(`../../images/icon_tunnel_b.png`)} />,
   },
   {
-    type: 3,
+    id: 'expressway',
     text: '高速公路',
     icon: <Image source={require(`../../images/icon_highspeed_b.png`)} />,
   },
   {
-    type: 4,
+    id: 'railway',
     text: '铁路工程',
     icon: <Image source={require(`../../images/icon_railway_b.png`)} />,
   },
   {
-    type: 5,
+    id: 'gardens',
     text: '园林古建筑',
     icon: <Image source={require(`../../images/icon_garden_b.png`)} />,
   },
   {
-    type: 6,
+    id: 'decorate',
     text: '装修装饰',
     icon: <Image source={require(`../../images/icon_decoration_b.png`)} />,
   },
   {
-    type: 7,
+    id: 'water',
     text: '水电工程',
     icon: <Image source={require(`../../images/icon_hydropower_b.png`)} />,
   },
   {
-    type: 8,
+    id: 'ship',
     text: '船舶港口',
     icon: <Image source={require(`../../images/icon_ship_b.png`)} />,
   },
   {
-    type: 9,
+    id: 'smarket',
     text: '二手市场',
     icon: <Image source={require(`../../images/icon_second_b.png`)} />,
   },
   {
-    type: 10,
+    id: 'aptitude',
     text: '资质',
     icon: <Image source={require(`../../images/icon_aptitude_b.png`)} />,
   },
   {
-    type: 11,
+    id: 'reg',
     text: '注册人员',
     icon: <Image source={require(`../../images/icon_register_b.png`)} />,
   },
   {
-    type: 12,
+    id: 'download',
     text: '图纸下载',
     icon: <Image source={require(`../../images/icon_download_b.png`)} />,
   },
@@ -98,7 +98,7 @@ class Entries extends Component {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: 'Entry',
-        params: { type: el.type, name: el.text },
+        params: { id: el.id, name: el.text },
       })
     )
   }

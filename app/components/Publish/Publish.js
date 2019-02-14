@@ -22,23 +22,23 @@ class Publish extends Component {
       dispatch(
         NavigationActions.navigate({
           routeName: "FormDemand",
-          params: { type: el.type, name: "信息编辑" }
+          params: { id: el.id, name: "信息编辑" }
         })
       )
-    } else if (el.type === 9) {
+    } else if (el.id === 'smarket') {
       // 发布二手信息
       dispatch(
         NavigationActions.navigate({
           routeName: "Seconds",
-          params: { type: el.type, name: el.text }
+          params: { id: el.id, name: el.text }
         })
       )
-    } else if (el.type === 10 || el.type === 11) {
+    } else if (el.id === 'aptitude' || el.id === 'reg') {
       // 发布资质信息
       dispatch(
         NavigationActions.navigate({
           routeName: "FormDemand",
-          params: { type: el.type, name: "信息编辑" }
+          params: { id: el.id, name: "信息编辑" }
         })
       )
     } else {
@@ -46,7 +46,7 @@ class Publish extends Component {
       dispatch(
         NavigationActions.navigate({
           routeName: "CompanyOrPerson",
-          params: { type: el.type, name: el.text }
+          params: { id: el.id, name: el.text }
         })
       )
     }

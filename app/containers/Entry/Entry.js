@@ -1,13 +1,13 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from "react"
+import { connect } from "react-redux"
 
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View } from "react-native"
 // import { NavigationActions } from 'react-navigation'
 
-import IndustryEntry from './IndustryEntry'
-import SecondEntry from './SecondEntry'
-import RegisterEntry from './RegisterEntry'
-import PaperEntry from './PaperEntry'
+import IndustryEntry from "./IndustryEntry"
+import SecondEntry from "./SecondEntry"
+import RegisterEntry from "./RegisterEntry"
+import PaperEntry from "./PaperEntry"
 
 @connect()
 class Entry extends Component {
@@ -19,48 +19,49 @@ class Entry extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      type: 0,
+      id: ""
     }
   }
 
   componentWillMount() {
-    const { type } = this.props.navigation.state.params
-    this.setState({ type })
+    const { id } = this.props.navigation.state.params
+    this.setState({ id })
   }
 
   render() {
-    const { type } = this.state
-    // 各行业入口
-    if (type < 9) {
-      return (
-        <View style={styles.container}>
-          <IndustryEntry type={type} />
-        </View>
-      )
-    }
+    const { id } = this.state
 
     // 二手市场
-    if (type === 9) {
+    if (id === "smarket") {
       return (
         <View style={styles.container}>
-          <SecondEntry type={type} />
+          <SecondEntry id={id} />
         </View>
       )
     }
 
     // 图纸下载
-    if (type === 12) {
+    if (id === "download") {
       return (
         <View style={styles.container}>
-          <PaperEntry type={type} />
+          <PaperEntry id={id} />
         </View>
       )
     }
 
     // 资质、注册市场
+    if (id === "aptitude" || id === "reg") {
+      return (
+        <View style={styles.container}>
+          <RegisterEntry id={id} />
+        </View>
+      )
+    }
+
+    // 各行业入口
     return (
       <View style={styles.container}>
-        <RegisterEntry type={type} />
+        <IndustryEntry id={id} />
       </View>
     )
   }
@@ -72,10 +73,10 @@ const styles = StyleSheet.create({
     // paddingTop: 40,
     // paddingLeft: 20,
     // paddingRight: 20,
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    backgroundColor: '#eeeeee',
-  },
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    backgroundColor: "#eeeeee"
+  }
 })
 
 export default Entry
