@@ -20,9 +20,6 @@ class Login extends Component {
       params: {}
     }
   }
-  // onLogin = () => {
-  //   this.props.dispatch(createAction("app/login")());
-  // };
 
   onClose = () => {
     this.props.dispatch(NavigationActions.back())
@@ -30,15 +27,30 @@ class Login extends Component {
 
   login = () => {
     const { params:payload } = this.state
-    this.props.dispatch(createAction('app/login')(payload)).then((res)=>{
-      Toast.info(res)
-    })
+    payload.noNendAuth = true
+    this.props.dispatch(createAction('app/login')(payload))
   };
 
   onChange = (value, name) => {
     const {params} = this.state
     params[name] = value.toString().replace(/\s*/g,"")
   };
+
+  toSignUp=()=>{
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "SignUp"
+      })
+    )
+  }
+
+  resetPassword=()=>{
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "ResetPassword"
+      })
+    )
+  }
 
   render() {
     const { fetching } = this.props
@@ -78,10 +90,10 @@ class Login extends Component {
           登录
         </Button>
         <View style={styles.actions}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.toSignUp}>
             <Text style={{ color: primaryColor }}>注册账号</Text>
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity  onPress={this.resetPassword}>
             <Text style={{ color: primaryColor }}>忘记密码</Text>
           </TouchableOpacity>
         </View>
@@ -96,14 +108,14 @@ class Login extends Component {
             </TouchableOpacity> */}
           </View>
         </View>
-        {!fetching && (
+        {/* {!fetching && (
           <TouchableOpacity style={styles.close} onPress={this.onClose}>
             <Image
               style={styles.closeIcon}
               source={require("../../images/close.png")}
             />
           </TouchableOpacity>
-        )}
+        )} */}
       </View>
     )
   }

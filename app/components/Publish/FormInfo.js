@@ -4,6 +4,8 @@ import { connect } from "react-redux"
 
 import { StyleSheet, ScrollView, Text } from "react-native"
 import { Toast, List, InputItem, WhiteSpace } from "@ant-design/react-native"
+import { NavigationActions } from "react-navigation"
+
 // import ImagePicker from 'react-native-image-picker'
 import BaseInfo from "./BaseInfo"
 import Buttons from "./Buttons"
@@ -14,19 +16,80 @@ const LABEL = ["名称", "品牌", "规格", "单位"]
 class FormInfo extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      params: {
+        title: "",
+        desc: "",
+        contact: "",
+        phone: "",
+        region: "",
+        qq: "",
+        wechat: "",
+        picture1: "1",
+        picture2: "2",
+        picture3: "3",
+        picture4: "4",
+        classifyId: ""
+      }
+    }
   }
 
   fillForm = el => {
     Toast.info(el.type)
   };
 
+
   onSave = () => {
-    alert("save")
+    const { params } = this.state
+    if (this.isLegal()) {
+      this.props.dispatch({
+        type: "app/saveDemandDraft",
+        payload: params,
+        callback: res => {
+          if (res.msg === "OK") {
+            Toast.success("保存成功！", 1, this.goHome)
+          }
+        }
+      })
+    }
+  };
+
+  goHome = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'Home',
+        params: {  },
+      })
+    )
+
+    // const backAction = NavigationActions.back();
+    // this.props.navigation.dispatch(backAction)
+    // NavigationActions.back()
   };
 
   onPublish = () => {
-    alert("publish")
+    const { params } = this.state
+    if (this.isLegal()) {
+      this.props.dispatch({
+        type: "app/saveDemand",
+        payload: params,
+        callback: res => {
+          if (res.msg === "OK") {
+            Toast.success("发布成功！", 1, this.goHome)
+          }
+        }
+      })
+      // this.props.dispatch(createAction('app/saveDemand')(params))
+    }
+  };
+
+
+  changeTitle = v => {
+    this.state.params.title = v
+  };
+
+  changeBaseInfo = params => {
+    this.setState({ params })
   };
 
   render() {
@@ -45,7 +108,7 @@ class FormInfo extends Component {
         <List style={styles.inputBox}>
           <InputItem
             clear
-            onChange={this.handleInput}
+            onChange={this.changeTitle}
             placeholder="请输入标题10~28个字"
           />
         </List>
@@ -53,7 +116,7 @@ class FormInfo extends Component {
           {LABEL.map(text => (
             <InputItem
               clear
-              onChange={this.handleInput}
+              onChange={v=>this.handleInput(v)}
               placeholder={
                 id === 'smarket'
                   ? `二手物品${text}`
@@ -61,16 +124,15 @@ class FormInfo extends Component {
               }
             />
           ))}
-
           <InputItem
             clear
             type="number"
-            onChange={this.handleInput}
+            onChange={v=>this.handleInput(v)}
             extra="元"
             placeholder={id === 'smarket' ? "二手物品价格" : "请输入材料价格|租赁设备价格"}
           />
         </List>
-        <BaseInfo />
+        <BaseInfo onChange={this.changeBaseInfo} params={this.state.params}/>
         <Buttons onPublish={this.onPublish} onSave={this.onSave} />
         <WhiteSpace style={styles.bottom} />
       </ScrollView>

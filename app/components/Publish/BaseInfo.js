@@ -38,7 +38,6 @@ export default class BaseInfo extends Component {
     const {params} = this.props
     const p = {...params}
     p[name]=value
-    debugger
     this.props.onChange(p)
   }
 

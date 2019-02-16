@@ -25,6 +25,7 @@ import ResetPassword from './containers/Auth/ResetPassword'
 import BindPhone from './containers/Auth/BindPhone'
 import Home from './containers/Home/Home'
 import Account from './containers/Account/Account'
+import Setting from './containers/Account/Setting'
 import Detail from './components/Detail/Detail'
 import PaperDetail from './components/Detail/PaperDetail'
 import AddButton from './components/AddButton/AddButton'
@@ -146,6 +147,11 @@ const MainNavigator = createStackNavigator(
       // 发布页-二手信息分类
       screen: Seconds,
       navigationOptions: mainNavigationOptions,
+    },
+    Setting:{
+      // 个人中心-设置
+      screen: Setting,
+      navigationOptions: mainNavigationOptions,
     }
   },
   {
@@ -160,10 +166,10 @@ const MainNavigator = createStackNavigator(
 const AppNavigator = createStackNavigator(
   {
     Main: { screen: MainNavigator },
+    Login: { screen: Login },
     BindPhone: { screen: BindPhone },
     ResetPassword: { screen: ResetPassword },
     SignUp: { screen: SignUp },
-    Login: { screen: Login },
     Publish: { screen: Publish },
     Search: { screen: Search },
   },
