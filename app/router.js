@@ -79,6 +79,7 @@ const MainNavigator = createStackNavigator(
     Detail: {
       // 详情页
       screen: Detail,
+      navigationOptions: mainNavigationOptions,
     },
     PaperDetail: {
       // 图纸详情页

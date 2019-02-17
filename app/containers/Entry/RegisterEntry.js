@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 import { StyleSheet, View, Text, FlatList } from 'react-native'
 import { Tabs } from '@ant-design/react-native'
-import { list } from './data'
+import {list}  from './data'
 
 const tabs = [{ title: '资质' }, { title: '注册人员' }]
 
@@ -15,7 +15,7 @@ class RegisterEntry extends Component {
 
   renderItem = ({ item }) => (
     <View style={styles.wrap}>
-      <Text style={styles.title}>{item || '现有一名工程师'}</Text>
+      <Text style={styles.title}>{item.title || '现有一名工程师'}</Text>
       <View style={styles.info}>
         <Text style={styles.infoText}>沧州市</Text>
         <Text style={styles.infoText}>15小时前</Text>
@@ -24,14 +24,14 @@ class RegisterEntry extends Component {
   )
 
   render() {
-    const { type } = this.props
+    const { id } = this.props
     return (
       <View style={styles.container}>
         <Tabs
           tabs={tabs}
           styles={{ topTabBarSplitLine: '#000' }}
           tabBarUnderlineStyle={{ backgroundColor: '#FF7720' }}
-          initialPage={type === 10 ? 0 : 1}
+          initialPage={id === "aptitude" ? 0 : 1}
           // renderTab={tab=>(<Text style={{color:"red",borderBottomWidth:0}}>123</Text>   )}
         >
           <View style={styles.content}>

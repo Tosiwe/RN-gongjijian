@@ -230,11 +230,11 @@ export default {
     },
 
     // 已入驻列表
-    *settleList({ payload }, { call, put }) {
+    *settleList({ payload,callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(settleService.settleList, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res&&callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
