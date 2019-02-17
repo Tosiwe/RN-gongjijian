@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   bgStyle: {
-    resizeMode: Image.resizeMode.stretch
+    // resizeMode: Image.resizeMode.stretch
   },
   head: {
     width: "100%",
