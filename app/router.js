@@ -36,6 +36,7 @@ import CompanyOrPerson from './components/Publish/CompanyOrPerson'
 import FormDemand from './components/Publish/FormDemand'
 import FormInfo from './components/Publish/FormInfo'
 import Seconds from './components/Publish/Seconds'
+import MyPublish from './components/Publish/MyPublish'
 // 底部标签导航
 const HomeNavigator = createBottomTabNavigator({
   Home: { screen: Home },
@@ -56,7 +57,7 @@ HomeNavigator.navigationOptions = {
 
 // 主要业务页面页内路由设置
 const mainNavigationOptions = ({ navigation }) => ({
-  title: `${navigation.state.params.name}`,
+  title: `${navigation.state.params.name||""}`,
   headerStyle: { backgroundColor: '#F9F9F9' },
   headerLeft: (
     <TouchableOpacity
@@ -152,6 +153,11 @@ const MainNavigator = createStackNavigator(
     Setting:{
       // 个人中心-设置
       screen: Setting,
+      navigationOptions: mainNavigationOptions,
+    },
+    MyPublish:{
+      // 个人中心-设置
+      screen: MyPublish,
       navigationOptions: mainNavigationOptions,
     }
   },

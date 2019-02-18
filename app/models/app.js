@@ -88,59 +88,59 @@ export default {
       if (res) {
         const { id } = res.result
         const response = yield call(publishService.reviewDemand, { id })
-        if (response&&callback) {
-            callback(response)
+        if (response && callback) {
+          callback(response)
         }
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
     // 保存需求草稿
-    *saveDemandDraft({ payload ,callback}, { call, put }) {
+    *saveDemandDraft({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(publishService.saveDemandDraft, payload)
-      if (res&&callback) {
+      if (res && callback) {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
     //  下架需求
-    *draftDemand({ payload }, { call, put }) {
+    *draftDemand({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(publishService.draftDemand, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
     // 发布需求
-    // *reviewDemand({ payload }, { call, put }) {
-    //   yield put(createAction("updateState")({ fetching: true }))
-    //   const res = yield call(publishService.reviewDemand, payload)
-    //   if (res) {
-    //     yield put(NavigationActions.back())
-    //   }
-    //   yield put(createAction("updateState")({ res, fetching: false }))
-    // },
+    *reviewDemand({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(publishService.reviewDemand, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
 
     // 删除需求
-    *deleteDemand({ payload }, { call, put }) {
+    *deleteDemand({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(publishService.deleteDemand, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
     // 我的需求
-    *getDemandList({ payload }, { call, put }) {
+    *getDemandList({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(publishService.getDemandList, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
@@ -168,46 +168,46 @@ export default {
     },
 
     //  下架信息
-    *draftInfo({ payload }, { call, put }) {
+    *draftInfo({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.draftInfo, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
     // 发布信息
-    *reviewInfo({ payload }, { call, put }) {
+    *reviewInfo({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.reviewInfo, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
     // 删除信息
-    *deleteInfo({ payload }, { call, put }) {
+    *deleteInfo({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.deleteInfo, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
     // 我的信息
-    *getInfoList({ payload }, { call, put }) {
+    *getInfoList({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.getInfoList, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
-    // 我的信息
+    // 我的信息指定类别
     *getInfoListById({ payload }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.getInfoListById, payload)
@@ -230,10 +230,10 @@ export default {
     },
 
     // 已入驻列表
-    *settleList({ payload,callback }, { call, put }) {
+    *settleList({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(settleService.settleList, payload)
-      if (res&&callback) {
+      if (res && callback) {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
@@ -262,10 +262,10 @@ export default {
     },
 
     // 获取用户信息
-    *getProfile({ payload ,callback}, { call, put }) {
+    *getProfile({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.getProfile, payload)
-      if (res&&callback) {
+      if (res && callback) {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))

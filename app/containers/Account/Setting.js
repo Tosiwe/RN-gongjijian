@@ -9,8 +9,8 @@ import { createAction, NavigationActions } from "../../utils"
 
 const settingList = [
 {title:"行业设置"},
-{title:"清除足迹"},
-{title:"清空缓存"},
+// {title:"清除足迹"},
+// {title:"清空缓存"},
 {title:"关于工基建"},
 ]
 const { Item } = List
@@ -24,10 +24,11 @@ class Setting extends Component {
 
   render() {
     return (
-      <View style={styles.wrap}>
+      <View style={styles.wrap}> 
+      <View style={styles.bottom} />
         <List style={styles.list}>
           {settingList.map(item => (
-            <Item key={Math.random()}  arrow="horizontal">
+            <Item style={styles.listItem} key={Math.random()}  arrow="horizontal">
               {item.title}
             </Item>
           ))}
@@ -74,6 +75,14 @@ const styles = StyleSheet.create({
       textAlign:"center",
       padding:10,
       backgroundColor:"red"
+  },
+  list:{
+    borderTopWidth:0,
+    borderBottomWidth:0,
+  },
+  listItem:{
+    // height:60
   }
+
 })
 export default Setting

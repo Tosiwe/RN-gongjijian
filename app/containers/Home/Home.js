@@ -23,7 +23,7 @@ class Home extends Component {
     tabBarLabel: ({ focused }) => (
       <Text
         style={[
-          { fontSize: 12 },
+          { fontSize: 12,textAlign:"center" },
           { color: focused ? primaryColor : "#D5D5D5" }
         ]}
       >

@@ -1,18 +1,28 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import { StyleSheet, View } from "react-native"
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native"
 // import { Toast } from '@ant-design/react-native'
 import { NavigationActions } from "react-navigation"
 import Entries from "../Entries/Entries"
 
 @connect()
 class Publish extends Component {
-  componentDidMount() {
-    // alert(
-    //   this.props.navigation.state.params.type === 1 ? "发布需求" : "发布信息"
-    // )
-  }
+  static navigationOptions = ({ navigation }) => ({
+    headerRight: (
+      <TouchableOpacity
+        onPress={()=>navigation.navigate({
+          routeName: "MyPublish",
+          params:{
+            name:"我的发布",
+            type:navigation.state.params.type
+          }
+        })}
+      >
+        <Text style={{ fontSize: 16, marginRight: 20 }}>我的发布</Text>
+      </TouchableOpacity>
+    )
+  });
 
   fillForm = el => {
     const { type: publishType } = this.props.navigation.state.params
@@ -25,7 +35,7 @@ class Publish extends Component {
           params: { id: el.id, name: "信息编辑" }
         })
       )
-    } else if (el.id === 'smarket') {
+    } else if (el.id === "smarket") {
       // 发布二手信息
       dispatch(
         NavigationActions.navigate({
@@ -33,7 +43,7 @@ class Publish extends Component {
           params: { id: el.id, name: el.text }
         })
       )
-    } else if (el.id === 'aptitude' || el.id === 'reg') {
+    } else if (el.id === "aptitude" || el.id === "reg") {
       // 发布资质信息
       dispatch(
         NavigationActions.navigate({
@@ -67,6 +77,10 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#FFF",
     paddingTop: 20
+  },
+  right: {
+    fontSize: 16,
+    marginRight: 10
   }
 })
 

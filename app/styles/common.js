@@ -11,7 +11,7 @@ export const primaryColor = '#FF7720'
 
 // 状态栏高度
 export const statusBarHeight =
-  Platform.OS === 'ios' ? 40 : StatusBarManager.HEIGHT
+  Platform.OS === 'ios' ? 40 : 10
 
 // 一般图标大小
 export const iconSize = 24

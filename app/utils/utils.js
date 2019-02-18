@@ -299,7 +299,7 @@ export function buriedPoint(item) {
     })
         .then(response => {
             if (response) {
-                console.log("埋点")
+                // console.log("埋点")
             }
         }
         )
