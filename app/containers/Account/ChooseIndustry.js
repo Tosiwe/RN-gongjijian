@@ -82,8 +82,10 @@ class ChooseIndustry extends Component {
 
 const styles = StyleSheet.create({
   item: {
-    fontSize: 18,
-    marginLeft: 10
+    fontSize: 20,
+    marginLeft: 10,
+    height:40,
+    lineHeight:40,
   }
 })
 export default ChooseIndustry

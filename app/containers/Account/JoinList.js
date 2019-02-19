@@ -30,7 +30,6 @@ class JoinList extends Component {
 
   render() {
     const { joinList } = this.state
-    debugger
     return (
       <View style={styles.wrap}>
         <View style={styles.listHeader}>

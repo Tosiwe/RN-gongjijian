@@ -45,8 +45,13 @@ class Top extends Component {
     )
   };
 
-  setProofile=()=>{
-    
+  setProfile=()=>{
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "ProfileSetting",
+        params: { name: "修改资料" }
+      })
+    )
   }
 
   render() {
@@ -85,7 +90,7 @@ class Top extends Component {
             <Text style={{ color: "#F8E4B3" }}>VIP充值</Text>
           </ImageBackground>
         </TouchableOpacity>
-        <TouchableOpacity onPress={this.setProofile}>
+        <TouchableOpacity onPress={this.setProfile}>
           <Image
             style={styles.avator}
             source={{

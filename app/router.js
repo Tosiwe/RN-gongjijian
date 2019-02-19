@@ -1,67 +1,70 @@
-import React, { Component } from 'react'
-import { BackHandler, TouchableOpacity } from 'react-native'
+import React, { Component } from "react"
+import { BackHandler, TouchableOpacity } from "react-native"
 
 import {
   createStackNavigator,
   createBottomTabNavigator,
-  NavigationActions,
-} from 'react-navigation'
+  NavigationActions
+} from "react-navigation"
 
 import {
   reduxifyNavigator,
   createReactNavigationReduxMiddleware,
-  createNavigationReducer,
-} from 'react-navigation-redux-helpers'
+  createNavigationReducer
+} from "react-navigation-redux-helpers"
 
-import { Provider } from '@ant-design/react-native'
-import { connect } from 'react-redux'
+import { Provider } from "@ant-design/react-native"
+import { connect } from "react-redux"
 
-import StackViewStyleInterpolator from 'react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator'
-import Icon from 'react-native-vector-icons/AntDesign'
-import Loading from './containers/Loading'
-import Login from './containers/Auth/Login'
-import SignUp from './containers/Auth/SignUp'
-import ResetPassword from './containers/Auth/ResetPassword'
-import BindPhone from './containers/Auth/BindPhone'
-import Home from './containers/Home/Home'
-import Account from './containers/Account/Account'
-import Setting from './containers/Account/Setting'
-import ChooseIndustry from './containers/Account/ChooseIndustry'
-import About from './containers/Account/About'
-import ProfileSetting from './containers/Account/ProfileSetting'
-import Detail from './components/Detail/Detail'
-import PaperDetail from './components/Detail/PaperDetail'
-import AddButton from './components/AddButton/AddButton'
-import Search from './components/Search/Search'
-import Entry from './containers/Entry/Entry'
-import Publish from './components/Publish/Publish'
-import CompanyOrPerson from './components/Publish/CompanyOrPerson'
-import FormDemand from './components/Publish/FormDemand'
-import FormInfo from './components/Publish/FormInfo'
-import Seconds from './components/Publish/Seconds'
-import MyPublish from './components/Publish/MyPublish'
+import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator"
+import Icon from "react-native-vector-icons/AntDesign"
+import Loading from "./containers/Loading"
+import Login from "./containers/Auth/Login"
+import SignUp from "./containers/Auth/SignUp"
+import ResetPassword from "./containers/Auth/ResetPassword"
+import BindPhone from "./containers/Auth/BindPhone"
+import Home from "./containers/Home/Home"
+import Account from "./containers/Account/Account"
+import Setting from "./containers/Account/Setting"
+import ChooseIndustry from "./containers/Account/ChooseIndustry"
+import About from "./containers/Account/About"
+import ProfileSetting from "./containers/Account/ProfileSetting"
+import MyLike from "./containers/Account/MyLike"
+import MyDownload from "./containers/Account/MyDownload"
+import MyHistory from "./containers/Account/MyHistory"
+import Detail from "./components/Detail/Detail"
+import PaperDetail from "./components/Detail/PaperDetail"
+import AddButton from "./components/AddButton/AddButton"
+import Search from "./components/Search/Search"
+import Entry from "./containers/Entry/Entry"
+import Publish from "./components/Publish/Publish"
+import CompanyOrPerson from "./components/Publish/CompanyOrPerson"
+import FormDemand from "./components/Publish/FormDemand"
+import FormInfo from "./components/Publish/FormInfo"
+import Seconds from "./components/Publish/Seconds"
+import MyPublish from "./components/Publish/MyPublish"
 // 底部标签导航
 const HomeNavigator = createBottomTabNavigator({
   Home: { screen: Home },
   Add: {
     screen: AddButton,
     navigationOptions: () => ({
-      tabBarButtonComponent: () => <AddButton />,
-    }),
+      tabBarButtonComponent: () => <AddButton />
+    })
   },
-  Account: { screen: Account },
+  Account: { screen: Account }
 })
 
 // 底部导航属性设置
 HomeNavigator.navigationOptions = {
   header: null,
-  tabBarButtonComponent: TouchableOpacity,
+  tabBarButtonComponent: TouchableOpacity
 }
 
 // 主要业务页面页内路由设置
 const mainNavigationOptions = ({ navigation }) => ({
-  title: `${navigation.state.params ? navigation.state.params.name:""}`,
-  headerStyle: { backgroundColor: '#F9F9F9' },
+  // title: `${navigation.state.params ? navigation.state.params.name:""}`,
+  headerStyle: { backgroundColor: "#F9F9F9" },
   headerLeft: (
     <TouchableOpacity
       onPress={() => {
@@ -70,7 +73,7 @@ const mainNavigationOptions = ({ navigation }) => ({
     >
       <Icon name="left" size={24} color="black" style={{ marginLeft: 13 }} />
     </TouchableOpacity>
-  ),
+  )
 })
 
 // 主要业务页面
@@ -78,33 +81,33 @@ const MainNavigator = createStackNavigator(
   {
     HomeNavigator: {
       // 首页
-      screen: HomeNavigator,
+      screen: HomeNavigator
     },
     Detail: {
       // 详情页
       screen: Detail,
-      navigationOptions: mainNavigationOptions,
+      navigationOptions: mainNavigationOptions
     },
     PaperDetail: {
       // 图纸详情页
-      screen: PaperDetail,
+      screen: PaperDetail
     },
     Entry: {
       // 频道页
       screen: Entry,
-      navigationOptions: mainNavigationOptions,
+      navigationOptions: mainNavigationOptions
     },
     Publish: {
       // 发布页-类型选择
       screen: Publish,
-      navigationOptions: mainNavigationOptions,
+      navigationOptions: mainNavigationOptions
     },
     CompanyOrPerson: {
       // 发布页-商户选择
       screen: CompanyOrPerson,
       navigationOptions: ({ navigation }) => ({
-        title: '选择发布分类',
-        headerStyle: { backgroundColor: '#F9F9F9' },
+        title: "选择发布分类",
+        headerStyle: { backgroundColor: "#F9F9F9" },
         headerLeft: (
           <TouchableOpacity
             onPress={() => {
@@ -118,20 +121,20 @@ const MainNavigator = createStackNavigator(
               style={{ marginLeft: 13 }}
             />
           </TouchableOpacity>
-        ),
-      }),
+        )
+      })
     },
     FormDemand: {
       // 发布页-编辑需求
       screen: FormDemand,
-      navigationOptions: mainNavigationOptions,
+      navigationOptions: mainNavigationOptions
     },
     FormInfo: {
       // 发布页-编辑信息
       screen: FormInfo,
       navigationOptions: ({ navigation }) => ({
         title: `信息编辑`,
-        headerStyle: { backgroundColor: '#F9F9F9' },
+        headerStyle: { backgroundColor: "#F9F9F9" },
         headerLeft: (
           <TouchableOpacity
             onPress={() => {
@@ -145,45 +148,60 @@ const MainNavigator = createStackNavigator(
               style={{ marginLeft: 13 }}
             />
           </TouchableOpacity>
-        ),
-      }),
+        )
+      })
     },
-    Seconds:{
+    Seconds: {
       // 发布页-二手信息分类
       screen: Seconds,
-      navigationOptions: mainNavigationOptions,
+      navigationOptions: mainNavigationOptions
     },
-    Setting:{
+    Setting: {
       // 个人中心-设置
       screen: Setting,
-      navigationOptions: mainNavigationOptions,
+      navigationOptions: mainNavigationOptions
     },
-    MyPublish:{
+    MyPublish: {
       // 个人中心-我的发布
       screen: MyPublish,
-      navigationOptions: mainNavigationOptions,
+      navigationOptions: mainNavigationOptions
     },
-    ChooseIndustry:{
+    ChooseIndustry: {
       // 个人中心-行业设置
       screen: ChooseIndustry,
-      navigationOptions: mainNavigationOptions,
+      navigationOptions: mainNavigationOptions
     },
-    About:{
+    About: {
       // 个人中心-关于
       screen: About,
-      navigationOptions: mainNavigationOptions,
+      navigationOptions: mainNavigationOptions
     },
-    ProfileSetting:{
+    ProfileSetting: {
       // 个人中心-修改资料
       screen: ProfileSetting,
-      navigationOptions: mainNavigationOptions,
+      navigationOptions: mainNavigationOptions
+    },
+    MyLike: {
+      // 我的收藏
+      screen: MyLike,
+      navigationOptions: mainNavigationOptions
+    },
+    MyHistory: {
+      // 我的历史
+      screen: MyHistory,
+      navigationOptions: mainNavigationOptions
+    },
+    MyDownload: {
+      // 我的下载
+      screen: MyDownload,
+      navigationOptions: mainNavigationOptions
     }
   },
   {
     transitionConfig: () => ({
       // 水平切换
-      screenInterpolator: StackViewStyleInterpolator.forHorizontal,
-    }),
+      screenInterpolator: StackViewStyleInterpolator.forHorizontal
+    })
   }
 )
 
@@ -196,29 +214,29 @@ const AppNavigator = createStackNavigator(
     ResetPassword: { screen: ResetPassword },
     SignUp: { screen: SignUp },
     Publish: { screen: Publish },
-    Search: { screen: Search },
+    Search: { screen: Search }
   },
   {
-    headerMode: 'none',
-    mode: 'modal',
+    headerMode: "none",
+    mode: "modal",
     navigationOptions: {
-      gesturesEnabled: false,
+      gesturesEnabled: false
     },
     transitionConfig: () => ({
       // 垂直切换
-      screenInterpolator: StackViewStyleInterpolator.forVertical,
-    }),
+      screenInterpolator: StackViewStyleInterpolator.forVertical
+    })
   }
 )
 
 export const routerReducer = createNavigationReducer(AppNavigator)
 
 export const routerMiddleware = createReactNavigationReduxMiddleware(
-  'root',
+  "root",
   state => state.router
 )
 
-const App = reduxifyNavigator(AppNavigator, 'root')
+const App = reduxifyNavigator(AppNavigator, "root")
 
 function getActiveRouteName(navigationState) {
   if (!navigationState) {
@@ -234,27 +252,27 @@ function getActiveRouteName(navigationState) {
 @connect(({ app, router }) => ({ app, router }))
 class Router extends Component {
   componentWillMount() {
-    BackHandler.addEventListener('hardwareBackPress', this.backHandle)
+    BackHandler.addEventListener("hardwareBackPress", this.backHandle)
   }
 
   componentWillUnmount() {
-    BackHandler.removeEventListener('hardwareBackPress', this.backHandle)
+    BackHandler.removeEventListener("hardwareBackPress", this.backHandle)
   }
 
   backHandle = () => {
     const currentScreen = getActiveRouteName(this.props.router)
-    if (currentScreen === 'Login') {
+    if (currentScreen === "Login") {
       return true
     }
-    if (currentScreen === 'Publish') {
+    if (currentScreen === "Publish") {
       return true
     }
-    if (currentScreen !== 'Home') {
+    if (currentScreen !== "Home") {
       this.props.dispatch(NavigationActions.back())
       return true
     }
     return false
-  }
+  };
 
   render() {
     const { app, dispatch, router } = this.props

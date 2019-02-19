@@ -27,7 +27,6 @@ class Setting extends Component {
   render() {
     return (
       <View style={styles.wrap}>
-        <View style={styles.bottom} />
         <List style={styles.list}>
           {settingList.map(item => (
             <Item
@@ -43,7 +42,6 @@ class Setting extends Component {
         <TouchableOpacity onPress={this.logout}>
           <Text style={styles.logout}>退出</Text>
         </TouchableOpacity>
-        <View style={styles.bottom} />
       </View>
     )
   }
@@ -52,7 +50,6 @@ class Setting extends Component {
 const styles = StyleSheet.create({
   wrap: {
     marginTop: 20,
-    marginHorizontal: 16,
     backgroundColor: "#FFF",
     borderRadius: 10
   },
@@ -71,7 +68,10 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   text: {
-    fontSize: 18
+    fontSize: 20,
+    marginLeft: 10,
+    height:40,
+    lineHeight:40,
   },
   bottom: {
     height: 60,

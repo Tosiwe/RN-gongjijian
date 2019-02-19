@@ -37,14 +37,14 @@ export default class App extends Component {
     }
 
     ImagePicker.showImagePicker(options, response => {
-      console.log("Response = ", response)
+      // console.log("Response = ", response)
 
       if (response.didCancel) {
-        console.log("User cancelled photo picker")
+        // console.log("User cancelled photo picker")
       } else if (response.error) {
-        console.log("ImagePicker Error: ", response.error)
+        // console.log("ImagePicker Error: ", response.error)
       } else if (response.customButton) {
-        console.log("User tapped custom button: ", response.customButton)
+        // console.log("User tapped custom button: ", response.customButton)
       } else {
         const source = { uri: response.uri }
         // You can also display the image using data:

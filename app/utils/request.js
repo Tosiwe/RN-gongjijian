@@ -36,9 +36,9 @@ export default function request(url, options) {
         // eslint-disable-next-line consistent-return
         .then(response => {
           if (response.status === 500) {
-            console.log("error", response)
+            // console.log("error", response)
           } else {
-            console.log("response------------", response)
+            // console.log("response------------", response)
             return response.json()
           }
         })

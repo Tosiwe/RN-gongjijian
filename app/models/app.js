@@ -252,11 +252,11 @@ export default {
     // ---------- 用户中心 ----------
 
     // 获取下载列表
-    *getDownList({ payload }, { call, put }) {
+    *getDownList({ payload ,callback}, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.getDownList, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
@@ -268,7 +268,7 @@ export default {
       if (res && callback) {
         callback(res)
       }
-      yield put(createAction("updateState")({ res, fetching: false }))
+      yield put(createAction("updateState")({ userInfo:res.result, fetching: false }))
     },
 
     // 修改用户信息
@@ -292,11 +292,11 @@ export default {
     },
 
     // 收藏列表
-    *getBookmark({ payload }, { call, put }) {
+    *getBookmark({ payload ,callback}, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.getBookmark, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res&&callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
@@ -312,11 +312,11 @@ export default {
     },
 
     // 历史记录
-    *getHistory({ payload }, { call, put }) {
+    *getHistory({ payload,callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.getHistory, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res&&callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
@@ -384,11 +384,11 @@ export default {
     },
 
     // 获取图纸列表
-    *paperList({ payload }, { call, put }) {
+    *paperList({ payload ,callback}, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.paperList, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res&&callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },

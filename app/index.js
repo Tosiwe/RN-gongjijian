@@ -11,7 +11,7 @@ const app = dva({
   extraReducers: { router: routerReducer },
   onAction: [routerMiddleware],
   onError(e) {
-    console.log('onError', e)
+    // console.log('onError', e)
   },
 })
 

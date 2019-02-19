@@ -35,6 +35,10 @@ const RECORD_STATE = {
 
 @connect(({ app }) => ({ ...app }))
 class MyPublish extends Component {
+  static navigationOptions = {
+    title: '我的发布',
+  }
+
   constructor(props) {
     super(props)
     this.state = {
@@ -214,7 +218,7 @@ class MyPublish extends Component {
               onRefresh={this.refresh}
               refreshing={fetching}
               onEndReachedThreshold={1}
-              onEndReached={() => this.refresh(demandPageNum + 1)}
+              onEndReached={() => this.refresh(1)}
             />
           </View>
           <View style={styles.content}>
@@ -224,7 +228,7 @@ class MyPublish extends Component {
               onRefresh={this.refresh}
               refreshing={fetching}
               onEndReachedThreshold={1}
-              onEndReached={() => this.refresh(infoPageNum + 1)}
+              onEndReached={() => this.refresh(1)}
             />
           </View>
         </Tabs>
