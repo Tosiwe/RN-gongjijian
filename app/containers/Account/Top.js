@@ -45,6 +45,10 @@ class Top extends Component {
     )
   };
 
+  setProofile=()=>{
+    
+  }
+
   render() {
     const { nick } = this.state
     return (
@@ -81,13 +85,15 @@ class Top extends Component {
             <Text style={{ color: "#F8E4B3" }}>VIP充值</Text>
           </ImageBackground>
         </TouchableOpacity>
-        <Image
-          style={styles.avator}
-          source={{
-            uri:
-              "https://wx4.sinaimg.cn/mw1024/ad38de43ly1fpewj6ks53j23u2227qvb.jpg"
-          }}
-        />
+        <TouchableOpacity onPress={this.setProofile}>
+          <Image
+            style={styles.avator}
+            source={{
+              uri:
+                "https://wx4.sinaimg.cn/mw1024/ad38de43ly1fpewj6ks53j23u2227qvb.jpg"
+            }}
+          />
+        </TouchableOpacity>
         <Text style={styles.text}>{nick}</Text>
       </ImageBackground>
     )

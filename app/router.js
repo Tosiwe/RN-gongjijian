@@ -26,6 +26,9 @@ import BindPhone from './containers/Auth/BindPhone'
 import Home from './containers/Home/Home'
 import Account from './containers/Account/Account'
 import Setting from './containers/Account/Setting'
+import ChooseIndustry from './containers/Account/ChooseIndustry'
+import About from './containers/Account/About'
+import ProfileSetting from './containers/Account/ProfileSetting'
 import Detail from './components/Detail/Detail'
 import PaperDetail from './components/Detail/PaperDetail'
 import AddButton from './components/AddButton/AddButton'
@@ -57,7 +60,7 @@ HomeNavigator.navigationOptions = {
 
 // 主要业务页面页内路由设置
 const mainNavigationOptions = ({ navigation }) => ({
-  title: `${navigation.state.params.name||""}`,
+  title: `${navigation.state.params ? navigation.state.params.name:""}`,
   headerStyle: { backgroundColor: '#F9F9F9' },
   headerLeft: (
     <TouchableOpacity
@@ -156,8 +159,23 @@ const MainNavigator = createStackNavigator(
       navigationOptions: mainNavigationOptions,
     },
     MyPublish:{
-      // 个人中心-设置
+      // 个人中心-我的发布
       screen: MyPublish,
+      navigationOptions: mainNavigationOptions,
+    },
+    ChooseIndustry:{
+      // 个人中心-行业设置
+      screen: ChooseIndustry,
+      navigationOptions: mainNavigationOptions,
+    },
+    About:{
+      // 个人中心-关于
+      screen: About,
+      navigationOptions: mainNavigationOptions,
+    },
+    ProfileSetting:{
+      // 个人中心-修改资料
+      screen: ProfileSetting,
       navigationOptions: mainNavigationOptions,
     }
   },
