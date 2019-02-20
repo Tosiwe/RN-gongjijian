@@ -267,16 +267,16 @@ export default {
       const res = yield call(profileService.getProfile, payload)
       if (res && callback) {
         callback(res)
+        yield put(createAction("updateState")({ userInfo:res.result, fetching: false }))
       }
-      yield put(createAction("updateState")({ userInfo:res.result, fetching: false }))
     },
 
     // 修改用户信息
-    *saveProfile({ payload }, { call, put }) {
+    *saveProfile({ payload,callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.saveProfile, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },

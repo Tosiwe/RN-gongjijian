@@ -11,6 +11,7 @@ const settingList = [
   { title: "行业设置", name: "ChooseIndustry" },
   // {title:"清除足迹"},
   // {title:"清空缓存"},
+  { title: "修改资料", name: "ProfileSetting" },
   { title: "关于工基建", name: "About" }
 ]
 const { Item } = List

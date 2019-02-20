@@ -15,7 +15,6 @@ class MyDownload extends Component {
     super(props)
     this.state = {
       likeList: [],
-      pageNum: 0
     }
   }
 
@@ -40,7 +39,7 @@ class MyDownload extends Component {
           }
           this.setState({
             likeList,
-            pageNum: res.result.pn
+            // pageNum: res.result.pn
           })
         }
       }
@@ -72,7 +71,7 @@ class MyDownload extends Component {
   );
 
   render() {
-    const { likeList, pageNum } = this.state
+    const { likeList,  } = this.state
     const { fetching } = this.props
     // 选择发布分类
     return (

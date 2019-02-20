@@ -20,7 +20,9 @@ class Top extends Component {
     super(props)
 
     this.state = {
-      nick: "username"
+      userInfo: {
+        nick:"user"
+      }
     }
   }
 
@@ -29,8 +31,8 @@ class Top extends Component {
       type: "app/getProfile",
       callback: res => {
         if (res.msg === "OK") {
-          const { nick } = res.result
-          this.setState({ nick })
+          const userInfo = res.result
+          this.setState({ userInfo })
         }
       }
     })
@@ -54,8 +56,12 @@ class Top extends Component {
     )
   }
 
+  toVip=()=>{
+    this.props.dispatch(NavigationActions.navigate({ routeName: 'Vip' }))
+  }
+
   render() {
-    const { nick } = this.state
+    const { userInfo } = this.state
     return (
       <ImageBackground
         style={styles.wrap}
@@ -81,7 +87,7 @@ class Top extends Component {
             </TouchableOpacity>
           </View>
         </View>
-        <TouchableOpacity style={styles.vipPay}>
+        <TouchableOpacity style={styles.vipPay} onPress={this.toVip}>
           <ImageBackground
             style={styles.vipBg}
             source={require("./images/btn_vip_bg.png")}
@@ -93,13 +99,14 @@ class Top extends Component {
         <TouchableOpacity onPress={this.setProfile}>
           <Image
             style={styles.avator}
-            source={{
-              uri:
-                "https://wx4.sinaimg.cn/mw1024/ad38de43ly1fpewj6ks53j23u2227qvb.jpg"
-            }}
+            source={
+              userInfo.headshotUrl
+              ? { uri: userInfo.headshotUrl }
+              : require("./images/logo.jpg")
+              }
           />
         </TouchableOpacity>
-        <Text style={styles.text}>{nick}</Text>
+        <Text style={styles.text}>{userInfo.nick}</Text>
       </ImageBackground>
     )
   }

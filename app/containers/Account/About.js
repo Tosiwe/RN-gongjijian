@@ -5,14 +5,11 @@ import {
   View,
   StyleSheet,
   Text,
-  TouchableOpacity,
-  ImageBackground,
   Image
 } from "react-native"
 import { NavigationActions } from "react-navigation"
 
 import { connect } from "react-redux"
-import { statusBarHeight } from "../../styles/common"
 
 @connect(({ app }) => ({ ...app }))
 class About extends Component {
@@ -20,7 +17,7 @@ class About extends Component {
     super(props)
 
     this.state = {
-      nick: "username"
+      // nick: "username"
     }
   }
 

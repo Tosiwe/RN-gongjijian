@@ -60,7 +60,10 @@ export default class App extends Component {
   render() {
     return (
       <View>
-        <TouchableOpacity onPress={this.selectPhotoTapped.bind(this)} style={styles.btn}>
+        <TouchableOpacity
+          onPress={this.selectPhotoTapped.bind(this)}
+          style={styles.btn}
+        >
           <View style={[styles.avatar, styles.avatarContainer]}>
             {this.state.avatarSource === null ? (
               <View style={styles.imgBtn}>
@@ -78,8 +81,8 @@ export default class App extends Component {
 }
 
 const styles = StyleSheet.create({
-  btn:{
-    width:100,
+  btn: {
+    width: 100
   },
   avatarContainer: {
     justifyContent: "center",

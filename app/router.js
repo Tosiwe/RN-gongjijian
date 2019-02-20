@@ -32,6 +32,8 @@ import ProfileSetting from "./containers/Account/ProfileSetting"
 import MyLike from "./containers/Account/MyLike"
 import MyDownload from "./containers/Account/MyDownload"
 import MyHistory from "./containers/Account/MyHistory"
+import EditProfile from "./containers/Account/EditProfile"
+import Vip from "./containers/Account/Vip"
 import Detail from "./components/Detail/Detail"
 import PaperDetail from "./components/Detail/PaperDetail"
 import AddButton from "./components/AddButton/AddButton"
@@ -195,7 +197,13 @@ const MainNavigator = createStackNavigator(
       // 我的下载
       screen: MyDownload,
       navigationOptions: mainNavigationOptions
-    }
+    },
+    EditProfile: {
+      // 修改资料
+      screen: EditProfile,
+      navigationOptions: mainNavigationOptions
+    },
+    
   },
   {
     transitionConfig: () => ({
@@ -208,13 +216,16 @@ const MainNavigator = createStackNavigator(
 // 基础页面
 const AppNavigator = createStackNavigator(
   {
+    // EditProfile: { screen: EditProfile },
     Main: { screen: MainNavigator },
     Login: { screen: Login },
     BindPhone: { screen: BindPhone },
     ResetPassword: { screen: ResetPassword },
     SignUp: { screen: SignUp },
     Publish: { screen: Publish },
-    Search: { screen: Search }
+    Search: { screen: Search },
+    Vip: { screen: Vip },
+
   },
   {
     headerMode: "none",
