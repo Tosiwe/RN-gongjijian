@@ -36,6 +36,7 @@ export default function request(url, options) {
         // eslint-disable-next-line consistent-return
         .then(response => {
           if (response.status === 500) {
+            Toast.info(response._bodyText&&response._bodyText.msg)
             // console.log("error", response)
           } else {
             // console.log("response------------", response)

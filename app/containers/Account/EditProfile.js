@@ -4,9 +4,9 @@ import React, { Component } from "react"
 import { View, TouchableOpacity, StyleSheet, Text, Image } from "react-native"
 import { List, InputItem, Radio } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
-import Rpc from "react-native-newqiniu"
 import { connect } from "react-redux"
 import ImagePicker from "react-native-image-picker"
+import uploadFile from "../../utils/rpc"
 import { screenWidth } from "../../styles/common"
 
 const { RadioItem } = Radio
@@ -26,50 +26,48 @@ class EditProfile extends Component {
 
   componentDidMount() {
     const { userInfo } = this.props.navigation.state.params
-
     this.state.male = userInfo.male
     // const { userInfo } = this.props
     // this.setState({ userInfo })
-
-    // this.props.dispatch({
-    //   type: "app/getProfile",
-    //   callback: res => {
-    //     if (res.msg === "OK") {
-    //       const { nick } = res.result
-    //       this.setState({ nick })
-    //     }
-    //   }
-    // })
   }
-
-  // 设置头像
-  setAvator = (file, name) => {
-    const token = ""
-    const formInput = {
-      key: name
-    }
-
-    Rpc.uploadFile(file, token, formInput)
-  };
 
 
   // 修改资料
   saveProfile = (value, str) => {
+    const { avatarSource } = this.state
+    const { userInfo } = this.props.navigation.state.params
     const payload = {}
-    payload[str] = value
-    this.props.dispatch({
-      type: "app/saveProfile",
-      payload,
-      callback: res => {
-        if (res.msg === "OK") {
-          this.props.dispatch(NavigationActions.back())
+
+    if (str === "logo") {
+      this.props.dispatch({
+        type: "app/getUploadToken",
+        callback: res => {
+          if (res.msg === "OK") {
+            const formInput = {
+              key: `${userInfo.nick}_logo_${new Date().valueOf()}`
+            }
+            const { token } = res.result
+            const url = `http://pmzyq6wog.bkt.clouddn.com/${formInput.key}`
+            uploadFile(avatarSource.uri, token, formInput, ()=>this.saveProfile(url,"headshotUrl"))
+          }
         }
-      }
-    })
+      })
+    } else {
+      payload[str] = value
+      this.props.dispatch({
+        type: "app/saveProfile",
+        payload,
+        callback: res => {
+          if (res.msg === "OK") {
+            this.props.dispatch(NavigationActions.back())
+          }
+        }
+      })
+    }
   };
 
   // 选择图片
-  selectPhotoTapped=() =>{
+  selectPhotoTapped = () => {
     const options = {
       title: "选择图片",
       cancelButtonTitle: "取消",
@@ -91,14 +89,14 @@ class EditProfile extends Component {
     }
 
     ImagePicker.showImagePicker(options, response => {
-      // console.log("Response = ", response)
+      console.log("Response = ", response)
 
       if (response.didCancel) {
-        // console.log("User cancelled photo picker")
+        console.log("User cancelled photo picker")
       } else if (response.error) {
-        // console.log("ImagePicker Error: ", response.error)
+        console.log("ImagePicker Error: ", response.error)
       } else if (response.customButton) {
-        // console.log("User tapped custom button: ", response.customButton)
+        console.log("User tapped custom button: ", response.customButton)
       } else {
         const source = { uri: response.uri }
         // You can also display the image using data:
@@ -109,11 +107,10 @@ class EditProfile extends Component {
         })
       }
     })
-  }
-
+  };
 
   initView = () => {
-    const {avatarSource}=this.state
+    const { avatarSource } = this.state
     const { type, userInfo } = this.props.navigation.state.params
     if (type === "male") {
       return (
@@ -147,17 +144,18 @@ class EditProfile extends Component {
     }
     if (type === "headshotUrl") {
       return (
-          <TouchableOpacity onPress={this.selectPhotoTapped}>
-            <Image
-              source={
-                avatarSource || (userInfo.headshotUrl&&userInfo.headshotUrl.includes("http")
-                  ? { uri: userInfo.headshotUrl }
-                  : require("./images/logo.jpg"))
-              }
-              resizeMode="contain"
-              style={styles.logo}
-            />
-          </TouchableOpacity>
+        <TouchableOpacity onPress={this.selectPhotoTapped}>
+          <Image
+            source={
+              avatarSource ||
+              (userInfo.headshotUrl && userInfo.headshotUrl.includes("http")
+                ? { uri: userInfo.headshotUrl }
+                : require("./images/logo.jpg"))
+            }
+            resizeMode="contain"
+            style={styles.logo}
+          />
+        </TouchableOpacity>
       )
     }
     return (
@@ -181,7 +179,7 @@ class EditProfile extends Component {
       <View>
         {this.initView()}
         <TouchableOpacity
-          onPress={() => this.saveProfile(this.state.value, type)}
+          onPress={() => this.saveProfile(this.state.value, type==="headshotUrl" ? "logo" :type)}
         >
           <Text style={styles.save}>保存</Text>
         </TouchableOpacity>
@@ -212,7 +210,7 @@ const styles = StyleSheet.create({
     marginVertical: 20,
     width: screenWidth,
     height: screenWidth,
-    backgroundColor: "red"
+    backgroundColor: "#DDD"
   }
 })
 export default EditProfile

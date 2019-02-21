@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+import {Toast} from "@ant-design/react-native"
 import { createAction, NavigationActions, Storage } from "../utils"
 import * as authService from "../services/auth"
 import * as publishService from "../services/publish"
@@ -44,26 +46,31 @@ export default {
 
     // 验证码
     *sendCode({ payload }, { call, put }) {
+      payload.noNendAuth=true
       const code = yield call(authService.sendCode, payload)
       yield put(createAction("updateState")({ code, fetching: false }))
     },
 
     // 注册
     *register({ payload }, { call, put }) {
+      payload.noNendAuth=true
       yield put(createAction("updateState")({ fetching: true }))
       const registed = yield call(authService.register, payload)
       if (registed) {
-        yield put(NavigationActions.back())
+        Toast.success("注册成功！")
+        yield put(NavigationActions.navigate( {routeName: 'Login'}))
       }
       yield put(createAction("updateState")({ registed, fetching: false }))
     },
 
     // 重置密码
     *resetPwd({ payload }, { call, put }) {
+      payload.noNendAuth=true
       yield put(createAction("updateState")({ fetching: true }))
       const seted = yield call(authService.resetPwd, payload)
       if (seted) {
-        yield put(NavigationActions.back())
+        Toast.success("修改成功！")
+        yield put(NavigationActions.navigate( {routeName: 'Login'}))
       }
       yield put(createAction("updateState")({ seted, fetching: false }))
     },
@@ -399,6 +406,15 @@ export default {
       const res = yield call(messageService.recommendRead, payload)
       if (res) {
         yield put(NavigationActions.back())
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+    // get token
+    *getUploadToken({ payload,callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(messageService.getUploadToken, payload)
+      if (res&&callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     }

@@ -74,7 +74,7 @@ class ProfileSetting extends Component {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: "EditProfile",
-        params: { type, userInfo }
+        params: { type, userInfo ,name:"修改"}
       })
     )
   };

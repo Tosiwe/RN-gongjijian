@@ -17,7 +17,7 @@ class BindPhone extends Component {
     this.state = {
       params: {},
       codeBtnDisable: false,
-      count: 0
+      count: 60
     }
   }
 
@@ -42,8 +42,8 @@ class BindPhone extends Component {
     if (params.phone) {
       counter = setInterval(() => {
         const { count } = this.state
-        const time = count + 1
-        if (count === 60) {
+        const time = count - 1
+        if (count === 0) {
           clearInterval(counter)
           this.setState({ codeBtnDisable: false })
         } else {
@@ -115,14 +115,14 @@ class BindPhone extends Component {
         </Button>
         <View style={styles.actions} />
         <View style={styles.thirdLogin} />
-        {!fetching && (
+        {/* {!fetching && (
           <TouchableOpacity style={styles.close} onPress={this.onClose}>
             <Image
               style={styles.closeIcon}
               source={require("../../images/close.png")}
             />
           </TouchableOpacity>
-        )}
+        )} */}
       </View>
     )
   }

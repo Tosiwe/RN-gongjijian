@@ -49,3 +49,11 @@ export async function downloadPaper(params) {
         body: params,
     })
   }
+
+// token
+export async function getUploadToken(params) {
+    return request(`http://118.24.107.177:7001/upload/getToken`, {
+        method: "POST",
+        body: params,
+    })
+  }

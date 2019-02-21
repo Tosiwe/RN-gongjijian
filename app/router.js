@@ -65,7 +65,7 @@ HomeNavigator.navigationOptions = {
 
 // 主要业务页面页内路由设置
 const mainNavigationOptions = ({ navigation }) => ({
-  // title: `${navigation.state.params ? navigation.state.params.name:""}`,
+  title: `${navigation.state.params ? navigation.state.params.name:""}`,
   headerStyle: { backgroundColor: "#F9F9F9" },
   headerLeft: (
     <TouchableOpacity

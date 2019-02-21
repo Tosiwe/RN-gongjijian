@@ -18,7 +18,7 @@ class SignUp extends Component {
     this.state = {
       params: {},
       codeBtnDisable: false,
-      count: 0
+      count: 60
     }
   }
 
@@ -36,13 +36,21 @@ class SignUp extends Component {
     params[name] = value.toString().replace(/\s*/g, "")
   };
 
+  toLogin = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "Login"
+      })
+    )
+  };
+
   getCode = () => {
     const { params } = this.state
     if (params.phone) {
       counter = setInterval(() => {
         const { count } = this.state
-        const time = count + 1
-        if (count === 60) {
+        const time = count - 1
+        if (count === 0) {
           clearInterval(counter)
           this.setState({ codeBtnDisable: false })
         } else {
@@ -50,7 +58,7 @@ class SignUp extends Component {
         }
       }, 1000)
       this.setState({ codeBtnDisable: true })
-      const payload = { phone: params.phone }
+      const payload = { phone: params.phone,type:0 }
       this.props.dispatch(createAction("app/sendCode")(payload))
     } else {
       Toast.info("请输入电话号码")
@@ -122,7 +130,7 @@ class SignUp extends Component {
           注册
         </Button>
         <View style={styles.actions}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={this.toLogin}>
             <Text style={{ color: primaryColor }}>已有账号登录</Text>
           </TouchableOpacity>
           <TouchableOpacity />
@@ -138,14 +146,14 @@ class SignUp extends Component {
             </TouchableOpacity> */}
           </View>
         </View>
-        {!fetching && (
+        {/* {!fetching && (
           <TouchableOpacity style={styles.close} onPress={this.onClose}>
             <Image
               style={styles.closeIcon}
               source={require("../../images/close.png")}
             />
           </TouchableOpacity>
-        )}
+        )} */}
       </View>
     )
   }

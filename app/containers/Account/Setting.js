@@ -17,6 +17,7 @@ const settingList = [
 const { Item } = List
 @connect(({ app }) => ({ ...app }))
 class Setting extends Component {
+  
   logout = () => {
     this.props.dispatch(createAction("app/logout")())
   };
