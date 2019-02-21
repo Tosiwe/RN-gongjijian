@@ -150,7 +150,7 @@ class EditProfile extends Component {
           <TouchableOpacity onPress={this.selectPhotoTapped}>
             <Image
               source={
-                avatarSource || (userInfo.headshotUrl
+                avatarSource || (userInfo.headshotUrl&&userInfo.headshotUrl.includes("http")
                   ? { uri: userInfo.headshotUrl }
                   : require("./images/logo.jpg"))
               }

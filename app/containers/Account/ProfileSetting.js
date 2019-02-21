@@ -30,18 +30,21 @@ class ProfileSetting extends Component {
     })
   }
 
-  componentWillReceiveProps() {
-    this.props.dispatch({
-      type: "app/getProfile",
-      callback: res => {
-        if (
-          res.msg === "OK" &&
-          JSON.stringify(this.state.userInfo) !== JSON.stringify(res.result)
-        ) {
-          this.setState({ userInfo: res.result })
+  componentWillReceiveProps(nextProps) {
+    if (
+      JSON.stringify(this.state.userInfo) !==
+      JSON.stringify(nextProps.userInfo)
+    ) {
+      this.props.dispatch({
+        type: "app/getProfile",
+        callback: res => {
+          if (
+            res.msg === "OK" ) {
+            this.setState({ userInfo: res.result })
+          }
         }
-      }
-    })
+      })
+    }
   }
 
   // componentDidUpdate(prevProps, prevState) {

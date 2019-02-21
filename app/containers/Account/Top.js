@@ -100,7 +100,7 @@ class Top extends Component {
           <Image
             style={styles.avator}
             source={
-              userInfo.headshotUrl
+              userInfo.headshotUrl&&userInfo.headshotUrl.includes("http")
               ? { uri: userInfo.headshotUrl }
               : require("./images/logo.jpg")
               }
