@@ -36,8 +36,8 @@ const RECORD_STATE = {
 @connect(({ app }) => ({ ...app }))
 class MyPublish extends Component {
   static navigationOptions = {
-    title: '我的发布',
-  }
+    title: "我的发布"
+  };
 
   constructor(props) {
     super(props)
@@ -46,31 +46,36 @@ class MyPublish extends Component {
       infoList: [],
       tabKey: 0,
       demandPageNum: 0,
-      infoPageNum: 0
+      infoPageNum: 0,
     }
   }
 
   componentDidMount() {
     this.state.tabKey = this.props.navigation.state.params.type === 1 ? 0 : 1
-    this.getDemandList()
-    this.getInfoList()
+    const { ids } = this.props.navigation.state.params
+    if (ids) {
+      this.getInfoList()
+    } else {
+      this.getDemandList()
+      this.getInfoList()
+    }
   }
 
   getDemandList = (pn = 1) => {
     this.props.dispatch({
       type: "app/getDemandList",
-    //   payload: {
-    //     pn,
-    //     ps: 10
-    //   },
+      //   payload: {
+      //     pn,
+      //     ps: 10
+      //   },
       callback: res => {
         if (res.msg === "OK") {
-            let demandList=[]
-            if(pn!==1){
-                demandList=[...this.state.demandList,...res.result.data]
-            }else{
-                demandList=res.result.data
-            }
+          let demandList = []
+          if (pn !== 1) {
+            demandList = [...this.state.demandList, ...res.result.data]
+          } else {
+            demandList = res.result.data
+          }
           this.setState({
             demandList,
             demandPageNum: res.result.pn
@@ -81,20 +86,23 @@ class MyPublish extends Component {
   };
 
   getInfoList = (pn = 1) => {
+    const { ids } = this.props.navigation.state.params
+    const type = ids ? "app/getInfoListById" : "app/getInfoList"
     this.props.dispatch({
-      type: "app/getInfoList",
-    //   payload: {
-    //     pn,
-    //     ps: 10
-    //   },
+      type,
+      payload: {
+        ...ids
+        // pn,
+        // ps: 10
+      },
       callback: res => {
         if (res.msg === "OK") {
-            let infoList=[]
-            if(pn!==1){
-                infoList=[...this.state.infoList,...res.result.data]
-            }else{
-                infoList=res.result.data
-            }
+          let infoList = []
+          if (pn !== 1) {
+            infoList = [...this.state.infoList, ...res.result.data]
+          } else {
+            infoList = res.result.data
+          }
           this.setState({
             infoList,
             infoPageNum: res.result.pn
@@ -150,7 +158,7 @@ class MyPublish extends Component {
     })
   };
 
-  refresh = (pn=1) => {
+  refresh = (pn = 1) => {
     const { tabKey } = this.state
     if (tabKey === 0) {
       this.getDemandList(pn)
@@ -198,29 +206,12 @@ class MyPublish extends Component {
   render() {
     const { demandList, infoList, demandPageNum, infoPageNum } = this.state
     const { fetching } = this.props
-    const { type: publishType } = this.props.navigation.state.params
+    const { type: publishType, ids } = this.props.navigation.state.params
+
     // 选择发布分类
     return (
       <View style={styles.container}>
-        <Tabs
-          tabs={tabs}
-          initialPage={publishType === 1 ? 0 : 1}
-          styles={{ topTabBarSplitLine: "#000" }}
-          onChange={(data, index) => {
-            this.state.tabKey = index
-          }}
-          tabBarUnderlineStyle={{ backgroundColor: "#FF7720" }}
-        >
-          <View style={styles.content}>
-            <FlatList
-              data={demandList}
-              renderItem={this.renderItem}
-              onRefresh={this.refresh}
-              refreshing={fetching}
-              onEndReachedThreshold={1}
-              onEndReached={() => this.refresh(1)}
-            />
-          </View>
+        {ids ? (
           <View style={styles.content}>
             <FlatList
               data={infoList}
@@ -231,7 +222,38 @@ class MyPublish extends Component {
               onEndReached={() => this.refresh(1)}
             />
           </View>
-        </Tabs>
+        ) : (
+          <Tabs
+            tabs={tabs}
+            initialPage={publishType === 1 ? 0 : 1}
+            styles={{ topTabBarSplitLine: "#000" }}
+            onChange={(data, index) => {
+              this.state.tabKey = index
+            }}
+            tabBarUnderlineStyle={{ backgroundColor: "#FF7720" }}
+          >
+            <View style={styles.content}>
+              <FlatList
+                data={demandList}
+                renderItem={this.renderItem}
+                onRefresh={this.refresh}
+                refreshing={fetching}
+                onEndReachedThreshold={1}
+                onEndReached={() => this.refresh(1)}
+              />
+            </View>
+            <View style={styles.content}>
+              <FlatList
+                data={infoList}
+                renderItem={this.renderItem}
+                onRefresh={this.refresh}
+                refreshing={fetching}
+                onEndReachedThreshold={1}
+                onEndReached={() => this.refresh(1)}
+              />
+            </View>
+          </Tabs>
+        )}
       </View>
     )
   }

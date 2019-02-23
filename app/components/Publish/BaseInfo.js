@@ -2,11 +2,7 @@
 import React, { Component } from "react"
 
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native"
-import {
-  List,
-  TextareaItem,
-  InputItem,
-} from "@ant-design/react-native"
+import { List, TextareaItem, InputItem } from "@ant-design/react-native"
 import RNFileSelector from "react-native-file-selector"
 import ImagePicker from "../ImagePicker/ImagePicker"
 
@@ -14,7 +10,8 @@ export default class BaseInfo extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      // params:{}
+      params: {},
+      fileName: ""
       // visible: false
       // avatarSource: null
     }
@@ -22,11 +19,11 @@ export default class BaseInfo extends Component {
 
   showFileSelector = () => {
     RNFileSelector.Show({
-      title: "Select File",
-      onDone: this.onDone
-      // onCancel: () => {
-      //     console.log('cancelled')
-      // }
+      title: "选择文件",
+      onDone: path => {
+        this.handleInput(path, "file")
+        this.setState({ fileName: path })
+      }
     })
   };
 
@@ -34,68 +31,76 @@ export default class BaseInfo extends Component {
     this.setState({ path })
   };
 
-  handleInput =(value,name)=>{
-    const {params} = this.props
-    const p = {...params}
-    p[name]=value
+  handleInput = (value, name) => {
+    const { params } = this.state
+    let p = { ...params }
+    if (name === "picture") {
+      p = { ...p, ...value }
+    } else {
+      p[name] = value
+    }
     this.props.onChange(p)
-  }
+    this.setState({ params: p })
+  };
 
   render() {
-    const { path } = this.state
-    
+    const { path, fileName } = this.state
+
     return (
       <View style={styles.wrap}>
-        <ImagePicker />
+        <ImagePicker onChange={v => this.handleInput(v, "picture")} />
         <List style={styles.inputBox}>
           <TextareaItem
             style={styles.input}
             rows={5}
             clear
-            onChange={v=>this.handleInput(v,"desc")}
+            onChange={v => this.handleInput(v, "desc")}
             placeholder="请输入详情描述，至少50字。"
           />
         </List>
         <List>
           <InputItem
-          multipleLine={false}
+            multipleLine={false}
             style={styles.input}
             clear
-            onChange={v=>this.handleInput(v,"contact")}
+            onChange={v => this.handleInput(v, "contact")}
             placeholder="请填写联系人姓名"
+            thumb={<Text style={{ color: "red" }}>*</Text>}
           />
           <InputItem
-          multipleLine={false}
+            multipleLine={false}
             style={styles.input}
             type="phone"
             clear
-            onChange={v=>this.handleInput(v,"phone")}
+            onChange={v => this.handleInput(v, "phone")}
             placeholder="请填写联系人电话"
+            thumb={<Text style={{ color: "red" }}>*</Text>}
           />
           <InputItem
-          multipleLine={false}
+            multipleLine={false}
             style={styles.input}
             clear
-            onChange={v=>this.handleInput(v,"wechat")}
+            onChange={v => this.handleInput(v, "wechat")}
             placeholder="请填写联系人微信"
           />
           <InputItem
-          multipleLine={false}
+            multipleLine={false}
             style={styles.input}
             clear
-            onChange={v=>this.handleInput(v,"qq")}
+            onChange={v => this.handleInput(v, "qq")}
             placeholder="请填写联系人QQ"
           />
           <InputItem
-          multipleLine={false}
+            multipleLine={false}
             style={styles.input}
             clear
-            onChange={v=>this.handleInput(v,"region")}
+            onChange={v => this.handleInput(v, "region")}
             placeholder="请填写地域，如：全国、沧州市、河北省"
           />
         </List>
         <View>
           <Text style={styles.selectorTitle}>附件上传</Text>
+          {!!fileName && <Text>{`已选择：${fileName}`}</Text>}
           <TouchableOpacity
             style={styles.selectBtn}
             onPress={this.showFileSelector}
@@ -139,7 +144,7 @@ const styles = StyleSheet.create({
   selectBtnText: {
     color: "#737373"
   },
-  inputBox:{
-    marginBottom:10
+  inputBox: {
+    marginBottom: 10
   }
 })

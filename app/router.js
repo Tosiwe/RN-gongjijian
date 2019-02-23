@@ -136,24 +136,8 @@ const MainNavigator = createStackNavigator(
     FormInfo: {
       // 发布页-编辑信息
       screen: FormInfo,
-      navigationOptions: ({ navigation }) => ({
-        title: `信息编辑`,
-        headerStyle: { backgroundColor: "#F9F9F9" },
-        headerLeft: (
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack()
-            }}
-          >
-            <Icon
-              name="left"
-              size={24}
-              color="black"
-              style={{ marginLeft: 13 }}
-            />
-          </TouchableOpacity>
-        )
-      })
+      navigationOptions: mainNavigationOptions
+
     },
     Seconds: {
       // 发布页-二手信息分类

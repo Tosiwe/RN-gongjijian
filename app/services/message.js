@@ -57,3 +57,11 @@ export async function getUploadToken(params) {
         body: params,
     })
   }
+
+// 城市
+export async function getGeoCode(params) {
+    return request(`http://118.24.107.177:7001/common/geo/coder`, {
+        method: "POST",
+        body: params,
+    })
+  }

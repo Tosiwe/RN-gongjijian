@@ -4,7 +4,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native"
+import { StyleSheet, View, Text, TouchableOpacity,ScrollView } from "react-native"
 import { List, InputItem, Toast } from "@ant-design/react-native"
 import Icon from "react-native-vector-icons/AntDesign"
 import { NavigationActions } from "react-navigation"
@@ -73,7 +73,7 @@ class SettleForm extends Component {
 
     // 选择发布分类
     return (
-      <View style={styles.wrap}>
+      <ScrollView style={styles.wrap}>
         <List style={styles.inputBox}>
           <InputItem
             multipleLine={false}
@@ -152,7 +152,8 @@ class SettleForm extends Component {
         <TouchableOpacity style={styles.btn} onPress={this.onSave}>
           <Text style={styles.btnText}>入驻</Text>
         </TouchableOpacity>
-      </View>
+        <View style={{height:300}} />
+      </ScrollView>
     )
   }
 }

@@ -32,7 +32,7 @@ class Publish extends Component {
       dispatch(
         NavigationActions.navigate({
           routeName: "FormDemand",
-          params: { id: el.id, name: "信息编辑" }
+          params: { id: el.id, name: `${el.text}-需求编辑` }
         })
       )
     } else if (el.id === "smarket") {
@@ -40,7 +40,7 @@ class Publish extends Component {
       dispatch(
         NavigationActions.navigate({
           routeName: "Seconds",
-          params: { id: el.id, name: el.text }
+          params: { id: el.id, name: `${el.text}-需求编辑` }
         })
       )
     } else if (el.id === "aptitude" || el.id === "reg") {
@@ -48,7 +48,7 @@ class Publish extends Component {
       dispatch(
         NavigationActions.navigate({
           routeName: "FormDemand",
-          params: { id: el.id, name: "信息编辑" }
+          params: { id: el.id, name: `${el.text}-需求编辑` }
         })
       )
     } else {

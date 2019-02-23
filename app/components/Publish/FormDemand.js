@@ -24,11 +24,18 @@ class FormDemand extends Component {
         region: "",
         qq: "",
         wechat: "",
-        picture1: "1",
-        picture2: "2",
-        picture3: "3",
-        picture4: "4",
-        classifyId: ""
+        picture1: "",
+        picture2: "",
+        picture3: "",
+        picture4: "",
+        classifyId: "",
+
+        file: "",
+        longitude: "",
+        latitude: "",
+        province: "",
+        city: "",
+        adcode: ""
       }
     };
   }
@@ -37,10 +44,6 @@ class FormDemand extends Component {
     const { id } = this.props.navigation.state.params;
     this.state.params.classifyId = id;
   }
-
-  fillForm = el => {
-    Toast.info(el.type);
-  };
 
   isLegal = () => {
     const { params } = this.state;
@@ -60,56 +63,102 @@ class FormDemand extends Component {
   };
 
   onSave = () => {
-    const { params } = this.state;
-    if (this.isLegal()) {
-      this.props.dispatch({
-        type: "app/saveDemandDraft",
-        payload: params,
-        callback: res => {
-          if (res.msg === "OK") {
-            Toast.success("保存成功！", 1, this.goHome);
+    this.getPosition().then(response => {
+      const { params } = this.state;
+      if (this.isLegal()) {
+        this.props.dispatch({
+          type: "app/saveDemandDraft",
+          payload: params,
+          callback: res => {
+            if (res.msg === "OK") {
+              Toast.success("保存成功！", 1, this.goHome);
+            }
           }
-        }
-      });
-      // this.props.dispatch(createAction('app/saveDemand')(params))
-    }
+        });
+      }
+    });
   };
 
   goHome = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'Home',
-        params: {  },
+        routeName: "Home",
+        params: {}
       })
-    )
-
-    // const backAction = NavigationActions.back();
-    // this.props.navigation.dispatch(backAction)
-    // NavigationActions.back()
+    );
   };
 
   onPublish = () => {
-    const { params } = this.state;
-    if (this.isLegal()) {
-      this.props.dispatch({
-        type: "app/saveDemand",
-        payload: params,
-        callback: res => {
-          if (res.msg === "OK") {
-            Toast.success("发布成功！", 1, this.goHome);
+    this.getPosition().then(response => {
+      const { params } = this.state;
+      if (this.isLegal()) {
+        this.props.dispatch({
+          type: "app/saveDemand",
+          payload: params,
+          callback: res => {
+            if (res.msg === "OK") {
+              Toast.success("发布成功！", 1, this.goHome);
+            }
           }
+        });
+      }
+    });
+  };
+
+  /** 获取地理位置（经纬度） */
+  getPosition = () =>
+    new Promise((resole, reject) => {
+      /** 获取地理位置 */
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          // console.warn('成功：' + JSON.stringify(position));
+          //  position.coords
+          // 经度：positionData.longitude
+          // 纬度：positionData.latitude
+          const { params } = this.state;
+          let newParams = { ...params };
+          const { longitude, latitude } = position;
+          newParams.longitude = longitude;
+          newParams.latitude = latitude;
+          this.props.dispatch({
+            type: "app/getGeoCode",
+            payload: {
+              lng: longitude,
+              lat: longitude
+            },
+            callback: res => {
+              if (res.msg === "OK") {
+                newParams = { ...newParams, ...res.result };
+                this.state.params = newParams;
+                resole();
+              }
+            }
+          });
+        },
+        error => {
+          console.warn(`失败：${JSON.stringify(error.message)}`);
+          reject();
+        },
+        {
+          // 提高精确度，但是获取的速度会慢一点
+          enableHighAccuracy: true,
+          // 设置获取超时的时间20秒
+          timeout: 20000,
+          // 示应用程序的缓存时间，每次请求都是立即去获取一个全新的对象内容
+          maximumAge: 1000
         }
-      });
-      // this.props.dispatch(createAction('app/saveDemand')(params))
+      );
+    });
+
+  handleChange = (value, name) => {
+    const { params } = this.state;
+    let p = { ...params };
+    if (name === "baseInfo") {
+      p = { ...p, ...value };
+    } else {
+      p[name] = value;
     }
-  };
-
-  changeTitle = v => {
-    this.state.params.title = v;
-  };
-
-  changeBaseInfo = params => {
-    this.setState({ params });
+    this.state.params = p;
   };
 
   render() {
@@ -122,7 +171,7 @@ class FormDemand extends Component {
         automaticallyAdjustContentInsets={false}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        onScrollEndDrag={this.handleScrollEnd}
+        // onScrollEndDrag={this.handleScrollEnd}
       >
         <Text style={styles.title}>
           {id === "aptitude" || id === "reg"
@@ -131,15 +180,18 @@ class FormDemand extends Component {
         </Text>
         <List style={styles.inputBox}>
           <InputItem
-          multipleLine={false}
+            multipleLine={false}
             style={styles.input}
             clear
-            onChange={this.changeTitle}
+            onChange={v => this.handleChange(v, "title")}
             maxLength={28}
             placeholder="请输入标题，28个字以内"
           />
         </List>
-        <BaseInfo onChange={this.changeBaseInfo} params={this.state.params} />
+        <BaseInfo
+          onChange={v => this.handleChange(v, "baseInfo")}
+          params={this.state.params}
+        />
         <Buttons onPublish={this.onPublish} onSave={this.onSave} />
         <WhiteSpace style={styles.bottom} />
       </ScrollView>

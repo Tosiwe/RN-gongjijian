@@ -27,7 +27,7 @@ class CompanyOrPerson extends Component {
     dispatch(
       NavigationActions.navigate({
         routeName: "FormInfo",
-        params: { type, name, title }
+        params: { type, name:`${name}-${title}`,  }
       })
     )
   };

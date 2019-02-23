@@ -155,21 +155,25 @@ export default {
     // ---------- 信息类 ----------
 
     // 保存信息发布
-    *saveInfo({ payload }, { call, put }) {
+    *saveInfo({ payload,callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.saveInfoReview, payload)
       if (res) {
-        yield put(NavigationActions.back())
+        const { id } = res.result
+        const response = yield call(infoService.reviewInfo, { id })
+        if (response && callback) {
+          callback(response)
+        }
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
     // 保存信息草稿
-    *saveInfoDraft({ payload }, { call, put }) {
+    *saveInfoDraft({ payload,callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.saveInfoDraft, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
@@ -215,11 +219,11 @@ export default {
     },
 
     // 我的信息指定类别
-    *getInfoListById({ payload }, { call, put }) {
+    *getInfoListById({ payload,callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.getInfoListById, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
@@ -417,7 +421,16 @@ export default {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
-    }
+    },
+    // get token
+    *getGeoCode({ payload,callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(messageService.getGeoCode, payload)
+      if (res&&callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
   },
   subscriptions: {
     setup({ dispatch }) {

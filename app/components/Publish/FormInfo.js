@@ -10,7 +10,12 @@ import { NavigationActions } from "react-navigation"
 import BaseInfo from "./BaseInfo"
 import Buttons from "./Buttons"
 
-const LABEL = ["名称", "品牌", "规格", "单位"]
+const LABEL = [
+  { key: "extraName", value: "名称" },
+  { key: "extraBrand", value: "品牌" },
+  { key: "extraSpec", value: "规格" },
+  { key: "extraUnit", value: "单位" }
+]
 
 @connect()
 class FormInfo extends Component {
@@ -25,75 +30,147 @@ class FormInfo extends Component {
         region: "",
         qq: "",
         wechat: "",
-        picture1: "1",
-        picture2: "2",
-        picture3: "3",
-        picture4: "4",
-        classifyId: ""
+        picture1: "",
+        picture2: "",
+        picture3: "",
+        picture4: "",
+        classifyId: "",
+
+        extraName: "",
+        extraBrand: "",
+        extraSpec: "",
+        extraUnit: "",
+        extraPrice: "",
+
+        file: "",
+        longitude: "",
+        latitude: "",
+        province: "",
+        city: "",
+        adcode: ""
       }
     }
   }
 
-  fillForm = el => {
-    Toast.info(el.type)
+  onSave = () => {
+    this.getPosition().then(response => {
+      const { params } = this.state
+      if (this.isLegal()) {
+        this.props.dispatch({
+          type: "app/saveInfoDraft",
+          payload: params,
+          callback: res => {
+            if (res.msg === "OK") {
+              Toast.success("保存成功！", 1, this.goHome)
+            }
+          }
+        })
+      }
+    })
   };
 
-
-  onSave = () => {
+  isLegal = () => {
     const { params } = this.state
-    if (this.isLegal()) {
-      this.props.dispatch({
-        type: "app/saveDemandDraft",
-        payload: params,
-        callback: res => {
-          if (res.msg === "OK") {
-            Toast.success("保存成功！", 1, this.goHome)
-          }
-        }
-      })
+    if (params.title === "") {
+      Toast.info("请填写标题")
+      return false
     }
+    if (params.contact === "") {
+      Toast.info("请填写联系人")
+      return false
+    }
+    if (params.phone === "") {
+      Toast.info("请填写电话")
+      return false
+    }
+    return true
   };
 
   goHome = () => {
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: 'Home',
-        params: {  },
+        routeName: "Home",
+        params: {}
       })
     )
-
-    // const backAction = NavigationActions.back();
-    // this.props.navigation.dispatch(backAction)
-    // NavigationActions.back()
   };
 
   onPublish = () => {
-    const { params } = this.state
     if (this.isLegal()) {
-      this.props.dispatch({
-        type: "app/saveDemand",
-        payload: params,
-        callback: res => {
-          if (res.msg === "OK") {
-            Toast.success("发布成功！", 1, this.goHome)
+      this.getPosition().then(response => {
+        const { params } = this.state
+
+        this.props.dispatch({
+          type: "app/saveInfo",
+          payload: params,
+          callback: res => {
+            if (res.msg === "OK") {
+              Toast.success("发布成功！", 1, this.goHome)
+            }
           }
-        }
+        })
       })
-      // this.props.dispatch(createAction('app/saveDemand')(params))
     }
   };
 
-
-  changeTitle = v => {
-    this.state.params.title = v
+  handleChange = (value, name) => {
+    const { params } = this.state
+    let p = { ...params }
+    if (name === "baseInfo") {
+      p = { ...p, ...value }
+    } else {
+      p[name] = value
+    }
+    this.state.params = p
   };
 
-  changeBaseInfo = params => {
-    this.setState({ params })
-  };
+  /** 获取地理位置（经纬度） */
+  getPosition = () =>
+    new Promise((resole, reject) => {
+      /** 获取地理位置 */
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          // console.warn('成功：' + JSON.stringify(position));
+          const position = pos.coords
+          // 经度：positionData.longitude
+          // 纬度：positionData.latitude
+          const { params } = this.state
+          let newParams = { ...params }
+          const { longitude, latitude } = position
+          newParams.longitude = longitude
+          newParams.latitude = latitude
+          this.props.dispatch({
+            type: "app/getGeoCode",
+            payload: {
+              lng: longitude,
+              lat: longitude
+            },
+            callback: res => {
+              if (res.msg === "OK") {
+                newParams = { ...newParams, ...res.result }
+                this.state.params = newParams
+                resole()
+              }
+            }
+          })
+        },
+        error => {
+          console.warn(`失败：${JSON.stringify(error.message)}`)
+          reject()
+        },
+        {
+          // 提高精确度，但是获取的速度会慢一点
+          enableHighAccuracy: true,
+          // 设置获取超时的时间20秒
+          timeout: 20000,
+          // 示应用程序的缓存时间，每次请求都是立即去获取一个全新的对象内容
+          maximumAge: 1000
+        }
+      )
+    });
 
   render() {
-    const { name, title, id } = this.props.navigation.state.params
+    const { name, id } = this.props.navigation.state.params
     // 选择发布分类
     return (
       <ScrollView
@@ -101,42 +178,47 @@ class FormInfo extends Component {
         automaticallyAdjustContentInsets={false}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        onScrollEndDrag={this.handleScrollEnd}
+        // onScrollEndDrag={this.handleScrollEnd}
       >
-        <Text style={styles.title}>{`${name}-${title}`}</Text>
+        <Text style={styles.title}>{name}</Text>
 
         <List style={styles.inputBox}>
           <InputItem
-          multipleLine={false}
+            multipleLine={false}
             clear
-            onChange={this.changeTitle}
+            onChange={v => this.handleChange(v, "title")}
             maxLength={28}
             placeholder="请输入标题，28个字以内"
           />
         </List>
         <List style={styles.inputBox}>
-          {LABEL.map(text => (
+          {LABEL.map(label => (
             <InputItem
-            multipleLine={false}
+              multipleLine={false}
               clear
-              onChange={v=>this.handleInput(v)}
+              onChange={v => this.handleChange(v, label.key)}
               placeholder={
-                id === 'smarket'
-                  ? `二手物品${text}`
-                  : `请输入材料${text}|租赁设备${text}`
+                id === "smarket"
+                  ? `二手物品${label.value}`
+                  : `请输入材料${label.value}|租赁设备${label.value}`
               }
             />
           ))}
           <InputItem
-          multipleLine={false}
+            multipleLine={false}
             clear
             type="number"
-            onChange={v=>this.handleInput(v)}
-            extra="元"
-            placeholder={id === 'smarket' ? "二手物品价格" : "请输入材料价格|租赁设备价格"}
+            onChange={v => this.handleChange(v, "extraPrice")}
+            extraa="元"
+            placeholder={
+              id === "smarket" ? "二手物品价格" : "请输入材料价格|租赁设备价格"
+            }
           />
         </List>
-        <BaseInfo onChange={this.changeBaseInfo} params={this.state.params}/>
+        <BaseInfo
+          onChange={v => this.handleChange(v, "baseInfo")}
+          params={this.state.params}
+        />
         <Buttons onPublish={this.onPublish} onSave={this.onSave} />
         <WhiteSpace style={styles.bottom} />
       </ScrollView>

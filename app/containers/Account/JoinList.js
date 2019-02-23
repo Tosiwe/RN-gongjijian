@@ -30,8 +30,31 @@ class JoinList extends Component {
   }
 
   ToSettle = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "Settle",
+        params: { name: "入驻行业" }
+      })
+    )
+  };
 
-    this.props.dispatch(NavigationActions.navigate({ routeName: "Settle",params:{name:"入驻行业"} }))
+  toMyPublish = item => {
+    const ids = {
+      classifyId: item.classifyId,
+      subClassifyId: item.subClassifyId
+    }
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "MyPublish",
+        params: {
+          ids,
+          name: `${INS_MAP[item.classifyId].name}-${
+            INS_MAP[item.subClassifyId].name
+          }`,
+          
+        }
+      })
+    )
   };
 
   render() {
@@ -63,6 +86,7 @@ class JoinList extends Component {
                   source={INS_MAP[item.classifyId].icon}
                 />
               }
+              onPress={() => this.toMyPublish(item)}
               arrow="horizontal"
             >
               {`${INS_MAP[item.classifyId].name}-${
