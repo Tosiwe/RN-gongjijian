@@ -2,21 +2,21 @@
 // native
 import React, { Component } from "react"
 import { View, StyleSheet, TouchableOpacity, Image, Text } from "react-native"
-import { Toast } from "@ant-design/react-native"
+// import { Toast } from "@ant-design/react-native"
 import { connect } from "react-redux"
-import { createAction, NavigationActions } from "../../utils"
+import { NavigationActions } from "../../utils"
 
 @connect(({ app }) => ({ ...app }))
 
 class My extends Component {
   toEntry = key => {
     const map={
-      0:"MyPublish",
-      1:"MyLike",
-      2:"MyDownload",
-      3:"MyHistory",
+      0:{type:"MyPublish", name:"我的发布"},
+      1:{type:"MyLike", name:"我的收藏"},
+      2:{type:"MyDownload", name:"我的下载"},
+      3:{type:"MyHistory", name:"我的历史"},
     }
-    this.props.dispatch(NavigationActions.navigate({ routeName: map[key] ,params:{}}))
+    this.props.dispatch(NavigationActions.navigate({ routeName: map[key].type ,params:{name:map[key].name}}))
   };
 
   render() {

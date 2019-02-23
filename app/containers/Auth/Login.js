@@ -27,8 +27,18 @@ class Login extends Component {
 
   login = () => {
     const { params:payload } = this.state
+    if(!payload.phone){
+      Toast.info("请输入电话")
+      return null
+    }
+
+    if(!payload.password){
+      Toast.info("请输入密码")
+      return null
+    }
     payload.noNendAuth = true
     this.props.dispatch(createAction('app/login')(payload))
+    return null
   };
 
   onChange = (value, name) => {
@@ -60,6 +70,7 @@ class Login extends Component {
         <View>
           <List style={styles.list}>
             <InputItem
+            multipleLine={false}
               clear
               type="phone"
               placeholder="手机号"
@@ -70,6 +81,7 @@ class Login extends Component {
               <Icon style={styles.inputIcon} name="phone" />
             </InputItem>
             <InputItem
+            multipleLine={false}
               clear
               type="password"
               placeholder="密码"

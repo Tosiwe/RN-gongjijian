@@ -45,6 +45,8 @@ import FormDemand from "./components/Publish/FormDemand"
 import FormInfo from "./components/Publish/FormInfo"
 import Seconds from "./components/Publish/Seconds"
 import MyPublish from "./components/Publish/MyPublish"
+import Settle from "./components/Settle/Settle"
+import SettleForm from "./components/Settle/SettleForm"
 // 底部标签导航
 const HomeNavigator = createBottomTabNavigator({
   Home: { screen: Home },
@@ -201,6 +203,16 @@ const MainNavigator = createStackNavigator(
     EditProfile: {
       // 修改资料
       screen: EditProfile,
+      navigationOptions: mainNavigationOptions
+    },
+    Settle: {
+      // 新入驻
+      screen: Settle,
+      navigationOptions: mainNavigationOptions
+    },
+    SettleForm: {
+      // 入驻表单
+      screen: SettleForm,
       navigationOptions: mainNavigationOptions
     },
     

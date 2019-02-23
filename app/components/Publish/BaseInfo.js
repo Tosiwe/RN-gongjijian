@@ -58,12 +58,14 @@ export default class BaseInfo extends Component {
         </List>
         <List>
           <InputItem
+          multipleLine={false}
             style={styles.input}
             clear
             onChange={v=>this.handleInput(v,"contact")}
             placeholder="请填写联系人姓名"
           />
           <InputItem
+          multipleLine={false}
             style={styles.input}
             type="phone"
             clear
@@ -71,18 +73,21 @@ export default class BaseInfo extends Component {
             placeholder="请填写联系人电话"
           />
           <InputItem
+          multipleLine={false}
             style={styles.input}
             clear
             onChange={v=>this.handleInput(v,"wechat")}
             placeholder="请填写联系人微信"
           />
           <InputItem
+          multipleLine={false}
             style={styles.input}
             clear
             onChange={v=>this.handleInput(v,"qq")}
             placeholder="请填写联系人QQ"
           />
           <InputItem
+          multipleLine={false}
             style={styles.input}
             clear
             onChange={v=>this.handleInput(v,"region")}

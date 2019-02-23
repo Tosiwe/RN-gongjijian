@@ -67,6 +67,7 @@ class BindPhone extends Component {
         <View>
           <List style={styles.list}>
             <InputItem
+            multipleLine={false}
               clear
               type="phone"
               placeholder="手机号"
@@ -77,6 +78,7 @@ class BindPhone extends Component {
               <Icon style={styles.inputIcon} name="phone" />
             </InputItem>
             <InputItem
+            multipleLine={false}
               clear
               type="number"
               placeholder="验证码"

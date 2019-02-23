@@ -28,9 +28,31 @@ class ResetPassword extends Component {
 
   handlePress = () => {
     const { params: payload } = this.state
+
+    if(!payload.phone){
+      Toast.info("请输入电话")
+      return null
+    }
+
+    if(!payload.password){
+      Toast.info("请输入密码")
+      return null
+    }
+
+    if(!payload.verifyPassword){
+      Toast.info("请输入确认密码")
+      return null
+    }
+
+    if(!payload.verifyCode){
+      Toast.info("请输入验证码")
+      return null
+    }
+
     if (payload.password === payload.verifyPassword) {
       this.props.dispatch(createAction("app/register")(payload))
     }
+    return null
   };
 
   onChange = (value, name) => {
@@ -76,6 +98,7 @@ class ResetPassword extends Component {
         <View>
           <List style={styles.list}>
             <InputItem
+            multipleLine={false}
               clear
               type="phone"
               placeholder="手机号"
@@ -86,6 +109,7 @@ class ResetPassword extends Component {
               <Icon style={styles.inputIcon} name="phone" />
             </InputItem>
             <InputItem
+            multipleLine={false}
               clear
               type="number"
               placeholder="验证码"
@@ -112,6 +136,7 @@ class ResetPassword extends Component {
               <Icon style={styles.inputIcon} name="mobile1" />
             </InputItem>
             <InputItem
+            multipleLine={false}
               clear
               type="password"
               placeholder="密码"
@@ -121,6 +146,7 @@ class ResetPassword extends Component {
               <Icon style={styles.inputIcon} name="lock" />
             </InputItem>
             <InputItem
+            multipleLine={false}
               clear
               type="password"
               placeholder="确认密码"

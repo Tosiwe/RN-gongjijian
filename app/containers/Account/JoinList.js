@@ -5,6 +5,7 @@ import { View, StyleSheet, Text, TouchableOpacity, Image } from "react-native"
 import { List } from "@ant-design/react-native"
 import Icon from "react-native-vector-icons/AntDesign"
 import { connect } from "react-redux"
+import { NavigationActions } from "react-navigation"
 import { INS_MAP } from "../../utils/dataDic"
 
 const { Item } = List
@@ -28,6 +29,11 @@ class JoinList extends Component {
     })
   }
 
+  ToSettle = () => {
+
+    this.props.dispatch(NavigationActions.navigate({ routeName: "Settle",params:{name:"入驻行业"} }))
+  };
+
   render() {
     const { joinList } = this.state
     return (
@@ -39,14 +45,26 @@ class JoinList extends Component {
               我的入住
             </Text>
           </View>
-          <TouchableOpacity style={{ flexDirection: "row" }}>
+          <TouchableOpacity
+            style={{ flexDirection: "row" }}
+            onPress={this.ToSettle}
+          >
             <Text style={{ fontSize: 14, color: "orange" }}>继续入住</Text>
             <Icon name="plus" color="orange" size={14} />
           </TouchableOpacity>
         </View>
         <List style={styles.list}>
           {joinList.map(item => (
-            <Item key={item.id} thumb={<Image style={styles.icon} source={ INS_MAP[item.classifyId].icon}/>} arrow="horizontal">
+            <Item
+              key={item.id}
+              thumb={
+                <Image
+                  style={styles.icon}
+                  source={INS_MAP[item.classifyId].icon}
+                />
+              }
+              arrow="horizontal"
+            >
               {`${INS_MAP[item.classifyId].name}-${
                 INS_MAP[item.subClassifyId].name
               }`}
@@ -77,7 +95,7 @@ const styles = StyleSheet.create({
   },
   icon: {
     width: 30,
-    height: 30,
+    height: 30
   },
   text: {
     fontSize: 16

@@ -107,14 +107,17 @@ class FormInfo extends Component {
 
         <List style={styles.inputBox}>
           <InputItem
+          multipleLine={false}
             clear
             onChange={this.changeTitle}
-            placeholder="请输入标题10~28个字"
+            maxLength={28}
+            placeholder="请输入标题，28个字以内"
           />
         </List>
         <List style={styles.inputBox}>
           {LABEL.map(text => (
             <InputItem
+            multipleLine={false}
               clear
               onChange={v=>this.handleInput(v)}
               placeholder={
@@ -125,6 +128,7 @@ class FormInfo extends Component {
             />
           ))}
           <InputItem
+          multipleLine={false}
             clear
             type="number"
             onChange={v=>this.handleInput(v)}

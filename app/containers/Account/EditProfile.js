@@ -161,6 +161,7 @@ class EditProfile extends Component {
     return (
       <List>
         <InputItem
+        multipleLine={false}
           clear
           onChange={value => {
             this.state.value = value

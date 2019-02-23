@@ -227,11 +227,11 @@ export default {
     // ---------- 入驻类 ----------
 
     // 商家入驻
-    *settleNew({ payload }, { call, put }) {
+    *settleNew({ payload ,callback}, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(settleService.settleNew, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },

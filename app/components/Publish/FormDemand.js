@@ -131,10 +131,12 @@ class FormDemand extends Component {
         </Text>
         <List style={styles.inputBox}>
           <InputItem
+          multipleLine={false}
             style={styles.input}
             clear
             onChange={this.changeTitle}
-            placeholder="请输入标题10~28个字"
+            maxLength={28}
+            placeholder="请输入标题，28个字以内"
           />
         </List>
         <BaseInfo onChange={this.changeBaseInfo} params={this.state.params} />
