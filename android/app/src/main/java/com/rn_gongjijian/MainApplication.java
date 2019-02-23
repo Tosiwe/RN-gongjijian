@@ -3,8 +3,8 @@ package com.rn_gongjijian;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
-import ui.fileselector.RNFileSelectorPackage;
 import com.imagepicker.ImagePickerPackage;
+import ui.fileselector.RNFileSelectorPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactNativeHost;
@@ -28,8 +28,8 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-            new RNFileSelectorPackage(),
             new ImagePickerPackage(),
+            new RNFileSelectorPackage(),
             new VectorIconsPackage()
 //            new VectorIconsPackage()
       );
