@@ -512,9 +512,10 @@ export default {
       yield put(createAction("updateState")({ res, fetching: false }))
     },
     // cai  ni xi huan
-    *gesslikeList({ payload, callback }, { call, put }) {
+    *guesslikeList({ payload, callback }, { call, put }) {
+      debugger
       yield put(createAction("updateState")({ fetching: true }))
-      const res = yield call(messageService.gesslikeList, payload)
+      const res = yield call(messageService.guesslikeList, payload)
       if (res && callback) {
         callback(res)
       }

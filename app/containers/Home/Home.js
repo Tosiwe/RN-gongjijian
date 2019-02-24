@@ -9,8 +9,8 @@ import {
 } from "react-native"
 
 import { connect } from "react-redux"
+import {Toast} from "@ant-design/react-native"
 import { Storage, NavigationActions } from "../../utils"
-
 import Ads from "./Ads"
 import Top from "./Top"
 import Entries from "../../components/Entries/Entries"
@@ -71,7 +71,7 @@ class Home extends Component {
     const isContentFillPage = contentHeight >= scrollViewHeight // 内容高度是否大于列表高度
 
     if (isContentFillPage && isEndReached) {
-      // alert("给我数据，我还可以继续加载～～～")
+      Toast.info ("已经到底啦～")
     }
   };
 

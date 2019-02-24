@@ -22,7 +22,7 @@ class Ads extends Component {
       callback: res => {
         if (res.msg === "OK") {
           this.setState({
-            list: res.result.data
+            list: res.result
           })
         }
       }
@@ -30,7 +30,9 @@ class Ads extends Component {
   };
 
   render() {
+    const {data}= this.props
     const { list } = this.state
+    const imgList =data||list
     return (
       <Carousel
         style={this.props.noRadius ? "" : styles.ads}
@@ -38,8 +40,8 @@ class Ads extends Component {
         autoplay
         infinite
       >
-        {list.length ? (
-          list.map(item => (
+        {imgList.length ? (
+          imgList.map(item => (
             <View style={styles.containerHorizontal} key={Math.random()}>
               <Image
                 style={styles.item}

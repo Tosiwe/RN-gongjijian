@@ -28,18 +28,19 @@ class Detail extends Component {
   }
 
   componentDidMount() {
-    const { data={} } = this.props
-    const imgSet = new Set([
-      data.picture1,
-      data.picture2,
-      data.picture3,
-      data.picture3
-    ])
-    this.setState({ imgList: Array.from(imgSet) })
+    const { data = {} } = this.props.navigation.state.params
+    const imgSet = [data.picture1, data.picture2, data.picture3, data.picture3]
+    const imgList = []
+    imgSet.forEach(item => {
+      if (item) {
+        imgList.push({ url: item })
+      }
+    })
+    this.setState({ imgList })
   }
 
   render() {
-    const { data={} } = this.props
+    const { data = {} } = this.props
     const { imgList } = this.state
     return (
       <View style={styles.home}>

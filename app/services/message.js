@@ -84,14 +84,14 @@ export async function searchHotList(params) {
 
 // banner
 export async function bannerList(params) {
-    return request(`http://118.24.107.177:7001//home/banner/list`, {
+    return request(`http://118.24.107.177:7001/home/banner/list`, {
         method: "POST",
         body: params,
     })
   }
 
 // 猜你喜欢
-export async function gesslikeList(params) {
+export async function guesslikeList(params) {
     return request(`http://118.24.107.177:7001/home/guesslike/list`, {
         method: "POST",
         body: params,

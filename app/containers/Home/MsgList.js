@@ -34,11 +34,15 @@ class MsgList extends Component {
 
 componentDidMount=()=>{
   this.props.dispatch({
-    type: "app/bannerList",
+    type: "app/guesslikeList",
+    payload:{
+      ps:10,
+      pn:1
+    },
     callback: res => {
       if (res.msg === "OK") {
         this.setState({
-          list: res.result.data
+          list: res.result
         })
       }
     }

@@ -26,7 +26,7 @@ class ListItem extends Component {
       <TouchableOpacity key={data.id} onPress={this.toDetail}>
         <View style={styles.wrap}>
           <View style={styles.left}>
-            <Image source={{ uri: data.url }} style={styles.img} />
+            <Image source={{ uri: data.picture1 }} style={styles.img} />
           </View>
           <View style={styles.right}>
             <Text style={styles.title}>{data.title}</Text>
