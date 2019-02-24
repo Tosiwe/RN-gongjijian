@@ -81,7 +81,7 @@ export default {
       yield call(Storage.set, "auth", "")
       yield put(
         NavigationActions.navigate({
-          routeName: "HomeNavigator"
+          routeName: "Login"
         })
       )
       yield put(createAction("updateState")({ login: false }))
@@ -513,7 +513,6 @@ export default {
     },
     // cai  ni xi huan
     *guesslikeList({ payload, callback }, { call, put }) {
-      debugger
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.guesslikeList, payload)
       if (res && callback) {
@@ -553,9 +552,9 @@ export default {
       yield put(createAction("updateState")({ res, fetching: false }))
     },
     
-    *createOrderContant({ payload, callback }, { call, put }) {
+    *createOrderContact({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
-      const res = yield call(orderService.createOrderContant, payload)
+      const res = yield call(orderService.createOrderContact, payload)
       if (res && callback) {
         callback(res)
       }
@@ -574,6 +573,15 @@ export default {
     *createOrderAttach({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(orderService.createOrderAttach, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+    
+    *queryOrder({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(orderService.queryOrder, payload)
       if (res && callback) {
         callback(res)
       }

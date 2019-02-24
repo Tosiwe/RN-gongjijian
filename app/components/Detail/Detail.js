@@ -40,7 +40,7 @@ class Detail extends Component {
   }
 
   render() {
-    const { data = {} } = this.props
+    const { data = {} } = this.props.navigation.state.params
     const { imgList } = this.state
     return (
       <View style={styles.home}>
@@ -53,6 +53,7 @@ class Detail extends Component {
           <Pics data={imgList} noRadius />
           <Auth data={data} />
           <BaseInfo data={data} />
+          <View style={{height:400}} />
         </ScrollView>
         <Bottom data={data} />
       </View>

@@ -8,14 +8,6 @@ export async function creatRechargeOrder(params) {
     })
   }
 
-// order list
-export async function getOrderList(params) {
-    return request(`http://118.24.107.177:7001/order/list`, {
-        method: "POST",
-        body: params,
-    })
-  }
-
 // create vip order
 export async function createVipOrder(params) {
     return request(`http://118.24.107.177:7001/order/vip/create`, {
@@ -24,9 +16,26 @@ export async function createVipOrder(params) {
     })
   }
 
-// order list
-export async function createOrderContant(params) {
+// create vip order
+export async function getOrderList(params) {
+    return request(`http://118.24.107.177:7001/order/vip/create`, {
+        method: "POST",
+        body: params,
+    })
+  }
+
+// create vip order
+export async function createOrderContact(params) {
     return request(`http://118.24.107.177:7001/order/contact/create`, {
+        method: "POST",
+        body: params,
+    })
+  }
+
+// order list
+export async function queryOrder(params) {
+    // debugger
+    return request(`http://118.24.107.177:7001/order/query`, {
         method: "POST",
         body: params,
     })

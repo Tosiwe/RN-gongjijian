@@ -137,13 +137,20 @@ class Vip extends Component {
   };
 
   render() {
-    const { vipInfo, activeKey, payVisible, userFinance } = this.state
+    const {
+      vipInfo,
+      activeKey,
+      payVisible,
+      userFinance,
+      timeStamp
+    } = this.state
     const info = vipInfo[activeKey]
     const payData = {
       use: "会员充值",
       name: info && info.title,
       price: info && info.price,
-      type: "vip"
+      type: "vip",
+      vip: info && info.key
     }
     return (
       <View style={styles.container}>
@@ -167,7 +174,10 @@ class Vip extends Component {
           <TouchableOpacity
             style={styles.btn}
             onPress={() => {
-              this.setState({ payVisible: true })
+              this.setState({
+                payVisible: true,
+                timeStamp: moment().format("x")
+              })
             }}
           >
             <Text style={styles.btnText}>立即开通</Text>
@@ -176,7 +186,7 @@ class Vip extends Component {
         <Pay
           onSuccess={this.paySuccess}
           visible={payVisible}
-          timeStamp={moment().format("x")}
+          timeStamp={timeStamp}
           data={payData}
         />
       </View>

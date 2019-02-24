@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 
 import { StyleSheet, View, Text, Image, FlatList } from "react-native"
-import { Tabs } from "@ant-design/react-native"
+import { Tabs, Toast } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 // import { list } from "./data"
 import { screenWidth } from "../../styles/common"
@@ -27,42 +27,39 @@ class SearchResult extends Component {
         tabs.push({ title: item.text, ...item })
       }
     })
-    this.setState({ tabs },  this.getList  )
-   
+    this.setState({ tabs }, this.getList)
   }
 
-
-  getList =(classifyId="hbuilding")=>{
+  getList = (classifyId = "hbuilding") => {
     const { params } = this.props.navigation.state.params
-    if(!params.classifyId){
+    if (!params.classifyId) {
       params.classifyId = classifyId
     }
-    this.setState({pageKey:classifyId})
-    
-    getPosition({...this}).then(result => {
-      if (result.isSuccess) {
-        this.props.dispatch({
-          type: "app/search",
-          payload: result.params,
-          callback: res => {
-            if (res.msg === "OK") {
-              const { list } = this.state
-              const newList = { ...list }
-              newList[params.classifyId] = res.result
-              this.setState({ list: newList })
+    this.setState({ pageKey: classifyId })
+
+    getPosition({ ...this })
+      .then(result => {
+        if (result.isSuccess) {
+          this.props.dispatch({
+            type: "app/search",
+            payload: result.params,
+            callback: res => {
+              if (res.msg === "OK") {
+                const { list } = this.state
+                const newList = { ...list }
+                newList[params.classifyId] = res.result
+                this.setState({ list: newList })
+              }
             }
-          }
-        })
-      }
-    })
-  }
+          })
+        }
+      })
+      .catch(err => {
+        Toast.error("发布失败，无法获取定位，请设置获取定位权限")
+      })
+  };
 
-
-  renderItem = ({ item }) => (
-    <ListItem
-      data={item}
-    />
-  );
+  renderItem = ({ item }) => <ListItem data={item} />;
 
   // renderItem = ({ item }) => (
   //   <View style={styles.wrap}>
@@ -77,44 +74,26 @@ class SearchResult extends Component {
   // );
 
   render() {
-    const { tabs,list,pageKey } = this.state
+    const { tabs, list, pageKey } = this.state
     return (
       <View style={styles.container}>
-        <Tabs
-          tabs={tabs}
-          onChange={tab=>this.getList(tab.id)}
-          page={pageKey||"hbuilding"}
-          styles={{ topTabBarSplitLine: "#000" }}
-          tabBarUnderlineStyle={{ backgroundColor: "#FF7720" }}
-        >
-          <View key={tabs.id} style={styles.content}>
-            <FlatList data={list[tabs.id]} renderItem={this.renderItem} />
-          </View>
-          <View key={tabs.id} style={styles.content}>
-            <FlatList data={list[tabs.id]} renderItem={this.renderItem} />
-          </View>
-          <View key={tabs.id} style={styles.content}>
-            <FlatList data={list[tabs.id]} renderItem={this.renderItem} />
-          </View>
-          <View key={tabs.id} style={styles.content}>
-            <FlatList data={list[tabs.id]} renderItem={this.renderItem} />
-          </View>
-          <View key={tabs.id} style={styles.content}>
-            <FlatList data={list[tabs.id]} renderItem={this.renderItem} />
-          </View>
-          <View key={tabs.id} style={styles.content}>
-            <FlatList data={list[tabs.id]} renderItem={this.renderItem} />
-          </View>
-          <View key={tabs.id} style={styles.content}>
-            <FlatList data={list[tabs.id]} renderItem={this.renderItem} />
-          </View>
-          <View key={tabs.id} style={styles.content}>
-            <FlatList data={list[tabs.id]} renderItem={this.renderItem} />
-          </View>
-          <View key={tabs.id} style={styles.content}>
-            <FlatList data={list[tabs.id]} renderItem={this.renderItem} />
-          </View>
-        </Tabs>
+        {list[tabs.id] ? (
+          <Tabs
+            tabs={tabs}
+            onChange={tab => this.getList(tab.id)}
+            page={pageKey || "hbuilding"}
+            styles={{ topTabBarSplitLine: "#000" }}
+            tabBarUnderlineStyle={{ backgroundColor: "#FF7720" }}
+          >
+            <View key={tabs.id} style={styles.content}>
+              <FlatList data={list[tabs.id]} renderItem={this.renderItem} />
+            </View>
+          </Tabs>
+        ) : (
+          <Text style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}>
+            暂无数据
+          </Text>
+        )}
       </View>
     )
   }
@@ -127,6 +106,7 @@ const styles = StyleSheet.create({
     paddingTop: 10
   },
   container: {
+    flex: 1,
     backgroundColor: "#FFF",
     paddingHorizontal: 10
   },

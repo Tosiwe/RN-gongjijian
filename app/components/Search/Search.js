@@ -39,7 +39,8 @@ class Search extends Component {
       NavigationActions.navigate({
         routeName: "SearchResult",
         params:{
-          params
+          params,
+          name:"搜索结果"
         }
       })
     )

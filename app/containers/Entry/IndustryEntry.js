@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 
 import { StyleSheet, View, Text, FlatList } from "react-native"
-import { List, ActivityIndicator } from "@ant-design/react-native"
+import { List, ActivityIndicator,Toast } from "@ant-design/react-native"
 import {NavigationActions} from "react-navigation"
 import { screenHeight, primaryColor } from "../../styles/common"
 import ListItem from "../../components/ListIem/ListItem"
@@ -62,6 +62,8 @@ class IndustryEntry extends Component {
       }else{
         this.setState({ loading: false })
       }
+    }).catch(err=>{
+      Toast.error("发布失败，无法获取定位，请设置获取定位权限")
     })
   };
 
@@ -95,6 +97,8 @@ class IndustryEntry extends Component {
       }else{
         this.setState({ loading: false })
       }
+    }).catch(err=>{
+      Toast.error("发布失败，无法获取定位，请设置获取定位权限")
     })
   };
 

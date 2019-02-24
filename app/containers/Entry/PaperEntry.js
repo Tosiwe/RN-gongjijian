@@ -10,7 +10,7 @@ import {
   ActivityIndicator,
   TouchableOpacity
 } from "react-native"
-import { Tabs } from "@ant-design/react-native"
+import { Tabs,Toast } from "@ant-design/react-native"
 import {NavigationActions} from "react-navigation"
 import { screenWidth } from "../../styles/common"
 import { getPosition } from "../../utils/utils"
@@ -76,7 +76,7 @@ class PaperEntry extends Component {
 
   changeTab = tab => {
     this.state.params.subClassifyId = tab.id
-    this.getInfoList()
+    this.getPeperList()
   };
 
   getPeperList = (pn = 1) => {
@@ -108,6 +108,8 @@ class PaperEntry extends Component {
       } else {
         this.setState({ loading: false })
       }
+    }).catch(err=>{
+      Toast.error("发布失败，无法获取定位，请设置获取定位权限")
     })
   };
 

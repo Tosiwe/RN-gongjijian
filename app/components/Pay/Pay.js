@@ -3,7 +3,6 @@ import {
   // Platform,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View
 } from "react-native"
 import Alipay from "react-native-yunpeng-alipay"
@@ -64,11 +63,14 @@ export default class App extends Component {
           if (res.code === 10000) {
             this.createOrder()
           } else {
-            Toast.error(`error code:${res.code}`)
+            Toast.info(`error code:${res.code}`)
           }
         },
         err => {
           console.log(err)
+          Toast.info("付款出错了")
+        //   this.createOrder()
+
         }
       )
     })
@@ -78,48 +80,65 @@ export default class App extends Component {
     const { data } = this.props
     const map = {
       vip: "app/createVipOrder",
-      contact: "app/createOrderContant",
+      contact: "app/createOrderContact",
       paper: "app/createOrderPaper",
       attach: "app/createOrderAttach"
     }
+    const payload = {}
 
-    return new Promise(resole => {
-      this.props.dispatch({
-        type: "app/queryOrder",
-        payload: {
-          id: this.state.id
-        },
-        callback: res => {
-          if (res.msg === "OK") {
-            resole(res.result)
+    if (data.type === "vip") payload.type = data.vip
+
+    this.props.dispatch({
+        type: map[data.type],
+        payload,
+        // payload: {
+        //   sourceId: data.classifyId
+        // },
+        callback: response => {
+          if (response.msg === "OK") {
+            Toast.success("下单成功")
+           // eslint-disable-next-line no-unused-expressions
+           this.props.onSuccess && this.props.onSuccess()
+           this.setState({visible:false})
           }
         }
       })
-    }).then(result => {
-      if (
-        result.tradeStatus === "TRADE_SUCCESS" ||
-        result.tradeStatus === "TRADE_FINISHED"
-      ) {
-        Toast.success("付款成功")
 
-        this.props.dispatch({
-          type: map[data.type],
-          payload: {
-            sourceId: data.classifyId
-          },
-          callback: response => {
-            if (response.msg === "OK") {
-             // eslint-disable-next-line no-unused-expressions
-             this.props.onSuccess && this.props.onSuccess() 
-             this.setState({visible:false})
-            }
-          }
-        })
-      } else {
-        Toast.success("付款出错了")
-      }
-    })
-  };
+    // return new Promise(resole => {
+    //   this.props.dispatch({
+    //     type: "app/queryOrder",
+    //     payload: {
+    //       id: this.state.orderId
+    //     },
+    //     callback: res => {
+    //       if (res.msg === "OK") {
+    //         resole(res.result)
+    //       }
+    //     }
+    //   })
+    // }).then(result => {
+    //   if (
+    //     result.tradeStatus === "TRADE_SUCCESS" ||
+    //     result.tradeStatus === "TRADE_FINISHED"
+    //   ) {
+    //     // Toast.success("付款成功")
+
+    //     this.props.dispatch({
+    //       type: map[data.type],
+    //       payload,
+    //       callback: response => {
+    //         if (response.msg === "OK") {
+    //           // eslint-disable-next-line no-unused-expressions
+    //           this.props.onSuccess && this.props.onSuccess()
+    //           this.setState({ visible: false })
+    //         }
+    //       }
+    //     })
+    //   } else {
+    //     Toast.success("付款出错了")
+    //   }
+    // })
+};
 
   pay = () => {
     const { payType } = this.state

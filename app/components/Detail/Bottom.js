@@ -17,7 +17,7 @@ class Detail extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      hasPaied: true,
+      hasPaied: false,
       likeType: props.likeType || 0
     }
   }
@@ -36,49 +36,68 @@ class Detail extends Component {
     })
   };
 
-  onServer = name => {
-    const { hasPaied } = this.state
-    const { data = {} } = this.props
-    if (hasPaied) {
-      if (name === "phone") {
-        Linking.openURL(data.phone || "tel:10010")
-      } else {
-        this.showModal(data[name], name)
-      }
-    }
-  };
+  // onServer = name => {
+  //   const { hasPaied } = this.state
+  //   const { data = {} } = this.props
+  //   if (hasPaied) {
+  //     if (name === "phone") {
+  //       Linking.openURL(data.phone || "tel:10010")
+  //     } else {
+  //       this.showModal(data[name], name)
+  //     }
+  //   }
+  // };
 
   onClose = () => {
     this.setState({ visible: false })
   };
 
-  showPayModal = () => {
+  showPayModal = name => {
+    const { hasPaied } = this.state
+    const { data = {} } = this.props
+
+    if (hasPaied) {
+      if (name === "phone") {
+        Linking.openURL(data.phone ? `tel:${data.phone}` : "tel:10010")
+      } else {
+        this.showModal(data[name], name)
+      }
+    } else {
+      this.setState({
+        timeStamp: moment().format("x"),
+        payVisible: true
+      })
+    }
+  };
+
+  showModal = (content = "123123", title) => {
+    const map = {
+      download: "下载",
+      phone: "电话",
+      wechat: "微信",
+      qq: "QQ"
+    }
     this.setState({
-      payVisible: true
+      visible: true,
+      ModalTitle: map[title],
+      content
     })
   };
 
-  payCLose = () => {
-    this.setState({})
+  paySuccess = () => {
+    this.setState({ hasPaied: true })
   };
 
-  // showModal = (content = "123123", title) => {
-  //   const map = {
-  //     download: "下载",
-  //     phone: "电话",
-  //     wechat: "微信",
-  //     qq: "QQ"
-  //   }
-  //   this.setState({
-  //     visible: true,
-  //     ModalTitle: map[title],
-  //     content
-  //   })
-  // };
-
   render() {
-    const { isPaper ,data} = this.props
-    const { likeType, visible, ModalTitle, content, payVisible } = this.state
+    const { isPaper, data } = this.props
+    const {
+      likeType,
+      visible,
+      ModalTitle,
+      content,
+      payVisible,
+      timeStamp
+    } = this.state
     return (
       <View>
         <Modal
@@ -165,12 +184,13 @@ class Detail extends Component {
         <View style={{ backgroundColor: "red" }}>
           <Pay
             visible={payVisible}
-            timeStamp={moment().format("x")}
+            timeStamp={timeStamp}
             onSuccess={this.paySuccess}
             data={{
-              use:"获取联系方式",
-              name:data.title,
-              price:"2.00",
+              use: "获取联系方式",
+              name: data.title,
+              price: "2.00",
+              type: "contact"
             }}
           />
         </View>

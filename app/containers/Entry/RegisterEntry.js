@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   TouchableOpacity
 } from "react-native"
-import { Tabs } from "@ant-design/react-native"
+import { Tabs ,Toast} from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import { getPosition } from "../../utils/utils"
 
@@ -89,6 +89,8 @@ class RegisterEntry extends Component {
       } else {
         this.setState({ loading: false })
       }
+    }).catch(err=>{
+      Toast.error("发布失败，无法获取定位，请设置获取定位权限")
     })
   };
 

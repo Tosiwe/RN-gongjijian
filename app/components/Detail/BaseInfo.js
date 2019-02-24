@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { StyleSheet, View, Image, Text, TouachableOpacity } from "react-native"
 import { connect } from "react-redux"
+import {Toast} from "@ant-design/react-native"
 import Icon from "react-native-vector-icons/AntDesign"
 
 @connect()
@@ -13,7 +14,7 @@ class BaseInfo extends Component {
   }
 
   checkFile=()=>{
-    console.log(23)
+    Toast.info("暂无附件")
   }
 
   render() {
@@ -88,13 +89,13 @@ class BaseInfo extends Component {
           </View>
           <Text style={styles.detailText}>{data.desc}</Text>
         </View>
-        {/* <TouachableOpacity
+        <TouachableOpacity
           style={[styles.row, { justifyContent: "space-between" }]}
           onPress={this.checkFile}
         >
           <Text>查看附件</Text>
           <Icon name="right" style={{ color: "#727272" }} />
-        </TouachableOpacity> */}
+        </TouachableOpacity>
         <View style={[styles.row, styles.bottomRow]} />
       </View>
     )

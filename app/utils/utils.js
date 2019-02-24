@@ -27,6 +27,9 @@ export const getPosition = (that) =>
               newParams = { ...newParams, ...res.result }
               // this.state.params = newParams;
               resole({isSuccess:true,params:newParams})
+            }else{
+              reject() 
+              // Toast.info("获取定位失败")
             }
           }
         })

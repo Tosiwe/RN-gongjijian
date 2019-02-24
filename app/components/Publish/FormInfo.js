@@ -65,12 +65,8 @@ class FormInfo extends Component {
       Toast.info("请填写标题")
       return false
     }
-    if (params.title.length < 14) {
+    if (params.title.length < 10) {
       Toast.info("标题字数应在10-28个字")
-      return false
-    }
-    if (params.title.length < 50) {
-      Toast.info("详细描述应在50字以上")
       return false
     }
     if (params.contact === "") {
@@ -98,6 +94,8 @@ class FormInfo extends Component {
           }
         })
       }
+    }).catch(err=>{
+      Toast.error("发布失败，无法获取定位，请设置获取定位权限")
     })
   };
 
@@ -124,6 +122,8 @@ class FormInfo extends Component {
           }
         })
       }
+    }).catch(err=>{
+      Toast.error("发布失败，无法获取定位，请设置获取定位权限")
     })
   };
 
