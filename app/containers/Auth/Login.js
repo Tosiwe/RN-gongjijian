@@ -63,7 +63,7 @@ class Login extends Component {
   }
 
   wechatLogin=()=>{
-    Toast.info("即将推出")
+    Toast.info("正在施工...")
   }
 
   render() {

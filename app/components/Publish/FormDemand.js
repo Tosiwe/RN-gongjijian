@@ -91,7 +91,7 @@ class FormDemand extends Component {
         });
       }
     }).catch(err=>{
-      Toast.error("发布失败，无法获取定位，请设置获取定位权限")
+      Toast.fail("发布失败，无法获取定位，请设置获取定位权限")
     });
   };
 
@@ -106,7 +106,7 @@ class FormDemand extends Component {
 
   onPublish = () => {
     const that = { ...this };
-    getPosition(that).then(result => {
+    getPosition(that,Toast).then(result => {
       if (this.isLegal() && result.isSuccess) {
         this.state.params = result.params;
         this.props.dispatch({
@@ -120,7 +120,7 @@ class FormDemand extends Component {
         });
       }
     }).catch(err=>{
-      Toast.error("发布失败，无法获取定位，请设置获取定位权限")
+      Toast.fail("发布失败，无法获取定位，请设置获取定位权限")
     });
   };
 

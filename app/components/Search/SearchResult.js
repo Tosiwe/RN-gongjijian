@@ -55,7 +55,7 @@ class SearchResult extends Component {
         }
       })
       .catch(err => {
-        Toast.error("发布失败，无法获取定位，请设置获取定位权限")
+        Toast.fail("发布失败，无法获取定位，请设置获取定位权限")
       })
   };
 

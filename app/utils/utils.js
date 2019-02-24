@@ -1,9 +1,9 @@
-
 /** 获取地理位置（经纬度） */
-export const getPosition = (that) =>
-
+export const getPosition = (that, Toast) =>
   new Promise((resole, reject) => {
-    const {params} = that.state
+    debugger
+    Toast.info("获取定位...")
+    const { params } = that.state
     /** 获取地理位置 */
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -26,10 +26,10 @@ export const getPosition = (that) =>
             if (res.msg === "OK") {
               newParams = { ...newParams, ...res.result }
               // this.state.params = newParams;
-              resole({isSuccess:true,params:newParams})
-            }else{
-              reject() 
-              // Toast.info("获取定位失败")
+              resole({ isSuccess: true, params: newParams })
+            } else {
+              reject()
+              Toast.info("获取定位失败")
             }
           }
         })

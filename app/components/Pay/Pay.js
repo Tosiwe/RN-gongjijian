@@ -145,7 +145,7 @@ export default class App extends Component {
     if (payType === "alipay") {
       this.aliPay()
     } else {
-      Toast.info("即将推出")
+      Toast.info("正在施工...")
       //   this.wechatPay()
     }
   };

@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.facebook.react.ReactApplication;
 import com.yunpeng.alipay.AlipayPackage;
-import com.theweflex.react.WeChatPackage;
 import com.imagepicker.ImagePickerPackage;
 import ui.fileselector.RNFileSelectorPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
@@ -31,7 +30,6 @@ public class MainApplication extends Application implements ReactApplication {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
             new AlipayPackage(),
-            new WeChatPackage(),
             new ImagePickerPackage(),
             new RNFileSelectorPackage(),
             new VectorIconsPackage()

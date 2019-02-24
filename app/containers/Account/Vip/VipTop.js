@@ -9,6 +9,7 @@ import {
   ImageBackground,
   Image
 } from "react-native"
+import{Toast}from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import Icon from "react-native-vector-icons/AntDesign"
 
@@ -68,6 +69,7 @@ class VipTop extends Component {
             <Icon name="left" style={styles.topLeft} />
           </TouchableOpacity>
           <Text style={styles.title}>VIP会员</Text>
+          <TouchableOpacity onPress={()=>{Toast("正在施工...")}}>
           <View
             style={{
               flexDirection: "row",
@@ -77,6 +79,7 @@ class VipTop extends Component {
           >
             <Text style={styles.topRight}>消费记录</Text>
           </View>
+          </TouchableOpacity>
         </View>
         <View style={styles.body}>
           <TouchableOpacity style={styles.flex1} onPress={this.setProfile}>
@@ -98,8 +101,7 @@ class VipTop extends Component {
           </View>
           <TouchableOpacity
             style={[styles.vipPay, styles.flex1]}
-            onPress={this.toVip}
-          >
+            onPress={()=>{ Toast.info("正在施工...")}}          >
             <ImageBackground
               style={styles.vipBg}
               source={require("./images/btn_recharge_bg.png")}
