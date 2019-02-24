@@ -228,7 +228,6 @@ const AppNavigator = createStackNavigator(
     Publish: { screen: Publish },
     Search: { screen: Search },
     Vip: { screen: Vip },
-
   },
   {
     headerMode: "none",

@@ -16,7 +16,7 @@ import Bottom from "./Bottom"
 import Pics from "../../containers/Home/Ads"
 
 import { statusBarHeight, iconSize } from "../../styles/common"
-import Setting from "../../containers/Account/Setting"
+// import Setting from "../../containers/Account/Setting"
 
 @connect()
 class Detail extends Component {
@@ -53,7 +53,7 @@ class Detail extends Component {
           <Auth data={data} />
           <BaseInfo data={data} />
         </ScrollView>
-        <Bottom />
+        <Bottom data={data} />
       </View>
     )
   }

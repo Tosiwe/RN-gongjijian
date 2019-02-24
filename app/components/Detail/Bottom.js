@@ -7,7 +7,7 @@ import {
   Text,
   Linking
 } from "react-native"
-
+import { Modal, Button } from "@ant-design/react-native"
 import { connect } from "react-redux"
 
 @connect()
@@ -36,89 +36,120 @@ class Detail extends Component {
 
   onServer = name => {
     const { hasPaied } = this.state
-    const { data } = this.props
+    const { data = {} } = this.props
     if (hasPaied) {
       if (name === "phone") {
         Linking.openURL(data.phone || "tel:10010")
       } else {
-        const url = "mqqwpa://im/chat?chat_type=wpa&uin=416793829" // 调用QQ
-        Linking.canOpenURL(url).then(supported => {
-          if (supported) {
-            Linking.openURL(url)
-          }
-        })
+        this.showModal(data[name], name)
       }
     }
   };
 
+  onClose = () => {
+    this.setState({ visible: false })
+  };
+
+  showModal = (content = "123123", title) => {
+    const map = {
+      download: "下载",
+      phone: "电话",
+      wechat: "微信",
+      qq: "QQ"
+    }
+    this.setState({
+      visible: true,
+      ModalTitle: map[title],
+      content
+    })
+  };
+
   render() {
-    const { isPaper = true } = this.props
-    const { likeType } = this.state
+    const { isPaper } = this.props
+    const { likeType, visible, ModalTitle, content } = this.state
     return (
-      <View style={styles.bottom}>
-        <TouchableOpacity style={styles.cBtn} opPress={this.like}>
-          <Image
-            style={styles.cImg}
-            source={
-              likeType
-                ? require("./images/icon_collection_pressed.png")
-                : require("./images/icon_collection.png")
-            }
-          />
-          <Text style={styles.cText}>收藏</Text>
-        </TouchableOpacity>
-        {isPaper && (
-          <TouchableOpacity
-            onPress={() => {
-              this.onServer("download")
-            }}
-            style={[styles.btns, styles.downLoadBtn]}
-          >
-            <Text style={styles.downText}>下载</Text>
-          </TouchableOpacity>
-        )}
-        {!isPaper && (
-          <TouchableOpacity
-            onPress={() => {
-              this.onServer("phone")
-            }}
-            style={styles.btns}
-          >
+      <View>
+        <Modal
+          title={ModalTitle}
+          transparent
+          onClose={this.onClose}
+          maskClosable
+          visible={visible}
+          closable
+        >
+          <View style={{ paddingVertical: 20 }}>
+            <Text style={{ textAlign: "center" }}>{content}</Text>
+          </View>
+          <Button type="primary" onPress={this.onClose}>
+            关闭
+          </Button>
+        </Modal>
+
+        <View style={styles.bottom}>
+          <TouchableOpacity style={styles.cBtn} opPress={this.like}>
             <Image
-              style={styles.img}
-              source={require("./images/icon_phone.png")}
+              style={styles.cImg}
+              source={
+                likeType
+                  ? require("./images/icon_collection_pressed.png")
+                  : require("./images/icon_collection.png")
+              }
             />
-            <Text>电话</Text>
+            <Text style={styles.cText}>收藏</Text>
           </TouchableOpacity>
-        )}
-        {!isPaper && (
-          <TouchableOpacity
-            onPress={() => {
-              this.onServer("wechat")
-            }}
-            style={styles.btns}
-          >
-            <Image
-              style={styles.img}
-              source={require("./images/icon_wechat.png")}
-            />
-            <Text>微信</Text>
-          </TouchableOpacity>
-        )}
-        {!isPaper && (
-          <TouchableOpacity
-            onPress={() => {
-              this.onServer("qq")
-            }}
-            style={styles.btns}
-          >
-            <Image
-              style={styles.img}
-              source={require("./images/icon_qq.png")}
-            />
-            <Text>QQ</Text>
-          </TouchableOpacity>
-        )}
+          {isPaper && (
+            <TouchableOpacity
+              onPress={() => {
+                this.onServer("download")
+              }}
+              style={[styles.btns, styles.downLoadBtn]}
+            >
+              <Text style={styles.downText}>下载</Text>
+            </TouchableOpacity>
+          )}
+          {!isPaper && (
+            <TouchableOpacity
+              onPress={() => {
+                this.onServer("phone")
+              }}
+              style={styles.btns}
+            >
+              <Image
+                style={styles.img}
+                source={require("./images/icon_phone.png")}
+              />
+              <Text>电话</Text>
+            </TouchableOpacity>
+          )}
+          {!isPaper && (
+            <TouchableOpacity
+              onPress={() => {
+                this.onServer("wechat")
+              }}
+              style={styles.btns}
+            >
+              <Image
+                style={styles.img}
+                source={require("./images/icon_wechat.png")}
+              />
+              <Text>微信</Text>
+            </TouchableOpacity>
+          )}
+          {!isPaper && (
+            <TouchableOpacity
+              onPress={() => {
+                this.onServer("qq")
+              }}
+              style={styles.btns}
+            >
+              <Image
+                style={styles.img}
+                source={require("./images/icon_qq.png")}
+              />
+              <Text>QQ</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     )
   }

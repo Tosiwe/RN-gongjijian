@@ -39,6 +39,22 @@ class Top extends Component {
     })
   }
 
+  componentWillReceiveProps(nextProps) {
+    debugger
+    if (
+      JSON.stringify(this.state.userInfo) !== JSON.stringify(nextProps.userInfo)
+    ) {
+      this.props.dispatch({
+        type: "app/getProfile",
+        callback: res => {
+          if (res.msg === "OK") {
+            this.setState({ userInfo: res.result })
+          }
+        }
+      })
+    }
+  }
+
   toSet = () => {
     this.props.dispatch(
       NavigationActions.navigate({

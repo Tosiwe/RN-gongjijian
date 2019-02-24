@@ -1,5 +1,5 @@
 /* eslint-disable no-param-reassign */
-import {Toast} from "@ant-design/react-native"
+import { Toast } from "@ant-design/react-native"
 import { createAction, NavigationActions, Storage } from "../utils"
 import * as authService from "../services/auth"
 import * as publishService from "../services/publish"
@@ -46,31 +46,31 @@ export default {
 
     // 验证码
     *sendCode({ payload }, { call, put }) {
-      payload.noNendAuth=true
+      payload.noNendAuth = true
       const code = yield call(authService.sendCode, payload)
       yield put(createAction("updateState")({ code, fetching: false }))
     },
 
     // 注册
     *register({ payload }, { call, put }) {
-      payload.noNendAuth=true
+      payload.noNendAuth = true
       yield put(createAction("updateState")({ fetching: true }))
       const registed = yield call(authService.register, payload)
       if (registed) {
         Toast.success("注册成功！")
-        yield put(NavigationActions.navigate( {routeName: 'Login'}))
+        yield put(NavigationActions.navigate({ routeName: "Login" }))
       }
       yield put(createAction("updateState")({ registed, fetching: false }))
     },
 
     // 重置密码
     *resetPwd({ payload }, { call, put }) {
-      payload.noNendAuth=true
+      payload.noNendAuth = true
       yield put(createAction("updateState")({ fetching: true }))
       const seted = yield call(authService.resetPwd, payload)
       if (seted) {
         Toast.success("修改成功！")
-        yield put(NavigationActions.navigate( {routeName: 'Login'}))
+        yield put(NavigationActions.navigate({ routeName: "Login" }))
       }
       yield put(createAction("updateState")({ seted, fetching: false }))
     },
@@ -165,7 +165,7 @@ export default {
     // ---------- 信息类 ----------
 
     // 保存信息发布
-    *saveInfo({ payload,callback }, { call, put }) {
+    *saveInfo({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.saveInfoReview, payload)
       if (res) {
@@ -179,7 +179,7 @@ export default {
     },
 
     // 保存信息草稿
-    *saveInfoDraft({ payload,callback }, { call, put }) {
+    *saveInfoDraft({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.saveInfoDraft, payload)
       if (res && callback) {
@@ -229,7 +229,7 @@ export default {
     },
 
     // 我的信息指定类别
-    *getInfoListById({ payload,callback }, { call, put }) {
+    *getInfoListById({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.getInfoListById, payload)
       if (res && callback) {
@@ -239,7 +239,7 @@ export default {
     },
 
     // 信息location
-    *getInfoListLoc({ payload,callback }, { call, put }) {
+    *getInfoListLoc({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.getInfoListLoc, payload)
       if (res && callback) {
@@ -251,7 +251,7 @@ export default {
     // ---------- 入驻类 ----------
 
     // 商家入驻
-    *settleNew({ payload ,callback}, { call, put }) {
+    *settleNew({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(settleService.settleNew, payload)
       if (res && callback) {
@@ -283,7 +283,7 @@ export default {
     // ---------- 用户中心 ----------
 
     // 获取下载列表
-    *getDownList({ payload ,callback}, { call, put }) {
+    *getDownList({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.getDownList, payload)
       if (res && callback) {
@@ -298,18 +298,30 @@ export default {
       const res = yield call(profileService.getProfile, payload)
       if (res && callback) {
         callback(res)
-        yield put(createAction("updateState")({ userInfo:res.result, fetching: false }))
+        yield put(
+          createAction("updateState")({ userInfo: res.result, fetching: false })
+        )
       }
     },
 
     // 修改用户信息
-    *saveProfile({ payload,callback }, { call, put }) {
+    *saveProfile({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.saveProfile, payload)
-      if (res && callback) {
-        callback(res)
+      let response = {}
+      if (res) {
+        response = yield call(profileService.getProfile, payload)
+        if (response && callback) {
+          callback(response)
+        }
       }
-      yield put(createAction("updateState")({ res, fetching: false }))
+
+      yield put(
+        createAction("updateState")({
+          userInfo: response.result,
+          fetching: false
+        })
+      )
     },
 
     // 新增收藏
@@ -323,10 +335,10 @@ export default {
     },
 
     // 收藏列表
-    *getBookmark({ payload ,callback}, { call, put }) {
+    *getBookmark({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.getBookmark, payload)
-      if (res&&callback) {
+      if (res && callback) {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
@@ -343,10 +355,10 @@ export default {
     },
 
     // 历史记录
-    *getHistory({ payload,callback }, { call, put }) {
+    *getHistory({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.getHistory, payload)
-      if (res&&callback) {
+      if (res && callback) {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
@@ -415,78 +427,78 @@ export default {
     },
 
     // 获取图纸列表
-    *paperList({ payload ,callback}, { call, put }) {
+    *paperList({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.paperList, payload)
-      if (res&&callback) {
+      if (res && callback) {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
     // 下载图纸
-    *downloadPaper({ payload,callback }, { call, put }) {
+    *downloadPaper({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.recommendRead, payload)
-      if (res&&callback) {
+      if (res && callback) {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
     // get token
-    *getUploadToken({ payload,callback }, { call, put }) {
+    *getUploadToken({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.getUploadToken, payload)
-      if (res&&callback) {
+      if (res && callback) {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
     // get token
-    *getGeoCode({ payload,callback }, { call, put }) {
+    *getGeoCode({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.getGeoCode, payload)
-      if (res&&callback) {
+      if (res && callback) {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
     // 搜索
-    *search({ payload,callback }, { call, put }) {
+    *search({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.search, payload)
-      if (res&&callback) {
+      if (res && callback) {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
     // 热门
-    *searchHotList({ payload,callback }, { call, put }) {
+    *searchHotList({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.searchHotList, payload)
-      if (res&&callback) {
+      if (res && callback) {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
     // banner
-    *bannerList({ payload,callback }, { call, put }) {
+    *bannerList({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.bannerList, payload)
-      if (res&&callback) {
+      if (res && callback) {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
     // cai  ni xi huan
-    *gesslikeList({ payload,callback }, { call, put }) {
+    *gesslikeList({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.gesslikeList, payload)
-      if (res&&callback) {
+      if (res && callback) {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
-    },
+    }
   },
   subscriptions: {
     setup({ dispatch }) {
