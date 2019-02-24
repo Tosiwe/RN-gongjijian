@@ -64,7 +64,7 @@ export default class BaseInfo extends Component {
 
     return (
       <View style={styles.wrap}>
-        {/* <ImagePicker onChange={v => this.handleInput(v, "picture")} /> */}
+        <ImagePicker onChange={v => this.handleInput(v, "picture")} />
         <List style={styles.inputBox}>
           <TextareaItem
             style={styles.input}
@@ -114,7 +114,7 @@ export default class BaseInfo extends Component {
             placeholder="请填写地域，如：全国、沧州市、河北省"
           />
         </List>
-        {/* <View>
+        <View>
           <Text style={styles.selectorTitle}>附件上传</Text>
           {!!fileName && <Text>{`已选择：${fileName}`}</Text>}
           <TouchableOpacity
@@ -124,7 +124,7 @@ export default class BaseInfo extends Component {
             <Text style={styles.selectBtnText}>选择文件</Text>
           </TouchableOpacity>
           <Text style={{ color: "#737373" }}>{path}</Text>
-        </View> */}
+        </View>
       </View>
     )
   }
