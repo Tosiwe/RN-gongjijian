@@ -28,7 +28,7 @@ class Detail extends Component {
   }
 
   componentDidMount() {
-    const { data } = this.props
+    const { data={} } = this.props
     const imgSet = new Set([
       data.picture1,
       data.picture2,
@@ -39,7 +39,7 @@ class Detail extends Component {
   }
 
   render() {
-    const { data } = this.props
+    const { data={} } = this.props
     const { imgList } = this.state
     return (
       <View style={styles.home}>

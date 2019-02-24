@@ -26,7 +26,23 @@ export async function register(params) {
 
 // 重设密码
 export async function resetPwd(params) {
-  return request(`127.0.0.1:7001/auth/resetPwd`, {
+  return request(`http://118.24.107.177:7001/auth/resetPwd`, {
+      method: "POST",
+      body: params,
+  })
+}
+
+// 获取价格
+export async function getPriceList(params) {
+  return request(`http://118.24.107.177:7001/price/list`, {
+      method: "POST",
+      body: params,
+  })
+}
+
+// 获取用户余额&会员
+export async function getUserFinance(params) {
+  return request(`http://118.24.107.177:7001/finance`, {
       method: "POST",
       body: params,
   })

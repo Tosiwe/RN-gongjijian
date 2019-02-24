@@ -62,6 +62,10 @@ class Login extends Component {
     )
   }
 
+  wechatLogin=()=>{
+    Toast.info("即将推出")
+  }
+
   render() {
     const { fetching } = this.props
     return (
@@ -112,7 +116,7 @@ class Login extends Component {
         <View style={styles.thirdLogin}>
           <Text style={{ color: "#666" }}>第三方登录</Text>
           <View style={styles.thirdIconWrap}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={this.wechatLogin}>
               <Image source={require("../img/login_btn_wechat.png")} />
             </TouchableOpacity>
             {/* <TouchableOpacity>

@@ -40,7 +40,6 @@ class Top extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    debugger
     if (
       JSON.stringify(this.state.userInfo) !== JSON.stringify(nextProps.userInfo)
     ) {

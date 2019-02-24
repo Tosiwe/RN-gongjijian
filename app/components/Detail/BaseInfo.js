@@ -13,11 +13,11 @@ class BaseInfo extends Component {
   }
 
   checkFile=()=>{
-    
+    console.log(23)
   }
 
   render() {
-    const { data } = this.props
+    const { data={} } = this.props
     const Td = props => (
       <View style={styles.td}>
         <Text style={styles.tdLabel}>{props.label}</Text>
@@ -73,11 +73,11 @@ class BaseInfo extends Component {
         <View style={styles.row}>
           <Td label="地域" text={data.region || "-"} />
           <View style={styles.locWrap}>
-            <Image
+            {/* <Image
               style={styles.location}
               source={require("./images/icon_location.png")}
             />
-            <Text style={{ color: "#FF7725", fontSize: 12 }}>位置</Text>
+            <Text style={{ color: "#FF7725", fontSize: 12 }}>位置</Text> */}
           </View>
         </View>
 
@@ -88,13 +88,13 @@ class BaseInfo extends Component {
           </View>
           <Text style={styles.detailText}>{data.desc}</Text>
         </View>
-        <TouachableOpacity
+        {/* <TouachableOpacity
           style={[styles.row, { justifyContent: "space-between" }]}
           onPress={this.checkFile}
         >
           <Text>查看附件</Text>
           <Icon name="right" style={{ color: "#727272" }} />
-        </TouachableOpacity>
+        </TouachableOpacity> */}
         <View style={[styles.row, styles.bottomRow]} />
       </View>
     )

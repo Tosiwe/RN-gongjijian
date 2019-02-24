@@ -31,16 +31,14 @@ class VipTop extends Component {
       callback: res => {
         if (res.msg === "OK") {
           const { nick } = res.result
-          this.setState({ nick })
+          this.setState({ nick, userInfo: res.result })
         }
       }
     })
   }
 
   goBack = () => {
-    this.props.dispatch(
-      NavigationActions.back()
-    )
+    this.props.dispatch(NavigationActions.back())
   };
 
   setProfile = () => {
@@ -57,7 +55,8 @@ class VipTop extends Component {
   };
 
   render() {
-    const { nick } = this.state
+    const { data = {} } = this.props
+    const { nick, userInfo = {} } = this.state
     return (
       <ImageBackground
         style={styles.wrap}
@@ -83,15 +82,18 @@ class VipTop extends Component {
           <TouchableOpacity style={styles.flex1} onPress={this.setProfile}>
             <Image
               style={styles.avator}
-              source={{
-                uri:
-                  "https://wx4.sinaimg.cn/mw1024/ad38de43ly1fpewj6ks53j23u2227qvb.jpg"
-              }}
+              source={
+                userInfo.headshotUrl && userInfo.headshotUrl.includes("http")
+                  ? { uri: userInfo.headshotUrl }
+                  : require("../images/logo.jpg")
+              }
             />
           </TouchableOpacity>
           <View style={styles.flex1}>
             <Text style={styles.text}>{nick}</Text>
-            <Text style={styles.gold}>您还不是会员</Text>
+            <Text style={styles.gold}>
+              {data.vip ? "会员" : "您还不是会员"}
+            </Text>
             <Text style={styles.gold}>余额：0.00元</Text>
           </View>
           <TouchableOpacity
@@ -142,8 +144,8 @@ const styles = StyleSheet.create({
     // top: -10
   },
   vipPay: {
-   left:10,
-   top:5
+    left: 10,
+    top: 5
   },
   vipText: {
     color: "#3C2009",

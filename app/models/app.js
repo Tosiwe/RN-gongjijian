@@ -7,6 +7,7 @@ import * as infoService from "../services/info"
 import * as settleService from "../services/settle"
 import * as profileService from "../services/profile"
 import * as messageService from "../services/message"
+import * as orderService from "../services/order"
 
 export default {
   namespace: "app",
@@ -84,6 +85,26 @@ export default {
         })
       )
       yield put(createAction("updateState")({ login: false }))
+    },
+
+    // 价格配置
+    *getPriceList({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(authService.getPriceList, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
+    // 用户金额
+    *getUserFinance({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(authService.getUserFinance, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
     },
 
     // ---------- 需求类 ----------
@@ -498,7 +519,67 @@ export default {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
-    }
+    },
+
+
+    // ---------------订单相关------------
+
+    
+    *creatRechargeOrder({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(orderService.creatRechargeOrder, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+    
+    *getOrderList({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(orderService.getOrderList, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+    
+    *createVipOrder({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(orderService.createVipOrder, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+    
+    *createOrderContant({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(orderService.createOrderContant, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+    
+    *createOrderPaper({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(orderService.createOrderPaper, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+    
+    *createOrderAttach({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(orderService.createOrderAttach, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
+
   },
   subscriptions: {
     setup({ dispatch }) {

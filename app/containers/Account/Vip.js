@@ -10,23 +10,27 @@ import {
 } from "react-native"
 import { connect } from "react-redux"
 
+import moment from "moment"
 import { primaryColor, iconSize } from "../../styles/common"
-
+import Pay from "../../components/Pay/Pay"
 import { createAction, NavigationActions } from "../../utils"
 import Top from "./Vip/VipTop"
 
 const payArray = [
   {
+    key: "vipMonth",
     title: "包月",
     price: "30.00",
     des: "月度可查100次联系方式"
   },
   {
+    key: "vipQuarter",
     title: "包季",
     price: "80.00",
-    des: "季度可查400次联系方式"
+    des: "季度可无限次获取联系方式"
   },
   {
+    key: "vipYear",
     title: "包年",
     price: "300.00",
     des: "一年内可无限次获取联系方式"
@@ -61,9 +65,47 @@ class Vip extends Component {
   constructor() {
     super()
     this.state = {
-      activeKey:2
+      activeKey: 2,
+      vipInfo: []
     }
   }
+
+  componentDidMount() {
+    this.props.dispatch({
+      type: "app/getPriceList",
+      callback: res => {
+        if (res.msg === "OK") {
+          const vipInfo = []
+          payArray.forEach(item => {
+            const data = { ...item }
+            data.price = res.result[item.key]
+            vipInfo.push(data)
+          })
+          this.setState({ vipInfo })
+        }
+      }
+    })
+
+    this.props.dispatch({
+      type: "app/getUserFinance",
+      callback: res => {
+        if (res.msg === "OK") {
+          this.setState({ userFinance: res.result })
+        }
+      }
+    })
+  }
+
+  paySuccess = () => {
+    this.props.dispatch({
+      type: "app/getUserFinance",
+      callback: res => {
+        if (res.msg === "OK") {
+          this.setState({ userFinance: res.result })
+        }
+      }
+    })
+  };
 
   renderPayWays = (payType, index) => {
     const { activeKey } = this.state
@@ -95,6 +137,14 @@ class Vip extends Component {
   };
 
   render() {
+    const { vipInfo, activeKey, payVisible, userFinance } = this.state
+    const info = vipInfo[activeKey]
+    const payData = {
+      use: "会员充值",
+      name: info && info.title,
+      price: info && info.price,
+      type: "vip"
+    }
     return (
       <View style={styles.container}>
         <ScrollView
@@ -103,9 +153,9 @@ class Vip extends Component {
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
         >
-          <Top />
+          <Top data={userFinance} />
           <View style={styles.payBox}>
-            {payArray.map(this.renderPayWays)}
+            {vipInfo.map(this.renderPayWays)}
             <ImageBackground
               style={styles.rcmBg}
               source={require("./Vip/images/bg_recommend.png")}
@@ -114,10 +164,21 @@ class Vip extends Component {
             </ImageBackground>
           </View>
           <View />
-          <TouchableOpacity style={styles.btn}>
-              <Text style={styles.btnText}>立即开通</Text>
+          <TouchableOpacity
+            style={styles.btn}
+            onPress={() => {
+              this.setState({ payVisible: true })
+            }}
+          >
+            <Text style={styles.btnText}>立即开通</Text>
           </TouchableOpacity>
         </ScrollView>
+        <Pay
+          onSuccess={this.paySuccess}
+          visible={payVisible}
+          timeStamp={moment().format("x")}
+          data={payData}
+        />
       </View>
     )
   }
@@ -139,7 +200,7 @@ const styles = StyleSheet.create({
   wrap: {
     justifyContent: "center",
     width: 130,
-    height: 160,
+    height: 180,
     borderWidth: 2,
     borderColor: "#EEE",
     borderRadius: 5,
@@ -149,7 +210,7 @@ const styles = StyleSheet.create({
   activeWrap: {
     justifyContent: "center",
     width: 130,
-    height: 160,
+    height: 180,
     borderWidth: 2,
     borderColor: "#E7BC85",
     borderRadius: 5,
@@ -166,7 +227,9 @@ const styles = StyleSheet.create({
     color: "#C99A2E",
     fontSize: 24
   },
-  des: {},
+  des: {
+    height: 80
+  },
   rcmBg: {
     right: 0,
     width: 60,
@@ -185,9 +248,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     borderRadius: 25
   },
-  btnBg:{
-    width:"100%",
-    height:50
+  btnBg: {
+    width: "100%",
+    height: 50
   },
   btnText: {
     lineHeight: 50,

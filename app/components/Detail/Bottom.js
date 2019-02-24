@@ -9,6 +9,8 @@ import {
 } from "react-native"
 import { Modal, Button } from "@ant-design/react-native"
 import { connect } from "react-redux"
+import moment from "moment"
+import Pay from "../Pay/Pay"
 
 @connect()
 class Detail extends Component {
@@ -50,23 +52,33 @@ class Detail extends Component {
     this.setState({ visible: false })
   };
 
-  showModal = (content = "123123", title) => {
-    const map = {
-      download: "下载",
-      phone: "电话",
-      wechat: "微信",
-      qq: "QQ"
-    }
+  showPayModal = () => {
     this.setState({
-      visible: true,
-      ModalTitle: map[title],
-      content
+      payVisible: true
     })
   };
 
+  payCLose = () => {
+    this.setState({})
+  };
+
+  // showModal = (content = "123123", title) => {
+  //   const map = {
+  //     download: "下载",
+  //     phone: "电话",
+  //     wechat: "微信",
+  //     qq: "QQ"
+  //   }
+  //   this.setState({
+  //     visible: true,
+  //     ModalTitle: map[title],
+  //     content
+  //   })
+  // };
+
   render() {
-    const { isPaper } = this.props
-    const { likeType, visible, ModalTitle, content } = this.state
+    const { isPaper ,data} = this.props
+    const { likeType, visible, ModalTitle, content, payVisible } = this.state
     return (
       <View>
         <Modal
@@ -100,7 +112,7 @@ class Detail extends Component {
           {isPaper && (
             <TouchableOpacity
               onPress={() => {
-                this.onServer("download")
+                this.showPayModal("download")
               }}
               style={[styles.btns, styles.downLoadBtn]}
             >
@@ -110,7 +122,7 @@ class Detail extends Component {
           {!isPaper && (
             <TouchableOpacity
               onPress={() => {
-                this.onServer("phone")
+                this.showPayModal("phone")
               }}
               style={styles.btns}
             >
@@ -124,7 +136,7 @@ class Detail extends Component {
           {!isPaper && (
             <TouchableOpacity
               onPress={() => {
-                this.onServer("wechat")
+                this.showPayModal("wechat")
               }}
               style={styles.btns}
             >
@@ -138,7 +150,7 @@ class Detail extends Component {
           {!isPaper && (
             <TouchableOpacity
               onPress={() => {
-                this.onServer("qq")
+                this.showPayModal("qq")
               }}
               style={styles.btns}
             >
@@ -149,6 +161,18 @@ class Detail extends Component {
               <Text>QQ</Text>
             </TouchableOpacity>
           )}
+        </View>
+        <View style={{ backgroundColor: "red" }}>
+          <Pay
+            visible={payVisible}
+            timeStamp={moment().format("x")}
+            onSuccess={this.paySuccess}
+            data={{
+              use:"获取联系方式",
+              name:data.title,
+              price:"2.00",
+            }}
+          />
         </View>
       </View>
     )

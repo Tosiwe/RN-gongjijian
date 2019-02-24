@@ -57,7 +57,7 @@ class PaperDetail extends Component {
           </View>
           <View style={[styles.row, styles.bottomRow]} />
         </ScrollView>
-        <Bottom isPaper />
+        <Bottom isPaper data={data} />
       </View>
     )
   }

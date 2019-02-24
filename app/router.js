@@ -219,7 +219,7 @@ const MainNavigator = createStackNavigator(
 // 基础页面
 const AppNavigator = createStackNavigator(
   {
-    // PaperDetail: { screen: PaperDetail },
+    // Detail: { screen: Detail },
     Main: { screen: MainNavigator },
     Login: { screen: Login },
     BindPhone: { screen: BindPhone },
