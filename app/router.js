@@ -34,6 +34,7 @@ import MyDownload from "./containers/Account/MyDownload"
 import MyHistory from "./containers/Account/MyHistory"
 import EditProfile from "./containers/Account/EditProfile"
 import Vip from "./containers/Account/Vip"
+import PayRecords from "./containers/Account/PayRecords"
 import Detail from "./components/Detail/Detail"
 import PaperDetail from "./components/Detail/PaperDetail"
 import AddButton from "./components/AddButton/AddButton"
@@ -204,6 +205,13 @@ const MainNavigator = createStackNavigator(
     SearchResult: {
       // 入驻表单
       screen: SearchResult,
+      navigationOptions: mainNavigationOptions
+    },
+    
+    
+    PayRecords: {
+      // 入驻表单
+      screen: PayRecords,
       navigationOptions: mainNavigationOptions
     },
     

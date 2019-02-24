@@ -9,7 +9,7 @@ import {
   ImageBackground,
   Image
 } from "react-native"
-import{Toast}from "@ant-design/react-native"
+import { Toast } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import Icon from "react-native-vector-icons/AntDesign"
 
@@ -55,6 +55,15 @@ class VipTop extends Component {
     this.props.dispatch(NavigationActions.navigate({ routeName: "Vip" }))
   };
 
+  toRecords = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "PayRecords",
+        params: { name: "消费记录" }
+      })
+    )
+  };
+
   render() {
     const { data = {} } = this.props
     const { nick, userInfo = {} } = this.state
@@ -69,16 +78,16 @@ class VipTop extends Component {
             <Icon name="left" style={styles.topLeft} />
           </TouchableOpacity>
           <Text style={styles.title}>VIP会员</Text>
-          <TouchableOpacity onPress={()=>{Toast("正在施工...")}}>
-          <View
-            style={{
-              flexDirection: "row",
-              // width: 100,
-              justifyContent: "flex-end"
-            }}
-          >
-            <Text style={styles.topRight}>消费记录</Text>
-          </View>
+          <TouchableOpacity onPress={ this.toRecords}>
+            <View
+              style={{
+                flexDirection: "row",
+                // width: 100,
+                justifyContent: "flex-end"
+              }}
+            >
+              <Text style={styles.topRight}>消费记录</Text>
+            </View>
           </TouchableOpacity>
         </View>
         <View style={styles.body}>
@@ -101,7 +110,10 @@ class VipTop extends Component {
           </View>
           <TouchableOpacity
             style={[styles.vipPay, styles.flex1]}
-            onPress={()=>{ Toast.info("正在施工...")}}          >
+            onPress={() => {
+              Toast.info("正在施工...")
+            }}
+          >
             <ImageBackground
               style={styles.vipBg}
               source={require("./images/btn_recharge_bg.png")}

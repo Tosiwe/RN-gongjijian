@@ -1,7 +1,6 @@
 /** 获取地理位置（经纬度） */
 export const getPosition = (that, Toast) =>
   new Promise((resole, reject) => {
-    debugger
     Toast.info("获取定位...")
     const { params } = that.state
     /** 获取地理位置 */

@@ -90,7 +90,7 @@ class RegisterEntry extends Component {
         this.setState({ loading: false })
       }
     }).catch(err=>{
-      Toast.fail("发布失败，无法获取定位，请设置获取定位权限")
+      Toast.fail("失败：无法获取定位，请设置获取定位权限")
     })
   };
 

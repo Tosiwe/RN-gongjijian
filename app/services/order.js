@@ -18,7 +18,7 @@ export async function createVipOrder(params) {
 
 // create vip order
 export async function getOrderList(params) {
-    return request(`http://118.24.107.177:7001/order/vip/create`, {
+    return request(`http://118.24.107.177:7001/order/list`, {
         method: "POST",
         body: params,
     })

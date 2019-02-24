@@ -8,9 +8,9 @@ import {
   TouchableOpacity,
   ImageBackground,
   Image,
-  Linking,
-  Toast
+  Linking
 } from "react-native"
+import { Toast } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 
 import { connect } from "react-redux"
@@ -99,7 +99,11 @@ class Top extends Component {
             <TouchableOpacity onPress={() => Linking.openURL("tel:10010")}>
               <Image source={require("./images/icon_nav_service.png")} />
             </TouchableOpacity>
-            <TouchableOpacity onPress={()=>{ Toast.info("正在施工...")}}>
+            <TouchableOpacity
+              onPress={() => {
+                Toast.info("正在施工...")
+              }}
+            >
               <Image source={require("./images/icon_nav_news.png")} />
             </TouchableOpacity>
           </View>

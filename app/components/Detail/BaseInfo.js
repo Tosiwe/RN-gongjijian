@@ -89,13 +89,13 @@ class BaseInfo extends Component {
           </View>
           <Text style={styles.detailText}>{data.desc}</Text>
         </View>
-        <TouachableOpacity
+        {/* <TouachableOpacity
           style={[styles.row, { justifyContent: "space-between" }]}
           onPress={this.checkFile}
         >
           <Text>查看附件</Text>
           <Icon name="right" style={{ color: "#727272" }} />
-        </TouachableOpacity>
+        </TouachableOpacity> */}
         <View style={[styles.row, styles.bottomRow]} />
       </View>
     )
