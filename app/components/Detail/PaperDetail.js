@@ -1,21 +1,11 @@
 import React, { Component } from "react"
-import {
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  Text
-} from "react-native"
+import { StyleSheet, View, ScrollView, Text } from "react-native"
 
 import { connect } from "react-redux"
 
-import Auth from "./Auth"
-import BaseInfo from "./BaseInfo"
 import Bottom from "./Bottom"
-import Pics from "../../containers/Home/Ads"
 
-import { statusBarHeight, iconSize } from "../../styles/common"
+import { statusBarHeight } from "../../styles/common"
 
 @connect()
 class PaperDetail extends Component {
@@ -27,13 +17,13 @@ class PaperDetail extends Component {
   }
 
   render() {
+    const { data ={}} = this.props
     const Td = props => (
       <View style={styles.td}>
         <Text style={styles.tdLabel}>{props.label}</Text>
         <Text style={styles.tdText}>{props.text}</Text>
       </View>
     )
-    const { msgList } = this.state
     return (
       <View style={styles.home}>
         <ScrollView
@@ -42,20 +32,20 @@ class PaperDetail extends Component {
           showsVerticalScrollIndicator={false}
           onScrollEndDrag={this.handleScrollEnd}
         >
-          <View style={[styles.row,styles.border]}>
-            <Td label="企业认证" text="房屋建筑设计" />
+          <View style={[styles.row, styles.border]}>
+            <Td label="企业认证" text={data.text || "-"} />
           </View>
           <View style={styles.border}>
             <View style={styles.row}>
-              <Td label="设备名称" text="房屋建筑设计" />
-              <Td label="品牌" text="房屋建筑设计" />
-            </View >
-            <View style={styles.row}>
-              <Td label="型号规格" text="房屋建筑设计" />
-              <Td label="租赁单位" text="房屋建筑设计" />
+              <Td label="设备名称" text={data.extraName || "-"} />
+              <Td label="品牌" text={data.extraBrand || "-"} />
             </View>
             <View style={styles.row}>
-            <Td label="租赁价格" text="房屋建筑设计" />
+              <Td label="型号规格" text={data.extraSpec || "-"} />
+              <Td label="租赁单位" text={data.extraUnit || "-"} />
+            </View>
+            <View style={styles.row}>
+              <Td label="租赁价格" text={data.extraPrice || "-"} />
             </View>
           </View>
           <View style={styles.DetailRow}>
@@ -63,12 +53,7 @@ class PaperDetail extends Component {
               <View style={styles.detailLeft} />
               <Text style={styles.detailTitle}>详情介绍</Text>
             </View>
-            <Text style={styles.detailText}>
-              是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。
-              几度夕阳红。白发渔樵江渚
-              是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。
-              几度夕阳红。白发渔樵江渚
-            </Text>
+            <Text style={styles.detailText}>{data.desc}</Text>
           </View>
           <View style={[styles.row, styles.bottomRow]} />
         </ScrollView>
@@ -81,7 +66,7 @@ class PaperDetail extends Component {
 const styles = StyleSheet.create({
   home: {
     paddingTop: statusBarHeight,
-    paddingHorizontal:10,
+    paddingHorizontal: 10,
     flex: 1,
     flexDirection: "column",
     backgroundColor: "#fff"
@@ -92,9 +77,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between"
   },
-  border:{
+  border: {
     borderTopWidth: 1,
-    borderColor: "#DDD",
+    borderColor: "#DDD"
   },
   td: {
     flexDirection: "row"
@@ -121,7 +106,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     // borderBottomWidth: 1,
     borderColor: "#DDD",
-    paddingVertical: 20,
+    paddingVertical: 20
   },
   detailLeft: {
     width: 3,

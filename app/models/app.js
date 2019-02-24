@@ -239,9 +239,9 @@ export default {
     },
 
     // 信息location
-    *geInfoListLoc({ payload,callback }, { call, put }) {
+    *getInfoListLoc({ payload,callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
-      const res = yield call(infoService.geInfoListLoc, payload)
+      const res = yield call(infoService.getInfoListLoc, payload)
       if (res && callback) {
         callback(res)
       }
@@ -425,11 +425,11 @@ export default {
     },
 
     // 下载图纸
-    *downloadPaper({ payload }, { call, put }) {
+    *downloadPaper({ payload,callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.recommendRead, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res&&callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
@@ -464,6 +464,24 @@ export default {
     *searchHotList({ payload,callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.searchHotList, payload)
+      if (res&&callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+    // banner
+    *bannerList({ payload,callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(messageService.bannerList, payload)
+      if (res&&callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+    // cai  ni xi huan
+    *gesslikeList({ payload,callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(messageService.gesslikeList, payload)
       if (res&&callback) {
         callback(res)
       }

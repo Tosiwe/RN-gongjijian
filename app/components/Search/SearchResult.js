@@ -31,13 +31,6 @@ class SearchResult extends Component {
    
   }
 
-  toDetail = () => [
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: "Detail"
-      })
-    )
-  ];
 
   getList =(classifyId="hbuilding")=>{
     const { params } = this.props.navigation.state.params
@@ -46,7 +39,7 @@ class SearchResult extends Component {
     }
     this.setState({pageKey:classifyId})
     
-    getPosition(params).then(result => {
+    getPosition({...this}).then(result => {
       if (result.isSuccess) {
         this.props.dispatch({
           type: "app/search",
@@ -67,11 +60,7 @@ class SearchResult extends Component {
 
   renderItem = ({ item }) => (
     <ListItem
-      id={Math.random()}
-      onPressItem={this.toDetail}
-      title={item.title}
-      url={item.picture1}
-      des={item.desc}
+      data={item}
     />
   );
 

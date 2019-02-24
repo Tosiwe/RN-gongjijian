@@ -13,18 +13,20 @@ class Auth extends Component {
   }
 
   render() {
+    const { data } = this.props
     return (
       <View style={styles.title}>
-        <Text style={styles.authTitle}>
-          现有广东一级结构工程师证一本需要的联系
-        </Text>
-        <View style={styles.authWrap}>
-          <Image
-            style={styles.auth}
-            source={require("./images/icon_authentication.png")}
-          />
-          <Text style={styles.authText}>公司认证</Text>
-        </View>
+        <Text style={styles.authTitle}>{data.title || "标题"}</Text>
+        {/* TODO:认证标志 */}
+        {data.classifyId && (
+          <View style={styles.authWrap}>
+            <Image
+              style={styles.auth}
+              source={require("./images/icon_authentication.png")}
+            />
+            <Text style={styles.authText}>公司认证</Text>
+          </View>
+        )}
       </View>
     )
   }
@@ -33,7 +35,7 @@ class Auth extends Component {
 const styles = StyleSheet.create({
   title: {
     padding: 20,
-    paddingBottom:10,
+    paddingBottom: 10
   },
   authTitle: {
     paddingBottom: 10

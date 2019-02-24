@@ -4,7 +4,13 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 
 import { StyleSheet, ScrollView, Text } from "react-native";
-import { Toast, List, InputItem, WhiteSpace, Result } from "@ant-design/react-native";
+import {
+  Toast,
+  List,
+  InputItem,
+  WhiteSpace,
+  Result
+} from "@ant-design/react-native";
 import { NavigationActions } from "react-navigation";
 // import ImagePicker from 'react-native-image-picker'
 import BaseInfo from "./BaseInfo";
@@ -42,6 +48,10 @@ class FormDemand extends Component {
 
   componentDidMount() {
     const { id } = this.props.navigation.state.params;
+    if (id === "aptitude" || id === "reg") {
+      this.state.isReg = true;
+    }
+
     this.state.params.classifyId = id;
   }
 
@@ -50,6 +60,10 @@ class FormDemand extends Component {
     if (params.title === "") {
       Toast.info("请填写标题");
       return false;
+    }
+    if (params.title.length < 14) {
+      Toast.info("标题字数应在10-28个字")
+      return false
     }
     if (params.contact === "") {
       Toast.info("请填写联系人");
@@ -63,12 +77,11 @@ class FormDemand extends Component {
   };
 
   onSave = () => {
-    const {params}= this.state
-    getPosition(params).then(result => {
-      if (this.isLegal()&&result.isSuccess) {
-        this.state.params = result.params
+    getPosition({ ...this }).then(result => {
+      if (this.isLegal() && result.isSuccess) {
+        this.state.params = result.params;
         this.props.dispatch({
-          type: "app/saveDemandDraft",
+          type: this.state.isReg ? "app/saveInfoDraft" : "app/saveDemandDraft",
           payload: result.params,
           callback: res => {
             if (res.msg === "OK") {
@@ -90,12 +103,12 @@ class FormDemand extends Component {
   };
 
   onPublish = () => {
-    const {params}= this.state
-    getPosition(params).then(result => {
-      if (this.isLegal()&&result.isSuccess) {
-        this.state.params = result.params
+    const that = { ...this };
+    getPosition(that).then(result => {
+      if (this.isLegal() && result.isSuccess) {
+        this.state.params = result.params;
         this.props.dispatch({
-          type: "app/saveDemand",
+          type: this.state.isReg ? "app/saveInfo" : "app/saveDemand",
           payload: result.params,
           callback: res => {
             if (res.msg === "OK") {
@@ -106,7 +119,6 @@ class FormDemand extends Component {
       }
     });
   };
-
 
   handleChange = (value, name) => {
     const { params } = this.state;
@@ -120,8 +132,7 @@ class FormDemand extends Component {
   };
 
   render() {
-    const { id } = this.props.navigation.state.params;
-
+    const { isReg } = this.state;
     // 选择发布分类
     return (
       <ScrollView
@@ -132,9 +143,7 @@ class FormDemand extends Component {
         // onScrollEndDrag={this.handleScrollEnd}
       >
         <Text style={styles.title}>
-          {id === "aptitude" || id === "reg"
-            ? "注册人员、资质"
-            : "注册人员、资质、（所有行业）需求"}
+          {isReg ? "注册人员、资质" : "注册人员、资质、（所有行业）需求"}
         </Text>
         <List style={styles.inputBox}>
           <InputItem
@@ -143,8 +152,18 @@ class FormDemand extends Component {
             clear
             onChange={v => this.handleChange(v, "title")}
             maxLength={28}
-            placeholder="请输入标题，28个字以内"
+            placeholder="请输入标题，10-28个字"
           />
+          {isReg && (
+            <InputItem
+              multipleLine={false}
+              style={styles.input}
+              clear
+              onChange={v => this.handleChange(v, "extraName")}
+              maxLength={28}
+              placeholder="人员名称|资质名称"
+            />
+          )}
         </List>
         <BaseInfo
           onChange={v => this.handleChange(v, "baseInfo")}

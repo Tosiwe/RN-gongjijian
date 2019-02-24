@@ -65,6 +65,14 @@ class FormInfo extends Component {
       Toast.info("请填写标题")
       return false
     }
+    if (params.title.length < 14) {
+      Toast.info("标题字数应在10-28个字")
+      return false
+    }
+    if (params.title.length < 50) {
+      Toast.info("详细描述应在50字以上")
+      return false
+    }
     if (params.contact === "") {
       Toast.info("请填写联系人")
       return false
@@ -77,8 +85,7 @@ class FormInfo extends Component {
   };
 
   onSave = () => {
-    const { params } = this.state
-    getPosition(params).then(result => {
+    getPosition({...this}).then(result => {
       if (this.isLegal() && result.isSuccess) {
         this.state.params = result.params
         this.props.dispatch({
@@ -104,8 +111,7 @@ class FormInfo extends Component {
   };
 
   onPublish = () => {
-    const { params } = this.state
-    getPosition(params).then(result => {
+    getPosition({...this}).then(result => {
       if (this.isLegal() && result.isSuccess) {
         this.state.params = result.params
         this.props.dispatch({
@@ -152,7 +158,7 @@ class FormInfo extends Component {
             clear
             onChange={v => this.handleChange(v, "title")}
             maxLength={28}
-            placeholder="请输入标题，28个字以内"
+            placeholder="请输入标题，10-28个字"
           />
         </List>
         <List style={styles.inputBox}>

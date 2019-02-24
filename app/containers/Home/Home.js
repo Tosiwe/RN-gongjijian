@@ -71,7 +71,7 @@ class Home extends Component {
     const isContentFillPage = contentHeight >= scrollViewHeight // 内容高度是否大于列表高度
 
     if (isContentFillPage && isEndReached) {
-      alert("给我数据，我还可以继续加载～～～")
+      // alert("给我数据，我还可以继续加载～～～")
     }
   };
 

@@ -56,7 +56,7 @@ class Search extends Component {
           onSubmit={this.toSearch}
         />
         <View style={styles.wrap}>
-          <View style={styles.history}>
+          {/* <View style={styles.history}>
             <Text style={styles.title}>历史搜索</Text>
             <View style={styles.tags}>
               {hotSearchList.map(item => (
@@ -69,13 +69,19 @@ class Search extends Component {
                 </TouchableOpacity>
               ))}
             </View>
-          </View>
-          <View>
+              </View> */}
+          <View> 
             <Text style={styles.title}>热门搜索</Text>
             <View style={styles.tags}>
-              <TouchableOpacity style={styles.tag}>
-                <Text style={styles.tagText}>123</Text>
-              </TouchableOpacity>
+            {hotSearchList.map(item => (
+                <TouchableOpacity
+                  onPress={() => this.toSearch(item.keyword)}
+                  key={Math.random()}
+                  style={styles.tag}
+                >
+                  <Text style={styles.tagText}>{item.keyword}</Text>
+                </TouchableOpacity>
+              ))}
             </View>
           </View>
         </View>

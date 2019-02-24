@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { StyleSheet, View, Image, Text } from "react-native"
+import { StyleSheet, View, Image, Text, TouachableOpacity } from "react-native"
 import { connect } from "react-redux"
 import Icon from "react-native-vector-icons/AntDesign"
 
@@ -12,7 +12,12 @@ class BaseInfo extends Component {
     }
   }
 
+  checkFile=()=>{
+    
+  }
+
   render() {
+    const { data } = this.props
     const Td = props => (
       <View style={styles.td}>
         <Text style={styles.tdLabel}>{props.label}</Text>
@@ -21,36 +26,36 @@ class BaseInfo extends Component {
     )
 
     const form = () => {
-      const { type } = this.props
-      if (type === 1) {
+      const { classifyId } = data
+      if (classifyId === "reg") {
         return (
           <View style={styles.row}>
-            <Td label="注册人员名称" text="二级结构师" />
+            <Td label="注册人员名称" text={data.extraName || "-"} />
           </View>
         )
       }
 
-      if(type === 2){
+      if (classifyId === "aptitude") {
         return (
           <View style={styles.row}>
-            <Td label="资质名称" text="建筑三承资质" />
+            <Td label="资质名称" text={data.extraName || "-"} />
           </View>
         )
       }
 
-      if (type === 3) {
+      if (classifyId === "smarket") {
         return (
           <View>
             <View style={styles.row}>
-              <Td label="设备名称" text="房屋建筑设计" />
-              <Td label="品牌" text="房屋建筑设计" />
+              <Td label="设备名称" text={data.extraName || "-"} />
+              <Td label="品牌" text={data.extraBrand || "-"} />
             </View>
             <View style={styles.row}>
-              <Td label="型号规格" text="房屋建筑设计" />
-              <Td label="租赁单位" text="房屋建筑设计" />
+              <Td label="型号规格" text={data.extraSpec || "-"} />
+              <Td label="租赁单位" text={data.extraUnit || "-"} />
             </View>
             <View style={styles.row}>
-              <Td label="租赁价格" text="房屋建筑设计" />
+              <Td label="租赁价格" text={data.extraPrice || "-"} />
             </View>
           </View>
         )
@@ -58,22 +63,21 @@ class BaseInfo extends Component {
 
       return (
         <View style={styles.row}>
-          <Td label="企业认证" text="房屋建筑设计" />
+          <Td label="企业认证" text={data.text || "-"} />
         </View>
       )
-      
     }
     return (
       <View style={styles.BaseInfo}>
         {form()}
         <View style={styles.row}>
-          <Td label="地域" text="河北" />
+          <Td label="地域" text={data.region || "-"} />
           <View style={styles.locWrap}>
             <Image
               style={styles.location}
               source={require("./images/icon_location.png")}
             />
-            <Text style={{ color: "#FF7725",fontSize:12 }}>位置</Text>
+            <Text style={{ color: "#FF7725", fontSize: 12 }}>位置</Text>
           </View>
         </View>
 
@@ -82,17 +86,15 @@ class BaseInfo extends Component {
             <View style={styles.detailLeft} />
             <Text style={styles.detailTitle}>详情介绍</Text>
           </View>
-          <Text style={styles.detailText}>
-            是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。
-            几度夕阳红。白发渔樵江渚
-            是非成败转头空，青山依旧在，惯看秋月春风。一壶浊酒喜相逢，古今多少事，滚滚长江东逝水，浪花淘尽英雄。
-            几度夕阳红。白发渔樵江渚
-          </Text>
+          <Text style={styles.detailText}>{data.desc}</Text>
         </View>
-        <View style={[styles.row, { justifyContent: "space-between" }]}>
+        <TouachableOpacity
+          style={[styles.row, { justifyContent: "space-between" }]}
+          onPress={this.checkFile}
+        >
           <Text>查看附件</Text>
           <Icon name="right" style={{ color: "#727272" }} />
-        </View>
+        </TouachableOpacity>
         <View style={[styles.row, styles.bottomRow]} />
       </View>
     )
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     paddingHorizontal: 10,
     flexDirection: "row",
-    justifyContent:"space-between"
+    justifyContent: "space-between"
   },
   td: {
     flexDirection: "row"
@@ -117,15 +119,15 @@ const styles = StyleSheet.create({
     color: "#727272",
     marginRight: 10,
     width: 50,
-    fontSize:12
+    fontSize: 12
   },
   tdText: {
-    fontSize:12
+    fontSize: 12
   },
   locWrap: {
     position: "absolute",
     right: 10,
-    marginTop:5,
+    marginTop: 5
   },
   location: {
     width: 25,
@@ -148,8 +150,8 @@ const styles = StyleSheet.create({
     padding: 10
   },
   detailText: {
-    paddingHorizontal:10,
-    fontSize:12,
+    paddingHorizontal: 10,
+    fontSize: 12,
     color: "#727272"
   },
   bottomRow: {

@@ -31,6 +31,7 @@ class ProfileSetting extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    // console.log("ProfileSetting componentWillReceiveProps")
     if (
       JSON.stringify(this.state.userInfo) !==
       JSON.stringify(nextProps.userInfo)

@@ -4,8 +4,10 @@ import React, { Component } from "react"
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native"
 import { List, TextareaItem, InputItem } from "@ant-design/react-native"
 import RNFileSelector from "react-native-file-selector"
+import { connect } from "react-redux"
 import ImagePicker from "../ImagePicker/ImagePicker"
 import uploadFile from "../../utils/rpc"
+@connect()
 
 export default class BaseInfo extends Component {
   constructor(props) {
@@ -23,18 +25,19 @@ export default class BaseInfo extends Component {
       title: "选择文件",
       onDone: path => {
         const name = path.split("/")
+        const fileName = name[name.length-1]
         this.props.dispatch({
           type: "app/getUploadToken",
           callback: res => {
             if (res.msg === "OK") {
               const formInput = {
-                key: `${name.split(".")[0]}_${new Date().valueOf()}`
+                key: `${fileName}_${new Date().valueOf()}`
               }
               const { token } = res.result
               const url = `http://pmzyq6wog.bkt.clouddn.com/${formInput.key}`
               uploadFile(path, token, formInput, () => {
                 this.setState({ fileName: path })
-                this.handleInput({url,title:name.split(".")[0]}, "attchments")
+                this.handleInput({url,title:fileName}, "attchments")
               })
             }
           }
@@ -71,7 +74,7 @@ export default class BaseInfo extends Component {
             rows={5}
             clear
             onChange={v => this.handleInput(v, "desc")}
-            placeholder="请输入详情描述，至少50字。"
+            placeholder="请输入详情描述，建议至少50字。"
           />
         </List>
         <List>

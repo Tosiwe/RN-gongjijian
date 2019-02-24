@@ -1,12 +1,13 @@
-import React, { Component } from 'react'
-import { connect } from 'react-redux'
+import React, { Component } from "react"
+import { connect } from "react-redux"
 
-import { StyleSheet, View, Text, FlatList } from 'react-native'
-// import { NavigationActions } from 'react-navigation'
-import { List, ActivityIndicator } from '@ant-design/react-native'
-import { screenHeight, primaryColor } from '../../styles/common'
-import ListItem from '../../components/ListIem/ListItem'
-import { list } from './data'
+import { StyleSheet, View, Text, FlatList } from "react-native"
+import { List, ActivityIndicator } from "@ant-design/react-native"
+import {NavigationActions} from "react-navigation"
+import { screenHeight, primaryColor } from "../../styles/common"
+import ListItem from "../../components/ListIem/ListItem"
+import { getPosition } from "../../utils/utils"
+// import { list } from './data'
 
 const { Item } = List
 
@@ -15,79 +16,170 @@ class IndustryEntry extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeKey: 0,
-      loading: false,
+      activeKey: "hBuilding",
+      loading: true,
+      list: [],
+      params: {
+        distance: 0,
+        classifyId: props.id
+      }
     }
   }
 
+  componentDidMount() {
+    this.getDemandList()
+    // this.getInfoList()
+    
+    this.setState({ activeKey: this.props.id })
+  }
+
+  getDemandList = (pn = 1) => {
+    delete this.state.params.subClassifyId
+    const that = { ...this }
+    getPosition(that).then(result => {
+      if (result.isSuccess) {
+        this.state.params = result.params
+        console.log("getDemandList", result.params)
+        this.props.dispatch({
+          type: "app/getDemandListLoc",
+          payload: result.params,
+          callback: res => {
+            this.setState({ loading: false })
+
+            if (res.msg === "OK") {
+              let demandList = []
+              if (pn !== 1) {
+                demandList = [...this.state.demandList, ...res.result.data]
+              } else {
+                demandList = res.result.data
+              }
+              this.setState({
+                list: demandList
+              })
+            }
+          }
+        })
+      }else{
+        this.setState({ loading: false })
+      }
+    })
+  };
+
+
+  getInfoList = (pn = 1) => {
+    const that = { ...this }
+
+    getPosition(that).then(result => {
+      if (result.isSuccess) {
+        this.state.params = result.params
+        console.log("getInfoList", result.params)
+        this.props.dispatch({
+          type: "app/getInfoListLoc",
+          payload: result.params,
+          callback: res => {
+            this.setState({ loading: false })
+            if (res.msg === "OK") {
+              let infoList = []
+              if (pn !== 1) {
+                infoList = [...this.state.infoList, ...res.result.data]
+              } else {
+                infoList = res.result.data
+              }
+              this.setState({
+                list: infoList
+                // infoPageNum: res.result.pn
+              })
+            }
+          }
+        })
+      }else{
+        this.setState({ loading: false })
+      }
+    })
+  };
+
   renderItem = ({ item }) => (
     <ListItem
-      id={item.id}
-      onPressItem={this.onPressItem}
-      //   selected={!!this.state.selected.get(item.id)}
-      title={item.title}
-      url={item.url}
-      des={item.des}
+    data={item}
     />
-  )
+  );
 
+  // 左侧点击
   onPress = key => {
-    const self = this
+    const { id } = this.props
     this.setState({ activeKey: key, loading: true })
-    setTimeout(() => {
-      self.setState({ loading: false })
-    }, 1000)
-  }
 
-  onPressItem = id => {
-    this.setState(state => {
-      const selected = new Map(state.selected)
-      selected.set(id, !selected.get(id)) // toggle
-      return { selected }
-    })
-  }
+    if (key === id) {
+      this.getDemandList()
+    } else {
+      this.state.params.subClassifyId = key
+      this.getInfoList()
+    }
+  };
 
   render() {
     // const { type } = this.props
-    const { activeKey, loading } = this.state
+    const { activeKey, loading, list } = this.state
+    const { id } = this.props
     return (
       <View style={styles.container}>
         <View style={styles.left}>
-          <List renderHeader={<Text style={styles.title}>商家</Text>}>
+          <List renderHeader={<Text style={styles.title}>需求</Text>}>
             <Item
-              onPress={() => this.onPress(0)}
-              style={[styles.item, activeKey === 0 ? styles.active : '']}
+              onPress={() => this.onPress(id)}
+              style={[styles.item, activeKey === id ? styles.active : ""]}
             >
               <Text
                 style={[
                   styles.itemText,
-                  activeKey === 0 ? styles.activeText : '',
+                  activeKey === id ? styles.activeText : ""
+                ]}
+              >
+                需求
+              </Text>
+            </Item>
+          </List>
+          <List renderHeader={<Text style={styles.title}>商家</Text>}>
+            <Item
+              onPress={() => this.onPress("company")}
+              style={[
+                styles.item,
+                activeKey === "company" ? styles.active : ""
+              ]}
+            >
+              <Text
+                style={[
+                  styles.itemText,
+                  activeKey === "company" ? styles.activeText : ""
                 ]}
               >
                 公司
               </Text>
             </Item>
             <Item
-              onPress={() => this.onPress(1)}
-              style={[styles.item, activeKey === 1 ? styles.active : '']}
+              onPress={() => this.onPress("material")}
+              style={[
+                styles.item,
+                activeKey === "material" ? styles.active : ""
+              ]}
             >
               <Text
                 style={[
                   styles.itemText,
-                  activeKey === 1 ? styles.activeText : '',
+                  activeKey === "material" ? styles.activeText : ""
                 ]}
               >
                 材料供应
               </Text>
             </Item>
             <Item
-              onPress={() => this.onPress(2)}
-              style={[styles.item, activeKey === 2 ? styles.active : '']}
+              onPress={() => this.onPress("rent")}
+              style={[styles.item, activeKey === "rent" ? styles.active : ""]}
             >
               <Text
                 style={[
                   styles.itemText,
-                  activeKey === 2 ? styles.activeText : '',
+                  activeKey === "rent" ? styles.activeText : ""
                 ]}
               >
                 设备租赁
@@ -96,39 +188,42 @@ class IndustryEntry extends Component {
           </List>
           <List renderHeader={<Text style={styles.title}>个人</Text>}>
             <Item
-              onPress={() => this.onPress(3)}
-              style={[styles.item, activeKey === 3 ? styles.active : '']}
+              onPress={() => this.onPress("talent")}
+              style={[styles.item, activeKey === "talent" ? styles.active : ""]}
             >
               <Text
                 style={[
                   styles.itemText,
-                  activeKey === 3 ? styles.activeText : '',
+                  activeKey === "talent" ? styles.activeText : ""
                 ]}
               >
                 人才
               </Text>
             </Item>
             <Item
-              onPress={() => this.onPress(4)}
-              style={[styles.item, activeKey === 4 ? styles.active : '']}
+              onPress={() => this.onPress("team")}
+              style={[styles.item, activeKey === "team" ? styles.active : ""]}
             >
               <Text
                 style={[
                   styles.itemText,
-                  activeKey === 4 ? styles.activeText : '',
+                  activeKey === "team" ? styles.activeText : ""
                 ]}
               >
                 施工队伍
               </Text>
             </Item>
             <Item
-              onPress={() => this.onPress(5)}
-              style={[styles.item, activeKey === 5 ? styles.active : '']}
+              onPress={() => this.onPress("project")}
+              style={[
+                styles.item,
+                activeKey === "project" ? styles.active : ""
+              ]}
             >
               <Text
                 style={[
                   styles.itemText,
-                  activeKey === 5 ? styles.activeText : '',
+                  activeKey === "project" ? styles.activeText : ""
                 ]}
               >
                 项目信息
@@ -138,7 +233,13 @@ class IndustryEntry extends Component {
         </View>
         <View style={styles.right}>
           <ActivityIndicator animating={loading} />
-          <FlatList data={list} renderItem={this.renderItem} />
+          {list.length ? (
+            <FlatList data={list} renderItem={this.renderItem} />
+          ) : (
+            <Text style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}>
+              暂无数据
+            </Text>
+          )}
         </View>
       </View>
     )
@@ -147,44 +248,44 @@ class IndustryEntry extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#FFF',
-    flexDirection: 'row',
+    backgroundColor: "#FFF",
+    flexDirection: "row"
   },
   title: {
     fontSize: 12,
     height: 30,
-    color: '#737373',
+    color: "#737373",
     paddingLeft: 20,
     paddingTop: 10,
-    backgroundColor: '#E0E0E0',
+    backgroundColor: "#E0E0E0"
   },
   left: {
     width: 95,
     height: screenHeight,
-    backgroundColor: '#EFEFEF',
+    backgroundColor: "#EFEFEF"
   },
   right: {
     flex: 1,
     height: screenHeight,
     paddingVertical: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 10
   },
   item: {
-    backgroundColor: '#EFEFEF',
+    backgroundColor: "#EFEFEF",
     borderLeftWidth: 4,
-    borderLeftColor: '#EFEFEF',
+    borderLeftColor: "#EFEFEF"
   },
   active: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderLeftWidth: 4,
-    borderLeftColor: primaryColor,
+    borderLeftColor: primaryColor
   },
   activeText: {
-    color: primaryColor,
+    color: primaryColor
   },
   itemText: {
-    fontSize: 14,
-  },
+    fontSize: 14
+  }
 })
 
 export default IndustryEntry

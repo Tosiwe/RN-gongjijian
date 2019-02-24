@@ -7,7 +7,8 @@ import {
   Text,
   TouchableOpacity,
   ImageBackground,
-  Image
+  Image,
+  Linking
 } from "react-native"
 import { NavigationActions } from "react-navigation"
 
@@ -21,7 +22,7 @@ class Top extends Component {
 
     this.state = {
       userInfo: {
-        nick:"user"
+        nick: "user"
       }
     }
   }
@@ -47,18 +48,18 @@ class Top extends Component {
     )
   };
 
-  setProfile=()=>{
+  setProfile = () => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: "ProfileSetting",
         params: { name: "修改资料" }
       })
     )
-  }
+  };
 
-  toVip=()=>{
-    this.props.dispatch(NavigationActions.navigate({ routeName: 'Vip' }))
-  }
+  toVip = () => {
+    this.props.dispatch(NavigationActions.navigate({ routeName: "Vip" }))
+  };
 
   render() {
     const { userInfo } = this.state
@@ -79,7 +80,7 @@ class Top extends Component {
               justifyContent: "flex-end"
             }}
           >
-            <TouchableOpacity>
+            <TouchableOpacity onPress={() => Linking.openURL("tel:10010")}>
               <Image source={require("./images/icon_nav_service.png")} />
             </TouchableOpacity>
             <TouchableOpacity>
@@ -100,10 +101,10 @@ class Top extends Component {
           <Image
             style={styles.avator}
             source={
-              userInfo.headshotUrl&&userInfo.headshotUrl.includes("http")
-              ? { uri: userInfo.headshotUrl }
-              : require("./images/logo.jpg")
-              }
+              userInfo.headshotUrl && userInfo.headshotUrl.includes("http")
+                ? { uri: userInfo.headshotUrl }
+                : require("./images/logo.jpg")
+            }
           />
         </TouchableOpacity>
         <Text style={styles.text}>{userInfo.nick}</Text>

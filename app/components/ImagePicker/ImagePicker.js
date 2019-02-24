@@ -69,7 +69,7 @@ export default class App extends Component {
           callback: res => {
             if (res.msg === "OK") {
               const formInput = {
-                key: `${name.split(".")[0]}_${new Date().valueOf()}`
+                key: `${name}_${new Date().valueOf()}`
               }
               const { token } = res.result
               const url = `http://pmzyq6wog.bkt.clouddn.com/${formInput.key}`

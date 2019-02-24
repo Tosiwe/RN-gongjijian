@@ -1,7 +1,9 @@
 
 /** 获取地理位置（经纬度） */
-export const getPosition = (params) =>
+export const getPosition = (that) =>
+
   new Promise((resole, reject) => {
+    const {params} = that.state
     /** 获取地理位置 */
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -11,14 +13,14 @@ export const getPosition = (params) =>
         // 纬度：positionData.latitude
         // const { params } = this.state;
         let newParams = { ...params }
-        const { longitude, latitude } = position
+        const { longitude, latitude } = position.coords
         newParams.longitude = longitude
         newParams.latitude = latitude
-        this.props.dispatch({
+        that.props.dispatch({
           type: "app/getGeoCode",
           payload: {
             lng: longitude,
-            lat: longitude
+            lat: latitude
           },
           callback: res => {
             if (res.msg === "OK") {

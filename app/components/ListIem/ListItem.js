@@ -2,34 +2,36 @@
 // native
 import React, { Component } from "react"
 import { View, StyleSheet, Text, Image, TouchableOpacity } from "react-native"
-import {NavigationActions} from "react-navigation"
+import { NavigationActions } from "react-navigation"
 import { connect } from "react-redux"
 
 @connect()
 class ListItem extends Component {
-
-  toDetail=()=>{
-      const {title} = this.props
-      this.props.dispatch(
-        NavigationActions.navigate({
-          routeName: "Detail",
-          params: { name:title }
-        })
-      )
-  }
+  toDetail = () => {
+    const { data } = this.props
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "Detail",
+        params: {
+          name: data.title,
+          data
+        }
+      })
+    )
+  };
 
   render() {
-    const { url, title, des, id } = this.props
+    const { data } = this.props
     return (
-      <TouchableOpacity key={id} onPress={this.toDetail}>
+      <TouchableOpacity key={data.id} onPress={this.toDetail}>
         <View style={styles.wrap}>
           <View style={styles.left}>
-            {/* <Image source={{ uri: url }} style={styles.img} /> */}
+            <Image source={{ uri: data.url }} style={styles.img} />
           </View>
           <View style={styles.right}>
-            <Text style={styles.title}>{title}</Text>
+            <Text style={styles.title}>{data.title}</Text>
             <Text ellipsizeMode="tail" numberOfLines={2} style={styles.des}>
-              {des}
+              {data.desc}
             </Text>
           </View>
         </View>

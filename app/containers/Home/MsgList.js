@@ -9,27 +9,44 @@ import {
   ImageBackground,
   Text
 } from "react-native"
-// import { WingBlank, List, Toast } from '@ant-design/react-native'
-import { homeList } from "./data"
+import { connect } from "react-redux"
+import {NavigationActions} from "react-navigation"
 import ListItem from "../../components/ListIem/ListItem"
-// const { Item } = List
-// const { Brief } = Item
+
+
+@connect()
 
 class MsgList extends Component {
- 
+  constructor(props) {
+    super(props)
+    this.state = {
+      list: [],
+    }
+  }
+
 
   renderItem = ({ item }) => (
     <ListItem
-      id={Math.random()}
-      // onPressItem={this.onPressItem}
-      //   selected={!!this.state.selected.get(item.id)}
-      title={item.title}
-      url={item.url}
-      des={item.des}
+      data={item}
     />
   );
 
+
+componentDidMount=()=>{
+  this.props.dispatch({
+    type: "app/bannerList",
+    callback: res => {
+      if (res.msg === "OK") {
+        this.setState({
+          list: res.result.data
+        })
+      }
+    }
+  })
+}
+
   render() {
+    const {list}=this.state
     return (
       <View style={styles.wrap}>
         <View style={styles.head}>
@@ -41,7 +58,7 @@ class MsgList extends Component {
           </ImageBackground>
         </View>
 
-        <FlatList data={homeList} renderItem={this.renderItem} />
+        <FlatList data={list} renderItem={this.renderItem} />
       </View>
     )
   }

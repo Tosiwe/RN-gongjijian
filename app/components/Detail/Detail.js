@@ -16,6 +16,7 @@ import Bottom from "./Bottom"
 import Pics from "../../containers/Home/Ads"
 
 import { statusBarHeight, iconSize } from "../../styles/common"
+import Setting from "../../containers/Account/Setting"
 
 @connect()
 class Detail extends Component {
@@ -26,8 +27,20 @@ class Detail extends Component {
     }
   }
 
+  componentDidMount() {
+    const { data } = this.props
+    const imgSet = new Set([
+      data.picture1,
+      data.picture2,
+      data.picture3,
+      data.picture3
+    ])
+    this.setState({ imgList: Array.from(imgSet) })
+  }
+
   render() {
-    const { msgList } = this.state
+    const { data } = this.props
+    const { imgList } = this.state
     return (
       <View style={styles.home}>
         <ScrollView
@@ -36,9 +49,9 @@ class Detail extends Component {
           showsVerticalScrollIndicator={false}
           onScrollEndDrag={this.handleScrollEnd}
         >
-          <Pics noRadius />
-          <Auth />
-          <BaseInfo type={3}/>
+          <Pics data={imgList} noRadius />
+          <Auth data={data} />
+          <BaseInfo data={data} />
         </ScrollView>
         <Bottom />
       </View>
@@ -64,8 +77,7 @@ const styles = StyleSheet.create({
   gap: {
     backgroundColor: "#EEEEEE",
     height: 10
-  },
-  
+  }
 })
 
 export default Detail
