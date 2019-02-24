@@ -50,3 +50,11 @@ export async function getDemandList(params) {
     })
   }
   
+
+// 我的信息by loction
+export async function getDemandListLoc(params) {
+    return request(`http://118.24.107.177:7001/demand/list`, {
+        method: "POST",
+        body: params,
+    })
+  }

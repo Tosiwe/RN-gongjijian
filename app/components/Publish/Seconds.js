@@ -9,20 +9,24 @@ const { Item } = List
 const { Brief } = Item
 
 const COMPANY = [
-  { title: "二手钢材", brief: "资质办理、资质挂靠等" },
-  { title: "二手机械", brief: "注册人员相关" },
-  { title: "二手木材", brief: "注册人员相关" }
+  { title: "二手钢材", id: "ndssteel", brief: "资质办理、资质挂靠等" },
+  { title: "二手机械", id: "ndsmach", brief: "注册人员相关" },
+  { title: "二手木材", id: "ndswood", brief: "注册人员相关" }
 ]
 
 @connect()
 class Seconds extends Component {
-  fillForm = title => {
-    const { type, name } = this.props.navigation.state.params
+  fillForm = info => {
+    const { type, name, id } = this.props.navigation.state.params
     const { dispatch } = this.props
     dispatch(
       NavigationActions.navigate({
         routeName: "FormInfo",
-        params: { type, name, title }
+        params: {
+          type,
+          name: `${name}-${info.title}`,
+          ids: { classifyId: id, subClassifyId: info.id }
+        }
       })
     )
   };
@@ -45,7 +49,7 @@ class Seconds extends Component {
         >
           {COMPANY.map(data => (
             <Item
-              onPress={() => this.fillForm(data.title)}
+              onPress={() => this.fillForm(data)}
               style={styles.item}
               arrow="horizontal"
             >

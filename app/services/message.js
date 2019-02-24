@@ -65,3 +65,19 @@ export async function getGeoCode(params) {
         body: params,
     })
   }
+
+// 搜索
+export async function search(params) {
+    return request(`http://118.24.107.177:7001/search`, {
+        method: "POST",
+        body: params,
+    })
+  }
+
+// 热门
+export async function searchHotList(params) {
+    return request(`http://118.24.107.177:7001/search/hot/list`, {
+        method: "POST",
+        body: params,
+    })
+  }

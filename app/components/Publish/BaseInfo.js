@@ -5,6 +5,7 @@ import { StyleSheet, View, TouchableOpacity, Text } from "react-native"
 import { List, TextareaItem, InputItem } from "@ant-design/react-native"
 import RNFileSelector from "react-native-file-selector"
 import ImagePicker from "../ImagePicker/ImagePicker"
+import uploadFile from "../../utils/rpc"
 
 export default class BaseInfo extends Component {
   constructor(props) {
@@ -21,8 +22,23 @@ export default class BaseInfo extends Component {
     RNFileSelector.Show({
       title: "选择文件",
       onDone: path => {
-        this.handleInput(path, "file")
-        this.setState({ fileName: path })
+        const name = path.split("/")
+        this.props.dispatch({
+          type: "app/getUploadToken",
+          callback: res => {
+            if (res.msg === "OK") {
+              const formInput = {
+                key: `${name.split(".")[0]}_${new Date().valueOf()}`
+              }
+              const { token } = res.result
+              const url = `http://pmzyq6wog.bkt.clouddn.com/${formInput.key}`
+              uploadFile(path, token, formInput, () => {
+                this.setState({ fileName: path })
+                this.handleInput({url,title:name.split(".")[0]}, "attchments")
+              })
+            }
+          }
+        })
       }
     })
   };
@@ -48,7 +64,7 @@ export default class BaseInfo extends Component {
 
     return (
       <View style={styles.wrap}>
-        <ImagePicker onChange={v => this.handleInput(v, "picture")} />
+        {/* <ImagePicker onChange={v => this.handleInput(v, "picture")} /> */}
         <List style={styles.inputBox}>
           <TextareaItem
             style={styles.input}
@@ -98,7 +114,7 @@ export default class BaseInfo extends Component {
             placeholder="请填写地域，如：全国、沧州市、河北省"
           />
         </List>
-        <View>
+        {/* <View>
           <Text style={styles.selectorTitle}>附件上传</Text>
           {!!fileName && <Text>{`已选择：${fileName}`}</Text>}
           <TouchableOpacity
@@ -108,7 +124,7 @@ export default class BaseInfo extends Component {
             <Text style={styles.selectBtnText}>选择文件</Text>
           </TouchableOpacity>
           <Text style={{ color: "#737373" }}>{path}</Text>
-        </View>
+        </View> */}
       </View>
     )
   }

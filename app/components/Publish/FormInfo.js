@@ -5,6 +5,7 @@ import { connect } from "react-redux"
 import { StyleSheet, ScrollView, Text } from "react-native"
 import { Toast, List, InputItem, WhiteSpace } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
+import { getPosition } from "../../utils/utils"
 
 // import ImagePicker from 'react-native-image-picker'
 import BaseInfo from "./BaseInfo"
@@ -42,7 +43,7 @@ class FormInfo extends Component {
         extraUnit: "",
         extraPrice: "",
 
-        file: "",
+        attchments: "",
         longitude: "",
         latitude: "",
         province: "",
@@ -52,22 +53,11 @@ class FormInfo extends Component {
     }
   }
 
-  onSave = () => {
-    this.getPosition().then(response => {
-      const { params } = this.state
-      if (this.isLegal()) {
-        this.props.dispatch({
-          type: "app/saveInfoDraft",
-          payload: params,
-          callback: res => {
-            if (res.msg === "OK") {
-              Toast.success("保存成功！", 1, this.goHome)
-            }
-          }
-        })
-      }
-    })
-  };
+  componentDidMount() {
+    const { ids } = this.props.navigation.state.params
+    this.state.params.classifyId = ids.classifyId
+    this.state.params.classifyId = ids.subClassifyId
+  }
 
   isLegal = () => {
     const { params } = this.state
@@ -86,6 +76,24 @@ class FormInfo extends Component {
     return true
   };
 
+  onSave = () => {
+    const { params } = this.state
+    getPosition(params).then(result => {
+      if (this.isLegal() && result.isSuccess) {
+        this.state.params = result.params
+        this.props.dispatch({
+          type: "app/saveInfoDraft",
+          payload: result.params,
+          callback: res => {
+            if (res.msg === "OK") {
+              Toast.success("保存成功！", 1, this.goHome)
+            }
+          }
+        })
+      }
+    })
+  };
+
   goHome = () => {
     this.props.dispatch(
       NavigationActions.navigate({
@@ -96,21 +104,21 @@ class FormInfo extends Component {
   };
 
   onPublish = () => {
-    if (this.isLegal()) {
-      this.getPosition().then(response => {
-        const { params } = this.state
-
+    const { params } = this.state
+    getPosition(params).then(result => {
+      if (this.isLegal() && result.isSuccess) {
+        this.state.params = result.params
         this.props.dispatch({
           type: "app/saveInfo",
-          payload: params,
+          payload: result.params,
           callback: res => {
             if (res.msg === "OK") {
               Toast.success("发布成功！", 1, this.goHome)
             }
           }
         })
-      })
-    }
+      }
+    })
   };
 
   handleChange = (value, name) => {
@@ -124,53 +132,9 @@ class FormInfo extends Component {
     this.state.params = p
   };
 
-  /** 获取地理位置（经纬度） */
-  getPosition = () =>
-    new Promise((resole, reject) => {
-      /** 获取地理位置 */
-      navigator.geolocation.getCurrentPosition(
-        pos => {
-          // console.warn('成功：' + JSON.stringify(position));
-          const position = pos.coords
-          // 经度：positionData.longitude
-          // 纬度：positionData.latitude
-          const { params } = this.state
-          let newParams = { ...params }
-          const { longitude, latitude } = position
-          newParams.longitude = longitude
-          newParams.latitude = latitude
-          this.props.dispatch({
-            type: "app/getGeoCode",
-            payload: {
-              lng: longitude,
-              lat: longitude
-            },
-            callback: res => {
-              if (res.msg === "OK") {
-                newParams = { ...newParams, ...res.result }
-                this.state.params = newParams
-                resole()
-              }
-            }
-          })
-        },
-        error => {
-          console.warn(`失败：${JSON.stringify(error.message)}`)
-          reject()
-        },
-        {
-          // 提高精确度，但是获取的速度会慢一点
-          enableHighAccuracy: true,
-          // 设置获取超时的时间20秒
-          timeout: 20000,
-          // 示应用程序的缓存时间，每次请求都是立即去获取一个全新的对象内容
-          maximumAge: 1000
-        }
-      )
-    });
-
   render() {
-    const { name, id } = this.props.navigation.state.params
+    const { name, ids } = this.props.navigation.state.params
+    const id = ids.classifyId
     // 选择发布分类
     return (
       <ScrollView

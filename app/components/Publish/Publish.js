@@ -28,7 +28,7 @@ class Publish extends Component {
     const { type: publishType } = this.props.navigation.state.params
     const { dispatch } = this.props
     if (publishType === 1) {
-      // 发布需求
+      // 发布需求全部跳转到FormDemand
       dispatch(
         NavigationActions.navigate({
           routeName: "FormDemand",
@@ -40,7 +40,7 @@ class Publish extends Component {
       dispatch(
         NavigationActions.navigate({
           routeName: "Seconds",
-          params: { id: el.id, name: `${el.text}-需求编辑` }
+          params: { id: el.id, name: el.text }
         })
       )
     } else if (el.id === "aptitude" || el.id === "reg") {

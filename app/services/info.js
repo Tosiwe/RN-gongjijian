@@ -59,3 +59,12 @@ export async function getInfoListById(params) {
     })
   }
   
+
+// 我的信息指定分类
+export async function getInfoListLoc(params) {
+    return request(`http://118.24.107.177:7001/info/list`, {
+        method: "POST",
+        body: params,
+    })
+  }
+  

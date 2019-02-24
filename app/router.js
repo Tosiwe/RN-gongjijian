@@ -38,6 +38,7 @@ import Detail from "./components/Detail/Detail"
 import PaperDetail from "./components/Detail/PaperDetail"
 import AddButton from "./components/AddButton/AddButton"
 import Search from "./components/Search/Search"
+import SearchResult from "./components/Search/SearchResult"
 import Entry from "./containers/Entry/Entry"
 import Publish from "./components/Publish/Publish"
 import CompanyOrPerson from "./components/Publish/CompanyOrPerson"
@@ -197,6 +198,12 @@ const MainNavigator = createStackNavigator(
     SettleForm: {
       // 入驻表单
       screen: SettleForm,
+      navigationOptions: mainNavigationOptions
+    },
+    
+    SearchResult: {
+      // 入驻表单
+      screen: SearchResult,
       navigationOptions: mainNavigationOptions
     },
     

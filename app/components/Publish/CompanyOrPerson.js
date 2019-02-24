@@ -9,25 +9,29 @@ const { Item } = List
 const { Brief } = Item
 
 const COMPANY = [
-  { title: "公司", brief: "公司简介、公司业务等" },
-  { title: "租赁", brief: "租赁相关信息" },
-  { title: "材料供应", brief: "租赁相关信息" }
+  { title: "公司", id: "company", brief: "公司简介、公司业务等" },
+  { title: "租赁", id: "material", brief: "租赁相关信息" },
+  { title: "材料供应", id: "material", brief: "租赁相关信息" }
 ]
 
 const PERSON = [
-  { title: "人才", brief: "人才相关信息" },
-  { title: "施工队伍", brief: "施工队伍相关信息" },
-  { title: "项目信息", brief: "项目相关信息" }
+  { title: "人才", id: "talent", brief: "人才相关信息" },
+  { title: "施工队伍", id: "team", brief: "施工队伍相关信息" },
+  { title: "项目信息", id: "project", brief: "项目相关信息" }
 ]
 @connect()
 class CompanyOrPerson extends Component {
-  fillForm = title => {
-    const { type, name } = this.props.navigation.state.params
+  fillForm = info => {
+    const { type, name, id } = this.props.navigation.state.params
     const { dispatch } = this.props
     dispatch(
       NavigationActions.navigate({
         routeName: "FormInfo",
-        params: { type, name:`${name}-${title}`,  }
+        params: {
+          type,
+          name: `${name}-${info.title}`,
+          ids: { classifyId: id, subClassifyId: info.id }
+        }
       })
     )
   };
@@ -50,7 +54,8 @@ class CompanyOrPerson extends Component {
         >
           {COMPANY.map(data => (
             <Item
-              onPress={() => this.fillForm(data.title)}
+              key={data.id}
+              onPress={() => this.fillForm(data)}
               style={styles.item}
               arrow="horizontal"
             >
@@ -70,7 +75,8 @@ class CompanyOrPerson extends Component {
         >
           {PERSON.map(data => (
             <Item
-              onPress={() => this.fillForm(data.title)}
+              key={data.id}
+              onPress={() => this.fillForm(data)}
               style={styles.item}
               arrow="horizontal"
             >

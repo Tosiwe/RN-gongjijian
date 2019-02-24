@@ -152,6 +152,16 @@ export default {
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
+    // location需求
+    *getDemandListLoc({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(publishService.getDemandListLoc, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
     // ---------- 信息类 ----------
 
     // 保存信息发布
@@ -222,6 +232,16 @@ export default {
     *getInfoListById({ payload,callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.getInfoListById, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
+    // 信息location
+    *geInfoListLoc({ payload,callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(infoService.geInfoListLoc, payload)
       if (res && callback) {
         callback(res)
       }
@@ -426,6 +446,24 @@ export default {
     *getGeoCode({ payload,callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.getGeoCode, payload)
+      if (res&&callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+    // 搜索
+    *search({ payload,callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(messageService.search, payload)
+      if (res&&callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+    // 热门
+    *searchHotList({ payload,callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(messageService.searchHotList, payload)
       if (res&&callback) {
         callback(res)
       }
