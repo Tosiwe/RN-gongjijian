@@ -54,9 +54,6 @@ class SearchResult extends Component {
           })
         }
       })
-      .catch(err => {
-        Toast.fail("失败：无法获取定位，请设置获取定位权限")
-      })
   };
 
   renderItem = ({ item }) => <ListItem data={item} />;

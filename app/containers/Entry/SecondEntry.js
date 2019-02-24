@@ -66,8 +66,6 @@ class SecondEntry extends Component {
       }else{
         this.setState({ loading: false })
       }
-    }).catch(err=>{
-      Toast.fail("失败：无法获取定位，请设置获取定位权限")
     })
   };
 

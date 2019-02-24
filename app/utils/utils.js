@@ -1,3 +1,4 @@
+/* eslint-disable default-case */
 /** 获取地理位置（经纬度） */
 export const getPosition = (that, Toast) =>
   new Promise((resole, reject) => {
@@ -35,11 +36,12 @@ export const getPosition = (that, Toast) =>
       },
       error => {
         console.warn(`失败：${JSON.stringify(error.message)}`)
-        reject()
+        Toast.info(`失败：${JSON.stringify(error.message)}`)
+        reject(error)
       },
       {
         // 提高精确度，但是获取的速度会慢一点
-        enableHighAccuracy: true,
+        // enableHighAccuracy: true,
         // 设置获取超时的时间20秒
         timeout: 20000,
         // 示应用程序的缓存时间，每次请求都是立即去获取一个全新的对象内容

@@ -36,7 +36,11 @@ export default {
         yield put(
           createAction("updateState")({ login: true, fetching: false })
         )
-        yield put(NavigationActions.back())
+        yield put(
+          NavigationActions.navigate({
+            routeName: "HomeNavigator"
+          })
+        )
       } else {
         yield put(
           createAction("updateState")({ login: false, fetching: false })
@@ -521,10 +525,8 @@ export default {
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
-
     // ---------------订单相关------------
 
-    
     *creatRechargeOrder({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(orderService.creatRechargeOrder, payload)
@@ -533,7 +535,7 @@ export default {
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
-    
+
     *getOrderList({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(orderService.getOrderList, payload)
@@ -542,7 +544,7 @@ export default {
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
-    
+
     *createVipOrder({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(orderService.createVipOrder, payload)
@@ -551,7 +553,7 @@ export default {
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
-    
+
     *createOrderContact({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(orderService.createOrderContact, payload)
@@ -560,7 +562,7 @@ export default {
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
-    
+
     *createOrderPaper({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(orderService.createOrderPaper, payload)
@@ -569,7 +571,7 @@ export default {
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
-    
+
     *createOrderAttach({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(orderService.createOrderAttach, payload)
@@ -578,7 +580,7 @@ export default {
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
-    
+
     *queryOrder({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(orderService.queryOrder, payload)
@@ -586,9 +588,7 @@ export default {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
-    },
-
-
+    }
   },
   subscriptions: {
     setup({ dispatch }) {
