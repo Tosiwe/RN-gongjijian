@@ -33,6 +33,7 @@ buildscript {
             repositories {
                 jcenter()
                 maven { url "https://dl.bintray.com/android/android-tools/"  }
+
             }
         }
     }
@@ -54,5 +55,6 @@ allprojects {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url "$rootDir/../node_modules/react-native/android"
         }
+
     }
 }

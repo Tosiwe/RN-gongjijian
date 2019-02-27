@@ -6,8 +6,9 @@ import React, { Component } from "react"
 import { StyleSheet, Text, TouchableOpacity } from "react-native"
 import Icon from "react-native-vector-icons/AntDesign"
 
-import { Picker } from "@ant-design/react-native"
+import { Picker, Toast } from "@ant-design/react-native"
 import { connect } from "react-redux"
+import { getPosition } from "../../utils/utils"
 
 const area = require("./data.json")
 
@@ -19,6 +20,15 @@ class LocationBtn extends Component {
     this.state = {
       name: ["城市"]
     }
+  }
+
+  componentDidMount() {
+    const that = { ...this }
+    getPosition(that, Toast).then(res => {
+      if (res.isSuccess) {
+        this.setState({ name: [res.params.city] })
+      }
+    })
   }
 
   getArea = () => {
@@ -61,7 +71,11 @@ class LocationBtn extends Component {
       <Picker data={area} cols={cols || 2} onChange={this.onChangeArea}>
         {button || (
           <TouchableOpacity style={styles.cityButton}>
-            <Text numberOfLines={1} ellipsizeMode="tail" style={{ fontSize: 14, marginLeft: 5 }}>
+            <Text
+              numberOfLines={1}
+              ellipsizeMode="tail"
+              style={{ fontSize: 14, marginLeft: 5 }}
+            >
               {this.getArea()}
             </Text>
             <Icon name="down" size={14} color="#000" />

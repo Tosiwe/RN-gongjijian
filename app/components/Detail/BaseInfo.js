@@ -1,8 +1,9 @@
 import React, { Component } from "react"
-import { StyleSheet, View, Image, Text, TouachableOpacity } from "react-native"
+import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native"
 import { connect } from "react-redux"
-import {Toast} from "@ant-design/react-native"
-import Icon from "react-native-vector-icons/AntDesign"
+import { Toast, Accordion, List } from "@ant-design/react-native"
+// import Icon from "react-native-vector-icons/AntDesign"
+import {NavigationActions} from "react-navigation"
 
 @connect()
 class BaseInfo extends Component {
@@ -13,12 +14,28 @@ class BaseInfo extends Component {
     }
   }
 
-  checkFile=()=>{
+  checkFile = () => {
     Toast.info("暂无附件")
+  };
+
+  onChange = activeSections => {
+    this.setState({ activeSections })
+  };
+
+  toPaperDetail=data=>{
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "PaperDetail",
+        params: {
+          name: '附件详情',
+          data
+        }
+      })
+    )
   }
 
   render() {
-    const { data={} } = this.props
+    const { data = {} } = this.props
     const Td = props => (
       <View style={styles.td}>
         <Text style={styles.tdLabel}>{props.label}</Text>
@@ -44,7 +61,12 @@ class BaseInfo extends Component {
         )
       }
 
-      if (classifyId === "smarket") {
+      if (
+        classifyId === "smarket" ||
+        classifyId === "ndssteel" ||
+        classifyId === "ndsmach" ||
+        classifyId === "ndswood"
+      ) {
         return (
           <View>
             <View style={styles.row}>
@@ -62,12 +84,9 @@ class BaseInfo extends Component {
         )
       }
 
-      return (
-        <View style={styles.row}>
-          <Td label="企业认证" text={data.text || "-"} />
-        </View>
-      )
+      return null
     }
+
     return (
       <View style={styles.BaseInfo}>
         {form()}
@@ -89,20 +108,33 @@ class BaseInfo extends Component {
           </View>
           <Text style={styles.detailText}>{data.desc}</Text>
         </View>
-        {/* <TouachableOpacity
-          style={[styles.row, { justifyContent: "space-between" }]}
-          onPress={this.checkFile}
-        >
-          <Text>查看附件</Text>
-          <Icon name="right" style={{ color: "#727272" }} />
-        </TouachableOpacity> */}
-        <View style={[styles.row, styles.bottomRow]} />
+        <View style={styles.fileRow}>
+          <Accordion
+            onChange={this.onChange}
+            activeSections={this.state.activeSections}
+          >
+            <Accordion.Panel
+              header={<Text style={{ fontSize: 16 ,lineHeight:40,flex:1}}>查看附件</Text>}
+            >
+              <List>
+                {data.attach &&
+                  data.attach.map(item => (
+                    <List.Item arrow="horizontal" onPress={()=>this.toPaperDetail(item)}>{item.title}</List.Item>
+                  ))}
+              </List>
+            </Accordion.Panel>
+          </Accordion>
+        </View>
+        <View style={styles.bottomRow} />
       </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  fileRow: {
+    paddingHorizontal: 20
+  },
   row: {
     borderTopWidth: 1,
     // borderBottomWidth: 1,
@@ -148,7 +180,9 @@ const styles = StyleSheet.create({
     borderRadius: 5
   },
   detailTitle: {
-    padding: 10
+    padding: 10,
+    fontSize: 16,
+    color: "black"
   },
   detailText: {
     paddingHorizontal: 10,

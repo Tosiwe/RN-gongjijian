@@ -62,6 +62,8 @@ class IndustryEntry extends Component {
       }else{
         this.setState({ loading: false })
       }
+    }).catch(error=>{
+      this.setState({ loading: false })
     })
   };
 
@@ -95,6 +97,8 @@ class IndustryEntry extends Component {
       }else{
         this.setState({ loading: false })
       }
+    }).catch(error=>{
+      this.setState({ loading: false })
     })
   };
 

@@ -60,11 +60,11 @@ export default class App extends Component {
     }).then(params => {
       Alipay.pay(params).then(
         res => {
-          if (res.code === 10000) {
+          // if (res.code === 10000) {
             this.createOrder()
-          } else {
-            Toast.info(`error code:${res.code}`)
-          }
+          // } else {
+            // Toast.info(`error code:${res.code}`)
+          // }
         },
         err => {
           console.log(err)

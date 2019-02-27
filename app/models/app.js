@@ -117,12 +117,8 @@ export default {
     *saveDemand({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(publishService.saveDemandReview, payload)
-      if (res) {
-        const { id } = res.result
-        const response = yield call(publishService.reviewDemand, { id })
-        if (response && callback) {
-          callback(response)
-        }
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
@@ -193,12 +189,8 @@ export default {
     *saveInfo({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.saveInfoReview, payload)
-      if (res) {
-        const { id } = res.result
-        const response = yield call(infoService.reviewInfo, { id })
-        if (response && callback) {
-          callback(response)
-        }
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
@@ -350,11 +342,11 @@ export default {
     },
 
     // 新增收藏
-    *saveBookmark({ payload }, { call, put }) {
+    *saveBookmark({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.saveBookmark, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },

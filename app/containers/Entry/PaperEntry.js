@@ -10,8 +10,8 @@ import {
   ActivityIndicator,
   TouchableOpacity
 } from "react-native"
-import { Tabs,Toast } from "@ant-design/react-native"
-import {NavigationActions} from "react-navigation"
+import { Tabs, Toast } from "@ant-design/react-native"
+import { NavigationActions } from "react-navigation"
 import { screenWidth } from "../../styles/common"
 import { getPosition } from "../../utils/utils"
 
@@ -62,79 +62,72 @@ class PaperEntry extends Component {
       loading: true,
       list: [],
       params: {
-        classifyId: props.id
+        classifyId: "hbuilding"
       }
     }
   }
 
-
-
-  componentDidMount(){
+  componentDidMount() {
     this.getPeperList()
   }
 
-
   changeTab = tab => {
-    this.state.params.subClassifyId = tab.id
+    this.state.params.classifyId = tab.id
     this.getPeperList()
   };
 
   getPeperList = (pn = 1) => {
-    const that = { ...this }
+    const { params } = this.state
     this.setState({ loading: true })
-    getPosition(that).then(result => {
-      if (result.isSuccess) {
-        this.state.params = result.params
-        console.log("getPeperList", result.params)
-        this.props.dispatch({
-          type: "app/paperList",
-          payload: result.params,
-          callback: res => {
-            this.setState({ loading: false })
-            if (res.msg === "OK") {
-              let infoList = []
-              if (pn !== 1) {
-                infoList = [...this.state.infoList, ...res.result.data]
-              } else {
-                infoList = res.result.data
-              }
-              this.setState({
-                list: infoList
-                // infoPageNum: res.result.pn
-              })
-            }
-          }
-        })
-      } else {
+    this.props.dispatch({
+      type: "app/paperList",
+      payload: params,
+      callback: res => {
         this.setState({ loading: false })
+        if (res.msg === "OK") {
+          let infoList = []
+          if (pn !== 1) {
+            infoList = [...this.state.infoList, ...res.result.data]
+          } else {
+            infoList = res.result.data
+          }
+          this.setState({
+            list: infoList
+            // infoPageNum: res.result.pn
+          })
+        }
       }
     })
   };
-
-
 
   onPressItem = data => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: "PaperDetail",
-        params:{
-          name:data.name,
+        params: {
+          name: '图纸详情',
           data
         }
       })
     )
   };
 
-
-  renderItem = ({ item }) => (
-    <TouchableOpacity style={styles.wrap}>
+  renderItem = ({ item, index }) => (
+    <TouchableOpacity
+      style={[index === 0 && styles.top, styles.wrap]}
+      onPress={() => this.onPressItem(item)}
+    >
       <View style={styles.info}>
         <Text style={styles.title}>{item.title}</Text>
         <Text ellipsizeMode="tail" numberOfLines={1} style={styles.infoText}>
           {item.desc}
         </Text>
       </View>
-      <Image style={styles.img} source={{ uri: item.picture1 }} />
+      <Image
+        style={styles.img}
+        resizeMode="contain"
+        source={require("../img/img_drawing.png")}
+      />
     </TouchableOpacity>
   );
 
@@ -167,10 +160,13 @@ class PaperEntry extends Component {
 }
 
 const styles = StyleSheet.create({
+  top: {
+    borderTopWidth: 1,
+    borderTopColor: "#DDD"
+  },
   content: {
     backgroundColor: "#FFF",
-    flex: 1,
-    paddingTop: 10
+    flex: 1
   },
   container: {
     backgroundColor: "#FFF",
@@ -178,8 +174,7 @@ const styles = StyleSheet.create({
   },
   wrap: {
     flexDirection: "row",
-    // borderTopWidth: 1,
-    // borderTopColor: "#DDD",
+
     borderBottomWidth: 1,
     borderBottomColor: "#DDD",
     padding: 10
@@ -189,6 +184,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
+    fontWeight: "bold",
     marginBottom: 5
   },
   infoText: {
@@ -196,6 +192,7 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   img: {
+    top: 5,
     width: 30,
     height: 30,
     marginLeft: 20

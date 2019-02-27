@@ -5,11 +5,12 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  Text
+  Text,
+  RefreshControl
 } from "react-native"
 
 import { connect } from "react-redux"
-import {Toast} from "@ant-design/react-native"
+import { Toast } from "@ant-design/react-native"
 import { Storage, NavigationActions } from "../../utils"
 import Ads from "./Ads"
 import Top from "./Top"
@@ -23,7 +24,7 @@ class Home extends Component {
     tabBarLabel: ({ focused }) => (
       <Text
         style={[
-          { fontSize: 12,textAlign:"center" },
+          { fontSize: 12, textAlign: "center" },
           { color: focused ? primaryColor : "#D5D5D5" }
         ]}
       >
@@ -46,7 +47,7 @@ class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      // refreshing: false
+      timeStamp: 1
     }
   }
 
@@ -62,6 +63,10 @@ class Home extends Component {
     })
   }
 
+  onclose=()=>{
+
+  }
+
   handleScrollEnd = event => {
     const contentHeight = event.nativeEvent.contentSize.height
     const scrollViewHeight = event.nativeEvent.layoutMeasurement.height
@@ -71,12 +76,12 @@ class Home extends Component {
     const isContentFillPage = contentHeight >= scrollViewHeight // 内容高度是否大于列表高度
 
     if (isContentFillPage && isEndReached) {
-      Toast.info ("已经到底啦～")
+      Toast.info("已经到底啦～",0.5,this.onclose,false)
     }
   };
 
   render() {
-    const { msgList } = this.state
+    const { msgList,timeStamp } = this.state
     return (
       <View style={styles.home}>
         <ScrollView
@@ -84,6 +89,15 @@ class Home extends Component {
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
           onScrollEndDrag={this.handleScrollEnd}
+          // refreshControl={
+          //   <RefreshControl
+          //     size={0}
+          //     refreshing={false}
+          //     onRefresh={() => {
+          //      this.setState({timeStamp:Math.random})
+          //     }}
+          //   />
+          // }
         >
           <View style={styles.topWrap}>
             <Top />
@@ -93,7 +107,7 @@ class Home extends Component {
             </View>
           </View>
           <View style={styles.gap} />
-          <MsgList data={msgList} />
+          <MsgList data={msgList} timeStamp={timeStamp}/>
         </ScrollView>
       </View>
     )

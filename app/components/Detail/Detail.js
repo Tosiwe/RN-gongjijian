@@ -53,9 +53,9 @@ class Detail extends Component {
           <Pics data={imgList} noRadius />
           <Auth data={data} />
           <BaseInfo data={data} />
-          <View style={{height:400}} />
+          <View style={{height:100}} />
         </ScrollView>
-        <Bottom data={data} />
+        <Bottom data={data} type="contact"/>
       </View>
     )
   }

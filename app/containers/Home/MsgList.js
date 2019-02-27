@@ -7,53 +7,68 @@ import {
   FlatList,
   View,
   ImageBackground,
-  Text
+  Text,
+  TouchableOpacity
 } from "react-native"
 import { connect } from "react-redux"
-import {NavigationActions} from "react-navigation"
+// import { NavigationActions } from "react-navigation"
+import Icon from "react-native-vector-icons/AntDesign"
 import ListItem from "../../components/ListIem/ListItem"
 
-
 @connect()
-
 class MsgList extends Component {
   constructor(props) {
     super(props)
     this.state = {
       list: [],
+      refreshing: false,
+      pn: 1
     }
   }
 
+  componentDidMount = () => {
+    this.getList()
+  };
 
-  renderItem = ({ item }) => (
-    <ListItem
-      data={item}
-    />
-  );
+  // componentWillReceiveProps(nextProps) {
+  //   const { timeStamp } = this.state
+  //   const { timeStamp: nextIimeStamp } = nextProps
+  //   if (timeStamp !== nextIimeStamp) {
+  //     this.getList()
+  //   }
+  // }
 
-
-componentDidMount=()=>{
-  this.props.dispatch({
-    type: "app/guesslikeList",
-    payload:{
-      ps:10,
-      pn:1
-    },
-    callback: res => {
-      if (res.msg === "OK") {
-        this.setState({
-          list: res.result
-        })
+  getList = (pn = 1) => {
+    const { list } = this.state
+    this.setState({ refreshing: true })
+    this.props.dispatch({
+      type: "app/guesslikeList",
+      payload: {
+        ps: 100,
+        pn
+      },
+      callback: res => {
+        if (res.msg === "OK" && res.result && res.result.length) {
+          const newList = [...list, ...res.result]
+          this.setState({
+            list: newList
+          })
+        }
+        this.setState({ refreshing: false })
       }
-    }
-  })
-}
+    })
+  };
+
+  renderItem = ({ item }) => <ListItem data={item} />;
 
   render() {
-    const {list}=this.state
+    const { list, refreshing } = this.state
     return (
       <View style={styles.wrap}>
         <View style={styles.head}>
+          <TouchableOpacity style={styles.reload} onPress={this.getList}>
+            <Icon name="reload1" size={20} />
+          </TouchableOpacity>
           <ImageBackground
             style={styles.imgBg}
             source={require("../../images/title_bg.png")}
@@ -62,17 +77,29 @@ componentDidMount=()=>{
           </ImageBackground>
         </View>
 
-        <FlatList data={list} renderItem={this.renderItem} />
+        <FlatList
+          // style={{ backgroundColor: "#EEE" }}
+          refreshing={refreshing}
+          data={list}
+          renderItem={this.renderItem}
+          onRefresh
+        />
       </View>
     )
   }
 }
 const styles = StyleSheet.create({
+  reload: {
+    position: "absolute",
+    left: 5,
+    top: 13
+  },
   wrap: {
     backgroundColor: "#fff",
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
   },
   head: {
+    // flexDirection: "row",
     alignItems: "center",
     marginBottom: 10
   },

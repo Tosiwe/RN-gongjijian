@@ -10,7 +10,7 @@ import {
   Image,
   TouchableOpacity
 } from "react-native"
-import { Tabs, Card } from "@ant-design/react-native"
+import { Tabs, Card, Modal } from "@ant-design/react-native"
 
 const tabs = [{ title: "我的需求" }, { title: "我的信息" }]
 
@@ -46,7 +46,7 @@ class MyPublish extends Component {
       infoList: [],
       tabKey: 0,
       demandPageNum: 0,
-      infoPageNum: 0,
+      infoPageNum: 0
     }
   }
 
@@ -142,6 +142,17 @@ class MyPublish extends Component {
         }
       })
     }
+  };
+
+  showDeleteModal = id => {
+    const modal = Modal.alert("删除", "您确定要删除吗？", [
+      {
+        text: "取消",
+        onPress: () => modal.close(),
+        style: "取消"
+      },
+      { text: "确认", onPress: () => this.onDelete(id) }
+    ])
   };
 
   onDelete = id => {

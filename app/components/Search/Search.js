@@ -94,7 +94,7 @@ class Search extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 40,
+    paddingTop: 10,
     paddingLeft: 20,
     paddingRight: 20,
     alignItems: "flex-start",
@@ -107,7 +107,8 @@ const styles = StyleSheet.create({
     width: screenWidth - 40,
     backgroundColor: "#FFF",
     padding: 20,
-    paddingTop: 30
+    paddingTop: 30,
+    marginBottom:20,
   },
   history: {
     marginBottom: 40

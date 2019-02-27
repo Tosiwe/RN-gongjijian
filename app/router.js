@@ -96,7 +96,8 @@ const MainNavigator = createStackNavigator(
     },
     PaperDetail: {
       // 图纸详情页
-      screen: PaperDetail
+      screen: PaperDetail,
+      navigationOptions: mainNavigationOptions
     },
     Entry: {
       // 频道页
@@ -228,8 +229,8 @@ const MainNavigator = createStackNavigator(
 const AppNavigator = createStackNavigator(
   {
     // Detail: { screen: Detail },
-    Login: { screen: Login },
     Main: { screen: MainNavigator },
+    Login: { screen: Login },
     BindPhone: { screen: BindPhone },
     ResetPassword: { screen: ResetPassword },
     SignUp: { screen: SignUp },

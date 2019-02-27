@@ -5,29 +5,51 @@ import {
   Image,
   TouchableOpacity,
   Text,
-  Linking
+  Linking,
+  CameraRoll,
+  PermissionsAndroid
 } from "react-native"
-import { Modal, Button } from "@ant-design/react-native"
+import { Modal, Button, Toast } from "@ant-design/react-native"
 import { connect } from "react-redux"
 import moment from "moment"
+
+import RNFS from "react-native-fs"
 import Pay from "../Pay/Pay"
 
+const use = {
+  contact: "获取联系方式",
+  paper: "下载图纸",
+  attach: "下载附件"
+}
 @connect()
 class Detail extends Component {
   constructor(props) {
     super(props)
     this.state = {
       hasPaied: false,
-      likeType: props.likeType || 0
+      likeType: 0
     }
   }
 
+  componentDidMount() {
+    this.setState({ likeType: this.props.data.type })
+    const { type } = this.props
+    this.props.dispatch({
+      type: "app/getPriceList",
+      callback: res => {
+        if (res.msg === "OK") {
+          this.setState({ price: res.result[type] })
+        }
+      }
+    })
+  }
+
   like = () => {
-    const { recordId } = this.props.data
+    const { id } = this.props.data
     const { likeType } = this.state
     this.props.dispatch({
       type: "app/saveBookmark",
-      payload: { recordId, type: likeType === 0 ? 1 : 0 },
+      payload: { id, type: likeType === 0 ? 1 : 0 },
       callback: res => {
         if (res.msg === "OK") {
           this.setState({ likeType: likeType === 0 ? 1 : 0 })
@@ -36,29 +58,19 @@ class Detail extends Component {
     })
   };
 
-  // onServer = name => {
-  //   const { hasPaied } = this.state
-  //   const { data = {} } = this.props
-  //   if (hasPaied) {
-  //     if (name === "phone") {
-  //       Linking.openURL(data.phone || "tel:10010")
-  //     } else {
-  //       this.showModal(data[name], name)
-  //     }
-  //   }
-  // };
-
   onClose = () => {
     this.setState({ visible: false })
   };
 
   showPayModal = name => {
     const { hasPaied } = this.state
-    const { data = {} } = this.props
+    const { data = {}, type } = this.props
 
     if (hasPaied) {
       if (name === "phone") {
         Linking.openURL(data.phone ? `tel:${data.phone}` : "tel:10010")
+      } else if (name === "download") {
+        this.downloadFile(data.url)
       } else {
         this.showModal(data[name], name)
       }
@@ -88,8 +100,97 @@ class Detail extends Component {
     this.setState({ hasPaied: true })
   };
 
+  requestExternalStoragePermission = async () => {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
+        {
+          title: "My App Storage Permission",
+          message:
+            "My App needs access to your storage " +
+            "so you can save your photos"
+        }
+      )
+      return granted
+    } catch (err) {
+      console.error("Failed to request permission ", err)
+      return null
+    }
+  };
+
+  /* 下载文件 */
+  downloadFile(formUrl, type) {
+    // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
+    // 图片
+    const downloadDest =  `${RNFS.MainBundlePath ||
+      RNFS.DocumentDirectoryPath}/${Math.random() * 1000}.jpg`
+    // const formUrl =
+    //   "http://img.kaiyanapp.com/c7b46c492261a7c19fa880802afe93b3.png?imageMogr2/quality/60/format/jpg"
+
+    // 文件
+    // const downloadDest = `${RNFS.MainBundlePath}/${((Math.random() * 1000))}.zip`;
+    // const formUrl = 'http://files.cnblogs.com/zhuqil/UIWebViewDemo.zip';
+
+    // 视频
+    // const downloadDest = `${RNFS.MainBundlePath}/${((Math.random() * 1000))}.mp4`;
+    // http://gslb.miaopai.com/stream/SnY~bbkqbi2uLEBMXHxGqnNKqyiG9ub8.mp4?vend=miaopai&
+    // https://gslb.miaopai.com/stream/BNaEYOL-tEwSrAiYBnPDR03dDlFavoWD.mp4?vend=miaopai&
+    // const formUrl = 'https://gslb.miaopai.com/stream/9Q5ADAp2v5NHtQIeQT7t461VkNPxvC2T.mp4?vend=miaopai&';
+
+    // 音频
+    // const downloadDest = `${RNFS.MainBundlePath}/${Math.random() * 1000}.mp3`
+    // // http://wvoice.spriteapp.cn/voice/2015/0902/55e6fc6e4f7b9.mp3
+    // const formUrl =
+    //   "http://wvoice.spriteapp.cn/voice/2015/0818/55d2248309b09.mp3"
+
+    const options = {
+      fromUrl: formUrl,
+      toFile: downloadDest,
+      background: true,
+      begin: res => {
+        console.log("begin", res)
+        console.log("contentLength:", res.contentLength / 1024 / 1024, "M")
+      },
+      progress: res => {
+        const pro = res.bytesWritten / res.contentLength
+
+        this.setState({
+          progressNum: pro
+        })
+      }
+    }
+    try {
+      const ret = RNFS.downloadFile(options)
+      ret.promise
+        .then(res => {
+          console.log("success", res)
+          const path = `file://${downloadDest}`
+
+          console.log(path)
+          const grand = this.requestExternalStoragePermission()
+
+          if (grand) {
+            CameraRoll.saveToCameraRoll(path)
+              .then(() => {
+                Toast.info("保存成功")
+              })
+              .catch(e => {
+                Toast.info(`保存失败！\n${e}`)
+              })
+          }
+          // 例如保存图片
+        })
+        .catch(err => {
+          console.log("err", err)
+        })
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
   render() {
-    const { isPaper, data } = this.props
+    const { type, data } = this.props
+    const { price } = this.state
     const {
       likeType,
       visible,
@@ -98,6 +199,7 @@ class Detail extends Component {
       payVisible,
       timeStamp
     } = this.state
+
     return (
       <View>
         <Modal
@@ -117,7 +219,7 @@ class Detail extends Component {
         </Modal>
 
         <View style={styles.bottom}>
-          <TouchableOpacity style={styles.cBtn} opPress={this.like}>
+          <TouchableOpacity style={styles.cBtn} onPress={this.like}>
             <Image
               style={styles.cImg}
               source={
@@ -128,7 +230,7 @@ class Detail extends Component {
             />
             <Text style={styles.cText}>收藏</Text>
           </TouchableOpacity>
-          {isPaper && (
+          {!(type === "contact") && (
             <TouchableOpacity
               onPress={() => {
                 this.showPayModal("download")
@@ -138,7 +240,7 @@ class Detail extends Component {
               <Text style={styles.downText}>下载</Text>
             </TouchableOpacity>
           )}
-          {!isPaper && (
+          {type === "contact" && (
             <TouchableOpacity
               onPress={() => {
                 this.showPayModal("phone")
@@ -152,7 +254,7 @@ class Detail extends Component {
               <Text>电话</Text>
             </TouchableOpacity>
           )}
-          {!isPaper && (
+          {type === "contact" && (
             <TouchableOpacity
               onPress={() => {
                 this.showPayModal("wechat")
@@ -166,7 +268,7 @@ class Detail extends Component {
               <Text>微信</Text>
             </TouchableOpacity>
           )}
-          {!isPaper && (
+          {type === "contact" && (
             <TouchableOpacity
               onPress={() => {
                 this.showPayModal("qq")
@@ -187,10 +289,10 @@ class Detail extends Component {
             timeStamp={timeStamp}
             onSuccess={this.paySuccess}
             data={{
-              use: "获取联系方式",
+              use: use[type],
               name: data.title,
-              price: "2.00",
-              type: "contact"
+              price: data.price || price,
+              type
             }}
           />
         </View>
@@ -206,7 +308,7 @@ const styles = StyleSheet.create({
     borderTopColor: "#EEE",
     position: "absolute",
     bottom: 0,
-    height: 80,
+    height: 70,
     width: "100%",
     justifyContent: "space-around",
     alignItems: "flex-start",

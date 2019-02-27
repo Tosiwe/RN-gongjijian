@@ -1,23 +1,36 @@
+/* eslint-disable react/no-unused-state */
 import React, { Component } from "react"
 import { StyleSheet, View, ScrollView, Text } from "react-native"
-
 import { connect } from "react-redux"
 
 import Bottom from "./Bottom"
 
 import { statusBarHeight } from "../../styles/common"
+// import Pics from "../../containers/Home/Ads"
 
 @connect()
 class PaperDetail extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      // refreshing: false
+      paperPrice: "-"
     }
   }
 
+  componentDidMount() {
+    // this.props.dispatch({
+    //   type: "app/getPriceList",
+    //   callback: res => {
+    //     if (res.msg === "OK") {
+    //       this.setState({ paperPrice: res.result.paper })
+    //     }
+    //   }
+    // })
+  }
+
   render() {
-    const { data ={}} = this.props
+    const { data = {} } = this.props.navigation.state.params
+    const { type = "paper" } = this.props
     const Td = props => (
       <View style={styles.td}>
         <Text style={styles.tdLabel}>{props.label}</Text>
@@ -33,19 +46,19 @@ class PaperDetail extends Component {
           onScrollEndDrag={this.handleScrollEnd}
         >
           <View style={[styles.row, styles.border]}>
-            <Td label="企业认证" text={data.text || "-"} />
+            <Text style={styles.title}>{data.title}</Text>
           </View>
           <View style={styles.border}>
             <View style={styles.row}>
-              <Td label="设备名称" text={data.extraName || "-"} />
-              <Td label="品牌" text={data.extraBrand || "-"} />
+              <Td label="图纸大小" text={data.size || "-"} />
+              <Td label="图纸价格" text={`${data.price}元` || "-"} />
             </View>
             <View style={styles.row}>
-              <Td label="型号规格" text={data.extraSpec || "-"} />
-              <Td label="租赁单位" text={data.extraUnit || "-"} />
+              <Td label="图纸作者" text={data.author || "-"} />
+              <Td label="下载次数" text={data.downloads || "0"} />
             </View>
             <View style={styles.row}>
-              <Td label="租赁价格" text={data.extraPrice || "-"} />
+              <Td label="图纸出处" text={data.source || "-"} />
             </View>
           </View>
           <View style={styles.DetailRow}>
@@ -53,11 +66,11 @@ class PaperDetail extends Component {
               <View style={styles.detailLeft} />
               <Text style={styles.detailTitle}>详情介绍</Text>
             </View>
-            <Text style={styles.detailText}>{data.desc}</Text>
+            <Text style={styles.detailText}>{data.desc || "-"}</Text>
           </View>
           <View style={[styles.row, styles.bottomRow]} />
         </ScrollView>
-        <Bottom isPaper data={data} />
+        <Bottom type={type} data={data} />
       </View>
     )
   }
@@ -66,10 +79,13 @@ class PaperDetail extends Component {
 const styles = StyleSheet.create({
   home: {
     paddingTop: statusBarHeight,
-    paddingHorizontal: 10,
     flex: 1,
     flexDirection: "column",
     backgroundColor: "#fff"
+  },
+  title: {
+    fontSize: 20,
+    fontWeight: "500"
   },
   row: {
     paddingVertical: 20,
@@ -77,10 +93,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between"
   },
-  border: {
-    borderTopWidth: 1,
-    borderColor: "#DDD"
-  },
+  // border: {
+  //   borderTopWidth: 1,
+  //   borderColor: "#DDD"
+  // },
   td: {
     flexDirection: "row"
   },

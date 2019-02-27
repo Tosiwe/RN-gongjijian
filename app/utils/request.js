@@ -9,7 +9,7 @@ export default function request(url, options) {
   
   return Storage.get("auth").then(auth => {
 
-    if (!auth && !options.body.noNendAuth  ) {
+    if (!auth && (options.body && !options.body.noNendAuth ) ) {
       Toast.info("请先登录")
       return null
     }

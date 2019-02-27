@@ -89,6 +89,8 @@ class RegisterEntry extends Component {
       } else {
         this.setState({ loading: false })
       }
+    }).catch(error=>{
+      this.setState({ loading: false })
     })
   };
 

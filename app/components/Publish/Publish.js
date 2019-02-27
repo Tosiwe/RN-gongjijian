@@ -48,7 +48,7 @@ class Publish extends Component {
       dispatch(
         NavigationActions.navigate({
           routeName: "FormDemand",
-          params: { id: el.id, name: `${el.text}-需求编辑` }
+          params: { id: el.id, name: el.text }
         })
       )
     } else {

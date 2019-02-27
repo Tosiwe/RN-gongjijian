@@ -3,6 +3,7 @@ package com.rn_gongjijian;
 import android.app.Application;
 
 import com.facebook.react.ReactApplication;
+import com.rnfs.RNFSPackage;
 import com.yunpeng.alipay.AlipayPackage;
 import com.imagepicker.ImagePickerPackage;
 import ui.fileselector.RNFileSelectorPackage;
@@ -28,12 +29,13 @@ public class MainApplication extends Application implements ReactApplication {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
+            new MainReactPackage(),
+            new RNFSPackage(),
             new AlipayPackage(),
             new ImagePickerPackage(),
             new RNFileSelectorPackage(),
             new VectorIconsPackage()
-//            new VectorIconsPackage()
+
       );
     }
 
