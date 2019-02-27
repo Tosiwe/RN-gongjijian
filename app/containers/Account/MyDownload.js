@@ -57,11 +57,11 @@ class MyDownload extends Component {
           <Image
             resizeMode="contain"
             style={styles.carImg}
-            source={require("../../containers/img/img_logo.png")}
+            source={item.url ? {uri:item.url}:require("../../containers/img/img_logo.png")}
           />
           <View style={styles.cardRight}>
             <Text style={styles.cardTitle}>{item.title}</Text>
-            <Text style={styles.cardDes} ellipsizeMode="tail" numberOfLines={2}>
+            <Text style={styles.cardDes} ellipsizeMode="tail" numberOfLines={1}>
               {item.fileName}
             </Text>
           </View>
@@ -106,10 +106,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   carImg: {
+    flex:1,
     width: 70,
     height: 70
   },
   cardRight: {
+    flex:5,
     paddingHorizontal: 20
   },
   cardTitle: {

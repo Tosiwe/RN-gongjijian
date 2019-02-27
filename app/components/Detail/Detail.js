@@ -36,6 +36,14 @@ class Detail extends Component {
         imgList.push({ url: item })
       }
     })
+    
+    this.props.dispatch({
+      type:"app/saveHistory",
+      payload:{
+        recordId:data.id,
+        type:data.type,
+      }
+    })
     this.setState({ imgList })
   }
 

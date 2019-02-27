@@ -66,11 +66,23 @@ class Detail extends Component {
     const { hasPaied } = this.state
     const { data = {}, type } = this.props
 
-    if (hasPaied) {
+    if (true) {
       if (name === "phone") {
         Linking.openURL(data.phone ? `tel:${data.phone}` : "tel:10010")
       } else if (name === "download") {
         this.downloadFile(data.url)
+         this.props.dispatch({
+                  type:"app/downloadPaper",
+                  payload:{
+                    id:data.id,
+                    url:data.url,
+                    title:data.title,
+                    fileName:data.fileKey,
+                  },
+                  callback:(res)=>{
+                    Toast.info("下载+1")
+                  }
+                })
       } else {
         this.showModal(data[name], name)
       }

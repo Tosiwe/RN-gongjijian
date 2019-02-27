@@ -144,11 +144,12 @@ class MyPublish extends Component {
     }
   };
 
+
   showDeleteModal = id => {
-    const modal = Modal.alert("删除", "您确定要删除吗？", [
+    Modal.alert("删除", "您确定要删除吗？", [
       {
         text: "取消",
-        onPress: () => modal.close(),
+        // onPress: () => modal.close(),
         style: "取消"
       },
       { text: "确认", onPress: () => this.onDelete(id) }
@@ -205,7 +206,7 @@ class MyPublish extends Component {
             <Text style={styles.btnText}>{RECORD_STATE[item.state].text}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btnText} onPress={() => this.onDelete(item.id)}>
+            <Text style={styles.btnText} onPress={() => this.showDeleteModal(item.id)}>
               删除
             </Text>
           </TouchableOpacity>

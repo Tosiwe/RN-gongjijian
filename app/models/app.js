@@ -362,11 +362,11 @@ export default {
     },
 
     // 新增历史记录
-    *saveHistory({ payload }, { call, put }) {
+    *saveHistory({ payload,callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.saveHistory, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
@@ -456,7 +456,7 @@ export default {
     // 下载图纸
     *downloadPaper({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
-      const res = yield call(messageService.recommendRead, payload)
+      const res = yield call(messageService.downloadPaper, payload)
       if (res && callback) {
         callback(res)
       }
