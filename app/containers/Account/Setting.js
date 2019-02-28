@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable react/prefer-stateless-function */
 // native
 import React, { Component } from "react"
@@ -17,13 +18,18 @@ const settingList = [
 const { Item } = List
 @connect(({ app }) => ({ ...app }))
 class Setting extends Component {
-  
   logout = () => {
     this.props.dispatch(createAction("app/logout")())
   };
 
   toRoute = name => {
-    this.props.dispatch(NavigationActions.navigate({ routeName: name }))
+    let title = ""
+    settingList.forEach(item => {
+      if (item.name === name) title = item.title
+    })
+    this.props.dispatch(
+      NavigationActions.navigate({ routeName: name, params: { name: title } })
+    )
   };
 
   render() {
@@ -37,7 +43,7 @@ class Setting extends Component {
               onPress={() => this.toRoute(item.name)}
               arrow="horizontal"
             >
-             <Text style={styles.text}> {item.title}</Text>
+              <Text style={styles.text}> {item.title}</Text>
             </Item>
           ))}
         </List>
@@ -72,8 +78,8 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 16,
     marginLeft: 10,
-    height:40,
-    lineHeight:40,
+    height: 40,
+    lineHeight: 40
   },
   bottom: {
     height: 60,
