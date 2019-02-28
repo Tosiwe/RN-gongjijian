@@ -49,6 +49,7 @@ import Seconds from "./components/Publish/Seconds"
 import MyPublish from "./components/Publish/MyPublish"
 import Settle from "./components/Settle/Settle"
 import SettleForm from "./components/Settle/SettleForm"
+import Result from "./components/Pay/Result"
 // 底部标签导航
 const HomeNavigator = createBottomTabNavigator({
   Home: { screen: Home },
@@ -209,10 +210,16 @@ const MainNavigator = createStackNavigator(
       navigationOptions: mainNavigationOptions
     },
     
-    
     PayRecords: {
       // 入驻表单
       screen: PayRecords,
+      navigationOptions: mainNavigationOptions
+    },
+    
+    
+    Result: {
+      // 入驻表单
+      screen: Result,
       navigationOptions: mainNavigationOptions
     },
     
@@ -228,9 +235,9 @@ const MainNavigator = createStackNavigator(
 // 基础页面
 const AppNavigator = createStackNavigator(
   {
-    // Detail: { screen: Detail },
-    Main: { screen: MainNavigator },
+    // Result: { screen: Result },
     Login: { screen: Login },
+    Main: { screen: MainNavigator },
     BindPhone: { screen: BindPhone },
     ResetPassword: { screen: ResetPassword },
     SignUp: { screen: SignUp },

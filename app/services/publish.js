@@ -58,3 +58,12 @@ export async function getDemandListLoc(params) {
         body: params,
     })
   }
+  
+
+// 我的信息by loction
+export async function getDemandDetail(params) {
+    return request(`http://118.24.107.177:7001/demand/detail`, {
+        method: "POST",
+        body: params,
+    })
+  }

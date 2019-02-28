@@ -3,7 +3,7 @@ import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native"
 import { connect } from "react-redux"
 import { Toast, Accordion, List } from "@ant-design/react-native"
 // import Icon from "react-native-vector-icons/AntDesign"
-import {NavigationActions} from "react-navigation"
+import { NavigationActions } from "react-navigation"
 
 @connect()
 class BaseInfo extends Component {
@@ -22,17 +22,17 @@ class BaseInfo extends Component {
     this.setState({ activeSections })
   };
 
-  toPaperDetail=data=>{
+  toPaperDetail = data => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: "PaperDetail",
         params: {
-          name: '附件详情',
+          name: "附件详情",
           data
         }
       })
     )
-  }
+  };
 
   render() {
     const { data = {} } = this.props
@@ -44,7 +44,12 @@ class BaseInfo extends Component {
     )
 
     const form = () => {
-      const { classifyId } = data
+      const { classifyId, type } = data
+
+      if (type === 0 || classifyId === "company") {
+        return null
+      }
+
       if (classifyId === "reg") {
         return (
           <View style={styles.row}>
@@ -60,31 +65,21 @@ class BaseInfo extends Component {
           </View>
         )
       }
-
-      if (
-        classifyId === "smarket" ||
-        classifyId === "ndssteel" ||
-        classifyId === "ndsmach" ||
-        classifyId === "ndswood"
-      ) {
-        return (
-          <View>
-            <View style={styles.row}>
-              <Td label="设备名称" text={data.extraName || "-"} />
-              <Td label="品牌" text={data.extraBrand || "-"} />
-            </View>
-            <View style={styles.row}>
-              <Td label="型号规格" text={data.extraSpec || "-"} />
-              <Td label="租赁单位" text={data.extraUnit || "-"} />
-            </View>
-            <View style={styles.row}>
-              <Td label="租赁价格" text={data.extraPrice || "-"} />
-            </View>
+      return (
+        <View>
+          <View style={styles.row}>
+            <Td label="设备名称" text={data.extraName || "-"} />
+            <Td label="品牌" text={data.extraBrand || "-"} />
           </View>
-        )
-      }
-
-      return null
+          <View style={styles.row}>
+            <Td label="型号规格" text={data.extraSpec || "-"} />
+            <Td label="租赁单位" text={data.extraUnit || "-"} />
+          </View>
+          <View style={styles.row}>
+            <Td label="租赁价格" text={`${data.extraPrice}元` || "-"} />
+          </View>
+        </View>
+      )
     }
 
     return (
@@ -114,13 +109,25 @@ class BaseInfo extends Component {
             activeSections={this.state.activeSections}
           >
             <Accordion.Panel
-              header={<Text style={{ fontSize: 16 ,lineHeight:40,flex:1}}>查看附件</Text>}
+              header={
+                <Text style={{ fontSize: 16, lineHeight: 40, flex: 1 }}>
+                  查看附件
+                </Text>
+              }
             >
               <List>
-                {data.attach &&
+                {data.attach ? (
                   data.attach.map(item => (
-                    <List.Item arrow="horizontal" onPress={()=>this.toPaperDetail(item)}>{item.title}</List.Item>
-                  ))}
+                    <List.Item
+                      arrow="horizontal"
+                      onPress={() => this.toPaperDetail(item)}
+                    >
+                      {item.title}
+                    </List.Item>
+                  ))
+                ) : (
+                  <List.Item>无附件</List.Item>
+                )}
               </List>
             </Accordion.Panel>
           </Accordion>
@@ -155,6 +162,7 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   tdText: {
+    color: "#000",
     fontSize: 12
   },
   locWrap: {

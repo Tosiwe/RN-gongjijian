@@ -65,14 +65,14 @@ class JoinList extends Component {
           <View style={{ flexDirection: "row", marginLeft: 5 }}>
             <Image source={require("./images/icon_join.png")} />
             <Text style={{ fontSize: 16, fontWeight: "bold", marginLeft: 20 }}>
-              我的入住
+              我的入驻
             </Text>
           </View>
           <TouchableOpacity
             style={{ flexDirection: "row" }}
             onPress={this.ToSettle}
           >
-            <Text style={{ fontSize: 14, color: "orange" }}>继续入住</Text>
+            <Text style={{ fontSize: 14, color: "orange" }}>继续入驻</Text>
             <Icon name="plus" color="orange" size={14} />
           </TouchableOpacity>
         </View>

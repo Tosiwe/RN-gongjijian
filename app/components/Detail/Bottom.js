@@ -12,14 +12,15 @@ import {
 import { Modal, Button, Toast } from "@ant-design/react-native"
 import { connect } from "react-redux"
 import moment from "moment"
-
+import { NavigationActions } from "react-navigation"
 import RNFS from "react-native-fs"
 import Pay from "../Pay/Pay"
-
+// import Result from "../Pay/Result"
 const use = {
-  contact: "获取联系方式",
+  contact: "查看联系方式",
   paper: "下载图纸",
-  attach: "下载附件"
+  attach: "下载附件",
+  charge: "充值"
 }
 @connect()
 class Detail extends Component {
@@ -33,6 +34,7 @@ class Detail extends Component {
 
   componentDidMount() {
     this.setState({ likeType: this.props.data.type })
+  
     const { type } = this.props
     this.props.dispatch({
       type: "app/getPriceList",
@@ -66,23 +68,23 @@ class Detail extends Component {
     const { hasPaied } = this.state
     const { data = {}, type } = this.props
 
-    if (true) {
+    if (hasPaied) {
       if (name === "phone") {
         Linking.openURL(data.phone ? `tel:${data.phone}` : "tel:10010")
       } else if (name === "download") {
         this.downloadFile(data.url)
-         this.props.dispatch({
-                  type:"app/downloadPaper",
-                  payload:{
-                    id:data.id,
-                    url:data.url,
-                    title:data.title,
-                    fileName:data.fileKey,
-                  },
-                  callback:(res)=>{
-                    Toast.info("下载+1")
-                  }
-                })
+        this.props.dispatch({
+          type: "app/downloadPaper",
+          payload: {
+            id: data.id,
+            url: data.url,
+            title: data.title,
+            fileName: data.fileKey
+          },
+          callback: res => {
+            // Toast.info("下载+1")
+          }
+        })
       } else {
         this.showModal(data[name], name)
       }
@@ -108,7 +110,7 @@ class Detail extends Component {
     })
   };
 
-  paySuccess = () => {
+  paySuccess = pay => {
     this.setState({ hasPaied: true })
   };
 
@@ -134,7 +136,7 @@ class Detail extends Component {
   downloadFile(formUrl, type) {
     // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
     // 图片
-    const downloadDest =  `${RNFS.MainBundlePath ||
+    const downloadDest = `${RNFS.MainBundlePath ||
       RNFS.DocumentDirectoryPath}/${Math.random() * 1000}.jpg`
     // const formUrl =
     //   "http://img.kaiyanapp.com/c7b46c492261a7c19fa880802afe93b3.png?imageMogr2/quality/60/format/jpg"
@@ -202,14 +204,14 @@ class Detail extends Component {
 
   render() {
     const { type, data } = this.props
-    const { price } = this.state
     const {
       likeType,
       visible,
       ModalTitle,
       content,
       payVisible,
-      timeStamp
+      timeStamp,
+      price,
     } = this.state
 
     return (
@@ -229,7 +231,6 @@ class Detail extends Component {
             关闭
           </Button>
         </Modal>
-
         <View style={styles.bottom}>
           <TouchableOpacity style={styles.cBtn} onPress={this.like}>
             <Image
@@ -295,7 +296,7 @@ class Detail extends Component {
             </TouchableOpacity>
           )}
         </View>
-        <View style={{ backgroundColor: "red" }}>
+        <View>
           <Pay
             visible={payVisible}
             timeStamp={timeStamp}

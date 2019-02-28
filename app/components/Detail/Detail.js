@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 import React, { Component } from "react"
 import {
   StyleSheet,
@@ -23,12 +24,26 @@ class Detail extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      // refreshing: false
+      data: {}
     }
   }
 
   componentDidMount() {
-    const { data = {} } = this.props.navigation.state.params
+    const oldData = this.props.navigation.state.params.data
+    const type =
+      oldData.type === 0 ? "app/getDemandDetail" : "app/getInfoDetail"
+    let data = {}
+    this.props.dispatch({
+      type,
+      payload: {
+        id: oldData.id
+      },
+      callback: res => {
+        data = res.result.data
+        this.setState({ data })
+      }
+    })
+
     const imgSet = [data.picture1, data.picture2, data.picture3, data.picture3]
     const imgList = []
     imgSet.forEach(item => {
@@ -36,20 +51,19 @@ class Detail extends Component {
         imgList.push({ url: item })
       }
     })
-    
+
     this.props.dispatch({
-      type:"app/saveHistory",
-      payload:{
-        recordId:data.id,
-        type:data.type,
+      type: "app/saveHistory",
+      payload: {
+        recordId: data.id,
+        type: data.type
       }
     })
     this.setState({ imgList })
   }
 
   render() {
-    const { data = {} } = this.props.navigation.state.params
-    const { imgList } = this.state
+    const { imgList,data } = this.state
     return (
       <View style={styles.home}>
         <ScrollView
@@ -61,9 +75,9 @@ class Detail extends Component {
           <Pics data={imgList} noRadius />
           <Auth data={data} />
           <BaseInfo data={data} />
-          <View style={{height:100}} />
+          <View style={{ height: 100 }} />
         </ScrollView>
-        <Bottom data={data} type="contact"/>
+        <Bottom data={data} type="contact" />
       </View>
     )
   }

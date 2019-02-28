@@ -74,6 +74,7 @@ class ChooseIndustry extends Component {
             }
             return null
           })}
+          <Item />
         </List>
       </ScrollView>
     )
@@ -82,7 +83,7 @@ class ChooseIndustry extends Component {
 
 const styles = StyleSheet.create({
   item: {
-    fontSize: 20,
+    fontSize: 16,
     marginLeft: 10,
     height:40,
     lineHeight:40,

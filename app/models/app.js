@@ -183,6 +183,16 @@ export default {
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
+    // location需求
+    *getDemandDetail({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(publishService.getDemandDetail, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
     // ---------- 信息类 ----------
 
     // 保存信息发布
@@ -259,6 +269,16 @@ export default {
     *getInfoListLoc({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(infoService.getInfoListLoc, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
+    // 详情
+    *getInfoDetail({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(infoService.getInfoDetail, payload)
       if (res && callback) {
         callback(res)
       }

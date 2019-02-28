@@ -12,7 +12,7 @@ const settingList = [
   // {title:"清除足迹"},
   // {title:"清空缓存"},
   { title: "修改资料", name: "ProfileSetting" },
-  { title: "关于工基建", name: "About" }
+  { title: "关于工机建", name: "About" }
 ]
 const { Item } = List
 @connect(({ app }) => ({ ...app }))
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
     marginBottom: 5
   },
   text: {
-    fontSize: 20,
+    fontSize: 16,
     marginLeft: 10,
     height:40,
     lineHeight:40,

@@ -68,3 +68,12 @@ export async function getInfoListLoc(params) {
     })
   }
   
+
+// 详情
+export async function getInfoDetail(params) {
+    return request(`http://118.24.107.177:7001/info/detail`, {
+        method: "POST",
+        body: params,
+    })
+  }
+  
