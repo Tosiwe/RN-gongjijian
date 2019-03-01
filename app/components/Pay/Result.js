@@ -19,37 +19,6 @@ class Result extends Component {
     }
   }
 
-  componentDidMount() {
-    const { data={} } = this.props
-
-    const {
-      use = "查看联系方式",
-      price = 0.01,
-      timeStamp,
-      orderId = "123"
-    } = data
-    this.setState({
-      list: [
-        {
-          label: "支付项目",
-          text: use
-        },
-        {
-          label: "支付金额",
-          text: `¥${price}元`
-        },
-        {
-          label: "支付时间",
-          text: moment(timeStamp).format("YYYY-MM-DD HH:mm:ss")
-        },
-        {
-          label: "订单号",
-          text: orderId
-        }
-      ]
-    })
-  }
-
   componentWillReceiveProps(nextProps) {
     const { visible, timeStamp } = this.state
     if (visible !== nextProps.visible && timeStamp !== nextProps.timeStamp) {
@@ -67,9 +36,44 @@ class Result extends Component {
   };
 
   render() {
-    const { list, visible } = this.state
+    const { visible } = this.state
+
+    const { data = {} } = this.props
+
+    const {
+      use = "查看联系方式",
+      price = 0.01,
+      timeStamp,
+      orderId = "123"
+    } = data
+
+    const list = [
+      {
+        label: "支付项目",
+        text: use
+      },
+      {
+        label: "支付金额",
+        text: `¥${price}元`
+      },
+      {
+        label: "支付时间",
+        text: moment(timeStamp).format("YYYY-MM-DD HH:mm:ss")
+      },
+      {
+        label: "订单号",
+        text: orderId
+      }
+    ]
+
     return (
-      <Modal style={{height:"80%"}} visible={visible} transparent onClose={this.onClose} maskClosable>
+      <Modal
+        style={{ height: "80%" }}
+        visible={visible}
+        transparent
+        onClose={this.onClose}
+        maskClosable
+      >
         <View style={styles.wrap}>
           <View style={styles.bg}>
             <Image
@@ -109,7 +113,7 @@ class Result extends Component {
 const styles = StyleSheet.create({
   wrap: {
     alignItems: "center",
-    textAlign: "center",
+    textAlign: "center"
   },
   logo: {
     width: 150

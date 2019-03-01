@@ -77,6 +77,15 @@ class Top extends Component {
     this.props.dispatch(NavigationActions.navigate({ routeName: "Vip" }))
   };
 
+  toMessage = () => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "Recommend",
+        params: { name: "消息" }
+      })
+    )
+  };
+
   render() {
     const { userInfo } = this.state
     return (
@@ -99,11 +108,7 @@ class Top extends Component {
             <TouchableOpacity onPress={() => Linking.openURL("tel:10010")}>
               <Image source={require("./images/icon_nav_service.png")} />
             </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                Toast.info("正在施工...")
-              }}
-            >
+            <TouchableOpacity onPress={this.toMessage}>
               <Image source={require("./images/icon_nav_news.png")} />
             </TouchableOpacity>
           </View>

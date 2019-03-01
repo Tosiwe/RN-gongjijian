@@ -62,8 +62,9 @@ class Detail extends Component {
     this.setState({ imgList })
   }
 
+
   render() {
-    const { imgList,data } = this.state
+    const { imgList,data, } = this.state
     return (
       <View style={styles.home}>
         <ScrollView
@@ -77,7 +78,7 @@ class Detail extends Component {
           <BaseInfo data={data} />
           <View style={{ height: 100 }} />
         </ScrollView>
-        <Bottom data={data} type="contact" />
+        <Bottom data={data} type="contact"/>
       </View>
     )
   }

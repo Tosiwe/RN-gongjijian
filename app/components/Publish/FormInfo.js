@@ -3,7 +3,13 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 
 import { StyleSheet, ScrollView, Text } from "react-native"
-import { Toast, List, InputItem, WhiteSpace } from "@ant-design/react-native"
+import {
+  Toast,
+  List,
+  InputItem,
+  WhiteSpace,
+  ActivityIndicator
+} from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import { getPosition } from "../../utils/utils"
 
@@ -23,6 +29,7 @@ class FormInfo extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      animating: false,
       params: {
         title: "",
         desc: "",
@@ -81,7 +88,9 @@ class FormInfo extends Component {
   };
 
   onSave = () => {
-    getPosition({...this}).then(result => {
+    this.setState({ animating: true })
+
+    getPosition({ ...this }).then(result => {
       if (this.isLegal() && result.isSuccess) {
         this.state.params = result.params
         this.props.dispatch({
@@ -91,6 +100,7 @@ class FormInfo extends Component {
             if (res.msg === "OK") {
               Toast.success("保存成功！", 1, this.goHome)
             }
+            this.setState({ animating: false })
           }
         })
       }
@@ -107,7 +117,9 @@ class FormInfo extends Component {
   };
 
   onPublish = () => {
-    getPosition({...this}).then(result => {
+    this.setState({ animating: true })
+
+    getPosition({ ...this }).then(result => {
       if (this.isLegal() && result.isSuccess) {
         this.state.params = result.params
         this.props.dispatch({
@@ -117,6 +129,7 @@ class FormInfo extends Component {
             if (res.msg === "OK") {
               Toast.success("发布成功！", 1, this.goHome)
             }
+            this.setState({ animating: false })
           }
         })
       }
@@ -146,6 +159,11 @@ class FormInfo extends Component {
         showsVerticalScrollIndicator={false}
         // onScrollEndDrag={this.handleScrollEnd}
       >
+        <ActivityIndicator
+          animating={this.state.animating}
+          toast
+          size="large"
+        />
         <Text style={styles.title}>{name}</Text>
 
         <List style={styles.inputBox}>

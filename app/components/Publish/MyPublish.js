@@ -180,8 +180,7 @@ class MyPublish extends Component {
   };
 
   renderItem = ({ item }) => (
-    <Card style={styles.card} full>
-      <Card.Body>
+    <View style={styles.card} full>
         <View style={styles.carBody}>
           <Image
             resizeMode="contain"
@@ -211,8 +210,7 @@ class MyPublish extends Component {
             </Text>
           </TouchableOpacity>
         </View>
-      </Card.Body>
-    </Card>
+    </View>
   );
 
   render() {
@@ -281,7 +279,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEE"
   },
   card: {
-    marginBottom: 10
+    borderTopWidth:1,
+    borderTopColor:"#EEE",
+    borderBottomWidth:1,
+    borderBottomColor:"#EEE",
+    paddingVertical: 10,
+    backgroundColor:"#FFF",
+    marginBottom:10,
   },
   carBody: {
     flexDirection: "row",

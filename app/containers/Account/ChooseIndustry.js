@@ -20,25 +20,26 @@ class ChooseIndustry extends Component {
   }
 
   componentDidMount() {
-    const list =[]
-    ENTRY_ARRAY.forEach(item => {
-      list.push({
-        text: item.text,
-        checked: false
-      })
+    const list = []
+
+    this.props.dispatch({
+      type: "app/followList",
+      callback: res => {
+        if (res.msg === "OK") {
+          const chooseList = res.result
+
+          ENTRY_ARRAY.forEach(item => {
+            list.push({
+              id: item.id,
+              text: item.text,
+              checked: chooseList.includes(item.id)
+            })
+          })
+
+          this.setState({ list })
+        }
+      }
     })
-
-    this.setState({list})
-
-    // this.props.dispatch({
-    //   type: "app/getProfile",
-    //   callback: res => {
-    //     if (res.msg === "OK") {
-    //       const { nick } = res.result
-    //       this.setState({ nick })
-    //     }
-    //   }
-    // })
   }
 
   toSet = () => {
@@ -50,13 +51,32 @@ class ChooseIndustry extends Component {
     )
   };
 
-  onSwitchChange=(checked,index)=>{
-      // eslint-disable-next-line react/no-access-state-in-setstate
-      const newList = [...this.state.list]
-      newList[index].checked = checked
-      this.setState({list:newList})
+  onSwitchChange = (checked,  index) => {
+    // eslint-disable-next-line react/no-access-state-in-setstate
+    const newList = [...this.state.list]
+    newList[index].checked = checked
 
-  }
+    const ids = []
+    newList.forEach(item => {
+      if (item.checked) {
+        ids.push(item.id)
+      }
+    })
+
+    this.props.dispatch({
+      type: "app/updateFollow",
+      payload: {
+        ids: ids.join(",")
+      },
+      callback: res => {
+        if (res.msg === "OK") {
+          console.log("ok")
+        }
+      }
+    })
+
+    this.setState({ list: newList })
+  };
 
   render() {
     const { list } = this.state
@@ -66,8 +86,17 @@ class ChooseIndustry extends Component {
           {list.map((item, i) => {
             if (i < 12) {
               return (
-                <Item extra={<Switch checked={item.checked} onChange={(checked)=>this.onSwitchChange(checked,i)}
-                />}>
+                <Item
+                  key={item.id}
+                  extra={
+                    <Switch
+                      checked={item.checked}
+                      onChange={(checked) =>
+                        this.onSwitchChange(checked, i)
+                      }
+                    />
+                  }
+                >
                   <Text style={styles.item}> {item.text}</Text>
                 </Item>
               )
@@ -85,8 +114,8 @@ const styles = StyleSheet.create({
   item: {
     fontSize: 16,
     marginLeft: 10,
-    height:40,
-    lineHeight:40,
+    height: 40,
+    lineHeight: 40
   }
 })
 export default ChooseIndustry

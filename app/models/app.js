@@ -382,7 +382,7 @@ export default {
     },
 
     // 新增历史记录
-    *saveHistory({ payload,callback }, { call, put }) {
+    *saveHistory({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.saveHistory, payload)
       if (res && callback) {
@@ -402,21 +402,21 @@ export default {
     },
 
     // 获取关注行业列表
-    *followList({ payload }, { call, put }) {
+    *followList({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.followList, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
     // 修改关注行业列表
-    *updateFollow({ payload }, { call, put }) {
+    *updateFollow({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.updateFollow, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
@@ -424,41 +424,41 @@ export default {
     // ---------- 消息类 ----------
 
     // 获取通知列表
-    *noticeList({ payload }, { call, put }) {
+    *noticeList({ payload,callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.noticeList, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
     // 消息已读记录
-    *noticeRead({ payload }, { call, put }) {
+    *noticeRead({ payload, callback}, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.noticeRead, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
     // 获取推荐列表
-    *recommendList({ payload }, { call, put }) {
+    *recommendList({ payload ,callback}, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.recommendList, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
     // 推荐已读
-    *recommendRead({ payload }, { call, put }) {
+    *recommendRead({ payload ,callback}, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.recommendRead, payload)
-      if (res) {
-        yield put(NavigationActions.back())
+      if (res && callback) {
+        callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },

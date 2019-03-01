@@ -52,8 +52,7 @@ class MyHistory extends Component {
   };
 
   renderItem = ({ item }) => (
-    <Card style={styles.card} full>
-      <Card.Body>
+    <View style={styles.card}>
         <View style={styles.carBody}>
           <Image
             resizeMode="contain"
@@ -67,8 +66,7 @@ class MyHistory extends Component {
             </Text>
           </View>
         </View>
-      </Card.Body>
-    </Card>
+    </View>
   );
 
   render() {
@@ -100,7 +98,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEE"
   },
   card: {
-    marginBottom: 10
+    borderBottomWidth:1,
+    borderBottomColor:"#EEE",
+    paddingVertical: 10
   },
   carBody: {
     flexDirection: "row",

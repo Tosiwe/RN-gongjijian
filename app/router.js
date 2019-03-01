@@ -35,6 +35,7 @@ import MyHistory from "./containers/Account/MyHistory"
 import EditProfile from "./containers/Account/EditProfile"
 import Vip from "./containers/Account/Vip"
 import PayRecords from "./containers/Account/PayRecords"
+import Recommend from "./containers/Account/Recommend"
 import Detail from "./components/Detail/Detail"
 import PaperDetail from "./components/Detail/PaperDetail"
 import AddButton from "./components/AddButton/AddButton"
@@ -71,16 +72,17 @@ HomeNavigator.navigationOptions = {
 // 主要业务页面页内路由设置
 const mainNavigationOptions = ({ navigation }) => ({
   title: `${navigation.state.params ? navigation.state.params.name:""}`,
-  headerStyle: { backgroundColor: "#F9F9F9" },
+  headerStyle: { backgroundColor: "#F9F9F9" , fontSize:20},
   headerLeft: (
     <TouchableOpacity
       onPress={() => {
         navigation.goBack()
       }}
     >
-      <Icon name="left" size={24} color="black" style={{ marginLeft: 13 }} />
+      <Icon name="left" size={20} color="black" style={{ marginLeft: 13 }} />
     </TouchableOpacity>
-  )
+  ),
+  gesturesEnabled:true
 })
 
 // 主要业务页面
@@ -113,24 +115,8 @@ const MainNavigator = createStackNavigator(
     CompanyOrPerson: {
       // 发布页-商户选择
       screen: CompanyOrPerson,
-      navigationOptions: ({ navigation }) => ({
-        title: "选择发布分类",
-        headerStyle: { backgroundColor: "#F9F9F9" },
-        headerLeft: (
-          <TouchableOpacity
-            onPress={() => {
-              navigation.goBack()
-            }}
-          >
-            <Icon
-              name="left"
-              size={24}
-              color="black"
-              style={{ marginLeft: 13 }}
-            />
-          </TouchableOpacity>
-        )
-      })
+      navigationOptions: mainNavigationOptions
+
     },
     FormDemand: {
       // 发布页-编辑需求
@@ -205,21 +191,28 @@ const MainNavigator = createStackNavigator(
     },
     
     SearchResult: {
-      // 入驻表单
+      // 搜索结果
       screen: SearchResult,
       navigationOptions: mainNavigationOptions
     },
     
     PayRecords: {
-      // 入驻表单
+      // 消费记录
       screen: PayRecords,
       navigationOptions: mainNavigationOptions
     },
     
     
     Result: {
-      // 入驻表单
+      // 支付结果
       screen: Result,
+      navigationOptions: mainNavigationOptions
+    },
+    
+    
+    Recommend: {
+      // 消息
+      screen: Recommend,
       navigationOptions: mainNavigationOptions
     },
     
@@ -236,8 +229,8 @@ const MainNavigator = createStackNavigator(
 const AppNavigator = createStackNavigator(
   {
     // Result: { screen: Result },
-    Login: { screen: Login },
     Main: { screen: MainNavigator },
+    Login: { screen: Login },
     BindPhone: { screen: BindPhone },
     ResetPassword: { screen: ResetPassword },
     SignUp: { screen: SignUp },

@@ -64,15 +64,40 @@ export default class App extends Component {
       Alipay.pay(params).then(
         res => {
           // if (res.code === 10000) {
-          this.createOrder()
+          if (data.type === "charge") {
+            const {orderId} = this.state
+            const resultData = { orderId, ...data }
+            // Toast.success("下单成功")
+            // data.orderId = res.result && res.result.id
+
+            this.setState({
+              visible: false,
+              resultVisible: true,
+              resultData,
+              resultCode: Math.random()
+            })
+          } else {
+            this.createOrder()
+          }
           // } else {
           // Toast.info(`error code:${res.code}`)
           // }
         },
         err => {
+          // const resultData = { orderId: data.orderId, ...data }
+          // Toast.success("下单成功")
+          // data.orderId = res.result && res.result.orderId
+
+          // this.setState({
+          //   visible: false,
+          //   resultVisible: true,
+          //   resultData,
+          //   resultCode: Math.random()
+          // })
+
           console.log(err)
           Toast.info("付款出错了")
-          // this.createOrder()
+          this.createOrder()
         }
       )
     })
@@ -98,9 +123,10 @@ export default class App extends Component {
       // },
       callback: response => {
         if (response.msg === "OK") {
-          const resultData = { orderId: data.orderId, ...data }
+          
+          const resultData = { orderId: response.result.id, ...data }
           // Toast.success("下单成功")
-          data.orderId = response.result && response.result.orderId
+          // data.orderId = response.result && response.result.orderId
 
           this.setState({
             visible: false,
@@ -278,10 +304,10 @@ const styles = StyleSheet.create({
   icon: {
     width: 30,
     height: 30,
-    marginRight:10,
+    marginRight: 10
   },
   row: {
     flexDirection: "row",
-    alignItems:'center',
+    alignItems: "center"
   }
 })

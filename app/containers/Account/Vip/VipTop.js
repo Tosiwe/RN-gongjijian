@@ -9,11 +9,13 @@ import {
   ImageBackground,
   Image
 } from "react-native"
-import { Toast } from "@ant-design/react-native"
+import moment from "moment"
+import { Toast, Modal } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import Icon from "react-native-vector-icons/AntDesign"
-
 import { connect } from "react-redux"
+import Pay from "../../../components/Pay/Pay"
+
 import { statusBarHeight } from "../../../styles/common"
 
 @connect(({ app }) => ({ ...app }))
@@ -64,9 +66,55 @@ class VipTop extends Component {
     )
   };
 
+  paySuccess = () => {
+    this.props.dispatch({
+      type: "app/getUserFinance",
+      callback: res => {
+        if (res.msg === "OK") {
+          debugger
+          this.setState({ userFinance: res.result })
+        }
+      }
+    })
+  };
+
+  toPay = price => {
+    this.setState({
+      price,
+      payVisible: true,
+      timeStamp: moment().format("x")
+    })
+  };
+
+  inputPrice = () => {
+    Modal.prompt("充值", "请输入您要充值的金额", [
+      { text: "取消" },
+      { text: "确认", onPress: this.toPay },
+    ])
+  };
+
   render() {
-    const { data = {} } = this.props
-    const { nick, userInfo = {} } = this.state
+    let { data = {} } = this.props
+    const {
+      nick,
+      userInfo = {},
+      payVisible,
+      timeStamp,
+      userFinance,
+      price
+    } = this.state
+
+    if (userFinance) {
+      data = userFinance
+    }
+
+    const payData = {
+      use: "余额充值",
+      name: "余额充值",
+      price,
+      type: "charge"
+    }
+
     return (
       <ImageBackground
         style={styles.wrap}
@@ -78,7 +126,7 @@ class VipTop extends Component {
             <Icon name="left" style={styles.topLeft} />
           </TouchableOpacity>
           <Text style={styles.title}>VIP会员</Text>
-          <TouchableOpacity onPress={ this.toRecords}>
+          <TouchableOpacity onPress={this.toRecords}>
             <View
               style={{
                 flexDirection: "row",
@@ -110,9 +158,13 @@ class VipTop extends Component {
           </View>
           <TouchableOpacity
             style={[styles.vipPay, styles.flex1]}
-            onPress={() => {
-              Toast.info("正在施工...")
-            }}
+            // onPress={() => {
+            //   this.setState({
+            //     payVisible: true,
+            //     timeStamp: moment().format("x")
+            //   })
+            // }}
+            onPress={this.inputPrice}
           >
             <ImageBackground
               style={styles.vipBg}
@@ -122,6 +174,12 @@ class VipTop extends Component {
             </ImageBackground>
           </TouchableOpacity>
         </View>
+        <Pay
+          onSuccess={this.paySuccess}
+          visible={payVisible}
+          timeStamp={timeStamp}
+          data={payData}
+        />
       </ImageBackground>
     )
   }

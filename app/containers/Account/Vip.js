@@ -100,6 +100,7 @@ class Vip extends Component {
     this.props.dispatch({
       type: "app/getUserFinance",
       callback: res => {
+        debugger
         if (res.msg === "OK") {
           this.setState({ userFinance: res.result })
         }
@@ -121,16 +122,18 @@ class Vip extends Component {
         }}
         style={{ flex: 1, alignItems: "center" }}
       >
-        <View style={wrap}>
-          <Text style={[styles.text, styles.title]}>
-            {payType.title || "包月"}
-          </Text>
-          <Text style={[styles.text, styles.price]}>
-            ¥{payType.price || 30.0}
-          </Text>
-          <Text style={[styles.text, styles.des]}>
-            {payType.des || "月度可查100次联系方式"}
-          </Text>
+        <View style={styles.content}>
+          <View style={wrap}>
+            <Text style={[styles.text, styles.title]}>
+              {payType.title || "包月"}
+            </Text>
+            <Text style={[styles.text, styles.price]}>
+              ¥{payType.price || 30.0}
+            </Text>
+            <Text style={[styles.text, styles.des]}>
+              {payType.des || "月度可查100次联系方式"}
+            </Text>
+          </View>
         </View>
       </TouchableOpacity>
     )
@@ -146,7 +149,7 @@ class Vip extends Component {
     } = this.state
     const info = vipInfo[activeKey]
     const payData = {
-      use: "会员充值",
+      use: "购买VIP",
       name: info && info.title,
       price: info && info.price,
       type: "vip",
@@ -209,7 +212,7 @@ const styles = StyleSheet.create({
   },
   wrap: {
     justifyContent: "center",
-    width: 130,
+    // width: 130,
     height: 180,
     borderWidth: 2,
     borderColor: "#EEE",
@@ -219,13 +222,17 @@ const styles = StyleSheet.create({
   },
   activeWrap: {
     justifyContent: "center",
-    width: 130,
+    // width: 130,
     height: 180,
     borderWidth: 2,
     borderColor: "#E7BC85",
     borderRadius: 5,
     padding: 10,
     backgroundColor: "#FFF7E5"
+  },
+  content:{
+    flex: 1,
+    padding:5,
   },
   text: {
     textAlign: "center"

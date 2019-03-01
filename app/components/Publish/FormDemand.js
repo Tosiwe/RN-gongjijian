@@ -9,7 +9,7 @@ import {
   List,
   InputItem,
   WhiteSpace,
-  Result
+  ActivityIndicator
 } from "@ant-design/react-native";
 import { NavigationActions } from "react-navigation";
 // import ImagePicker from 'react-native-image-picker'
@@ -22,6 +22,8 @@ class FormDemand extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      animating:false,
+      
       params: {
         title: "",
         desc: "",
@@ -62,8 +64,8 @@ class FormDemand extends Component {
       return false;
     }
     if (params.title.length < 10) {
-      Toast.info("标题字数应在10-28个字")
-      return false
+      Toast.info("标题字数应在10-28个字");
+      return false;
     }
     if (params.contact === "") {
       Toast.info("请填写联系人");
@@ -77,6 +79,8 @@ class FormDemand extends Component {
   };
 
   onSave = () => {
+    this.setState({ animating: true });
+
     getPosition({ ...this }).then(result => {
       if (this.isLegal() && result.isSuccess) {
         this.state.params = result.params;
@@ -87,10 +91,11 @@ class FormDemand extends Component {
             if (res.msg === "OK") {
               Toast.success("保存成功！", 1, this.goHome);
             }
+            this.setState({ animating: false });
           }
         });
       }
-    }) ;
+    });
   };
 
   goHome = () => {
@@ -104,7 +109,8 @@ class FormDemand extends Component {
 
   onPublish = () => {
     const that = { ...this };
-    getPosition(that,Toast).then(result => {
+    this.setState({ animating: true });
+    getPosition(that, Toast).then(result => {
       if (this.isLegal() && result.isSuccess) {
         this.state.params = result.params;
         this.props.dispatch({
@@ -114,10 +120,11 @@ class FormDemand extends Component {
             if (res.msg === "OK") {
               Toast.success("发布成功！", 1, this.goHome);
             }
+            this.setState({ animating: false });
           }
         });
       }
-    }) ;
+    });
   };
 
   handleChange = (value, name) => {
@@ -142,6 +149,11 @@ class FormDemand extends Component {
         showsVerticalScrollIndicator={false}
         // onScrollEndDrag={this.handleScrollEnd}
       >
+        <ActivityIndicator
+          animating={this.state.animating}
+          toast
+          size="large"
+        />
         <Text style={styles.title}>
           {isReg ? "注册人员、资质" : "注册人员、资质、（所有行业）需求"}
         </Text>
