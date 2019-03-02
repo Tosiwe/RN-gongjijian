@@ -304,7 +304,7 @@ export default {
       if (res && callback) {
         callback(res)
       }
-      yield put(createAction("updateState")({ res, fetching: false }))
+      yield put(createAction("updateState")({ settleList:res.result.data, fetching: false }))
     },
 
     // 已入驻列表-个人中心中使用

@@ -14,27 +14,31 @@ class JoinList extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      joinList: []
+      settleList: []
     }
   }
 
   componentDidMount() {
     this.props.dispatch({
-      type: "app/settleList",
-      callback: res => {
-        if (res.msg === "OK") {
-          this.setState({ joinList: res.result.data })
-        }
-      }
+      type: "app/settleList"
     })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { settleList: nextSettleList } = nextProps
+
+    if(nextSettleList&&nextSettleList.length){
+        this.setState({ settleList: nextSettleList })
+      }
   }
 
   ToSettle = () => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: "Settle",
-        params: { name: "入驻行业" }
-      })
+        params: { 
+          name: "入驻行业",
+      }})
     )
   };
 
@@ -50,15 +54,14 @@ class JoinList extends Component {
           ids,
           name: `${INS_MAP[item.classifyId].name}-${
             INS_MAP[item.subClassifyId].name
-          }`,
-          
+          }`
         }
       })
     )
   };
 
   render() {
-    const { joinList } = this.state
+    const { settleList } = this.state
     return (
       <View style={styles.wrap}>
         <View style={styles.listHeader}>
@@ -77,7 +80,7 @@ class JoinList extends Component {
           </TouchableOpacity>
         </View>
         <List style={styles.list}>
-          {joinList.map(item => (
+          {settleList.map(item => (
             <Item
               key={item.id}
               thumb={

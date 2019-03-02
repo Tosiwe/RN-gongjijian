@@ -4,7 +4,13 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import { StyleSheet, View, Text, TouchableOpacity,ScrollView } from "react-native"
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  ScrollView
+} from "react-native"
 import { List, InputItem, Toast } from "@ant-design/react-native"
 import Icon from "react-native-vector-icons/AntDesign"
 import { NavigationActions } from "react-navigation"
@@ -53,14 +59,23 @@ class SettleForm extends Component {
 
     params.classifyId = classifyId
     params.subClassifyId = subClassifyId
-
+    debugger
     this.props.dispatch({
       type: "app/settleNew",
       payload: params,
       callback: res => {
         if (res.msg === "OK") {
+          
           Toast.info("入驻成功！", 1, () => {
-            this.props.dispatch(NavigationActions.back())
+            this.props.dispatch({
+              type: "app/settleList"
+            })
+            const { callback } = this.props.navigation.state.params
+            if (callback) {
+              callback()
+            } else {
+              this.props.dispatch(NavigationActions.back())
+            }
           })
         }
       }
@@ -152,7 +167,7 @@ class SettleForm extends Component {
         <TouchableOpacity style={styles.btn} onPress={this.onSave}>
           <Text style={styles.btnText}>入驻</Text>
         </TouchableOpacity>
-        <View style={{height:300}} />
+        <View style={{ height: 300 }} />
       </ScrollView>
     )
   }

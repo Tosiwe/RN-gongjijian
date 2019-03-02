@@ -26,6 +26,7 @@ class RegisterEntry extends Component {
       loading: true,
       list: [],
       params: {
+        distance:100,
         classifyId: props.id
       }
     }

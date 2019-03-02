@@ -71,7 +71,6 @@ class VipTop extends Component {
       type: "app/getUserFinance",
       callback: res => {
         if (res.msg === "OK") {
-          debugger
           this.setState({ userFinance: res.result })
         }
       }
@@ -154,7 +153,7 @@ class VipTop extends Component {
             <Text style={styles.gold}>
               {data.vip ? "会员" : "您还不是会员"}
             </Text>
-            <Text style={styles.gold}>余额：0.00元</Text>
+            <Text style={styles.gold}>余额：{data.balance||"0.00"}元</Text>
           </View>
           <TouchableOpacity
             style={[styles.vipPay, styles.flex1]}

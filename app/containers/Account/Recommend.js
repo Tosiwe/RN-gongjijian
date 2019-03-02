@@ -8,7 +8,7 @@ import {
   FlatList,
   Text,
   Image,
-  TouableOpacity
+  TouchableOpacity
 } from "react-native"
 import { Tabs } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
@@ -67,11 +67,11 @@ class Recommend extends Component {
     // const { ids } = this.props.navigation.state.params
     this.props.dispatch({
       type: "app/recommendList",
-      payload: {
+      // payload: {
         // ...ids
         // pn,
         // ps: 10
-      },
+      // },
       callback: res => {
         if (res.msg === "OK") {
           let recList = []
@@ -126,21 +126,21 @@ class Recommend extends Component {
   };
 
   renderItem = (item, isRec) => (
-    <TouableOpacity onPress={() => this.read(item, isRec)} style={styles.card}>
+    <TouchableOpacity onPress={() => this.read(item, isRec)} style={styles.card}>
       <View style={styles.carBody}>
         <Image
           resizeMode="contain"
           style={styles.carImg}
-          source={require("../../containers/img/img_logo.png")}
+          source={item.pictureUrl?{uri:item.pictureUrl} :require("../../containers/img/img_logo.png")}
         />
         <View style={styles.cardRight}>
-          <Text style={styles.cardTitle}>{item.title}</Text>
+          <Text style={styles.cardTitle}>{item.title||"通知"}</Text>
           <Text style={styles.cardDes} ellipsizeMode="tail" numberOfLines={2}>
-            {item.desc}
+            {item.desc||"详情"}
           </Text>
         </View>
       </View>
-    </TouableOpacity>
+    </TouchableOpacity>
   );
 
   onChange = index => {
@@ -153,7 +153,7 @@ class Recommend extends Component {
   };
 
   render() {
-    const { noticeList, recList } = this.state
+    const { noticeList=[], recList=[] } = this.state
     const { fetching } = this.props
 
     // 选择发布分类
@@ -171,7 +171,7 @@ class Recommend extends Component {
           <View style={styles.content}>
             <FlatList
               data={recList}
-              renderItem={item => this.renderItem(item, true)}
+              renderItem={({item}) => this.renderItem(item, true)}
               onRefresh={this.refresh}
               refreshing={fetching}
               onEndReachedThreshold={1}
@@ -181,7 +181,7 @@ class Recommend extends Component {
           <View style={styles.content}>
             <FlatList
               data={noticeList}
-              renderItem={this.renderItem}
+              renderItem={({item}) => this.renderItem(item)}
               onRefresh={this.refresh}
               refreshing={fetching}
               onEndReachedThreshold={1}

@@ -19,7 +19,6 @@ class PayRecords extends Component {
   }
 
   componentDidMount() {
-    debugger
     this.props.dispatch({
       type: "app/getOrderList",
       callback: res => {

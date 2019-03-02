@@ -27,6 +27,7 @@ class SecondEntry extends Component {
       loading: true,
       list: [],
       params: {
+        distance:100,
         subClassifyId: props.id
       }
     }

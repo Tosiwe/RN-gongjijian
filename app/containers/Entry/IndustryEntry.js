@@ -20,7 +20,7 @@ class IndustryEntry extends Component {
       loading: true,
       list: [],
       params: {
-        distance: 0,
+        distance: 100,
         classifyId: props.id
       }
     }

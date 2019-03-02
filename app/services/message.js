@@ -19,7 +19,7 @@ export async function noticeRead(params) {
 
 // 获取推荐列表
 export async function recommendList(params) {
-    return request(`http://118.24.107.177:7001/recommend/list`, {
+    return request(`http://118.24.107.177:7001/user/recommend/list`, {
         method: "POST",
         body: params,
     })

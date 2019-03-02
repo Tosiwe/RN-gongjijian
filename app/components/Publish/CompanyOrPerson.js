@@ -1,9 +1,10 @@
+/* eslint-disable no-unused-expressions */
 import React, { Component } from "react"
 import { connect } from "react-redux"
 import { NavigationActions } from "react-navigation"
 
 import { StyleSheet, View, Image, Text } from "react-native"
-import { List, NoticeBar } from "@ant-design/react-native"
+import { List, NoticeBar ,Modal} from "@ant-design/react-native"
 
 const { Item } = List
 const { Brief } = Item
@@ -19,8 +20,72 @@ const PERSON = [
   { title: "施工队伍", id: "team", brief: "施工队伍相关信息" },
   { title: "项目信息", id: "project", brief: "项目相关信息" }
 ]
-@connect()
+@connect(({ app }) => ({ ...app }))
 class CompanyOrPerson extends Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      settleList: []
+    }
+  }
+  
+  componentDidMount() {
+    this.props.dispatch({
+      type: "app/settleList"
+    })
+  }
+
+  componentWillReceiveProps(nextProps) {
+    const { settleList: nextSettleList } = nextProps
+
+    if(nextSettleList&&nextSettleList.length){
+        this.setState({ settleList: nextSettleList })
+      }
+  }
+
+  checkSettle=(info)=>{
+    const {settleList}= this.state
+    const settleIn =[]
+    settleList.forEach(item=>{
+      settleIn.push(item.classifyId)
+    })
+
+    const { id } = this.props.navigation.state.params
+
+    if(settleIn.includes(id)){
+      this.fillForm(info)
+    }else{
+      this.showDeleteModal(id)
+    }
+
+  }
+
+
+  showDeleteModal = id => {
+    Modal.alert("提示", "您目前还未入驻该行业公司，请先入驻", [
+      {
+        text: "取消",
+        // onPress: () => modal.close(),
+        style: "取消"
+      },
+      { text: "马上入驻", onPress: () => this.toSettleForm(id,"company") }
+    ])
+  };
+
+
+  toSettleForm=(id,sid)=>{
+    this.props.dispatch(NavigationActions.navigate({
+        routeName:"SettleForm",
+        params:{
+            name:"新建入驻",
+            classifyId:id,
+            subClassifyId:sid,
+        }
+    }))
+}
+
+
+
   fillForm = info => {
     const { type, name, id } = this.props.navigation.state.params
     const { dispatch } = this.props
@@ -55,7 +120,7 @@ class CompanyOrPerson extends Component {
           {COMPANY.map(data => (
             <Item
               key={data.id}
-              onPress={() => this.fillForm(data)}
+              onPress={() => {data.id==="company" ? this.checkSettle(data) :this.fillForm(data)}}
               style={styles.item}
               arrow="horizontal"
             >

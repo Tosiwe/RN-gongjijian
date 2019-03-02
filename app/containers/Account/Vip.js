@@ -100,7 +100,6 @@ class Vip extends Component {
     this.props.dispatch({
       type: "app/getUserFinance",
       callback: res => {
-        debugger
         if (res.msg === "OK") {
           this.setState({ userFinance: res.result })
         }
@@ -144,7 +143,7 @@ class Vip extends Component {
       vipInfo,
       activeKey,
       payVisible,
-      userFinance,
+      userFinance={},
       timeStamp
     } = this.state
     const info = vipInfo[activeKey]
@@ -183,7 +182,7 @@ class Vip extends Component {
               })
             }}
           >
-            <Text style={styles.btnText}>立即开通</Text>
+            <Text style={styles.btnText}>{userFinance.vip ? "继续充值":"立即开通"}</Text>
           </TouchableOpacity>
         </ScrollView>
         <Pay

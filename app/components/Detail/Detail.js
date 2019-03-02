@@ -19,6 +19,7 @@ import Pics from "../../containers/Home/Ads"
 import { statusBarHeight, iconSize } from "../../styles/common"
 // import Setting from "../../containers/Account/Setting"
 
+// props.data需要type,id
 @connect()
 class Detail extends Component {
   constructor(props) {

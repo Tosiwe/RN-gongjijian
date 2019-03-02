@@ -23,6 +23,16 @@ class Settle extends Component {
               name:"新建入驻",
               classifyId:id,
               subClassifyId:sid,
+              callback: () => {
+                this.props.dispatch(
+                  NavigationActions.navigate({
+                    routeName: "Account",
+                    params: { 
+                      // name: "入驻行业",
+                  }
+                })
+                )
+               },
           }
       }))
   }
