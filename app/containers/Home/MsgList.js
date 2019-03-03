@@ -30,17 +30,14 @@ class MsgList extends Component {
     this.getList()
   };
 
-  // componentWillReceiveProps(nextProps) {
-  //   const { timeStamp } = this.state
-  //   const { timeStamp: nextIimeStamp } = nextProps
-  //   if (timeStamp !== nextIimeStamp) {
-  //     this.getList()
-  //   }
-  // }
 
   getList = (pn = 1) => {
     const { list } = this.state
     this.setState({ refreshing: true })
+    console.log("getGuesslikeList",{
+      ps: 100,
+      pn
+    })
     this.props.dispatch({
       type: "app/guesslikeList",
       payload: {
@@ -66,7 +63,7 @@ class MsgList extends Component {
     return (
       <View style={styles.wrap}>
         <View style={styles.head}>
-          <TouchableOpacity style={styles.reload} onPress={this.getList}>
+          <TouchableOpacity style={styles.reload} onPress={()=>this.getList()}>
             <Icon name="reload1" size={20} />
           </TouchableOpacity>
           <ImageBackground

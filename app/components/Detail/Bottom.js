@@ -28,12 +28,12 @@ class Detail extends Component {
     super(props)
     this.state = {
       hasPaied: false,
-      likeType: 0
+      collected: false
     }
   }
 
   componentDidMount() {
-    this.setState({ likeType: this.props.data.type })
+    this.setState({ collected: this.props.data.collected })
 
     const { type } = this.props
     this.props.dispatch({
@@ -48,13 +48,14 @@ class Detail extends Component {
 
   like = () => {
     const { id, type } = this.props.data
-    const { likeType } = this.state
+    const { collected } = this.state
+    const ActionType = collected ? "bookmark/cancel":"app/saveBookmark"
     this.props.dispatch({
-      type: "app/saveBookmark",
-      payload: { id, type: likeType === 0 ? 1 : 0 },
+      type:ActionType ,
+      payload: { recordId:id, type },
       callback: res => {
         if (res.msg === "OK") {
-          this.setState({ likeType: likeType === 0 ? 1 : 0 })
+          this.setState({ collected: !collected })
         }
       }
     })
@@ -282,7 +283,7 @@ class Detail extends Component {
           if (grand) {
             CameraRoll.saveToCameraRoll(path)
               .then(() => {
-                Toast.info("保存成功")
+                Toast.info("保存成功，请在相册中查看")
               })
               .catch(e => {
                 Toast.info(`保存失败！\n${e}`)
@@ -302,7 +303,7 @@ class Detail extends Component {
     const { type, data, userFinance = {} } = this.props
 
     const {
-      likeType,
+      collected,
       visible,
       ModalTitle,
       content,
@@ -340,7 +341,7 @@ class Detail extends Component {
             <Image
               style={styles.cImg}
               source={
-                likeType
+                collected
                   ? require("./images/icon_collection_pressed.png")
                   : require("./images/icon_collection.png")
               }
