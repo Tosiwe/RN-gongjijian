@@ -59,7 +59,6 @@ class SettleForm extends Component {
 
     params.classifyId = classifyId
     params.subClassifyId = subClassifyId
-    debugger
     this.props.dispatch({
       type: "app/settleNew",
       payload: params,

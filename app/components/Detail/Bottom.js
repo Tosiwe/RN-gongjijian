@@ -22,7 +22,7 @@ const use = {
   attach: "下载附件",
   charge: "充值"
 }
-@connect()
+@connect(({ app }) => ({ ...app }))
 class Detail extends Component {
   constructor(props) {
     super(props)
@@ -34,7 +34,7 @@ class Detail extends Component {
 
   componentDidMount() {
     this.setState({ likeType: this.props.data.type })
-  
+
     const { type } = this.props
     this.props.dispatch({
       type: "app/getPriceList",
@@ -64,9 +64,65 @@ class Detail extends Component {
     this.setState({ visible: false })
   };
 
+  checkType = name => {
+    const { data = {}, type, userFinance = {} } = this.props
+    const isVip = userFinance.vip
+    this.state.pressName = name
+    // type: contact\paper\attach
+    if (type === "paper") {
+      // 图纸下载，需扣余额
+      this.payByBalance(name)
+    } else if (isVip) {
+      // vip直接显示
+      if (name === "phone") {
+        Linking.openURL(data.phone ? `tel:${data.phone}` : "tel:10010")
+      } else {
+        this.showModal(data[name], name)
+      }
+    } else {
+      // 非vip，需扣余额
+      this.payByBalance(name)
+    }
+  };
+
+  payByBalance = name => {
+    const { data, type } = this.props
+    // const { price } = this.state
+    // const salePrice = data.price || price
+
+    // type: contact\paper\attach
+    const map = {
+      vip: "app/createVipOrder",
+      contact: "app/createOrderContact",
+      paper: "app/createOrderPaper",
+      attach: "app/createOrderAttach"
+    }
+    const payload = {
+      sourceId: data.id
+    }
+
+    this.props.dispatch({
+      type: map[type],
+      payload,
+      callback: response => {
+        if (response.status === "OK") {
+          this.state.hasPaied = true
+          this.showPayModal(name)
+        } else if (response.status === "ERROR") {
+          Modal.alert("提示", "您的余额不足，直接购买", [
+            {
+              text: "取消"
+            },
+            { text: "确认", onPress: () => this.showPayModal(name) }
+          ])
+        }
+      }
+    })
+  };
+
   showPayModal = name => {
     const { hasPaied } = this.state
-    const { data = {}, type } = this.props
+    const { data = {} } = this.props
 
     if (hasPaied) {
       if (name === "phone") {
@@ -82,13 +138,14 @@ class Detail extends Component {
             fileName: data.fileKey
           },
           callback: res => {
-            // Toast.info("下载+1")
+            // TODO:下载附件
           }
         })
       } else {
         this.showModal(data[name], name)
       }
     } else {
+      // 调起第三方支付
       this.setState({
         timeStamp: moment().format("x"),
         payVisible: true
@@ -111,7 +168,15 @@ class Detail extends Component {
   };
 
   paySuccess = pay => {
-    this.setState({ hasPaied: true })
+    this.state.hasPaied = true
+    const { pressName } = this.state
+    const { data } = this.state
+    // vip直接显示
+    if (pressName === "phone") {
+      Linking.openURL(data.phone ? `tel:${data.phone}` : "tel:10010")
+    } else {
+      this.showModal(data[pressName], pressName)
+    }
   };
 
   requestExternalStoragePermission = async () => {
@@ -203,7 +268,8 @@ class Detail extends Component {
   }
 
   render() {
-    const { type, data } = this.props
+    const { type, data, userFinance = {} } = this.props
+
     const {
       likeType,
       visible,
@@ -211,7 +277,7 @@ class Detail extends Component {
       content,
       payVisible,
       timeStamp,
-      price,
+      price
     } = this.state
 
     return (
@@ -225,7 +291,15 @@ class Detail extends Component {
           closable
         >
           <View style={{ paddingVertical: 20 }}>
-            <Text style={{ textAlign: "center" }}>{content}</Text>
+            <Text
+              style={{ textAlign: "center" }}
+            >{`${ModalTitle}:${content}`}</Text>
+            {userFinance.vip && (
+              <Text style={{ textAlign: "center" }}>
+                {" "}
+                尊贵的VIP，您可以无限次查看联系方式
+              </Text>
+            )}
           </View>
           <Button type="primary" onPress={this.onClose}>
             关闭
@@ -246,7 +320,7 @@ class Detail extends Component {
           {!(type === "contact") && (
             <TouchableOpacity
               onPress={() => {
-                this.showPayModal("download")
+                this.checkType("download")
               }}
               style={[styles.btns, styles.downLoadBtn]}
             >
@@ -256,7 +330,7 @@ class Detail extends Component {
           {type === "contact" && (
             <TouchableOpacity
               onPress={() => {
-                this.showPayModal("phone")
+                this.checkType("phone")
               }}
               style={styles.btns}
             >
@@ -270,7 +344,7 @@ class Detail extends Component {
           {type === "contact" && (
             <TouchableOpacity
               onPress={() => {
-                this.showPayModal("wechat")
+                this.checkType("wechat")
               }}
               style={styles.btns}
             >
@@ -284,7 +358,7 @@ class Detail extends Component {
           {type === "contact" && (
             <TouchableOpacity
               onPress={() => {
-                this.showPayModal("qq")
+                this.checkType("qq")
               }}
               style={styles.btns}
             >
@@ -302,6 +376,7 @@ class Detail extends Component {
             timeStamp={timeStamp}
             onSuccess={this.paySuccess}
             data={{
+              id: data.id,
               use: use[type],
               name: data.title,
               price: data.price || price,

@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { StyleSheet, ScrollView, Text } from "react-native";
+import { StyleSheet, ScrollView, Text,View } from "react-native";
 import {
   Toast,
   List,
@@ -22,8 +22,8 @@ class FormDemand extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      animating:false,
-      
+      animating: false,
+
       params: {
         title: "",
         desc: "",
@@ -181,6 +181,8 @@ class FormDemand extends Component {
           onChange={v => this.handleChange(v, "baseInfo")}
           params={this.state.params}
         />
+
+        <View style={{ height: 100 }} />
         <Buttons onPublish={this.onPublish} onSave={this.onSave} />
         <WhiteSpace style={styles.bottom} />
       </ScrollView>

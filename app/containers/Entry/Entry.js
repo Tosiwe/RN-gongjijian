@@ -1,7 +1,9 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import { StyleSheet, View } from "react-native"
+import { StyleSheet, View,TouchableOpacity ,Text} from "react-native"
+import LocationBtn from "../../components/LocationBtn/LocationBtn"
+
 // import { NavigationActions } from 'react-navigation'
 
 import IndustryEntry from "./IndustryEntry"
@@ -11,10 +13,11 @@ import PaperEntry from "./PaperEntry"
 
 @connect()
 class Entry extends Component {
-  // static navigationOptions ={
-  //   title:"123",
-  //   headerLeftContainerStyle:{color:"#000"},
-  // }
+  static navigationOptions = ({ navigation }) => ({
+    headerRight: (
+      <LocationBtn  />
+    )
+  });
 
   constructor(props) {
     super(props)

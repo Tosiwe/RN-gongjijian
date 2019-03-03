@@ -1,9 +1,9 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import { StyleSheet, View, Text, FlatList } from "react-native"
-import { List, ActivityIndicator,Toast } from "@ant-design/react-native"
-import {NavigationActions} from "react-navigation"
+import { StyleSheet, View, Text, FlatList,TouchableOpacity } from "react-native"
+import { List, ActivityIndicator, } from "@ant-design/react-native"
+// import {NavigationActions} from "react-navigation"
 import { screenHeight, primaryColor } from "../../styles/common"
 import ListItem from "../../components/ListIem/ListItem"
 import { getPosition } from "../../utils/utils"
@@ -11,8 +11,24 @@ import { getPosition } from "../../utils/utils"
 
 const { Item } = List
 
-@connect()
+@connect(({app})=>({...app}))
 class IndustryEntry extends Component {
+  static navigationOptions = ({ navigation }) => ({
+    headerRight: (
+      <TouchableOpacity
+        onPress={()=>navigation.navigate({
+          routeName: "MyPublish",
+          params:{
+            name:"我的发布",
+            type:navigation.state.params.type
+          }
+        })}
+      >
+        <Text style={{ fontSize: 16, marginRight: 20 }}>我的发布</Text>
+      </TouchableOpacity>
+    )
+  });
+
   constructor(props) {
     super(props)
     this.state = {

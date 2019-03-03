@@ -1,19 +1,26 @@
+/* eslint-disable no-unused-expressions */
 import React, { Component } from "react"
-import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native"
+import {
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  Text,
+  Platform
+} from "react-native"
 import { connect } from "react-redux"
-import { InputItem, Button, List ,Toast} from "@ant-design/react-native"
+import { InputItem, Button, List, Toast } from "@ant-design/react-native"
 import Icon from "react-native-vector-icons/AntDesign"
+import * as wechat from "react-native-wechat"
 import { primaryColor } from "../../styles/common"
 import { createAction, NavigationActions } from "../../utils"
 
 @connect(({ app }) => ({ ...app }))
-
 class Login extends Component {
-  
   static navigationOptions = {
     title: "Login"
   };
-  
+
   constructor(props) {
     super(props)
     this.state = {
@@ -26,45 +33,76 @@ class Login extends Component {
   };
 
   login = () => {
-    const { params:payload } = this.state
-    if(!payload.phone){
+    const { params: payload } = this.state
+    if (!payload.phone) {
       Toast.info("请输入电话")
       return null
     }
 
-    if(!payload.password){
+    if (!payload.password) {
       Toast.info("请输入密码")
       return null
     }
     payload.noNendAuth = true
-    this.props.dispatch(createAction('app/login')(payload))
+    this.props.dispatch(createAction("app/login")(payload))
     return null
   };
 
   onChange = (value, name) => {
-    const {params} = this.state
-    params[name] = value.toString().replace(/\s*/g,"")
+    const { params } = this.state
+    params[name] = value.toString().replace(/\s*/g, "")
   };
 
-  toSignUp=()=>{
+  toSignUp = () => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: "SignUp"
       })
     )
-  }
+  };
 
-  resetPassword=()=>{
+  resetPassword = () => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: "ResetPassword"
       })
     )
-  }
+  };
 
-  wechatLogin=()=>{
-    Toast.info("正在施工...")
-  }
+  // 微信登录示例
+  wechatLogin = () => {
+    const scope = "snsapi_userinfo"
+    const state = "wechat_sdk_demo"
+    // 判断微信是否安装
+    wechat.isWXAppInstalled().then(isInstalled => {
+      if (isInstalled) {
+        // 发送授权请求
+        wechat
+          .sendAuthRequest(scope)
+          .then(responseCode => {
+            // 返回code码，通过code获取access_token
+            this.getAccessToken(responseCode.code)
+          })
+          .catch(err => {
+            Toast.info("登录授权发生错误：", err.message, [{ text: "确定" }])
+          })
+      } else {
+        Platform.OS === "ios"
+          ? Toast.info("没有安装微信，请先安装微信客户端再进行登录")
+          : Toast.info("没有安装微信，请先安装微信客户端再进行登录")
+      }
+    })
+  };
+
+  getAccessToken = code => {
+    this.props.dispatch({
+      type: "app/wechatLogin",
+      payload: {
+        code,
+        noNendAuth:true
+      }
+    })
+  };
 
   render() {
     const { fetching } = this.props
@@ -74,7 +112,7 @@ class Login extends Component {
         <View>
           <List style={styles.list}>
             <InputItem
-            multipleLine={false}
+              multipleLine={false}
               clear
               type="phone"
               placeholder="手机号"
@@ -85,7 +123,7 @@ class Login extends Component {
               <Icon style={styles.inputIcon} name="phone" />
             </InputItem>
             <InputItem
-            multipleLine={false}
+              multipleLine={false}
               clear
               type="password"
               placeholder="密码"
@@ -109,7 +147,7 @@ class Login extends Component {
           <TouchableOpacity onPress={this.toSignUp}>
             <Text style={{ color: primaryColor }}>注册账号</Text>
           </TouchableOpacity>
-          <TouchableOpacity  onPress={this.resetPassword}>
+          <TouchableOpacity onPress={this.resetPassword}>
             <Text style={{ color: primaryColor }}>忘记密码</Text>
           </TouchableOpacity>
         </View>

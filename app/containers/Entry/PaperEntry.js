@@ -106,7 +106,8 @@ class PaperEntry extends Component {
         routeName: "PaperDetail",
         params: {
           name: '图纸详情',
-          data
+          data,
+          type:"paper"
         }
       })
     )

@@ -7,6 +7,8 @@ import {
   Image
 } from "react-native"
 import Alipay from "react-native-yunpeng-alipay"
+import * as wechat from "react-native-wechat"
+
 import {
   Modal,
   Button,
@@ -19,7 +21,7 @@ import { connect } from "react-redux"
 import Result from "./Result"
 
 const { RadioItem } = Radio
-@connect()
+@connect(({ app }) => ({ ...app }))
 export default class App extends Component {
   constructor() {
     super()
@@ -51,7 +53,8 @@ export default class App extends Component {
       this.props.dispatch({
         type: "app/creatRechargeOrder",
         payload: {
-          amount: Number(data.price)
+          amount: Number(data.price),
+          type: 0
         },
         callback: res => {
           if (res.msg === "OK") {
@@ -65,11 +68,8 @@ export default class App extends Component {
         res => {
           // if (res.code === 10000) {
           if (data.type === "charge") {
-            const {orderId} = this.state
+            const { orderId } = this.state
             const resultData = { orderId, ...data }
-            // Toast.success("下单成功")
-            // data.orderId = res.result && res.result.id
-
             this.setState({
               visible: false,
               resultVisible: true,
@@ -79,25 +79,11 @@ export default class App extends Component {
           } else {
             this.createOrder()
           }
-          // } else {
-          // Toast.info(`error code:${res.code}`)
-          // }
         },
         err => {
-          // const resultData = { orderId: data.orderId, ...data }
-          // Toast.success("下单成功")
-          // data.orderId = res.result && res.result.orderId
-
-          // this.setState({
-          //   visible: false,
-          //   resultVisible: true,
-          //   resultData,
-          //   resultCode: Math.random()
-          // })
-
           console.log(err)
           Toast.info("付款出错了")
-          this.createOrder()
+          // this.createOrder()
         }
       )
     })
@@ -111,67 +97,75 @@ export default class App extends Component {
       paper: "app/createOrderPaper",
       attach: "app/createOrderAttach"
     }
-    const payload = {}
+    const payload = {  }
 
-    if (data.type === "vip") payload.type = data.vip
+    if (data.type === "vip") {
+      payload.type = data.vip
+    } else {
+      payload.id = data.id
+    }
 
     this.props.dispatch({
       type: map[data.type],
       payload,
-      // payload: {
-      //   sourceId: data.classifyId
-      // },
       callback: response => {
-        if (response.msg === "OK") {
-          
+        if (response.status === "OK") {
           const resultData = { orderId: response.result.id, ...data }
-          // Toast.success("下单成功")
-          // data.orderId = response.result && response.result.orderId
-
           this.setState({
             visible: false,
             resultVisible: true,
             resultData,
             resultCode: Math.random()
           })
+        } else if (response.status === "ERROR") {
+          Toast.info(response.msg)
         }
       }
     })
+  };
 
-    // return new Promise(resole => {
-    //   this.props.dispatch({
-    //     type: "app/queryOrder",
-    //     payload: {
-    //       id: this.state.orderId
-    //     },
-    //     callback: res => {
-    //       if (res.msg === "OK") {
-    //         resole(res.result)
-    //       }
-    //     }
-    //   })
-    // }).then(result => {
-    //   if (
-    //     result.tradeStatus === "TRADE_SUCCESS" ||
-    //     result.tradeStatus === "TRADE_FINISHED"
-    //   ) {
-    //     // Toast.success("付款成功")
+  wechatPay = () => {
+    const { data = {} } = this.props
 
-    //     this.props.dispatch({
-    //       type: map[data.type],
-    //       payload,
-    //       callback: response => {
-    //         if (response.msg === "OK") {
-    //           // eslint-disable-next-line no-unused-expressions
-    //           this.props.onSuccess && this.props.onSuccess()
-    //           this.setState({ visible: false })
-    //         }
-    //       }
-    //     })
-    //   } else {
-    //     Toast.success("付款出错了")
-    //   }
-    // })
+    return new Promise(resole => {
+      this.props.dispatch({
+        type: "app/creatRechargeOrder",
+        payload: {
+          amount: Number(data.price),
+          type: 1
+        },
+        callback: res => {
+          if (res.msg === "OK") {
+            Toast.info("order/recharge/create 成功")
+            this.state.orderId = res.result.id
+            resole(res.result.data)
+          }
+        }
+      })
+    }).then(params => {
+      wechat.pay(params).then(
+        res => {
+          if (data.type === "charge") {
+            const { orderId } = this.state
+            const resultData = { orderId, ...data }
+            this.setState({
+              visible: false,
+              resultVisible: true,
+              resultData,
+              resultCode: Math.random()
+            })
+          } else {
+            this.createOrder()
+          }
+        },
+        err => {
+          console.log(err)
+          // alert()
+          alert(`付款出错了，erroeCode：${err.code}`,1)
+          // this.createOrder()
+        }
+      )
+    })
   };
 
   onOK = () => {
@@ -185,8 +179,7 @@ export default class App extends Component {
     if (payType === "alipay") {
       this.aliPay()
     } else {
-      Toast.info("即将推出...")
-      //   this.wechatPay()
+      this.wechatPay()
     }
   };
 

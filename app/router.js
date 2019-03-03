@@ -15,6 +15,7 @@ import {
 
 import { Provider } from "@ant-design/react-native"
 import { connect } from "react-redux"
+import *as wechat from 'react-native-wechat'
 
 import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator"
 import Icon from "react-native-vector-icons/AntDesign"
@@ -273,8 +274,14 @@ function getActiveRouteName(navigationState) {
 
 @connect(({ app, router }) => ({ app, router }))
 class Router extends Component {
+
+
   componentWillMount() {
     BackHandler.addEventListener("hardwareBackPress", this.backHandle)
+  }
+
+  componentDidMount (){
+    wechat.registerApp('wx6da250551cee1eda')
   }
 
   componentWillUnmount() {

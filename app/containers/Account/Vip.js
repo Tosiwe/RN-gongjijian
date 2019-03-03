@@ -9,7 +9,7 @@ import {
   ImageBackground
 } from "react-native"
 import { connect } from "react-redux"
-
+import { Modal } from "@ant-design/react-native"
 import moment from "moment"
 import { primaryColor, iconSize } from "../../styles/common"
 import Pay from "../../components/Pay/Pay"
@@ -87,23 +87,13 @@ class Vip extends Component {
     })
 
     this.props.dispatch({
-      type: "app/getUserFinance",
-      callback: res => {
-        if (res.msg === "OK") {
-          this.setState({ userFinance: res.result })
-        }
-      }
+      type: "app/getUserFinance"
     })
   }
 
   paySuccess = () => {
     this.props.dispatch({
-      type: "app/getUserFinance",
-      callback: res => {
-        if (res.msg === "OK") {
-          this.setState({ userFinance: res.result })
-        }
-      }
+      type: "app/getUserFinance"
     })
   };
 
@@ -138,14 +128,41 @@ class Vip extends Component {
     )
   };
 
+  payByBalance = () => {
+    const { activeKey ,vipInfo} = this.state
+
+    const payload = {
+      type:  vipInfo[activeKey].key
+    }
+
+    this.props.dispatch({
+      type: "app/createVipOrder",
+      payload,
+      callback: response => {
+        if (response.status === "OK") {
+          this.paySuccess()
+        } else if (response.status === "ERROR") {
+          Modal.alert("提示", "您的余额不足，直接购买", [
+            {
+              text: "取消"
+            },
+            { text: "确认", onPress: this.pay }
+          ])
+        }
+      }
+    })
+  };
+
+  pay=()=>{
+    this.setState({
+      payVisible: true,
+      timeStamp: moment().format("x")
+    })
+  }
+
   render() {
-    const {
-      vipInfo,
-      activeKey,
-      payVisible,
-      userFinance={},
-      timeStamp
-    } = this.state
+    const { vipInfo, activeKey, payVisible, timeStamp } = this.state
+    const { userFinance = {} } = this.props
     const info = vipInfo[activeKey]
     const payData = {
       use: "购买VIP",
@@ -162,7 +179,7 @@ class Vip extends Component {
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
         >
-          <Top data={userFinance} />
+          <Top />
           <View style={styles.payBox}>
             {vipInfo.map(this.renderPayWays)}
             <ImageBackground
@@ -175,14 +192,11 @@ class Vip extends Component {
           <View />
           <TouchableOpacity
             style={styles.btn}
-            onPress={() => {
-              this.setState({
-                payVisible: true,
-                timeStamp: moment().format("x")
-              })
-            }}
+            onPress={this.payByBalance}
           >
-            <Text style={styles.btnText}>{userFinance.vip ? "继续充值":"立即开通"}</Text>
+            <Text style={styles.btnText}>
+              {userFinance.vip ? "继续购买" : "立即开通"}
+            </Text>
           </TouchableOpacity>
         </ScrollView>
         <Pay
@@ -229,9 +243,9 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: "#FFF7E5"
   },
-  content:{
+  content: {
     flex: 1,
-    padding:5,
+    padding: 5
   },
   text: {
     textAlign: "center"

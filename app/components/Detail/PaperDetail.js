@@ -29,8 +29,7 @@ class PaperDetail extends Component {
   }
 
   render() {
-    const { data = {} } = this.props.navigation.state.params
-    const { type = "paper" } = this.props
+    const { data = {}, type = "paper" } = this.props.navigation.state.params
     const Td = props => (
       <View style={styles.td}>
         <Text style={styles.tdLabel}>{props.label}</Text>

@@ -49,6 +49,28 @@ export default {
       // Storage.set("token", login)
     },
 
+    // 登陆
+    *wechatLogin({ payload }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(authService.wechatLogin, payload)
+      if (res.msg === "OK") {
+        Storage.set("auth", res.result.token)
+        yield put(
+          createAction("updateState")({ login: true, fetching: false })
+        )
+        yield put(
+          NavigationActions.navigate({
+            routeName: "HomeNavigator"
+          })
+        )
+      } else {
+        yield put(
+          createAction("updateState")({ login: false, fetching: false })
+        )
+      }
+      // Storage.set("token", login)
+    },
+
     // 验证码
     *sendCode({ payload }, { call, put }) {
       payload.noNendAuth = true
@@ -108,7 +130,7 @@ export default {
       if (res && callback) {
         callback(res)
       }
-      yield put(createAction("updateState")({ res, fetching: false }))
+      yield put(createAction("updateState")({ userFinance:res.result, fetching: false }))
     },
 
     // ---------- 需求类 ----------
@@ -498,7 +520,7 @@ export default {
       if (res && callback) {
         callback(res)
       }
-      yield put(createAction("updateState")({ res, fetching: false }))
+      yield put(createAction("updateState")({ gepCode:res.result, fetching: false }))
     },
     // 搜索
     *search({ payload, callback }, { call, put }) {

@@ -24,20 +24,8 @@ class VipTop extends Component {
     super(props)
 
     this.state = {
-      nick: "username"
+      // nick: "username"
     }
-  }
-
-  componentDidMount() {
-    this.props.dispatch({
-      type: "app/getProfile",
-      callback: res => {
-        if (res.msg === "OK") {
-          const { nick } = res.result
-          this.setState({ nick, userInfo: res.result })
-        }
-      }
-    })
   }
 
   goBack = () => {
@@ -69,11 +57,6 @@ class VipTop extends Component {
   paySuccess = () => {
     this.props.dispatch({
       type: "app/getUserFinance",
-      callback: res => {
-        if (res.msg === "OK") {
-          this.setState({ userFinance: res.result })
-        }
-      }
     })
   };
 
@@ -94,12 +77,11 @@ class VipTop extends Component {
 
   render() {
     let { data = {} } = this.props
+    const {userFinance={},userInfo = {},}=this.props
+
     const {
-      nick,
-      userInfo = {},
       payVisible,
       timeStamp,
-      userFinance,
       price
     } = this.state
 
@@ -149,7 +131,7 @@ class VipTop extends Component {
             />
           </TouchableOpacity>
           <View style={styles.flex1}>
-            <Text style={styles.text}>{nick}</Text>
+            <Text style={styles.text}>{userInfo.nick}</Text>
             <Text style={styles.gold}>
               {data.vip ? "会员" : "您还不是会员"}
             </Text>

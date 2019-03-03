@@ -1,17 +1,16 @@
 import React, { Component } from "react"
-import { StyleSheet, View, Image, TouchableOpacity, Text } from "react-native"
+import { StyleSheet, View, Image, TouchableOpacity, Text,Platform } from "react-native"
 import { connect } from "react-redux"
 import { InputItem, Button, List, Toast } from "@ant-design/react-native"
 import Icon from "react-native-vector-icons/AntDesign"
+import * as wechat from "react-native-wechat"
 import { primaryColor } from "../../styles/common"
 import { createAction, NavigationActions } from "../../utils"
+
 
 let counter
 @connect(({ app }) => ({ ...app }))
 class SignUp extends Component {
-  static navigationOptions = {
-    title: "SignUp"
-  };
 
   constructor(props) {
     super(props)
@@ -79,6 +78,42 @@ class SignUp extends Component {
     } else {
       Toast.info("请输入电话号码")
     }
+  };
+
+
+  // 微信登录示例
+  wechatLogin = () => {
+    const scope = "snsapi_userinfo"
+    const state = "wechat_sdk_demo"
+    // 判断微信是否安装
+    wechat.isWXAppInstalled().then(isInstalled => {
+      if (isInstalled) {
+        // 发送授权请求
+        wechat
+          .sendAuthRequest(scope)
+          .then(responseCode => {
+            // 返回code码，通过code获取access_token
+            this.getAccessToken(responseCode.code)
+          })
+          .catch(err => {
+            Toast.info("登录授权发生错误：", err.message, [{ text: "确定" }])
+          })
+      } else {
+        Platform.OS === "ios"
+          ? Toast.info("没有安装微信，请先安装微信客户端再进行登录")
+          : Toast.info("没有安装微信，请先安装微信客户端再进行登录")
+      }
+    })
+  };
+
+  getAccessToken = code => {
+    this.props.dispatch({
+      type: "app/wechatLogin",
+      payload: {
+        code,
+        noNendAuth:true
+      }
+    })
   };
 
   render() {

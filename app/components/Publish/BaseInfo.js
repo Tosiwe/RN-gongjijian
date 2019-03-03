@@ -7,8 +7,7 @@ import RNFileSelector from "react-native-file-selector"
 import { connect } from "react-redux"
 import ImagePicker from "../ImagePicker/ImagePicker"
 import uploadFile from "../../utils/rpc"
-@connect()
-
+@connect(({ app }) => ({ ...app }))
 export default class BaseInfo extends Component {
   constructor(props) {
     super(props)
@@ -20,12 +19,18 @@ export default class BaseInfo extends Component {
     }
   }
 
+  componentDidMount(){
+    const { gepCode={} } = this.props
+
+    this.setState({region:`${gepCode.province},${gepCode.city}`})
+  }
+
   showFileSelector = () => {
     RNFileSelector.Show({
       title: "选择文件",
       onDone: path => {
         const name = path.split("/")
-        const fileName = name[name.length-1]
+        const fileName = name[name.length - 1]
         this.props.dispatch({
           type: "app/getUploadToken",
           callback: res => {
@@ -37,7 +42,7 @@ export default class BaseInfo extends Component {
               const url = `http://pmzyq6wog.bkt.clouddn.com/${formInput.key}`
               uploadFile(path, token, formInput, () => {
                 this.setState({ fileName: path })
-                this.handleInput({url,title:fileName}, "attchments")
+                this.handleInput({ url, title: fileName }, "attchments")
               })
             }
           }
@@ -59,12 +64,12 @@ export default class BaseInfo extends Component {
       p[name] = value
     }
     this.props.onChange(p)
+    if(name==="region")this.state.region=value
     this.setState({ params: p })
   };
 
   render() {
-    const { path, fileName } = this.state
-
+    const { path, fileName, region } = this.state
     return (
       <View style={styles.wrap}>
         <ImagePicker onChange={v => this.handleInput(v, "picture")} />
@@ -112,7 +117,7 @@ export default class BaseInfo extends Component {
           <InputItem
             multipleLine={false}
             style={styles.input}
-            clear
+            value={region }
             onChange={v => this.handleInput(v, "region")}
             placeholder="请填写地域，如：全国、沧州市、河北省"
           />

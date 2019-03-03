@@ -28,7 +28,8 @@ class BaseInfo extends Component {
         routeName: "PaperDetail",
         params: {
           name: "附件详情",
-          data
+          data,
+          typ:"attach"
         }
       })
     )

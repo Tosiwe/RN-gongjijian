@@ -1,12 +1,7 @@
 /* eslint-disable react/prefer-stateless-function */
 // native
 import React, { Component } from "react"
-import {
-  View,
-  StyleSheet,
-  Text,
-  Image
-} from "react-native"
+import { View, StyleSheet, Text, Image } from "react-native"
 import { NavigationActions } from "react-navigation"
 
 import { connect } from "react-redux"
@@ -45,12 +40,26 @@ class About extends Component {
   render() {
     return (
       <View style={styles.wrap}>
-        <Image
-          resizeMode="contain"
-          style={styles.logo}
-          source={require("../img/img_logo.png")}
-        />
-        <Text>v0.0.1</Text>
+        <View style={{ alignItems: "center" }}>
+          <Image
+            resizeMode="contain"
+            style={styles.logo}
+            source={require("../img/img_logo.png")}
+          />
+          <Text>v0.0.1</Text>
+        </View>
+        <View style={{ alignItems: "center" }}>
+          <Image
+            resizeMode="contain"
+            style={styles.logo}
+            source={require("./images/qrcode.png")}
+          />
+          <Text>微信号：gongjijian</Text>
+        </View>
+        <View style={styles.info}>
+          <Text>Copyright@2017-2019</Text>
+          <Text>南皮县高品钢结构有限公司 版权所有</Text>
+        </View>
       </View>
     )
   }
@@ -58,14 +67,19 @@ class About extends Component {
 
 const styles = StyleSheet.create({
   wrap: {
-    height: 300,
+    flex: 1,
     alignItems: "center",
-    paddingTop: 100,
-    textAlign: "center"
+    textAlign: "center",
+    backgroundColor: "#FFF",
+    justifyContent: "center"
   },
   logo: {
-    width: 150,
+    width: 150
     // height: 150
+  },
+  info: {
+    marginTop:50,
+    alignItems: "center"
   }
 })
 export default About

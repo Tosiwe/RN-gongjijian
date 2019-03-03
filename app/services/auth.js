@@ -8,6 +8,14 @@ export async function login(params) {
   })
 }
 
+// 登陆
+export async function wechatLogin(params) {
+  return request(`http://118.24.107.177:7001/auth/login/wechat`, {
+      method: "POST",
+      body: params,
+  })
+}
+
 // 发送验证码
 export async function sendCode(params) {
   return request(`http://118.24.107.177:7001/auth/sendCode`, {
