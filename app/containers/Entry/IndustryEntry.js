@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
@@ -13,22 +14,6 @@ const { Item } = List
 
 @connect(({app})=>({...app}))
 class IndustryEntry extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    headerRight: (
-      <TouchableOpacity
-        onPress={()=>navigation.navigate({
-          routeName: "MyPublish",
-          params:{
-            name:"我的发布",
-            type:navigation.state.params.type
-          }
-        })}
-      >
-        <Text style={{ fontSize: 16, marginRight: 20 }}>我的发布</Text>
-      </TouchableOpacity>
-    )
-  });
-
   constructor(props) {
     super(props)
     this.state = {
@@ -36,7 +21,7 @@ class IndustryEntry extends Component {
       loading: true,
       list: [],
       params: {
-        distance: 100,
+        distance: 0,
         classifyId: props.id
       }
     }
@@ -54,20 +39,21 @@ class IndustryEntry extends Component {
     const that = { ...this }
     getPosition(that).then(result => {
       if (result.isSuccess) {
-        this.state.params = result.params
-        console.log("getDemandList", result.params)
+        const {province,city,...params}=result.params
+        this.state.params = params
+        console.log("getDemandList", params)
         this.props.dispatch({
           type: "app/getDemandListLoc",
-          payload: result.params,
+          payload: params,
           callback: res => {
             this.setState({ loading: false })
 
             if (res.msg === "OK") {
               let demandList = []
               if (pn !== 1) {
-                demandList = [...this.state.demandList, ...res.result.data]
+                demandList = [...this.state.demandList, ...res.result]
               } else {
-                demandList = res.result.data
+                demandList = res.result
               }
               this.setState({
                 list: demandList
@@ -89,19 +75,20 @@ class IndustryEntry extends Component {
 
     getPosition(that).then(result => {
       if (result.isSuccess) {
-        this.state.params = result.params
-        console.log("getInfoList", result.params)
+        const {province,city,...params}=result.params
+        this.state.params = params
+        console.log("getInfoList", params)
         this.props.dispatch({
           type: "app/getInfoListLoc",
-          payload: result.params,
+          payload: params,
           callback: res => {
             this.setState({ loading: false })
             if (res.msg === "OK") {
               let infoList = []
               if (pn !== 1) {
-                infoList = [...this.state.infoList, ...res.result.data]
+                infoList = [...this.state.infoList, ...res.result]
               } else {
-                infoList = res.result.data
+                infoList = res.result
               }
               this.setState({
                 list: infoList
@@ -139,7 +126,7 @@ class IndustryEntry extends Component {
 
   render() {
     // const { type } = this.props
-    const { activeKey, loading, list } = this.state
+    const { activeKey, loading, list={} } = this.state
     const { id } = this.props
     return (
       <View style={styles.container}>

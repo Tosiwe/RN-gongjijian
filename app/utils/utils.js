@@ -13,8 +13,8 @@ export const getPosition = (that, Toast) =>
         // const { params } = this.state;
         let newParams = { ...params }
         const { longitude, latitude } = position.coords
-        newParams.longitude = longitude
-        newParams.latitude = latitude
+        newParams.lng = longitude
+        newParams.lat = latitude
         that.props.dispatch({
           type: "app/getGeoCode",
           payload: {
@@ -24,6 +24,7 @@ export const getPosition = (that, Toast) =>
           callback: res => {
             if (res.msg === "OK") {
               newParams = { ...newParams, ...res.result }
+              newParams.adcode = Number(newParams.adcode.substring(0,2))
               // this.state.params = newParams;
               resole({ isSuccess: true, params: newParams })
             } else {

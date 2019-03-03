@@ -13,7 +13,7 @@ import { Modal } from "@ant-design/react-native"
 import moment from "moment"
 import { primaryColor, iconSize } from "../../styles/common"
 import Pay from "../../components/Pay/Pay"
-import { createAction, NavigationActions } from "../../utils"
+import Result from "../../components/Pay/Result"
 import Top from "./Vip/VipTop"
 
 const payArray = [
@@ -129,10 +129,10 @@ class Vip extends Component {
   };
 
   payByBalance = () => {
-    const { activeKey ,vipInfo} = this.state
+    const { activeKey, vipInfo } = this.state
 
     const payload = {
-      type:  vipInfo[activeKey].key
+      type: vipInfo[activeKey].key
     }
 
     this.props.dispatch({
@@ -140,7 +140,11 @@ class Vip extends Component {
       payload,
       callback: response => {
         if (response.status === "OK") {
-          this.paySuccess()
+          this.setState({
+            orderId: response.result.id,
+            resultVisible: true,
+            resultCode: Math.random()
+          })
         } else if (response.status === "ERROR") {
           Modal.alert("提示", "您的余额不足，直接购买", [
             {
@@ -153,15 +157,23 @@ class Vip extends Component {
     })
   };
 
-  pay=()=>{
+  pay = () => {
     this.setState({
       payVisible: true,
       timeStamp: moment().format("x")
     })
-  }
+  };
 
   render() {
-    const { vipInfo, activeKey, payVisible, timeStamp } = this.state
+    const {
+      vipInfo,
+      activeKey,
+      payVisible,
+      timeStamp,
+      resultVisible,
+      resultCode,
+      orderId
+    } = this.state
     const { userFinance = {} } = this.props
     const info = vipInfo[activeKey]
     const payData = {
@@ -171,8 +183,16 @@ class Vip extends Component {
       type: "vip",
       vip: info && info.key
     }
+
+    const resultData = { orderId, ...payData }
     return (
       <View style={styles.container}>
+        <Result
+          visible={resultVisible}
+          onOK={this.paySuccess}
+          data={resultData}
+          timeStamp={resultCode}
+        />
         <ScrollView
           style={{ flex: 1 }}
           automaticallyAdjustContentInsets={false}
@@ -190,10 +210,7 @@ class Vip extends Component {
             </ImageBackground>
           </View>
           <View />
-          <TouchableOpacity
-            style={styles.btn}
-            onPress={this.payByBalance}
-          >
+          <TouchableOpacity style={styles.btn} onPress={this.payByBalance}>
             <Text style={styles.btnText}>
               {userFinance.vip ? "继续购买" : "立即开通"}
             </Text>

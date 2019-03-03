@@ -39,7 +39,7 @@ class FormInfo extends Component {
         qq: "",
         wechat: "",
         picture1: "",
-        picture2: "",
+        picture2: "", 
         picture3: "",
         picture4: "",
         classifyId: "",
@@ -63,7 +63,7 @@ class FormInfo extends Component {
   componentDidMount() {
     const { ids } = this.props.navigation.state.params
     this.state.params.classifyId = ids.classifyId
-    this.state.params.classifyId = ids.subClassifyId
+    this.state.params.subClassifyId = ids.subClassifyId
   }
 
   isLegal = () => {
@@ -118,7 +118,7 @@ class FormInfo extends Component {
 
   onPublish = () => {
     this.setState({ animating: true })
-
+    
     getPosition({ ...this }).then(result => {
       if (this.isLegal() && result.isSuccess) {
         this.state.params = result.params
