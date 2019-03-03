@@ -11,6 +11,7 @@ import {
   TouchableOpacity
 } from "react-native"
 import { Tabs, Card, Modal } from "@ant-design/react-native"
+import Icon from "react-native-vector-icons/AntDesign"
 
 const tabs = [{ title: "我的需求" }, { title: "我的信息" }]
 
@@ -35,8 +36,26 @@ const RECORD_STATE = {
 
 @connect(({ app }) => ({ ...app }))
 class MyPublish extends Component {
-  static navigationOptions = {
-    title: "我的发布"
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state
+    if (params.ids) {
+      return {
+        headerRight: (
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate({
+                routeName: "FormInfo",
+                params
+              })
+            }
+          >
+            <Icon name="plus" style={{ fontSize: 20, marginRight: 20 }} />
+            {/* <Text style={{ fontSize: 16, marginRight: 20 }}>我的发布</Text> */}
+          </TouchableOpacity>
+        )
+      }
+    }
+    return null
   };
 
   constructor(props) {
@@ -144,7 +163,6 @@ class MyPublish extends Component {
     }
   };
 
-
   showDeleteModal = id => {
     Modal.alert("删除", "您确定要删除吗？", [
       {
@@ -181,35 +199,38 @@ class MyPublish extends Component {
 
   renderItem = ({ item }) => (
     <View style={styles.card} full>
-        <View style={styles.carBody}>
-          <Image
-            resizeMode="contain"
-            style={styles.carImg}
-            source={require("../../containers/img/img_logo.png")}
-          />
-          <View style={styles.cardRight}>
-            <Text style={styles.cardTitle}>{item.title}</Text>
-            <Text style={styles.cardDes} ellipsizeMode="tail" numberOfLines={2}>
-              {item.desc}
-            </Text>
-          </View>
+      <View style={styles.carBody}>
+        <Image
+          resizeMode="contain"
+          style={styles.carImg}
+          source={require("../../containers/img/img_logo.png")}
+        />
+        <View style={styles.cardRight}>
+          <Text style={styles.cardTitle}>{item.title}</Text>
+          <Text style={styles.cardDes} ellipsizeMode="tail" numberOfLines={2}>
+            {item.desc}
+          </Text>
         </View>
-        <View style={styles.carFoot}>
-          <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btnText}>刷新</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={[styles.btn, styles.midBtn]}
-            onPress={() => this.onAction(item.state, item.id)}
+      </View>
+      <View style={styles.carFoot}>
+        <TouchableOpacity style={styles.btn}>
+          <Text style={styles.btnText}>刷新</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.btn, styles.midBtn]}
+          onPress={() => this.onAction(item.state, item.id)}
+        >
+          <Text style={styles.btnText}>{RECORD_STATE[item.state].text}</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.btn}>
+          <Text
+            style={styles.btnText}
+            onPress={() => this.showDeleteModal(item.id)}
           >
-            <Text style={styles.btnText}>{RECORD_STATE[item.state].text}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btnText} onPress={() => this.showDeleteModal(item.id)}>
-              删除
-            </Text>
-          </TouchableOpacity>
-        </View>
+            删除
+          </Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 
@@ -279,13 +300,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEE"
   },
   card: {
-    borderTopWidth:1,
-    borderTopColor:"#EEE",
-    borderBottomWidth:1,
-    borderBottomColor:"#EEE",
+    borderTopWidth: 1,
+    borderTopColor: "#EEE",
+    borderBottomWidth: 1,
+    borderBottomColor: "#EEE",
     paddingVertical: 10,
-    backgroundColor:"#FFF",
-    marginBottom:10,
+    backgroundColor: "#FFF",
+    marginBottom: 10
   },
   carBody: {
     flexDirection: "row",

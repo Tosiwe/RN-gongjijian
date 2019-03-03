@@ -57,7 +57,7 @@ export default function request(url, options) {
             
             console.log("error------------", error)
             // Toast.info("网络连接错误")
-            // return error 
+            return {status:"ERROR",msg:"ERROR",error }
             // callback(error);
             // null
           }

@@ -13,7 +13,8 @@ import { InputItem, Button, List, Toast } from "@ant-design/react-native"
 import Icon from "react-native-vector-icons/AntDesign"
 import * as wechat from "react-native-wechat"
 import { primaryColor } from "../../styles/common"
-import { createAction, NavigationActions } from "../../utils"
+import { createAction, NavigationActions, Storage } from "../../utils"
+
 
 @connect(({ app }) => ({ ...app }))
 class Login extends Component {
@@ -26,6 +27,18 @@ class Login extends Component {
     this.state = {
       params: {}
     }
+  }
+
+  componentDidMount(){
+    Storage.get("auth").then(value => {
+      if (value) {
+        this.props.dispatch(
+          NavigationActions.navigate({
+            routeName: "HomeNavigator"
+          })
+        )
+      }
+    })
   }
 
   onClose = () => {

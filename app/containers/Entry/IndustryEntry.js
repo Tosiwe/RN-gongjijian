@@ -40,6 +40,11 @@ class IndustryEntry extends Component {
     getPosition(that).then(result => {
       if (result.isSuccess) {
         const {province,city,...params}=result.params
+        params.lng = params.longitude
+        params.lat = params.latitude
+        delete  params.longitude
+        delete  params.latitude
+        params.adcode = Number(params.adcode.substring(0,2))
         this.state.params = params
         console.log("getDemandList", params)
         this.props.dispatch({
@@ -76,6 +81,11 @@ class IndustryEntry extends Component {
     getPosition(that).then(result => {
       if (result.isSuccess) {
         const {province,city,...params}=result.params
+        params.lng = params.longitude
+        params.lat = params.latitude
+        delete  params.longitude
+        delete  params.latitude
+        params.adcode = Number(params.adcode.substring(0,2))
         this.state.params = params
         console.log("getInfoList", params)
         this.props.dispatch({

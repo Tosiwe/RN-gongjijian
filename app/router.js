@@ -230,8 +230,8 @@ const MainNavigator = createStackNavigator(
 const AppNavigator = createStackNavigator(
   {
     // Result: { screen: Result },
-    Main: { screen: MainNavigator },
     Login: { screen: Login },
+    Main: { screen: MainNavigator },
     BindPhone: { screen: BindPhone },
     ResetPassword: { screen: ResetPassword },
     SignUp: { screen: SignUp },

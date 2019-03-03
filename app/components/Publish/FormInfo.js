@@ -24,6 +24,13 @@ const LABEL = [
   { key: "extraUnit", value: "单位" }
 ]
 
+const SERVER = {
+  company: "业务名称|服务名称",
+  team: "施工队名称",
+  talent: "人才名称",
+  project: "项目名称"
+}
+
 @connect()
 class FormInfo extends Component {
   constructor(props) {
@@ -39,7 +46,7 @@ class FormInfo extends Component {
         qq: "",
         wechat: "",
         picture1: "",
-        picture2: "", 
+        picture2: "",
         picture3: "",
         picture4: "",
         classifyId: "",
@@ -50,7 +57,7 @@ class FormInfo extends Component {
         extraUnit: "",
         extraPrice: "",
 
-        attchments: "",
+        attchments: [],
         longitude: "",
         latitude: "",
         province: "",
@@ -69,42 +76,49 @@ class FormInfo extends Component {
   isLegal = () => {
     const { params } = this.state
     if (params.title === "") {
-      Toast.info("请填写标题")
+      Toast.info("请填写标题", 0.5)
       return false
     }
     if (params.title.length < 10) {
-      Toast.info("标题字数应在10-28个字")
+      Toast.info("标题字数应在10-28个字", 0.5)
       return false
     }
     if (params.contact === "") {
-      Toast.info("请填写联系人")
+      Toast.info("请填写联系人", 0.5)
       return false
     }
     if (params.phone === "") {
-      Toast.info("请填写电话")
+      Toast.info("请填写电话", 0.5)
       return false
     }
     return true
   };
 
   onSave = () => {
-    this.setState({ animating: true })
-
-    getPosition({ ...this }).then(result => {
-      if (this.isLegal() && result.isSuccess) {
-        this.state.params = result.params
-        this.props.dispatch({
-          type: "app/saveInfoDraft",
-          payload: result.params,
-          callback: res => {
-            if (res.msg === "OK") {
-              Toast.success("保存成功！", 1, this.goHome)
-            }
+    if (this.isLegal()) {
+      this.setState({ animating: true })
+      getPosition({ ...this })
+        .then(result => {
+          if (result.isSuccess) {
+            this.state.params = result.params
+            this.props.dispatch({
+              type: "app/saveInfoDraft",
+              payload: result.params,
+              callback: res => {
+                if (res.msg === "OK") {
+                  Toast.success("保存成功！", 1, this.goHome)
+                }
+                this.setState({ animating: false })
+              }
+            })
+          } else {
             this.setState({ animating: false })
           }
         })
-      }
-    })
+        .catch(error => {
+          this.setState({ animating: false })
+        })
+    }
   };
 
   goHome = () => {
@@ -117,23 +131,30 @@ class FormInfo extends Component {
   };
 
   onPublish = () => {
-    this.setState({ animating: true })
-    
-    getPosition({ ...this }).then(result => {
-      if (this.isLegal() && result.isSuccess) {
-        this.state.params = result.params
-        this.props.dispatch({
-          type: "app/saveInfo",
-          payload: result.params,
-          callback: res => {
-            if (res.msg === "OK") {
-              Toast.success("发布成功！", 1, this.goHome)
-            }
+    if (this.isLegal()) {
+      this.setState({ animating: true })
+      getPosition({ ...this })
+        .then(result => {
+          if (result.isSuccess) {
+            this.state.params = result.params
+            this.props.dispatch({
+              type: "app/saveInfo",
+              payload: result.params,
+              callback: res => {
+                if (res.msg === "OK") {
+                  Toast.success("发布成功！", 1, this.goHome)
+                }
+                this.setState({ animating: false })
+              }
+            })
+          } else {
             this.setState({ animating: false })
           }
         })
-      }
-    })
+        .catch(error => {
+          this.setState({ animating: false })
+        })
+    }
   };
 
   handleChange = (value, name) => {
@@ -150,6 +171,7 @@ class FormInfo extends Component {
   render() {
     const { name, ids } = this.props.navigation.state.params
     const id = ids.classifyId
+    const sid = ids.subClassifyId
     // 选择发布分类
     return (
       <ScrollView
@@ -162,7 +184,7 @@ class FormInfo extends Component {
         <ActivityIndicator
           animating={this.state.animating}
           toast
-          size="large"
+          size="small"
         />
         <Text style={styles.title}>{name}</Text>
 
@@ -176,34 +198,46 @@ class FormInfo extends Component {
           />
         </List>
         <List style={styles.inputBox}>
-          {LABEL.map(label => (
+          {(sid === "material" || sid === "rent") &&
+            LABEL.map(label => (
+              <InputItem
+                multipleLine={false}
+                clear
+                onChange={v => this.handleChange(v, label.key)}
+                placeholder={
+                  id === "smarket"
+                    ? `二手物品${label.value}`
+                    : `请输入材料${label.value}|租赁设备${label.value}`
+                }
+              />
+            ))}
+          {sid === "material" || sid === "rent" ? (
             <InputItem
               multipleLine={false}
               clear
-              onChange={v => this.handleChange(v, label.key)}
+              type="number"
+              onChange={v => this.handleChange(v, "extraPrice")}
+              extraa="元"
               placeholder={
                 id === "smarket"
-                  ? `二手物品${label.value}`
-                  : `请输入材料${label.value}|租赁设备${label.value}`
+                  ? "二手物品价格"
+                  : "请输入材料价格|租赁设备价格"
               }
             />
-          ))}
-          <InputItem
-            multipleLine={false}
-            clear
-            type="number"
-            onChange={v => this.handleChange(v, "extraPrice")}
-            extraa="元"
-            placeholder={
-              id === "smarket" ? "二手物品价格" : "请输入材料价格|租赁设备价格"
-            }
-          />
+          ) : (
+            <InputItem
+              multipleLine={false}
+              clear
+              onChange={v => this.handleChange(v, "extraName")}
+              placeholder={SERVER[sid]}
+            />
+          )}
         </List>
         <BaseInfo
           onChange={v => this.handleChange(v, "baseInfo")}
           params={this.state.params}
         />
-        <View style={{height:100}} />
+        <View style={{ height: 100 }} />
         <Buttons onPublish={this.onPublish} onSave={this.onSave} />
         <WhiteSpace style={styles.bottom} />
       </ScrollView>

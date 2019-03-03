@@ -87,13 +87,12 @@ class CompanyOrPerson extends Component {
 
 
   fillForm = info => {
-    const { type, name, id } = this.props.navigation.state.params
+    const { name, id } = this.props.navigation.state.params
     const { dispatch } = this.props
     dispatch(
       NavigationActions.navigate({
         routeName: "FormInfo",
         params: {
-          type,
           name: `${name}-${info.title}`,
           ids: { classifyId: id, subClassifyId: info.id }
         }
@@ -119,7 +118,7 @@ class CompanyOrPerson extends Component {
         >
           {COMPANY.map(data => (
             <Item
-              key={data.id}
+              key={Math.random()}
               onPress={() => {data.id==="company" ? this.checkSettle(data) :this.fillForm(data)}}
               style={styles.item}
               arrow="horizontal"
@@ -140,7 +139,7 @@ class CompanyOrPerson extends Component {
         >
           {PERSON.map(data => (
             <Item
-              key={data.id}
+              key={Math.random()}
               onPress={() => this.fillForm(data)}
               style={styles.item}
               arrow="horizontal"

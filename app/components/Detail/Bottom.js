@@ -47,7 +47,7 @@ class Detail extends Component {
   }
 
   like = () => {
-    const { id } = this.props.data
+    const { id , type} = this.props.data
     const { likeType } = this.state
     this.props.dispatch({
       type: "app/saveBookmark",
@@ -124,23 +124,23 @@ class Detail extends Component {
     const { hasPaied } = this.state
     const { data = {} } = this.props
 
-    if (hasPaied) {
+    if (true) {
       if (name === "phone") {
         Linking.openURL(data.phone ? `tel:${data.phone}` : "tel:10010")
       } else if (name === "download") {
         this.downloadFile(data.url)
-        this.props.dispatch({
-          type: "app/downloadPaper",
-          payload: {
-            id: data.id,
-            url: data.url,
-            title: data.title,
-            fileName: data.fileKey
-          },
-          callback: res => {
-            // TODO:下载附件
-          }
-        })
+        // this.props.dispatch({
+        //   type: "app/downloadPaper",
+        //   payload: {
+        //     id: data.id,
+        //     url: data.url,
+        //     title: data.title,
+        //     fileName: data.fileKey
+        //   },
+        //   callback: res => {
+        //     // TODO:下载附件
+        //   }
+        // })
       } else {
         this.showModal(data[name], name)
       }
@@ -296,7 +296,6 @@ class Detail extends Component {
             >{`${ModalTitle}:${content}`}</Text>
             {userFinance.vip && (
               <Text style={{ textAlign: "center" }}>
-                {" "}
                 尊贵的VIP，您可以无限次查看联系方式
               </Text>
             )}
@@ -320,7 +319,7 @@ class Detail extends Component {
           {!(type === "contact") && (
             <TouchableOpacity
               onPress={() => {
-                this.checkType("download")
+                this.showPayModal("download")
               }}
               style={[styles.btns, styles.downLoadBtn]}
             >

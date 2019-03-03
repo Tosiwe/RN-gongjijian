@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { StyleSheet, ScrollView, Text,View } from "react-native";
+import { StyleSheet, ScrollView, Text, View } from "react-native";
 import {
   Toast,
   List,
@@ -38,7 +38,7 @@ class FormDemand extends Component {
         picture4: "",
         classifyId: "",
 
-        attchments: "",
+        attchments: [],
         longitude: "",
         latitude: "",
         province: "",
@@ -79,23 +79,33 @@ class FormDemand extends Component {
   };
 
   onSave = () => {
-    this.setState({ animating: true });
+    if (this.isLegal()) {
+      this.setState({ animating: true });
 
-    getPosition({ ...this }).then(result => {
-      if (this.isLegal() && result.isSuccess) {
-        this.state.params = result.params;
-        this.props.dispatch({
-          type: this.state.isReg ? "app/saveInfoDraft" : "app/saveDemandDraft",
-          payload: result.params,
-          callback: res => {
-            if (res.msg === "OK") {
-              Toast.success("保存成功！", 1, this.goHome);
-            }
+      getPosition({ ...this })
+        .then(result => {
+          if (result.isSuccess) {
+            this.state.params = result.params;
+            this.props.dispatch({
+              type: this.state.isReg
+                ? "app/saveInfoDraft"
+                : "app/saveDemandDraft",
+              payload: result.params,
+              callback: res => {
+                if (res.msg === "OK") {
+                  Toast.success("保存成功！", 1, this.goHome);
+                }
+                this.setState({ animating: false });
+              }
+            });
+          } else {
             this.setState({ animating: false });
           }
+        })
+        .catch(error => {
+          this.setState({ animating: false });
         });
-      }
-    });
+    }
   };
 
   goHome = () => {
@@ -109,22 +119,31 @@ class FormDemand extends Component {
 
   onPublish = () => {
     const that = { ...this };
-    this.setState({ animating: true });
-    getPosition(that, Toast).then(result => {
-      if (this.isLegal() && result.isSuccess) {
-        this.state.params = result.params;
-        this.props.dispatch({
-          type: this.state.isReg ? "app/saveInfo" : "app/saveDemand",
-          payload: result.params,
-          callback: res => {
-            if (res.msg === "OK") {
-              Toast.success("发布成功！", 1, this.goHome);
-            }
+    if (this.isLegal()) {
+      this.setState({ animating: true });
+
+      getPosition(that, Toast)
+        .then(result => {
+          if (result.isSuccess) {
+            this.state.params = result.params;
+            this.props.dispatch({
+              type: this.state.isReg ? "app/saveInfo" : "app/saveDemand",
+              payload: result.params,
+              callback: res => {
+                if (res.msg === "OK") {
+                  Toast.success("发布成功！", 1, this.goHome);
+                }
+                this.setState({ animating: false });
+              }
+            });
+          } else {
             this.setState({ animating: false });
           }
+        })
+        .catch(error => {
+          this.setState({ animating: false });
         });
-      }
-    });
+    }
   };
 
   handleChange = (value, name) => {
@@ -152,7 +171,7 @@ class FormDemand extends Component {
         <ActivityIndicator
           animating={this.state.animating}
           toast
-          size="large"
+          size="small"
         />
         <Text style={styles.title}>
           {isReg ? "注册人员、资质" : "注册人员、资质、（所有行业）需求"}

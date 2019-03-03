@@ -21,8 +21,9 @@ export default class BaseInfo extends Component {
 
   componentDidMount(){
     const { gepCode={} } = this.props
-
-    this.setState({region:`${gepCode.province},${gepCode.city}`})
+    const region = `${gepCode.province},${gepCode.city}`
+    this.state.params.region=region
+    this.setState({region})
   }
 
   showFileSelector = () => {

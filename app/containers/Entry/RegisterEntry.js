@@ -66,6 +66,12 @@ class RegisterEntry extends Component {
 
     getPosition(that).then(result => {
       if (result.isSuccess) {
+        const params = {...result.params}
+        params.lng = params.longitude
+        params.lat = params.latitude
+        delete  params.longitude
+        delete  params.latitude
+        params.adcode = Number(params.adcode.substring(0,2))
         this.state.params = result.params
         console.log("getInfoList", result.params)
         this.props.dispatch({
