@@ -29,7 +29,6 @@ class FormDemand extends Component {
         desc: "",
         contact: "",
         phone: "",
-        region: "",
         qq: "",
         wechat: "",
         picture1: "",

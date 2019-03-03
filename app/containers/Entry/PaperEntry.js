@@ -175,7 +175,6 @@ const styles = StyleSheet.create({
   },
   wrap: {
     flexDirection: "row",
-
     borderBottomWidth: 1,
     borderBottomColor: "#DDD",
     padding: 10

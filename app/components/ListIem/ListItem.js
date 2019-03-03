@@ -39,7 +39,7 @@ class ListItem extends Component {
             </Text>
             <View style={{flexDirection:'row', justifyContent:"space-between"}}>
               <Text style={{fontSize:12}}>{moment(data.updateTime).format("YYYY-MM-DD HH:mm:ss")}</Text>
-              <Text style={{fontSize:12}} ellipsizeMode="tail" numberOfLines={1} >{data.region||"区域：未知"}</Text>
+              <Text style={{fontSize:12}} ellipsizeMode="tail" numberOfLines={1} >{data.city||"区域：未知"}</Text>
             </View>
           </View>
         </View>

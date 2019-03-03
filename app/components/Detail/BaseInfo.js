@@ -89,7 +89,7 @@ class BaseInfo extends Component {
       <View style={styles.BaseInfo}>
         {form()}
         <View style={styles.row}>
-          <Td label="地域" text={data.region || "-"} />
+          <Td label="地域" text={data.city || "-"} />
           <View style={styles.locWrap}>
             {/* <Image
               style={styles.location}

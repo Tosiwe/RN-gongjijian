@@ -21,9 +21,9 @@ export default class BaseInfo extends Component {
 
   componentDidMount(){
     const { gepCode={} } = this.props
-    const region = `${gepCode.province},${gepCode.city}`
-    this.state.params.region=region
-    this.setState({region})
+    const city = `${gepCode.city}`
+    this.state.params.city=city
+    this.setState({city})
   }
 
   showFileSelector = () => {
@@ -65,12 +65,12 @@ export default class BaseInfo extends Component {
       p[name] = value
     }
     this.props.onChange(p)
-    if(name==="region")this.state.region=value
+    if(name==="city")this.state.city=value
     this.setState({ params: p })
   };
 
   render() {
-    const { path, fileName, region } = this.state
+    const { path, fileName, city } = this.state
     return (
       <View style={styles.wrap}>
         <ImagePicker onChange={v => this.handleInput(v, "picture")} />
@@ -118,8 +118,8 @@ export default class BaseInfo extends Component {
           <InputItem
             multipleLine={false}
             style={styles.input}
-            value={region }
-            onChange={v => this.handleInput(v, "region")}
+            value={city }
+            onChange={v => this.handleInput(v, "city")}
             placeholder="请填写地域，如：全国、沧州市、河北省"
           />
         </List>

@@ -55,7 +55,7 @@ class RegisterEntry extends Component {
     >
       <Text style={styles.title}>{item.title || "现有一名工程师"}</Text>
       <View style={styles.info}>
-        <Text style={styles.infoText}>{item.region || "未知"}</Text>
+        <Text style={styles.infoText}>{item.city || "未知"}</Text>
         <Text style={styles.infoText}>{item.timeStamp || "未知"}</Text>
       </View>
     </TouchableOpacity>

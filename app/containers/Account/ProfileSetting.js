@@ -145,8 +145,8 @@ class ProfileSetting extends Component {
         <List style={styles.list}>
           <Item
             arrow="horizontal"
-            onPress={() => this.toEdit("region")}
-            extra={userInfo.region}
+            onPress={() => this.toEdit("city")}
+            extra={userInfo.city}
           >
             <Text style={styles.item}>所在地</Text>
           </Item>
