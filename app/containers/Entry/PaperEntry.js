@@ -83,7 +83,6 @@ class PaperEntry extends Component {
       type: "app/paperList",
       payload: params,
       callback: res => {
-        debugger
         this.setState({ loading: false })
         if (res.msg === "OK") {
           let infoList = []

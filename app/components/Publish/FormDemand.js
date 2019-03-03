@@ -126,6 +126,7 @@ class FormDemand extends Component {
         .then(result => {
           if (result.isSuccess) {
             this.state.params = result.params;
+            console.log("Publish Demand", result.params)
             this.props.dispatch({
               type: this.state.isReg ? "app/saveInfo" : "app/saveDemand",
               payload: result.params,

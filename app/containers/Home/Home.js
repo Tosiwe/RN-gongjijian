@@ -88,6 +88,7 @@ class Home extends Component {
           automaticallyAdjustContentInsets={false}
           showsHorizontalScrollIndicator={false}
           showsVerticalScrollIndicator={false}
+          alwaysBounceVertical
           onScrollEndDrag={this.handleScrollEnd}
           // refreshControl={
           //   <RefreshControl

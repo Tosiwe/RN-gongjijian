@@ -11,6 +11,7 @@ import {INS_MAP} from "../../utils/dataDic"
 class ListItem extends Component {
   toDetail = () => {
     const { data } = this.props
+    console.log("List Item",data)
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: "Detail",

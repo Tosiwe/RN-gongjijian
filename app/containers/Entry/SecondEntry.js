@@ -50,7 +50,7 @@ class SecondEntry extends Component {
         delete  params.latitude
         params.adcode = Number(params.adcode.substring(0,2))
         this.state.params = result.params
-        console.log("getInfoList", result.params)
+        console.log("getInfoList 二手", result.params)
         this.props.dispatch({
           type: "app/getInfoListLoc",
           payload: result.params,

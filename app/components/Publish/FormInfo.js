@@ -137,6 +137,7 @@ class FormInfo extends Component {
         .then(result => {
           if (result.isSuccess) {
             this.state.params = result.params
+            console.log("Publish Info", result.params)
             this.props.dispatch({
               type: "app/saveInfo",
               payload: result.params,
@@ -204,13 +205,27 @@ class FormInfo extends Component {
                 multipleLine={false}
                 clear
                 onChange={v => this.handleChange(v, label.key)}
-                placeholder={
-                  id === "smarket"
-                    ? `二手物品${label.value}`
-                    : `请输入材料${label.value}|租赁设备${label.value}`
-                }
+                placeholder={ sid === "material" ? `请输入材料${label.value}`:`租赁设备${label.value}`  }
               />
             ))}
+          {id === "smarket"  &&
+            LABEL.map(label => (
+              <InputItem
+                multipleLine={false}
+                clear
+                onChange={v => this.handleChange(v, label.key)}
+                placeholder={ `二手物品${label.value}` }
+              />
+            ))}
+            {id ==="smarket" && <InputItem
+              multipleLine={false}
+              clear
+              type="number"
+              onChange={v => this.handleChange(v, "extraPrice")}
+              extraa="元"
+              placeholder="二手物品价格"
+            />}
+
           {sid === "material" || sid === "rent" ? (
             <InputItem
               multipleLine={false}
@@ -218,19 +233,15 @@ class FormInfo extends Component {
               type="number"
               onChange={v => this.handleChange(v, "extraPrice")}
               extraa="元"
-              placeholder={
-                id === "smarket"
-                  ? "二手物品价格"
-                  : "请输入材料价格|租赁设备价格"
-              }
+              placeholder={sid === "material" ? "请输入材料价格":"租赁设备价格"}
             />
-          ) : (
+          ) : (id !=="smarket" && (
             <InputItem
               multipleLine={false}
               clear
               onChange={v => this.handleChange(v, "extraName")}
               placeholder={SERVER[sid]}
-            />
+            />)
           )}
         </List>
         <BaseInfo

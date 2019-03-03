@@ -1,13 +1,6 @@
 /* eslint-disable prefer-destructuring */
 import React, { Component } from "react"
-import {
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
-  ScrollView,
-  Text
-} from "react-native"
+import { StyleSheet, View, ScrollView } from "react-native"
 
 import { connect } from "react-redux"
 
@@ -31,6 +24,7 @@ class Detail extends Component {
 
   componentDidMount() {
     const oldData = this.props.navigation.state.params.data
+    console.log("oldData", oldData)
     const type =
       oldData.type === 0 ? "app/getDemandDetail" : "app/getInfoDetail"
     let data = {}
@@ -41,31 +35,35 @@ class Detail extends Component {
       },
       callback: res => {
         data = res.result.data
-        this.setState({ data })
-      }
-    })
+        console.log("newData", data)
 
-    const imgSet = [data.picture1, data.picture2, data.picture3, data.picture3]
-    const imgList = []
-    imgSet.forEach(item => {
-      if (item) {
-        imgList.push({ url: item })
-      }
-    })
+        const imgSet = [
+          data.picture1,
+          data.picture2,
+          data.picture3,
+          data.picture3
+        ]
+        const imgList = []
+        imgSet.forEach(item => {
+          if (item) {
+            imgList.push({ url: item })
+          }
+        })
 
-    this.props.dispatch({
-      type: "app/saveHistory",
-      payload: {
-        recordId: data.id,
-        type: data.type
+        this.props.dispatch({
+          type: "app/saveHistory",
+          payload: {
+            recordId: data.id,
+            type: data.type
+          }
+        })
+        this.setState({ imgList, data })
       }
     })
-    this.setState({ imgList })
   }
 
-
   render() {
-    const { imgList,data, } = this.state
+    const { imgList, data } = this.state
     return (
       <View style={styles.home}>
         <ScrollView
@@ -79,7 +77,7 @@ class Detail extends Component {
           <BaseInfo data={data} />
           <View style={{ height: 100 }} />
         </ScrollView>
-        <Bottom data={data} type="contact"/>
+        <Bottom data={data} type="contact" />
       </View>
     )
   }

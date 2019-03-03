@@ -73,7 +73,7 @@ class RegisterEntry extends Component {
         delete  params.latitude
         params.adcode = Number(params.adcode.substring(0,2))
         this.state.params = result.params
-        console.log("getInfoList", result.params)
+        console.log("getInfoList 注册资质", result.params)
         this.props.dispatch({
           type: "app/getInfoListLoc",
           payload: result.params,

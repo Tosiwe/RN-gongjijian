@@ -37,6 +37,8 @@ class BaseInfo extends Component {
 
   render() {
     const { data = {} } = this.props
+
+    console.log("BaseInfo data",data)
     const Td = props => (
       <View style={styles.td}>
         <Text style={styles.tdLabel}>{props.label}</Text>

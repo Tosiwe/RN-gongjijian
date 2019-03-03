@@ -2,8 +2,14 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import { StyleSheet, View, Text, FlatList,TouchableOpacity } from "react-native"
-import { List, ActivityIndicator, } from "@ant-design/react-native"
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  ScrollView
+} from "react-native"
+import { List, ActivityIndicator } from "@ant-design/react-native"
 // import {NavigationActions} from "react-navigation"
 import { screenHeight, primaryColor } from "../../styles/common"
 import ListItem from "../../components/ListIem/ListItem"
@@ -12,7 +18,7 @@ import { getPosition } from "../../utils/utils"
 
 const { Item } = List
 
-@connect(({app})=>({...app}))
+@connect(({ app }) => ({ ...app }))
 class IndustryEntry extends Component {
   constructor(props) {
     super(props)
@@ -30,96 +36,99 @@ class IndustryEntry extends Component {
   componentDidMount() {
     this.getDemandList()
     // this.getInfoList()
-    
+
     this.setState({ activeKey: this.props.id })
   }
 
   getDemandList = (pn = 1) => {
     delete this.state.params.subClassifyId
     const that = { ...this }
-    getPosition(that).then(result => {
-      if (result.isSuccess) {
-        const {province,city,...params}=result.params
-        params.lng = params.longitude
-        params.lat = params.latitude
-        delete  params.longitude
-        delete  params.latitude
-        params.adcode = Number(params.adcode.substring(0,2))
-        this.state.params = params
-        console.log("getDemandList", params)
-        this.props.dispatch({
-          type: "app/getDemandListLoc",
-          payload: params,
-          callback: res => {
-            this.setState({ loading: false })
+    getPosition(that)
+      .then(result => {
+        if (result.isSuccess) {
+          const { province, city, ...params } = result.params
+          params.lng = params.longitude
+          params.lat = params.latitude
+          delete params.longitude
+          delete params.latitude
+          params.adcode = Number(params.adcode.substring(0, 2))
+          this.state.params = params
+          console.log("getDemandList", params)
+          this.props.dispatch({
+            type: "app/getDemandListLoc",
+            payload: params,
+            callback: res => {
+              this.setState({ loading: false })
 
-            if (res.msg === "OK") {
-              let demandList = []
-              if (pn !== 1) {
-                demandList = [...this.state.demandList, ...res.result]
-              } else {
-                demandList = res.result
+              if (res.msg === "OK") {
+                let demandList = []
+                if (pn !== 1) {
+                  demandList = [...this.state.demandList, ...res.result]
+                } else {
+                  demandList = res.result
+                }
+                console.log("getdemandList result", demandList)
+
+                this.setState({
+                  list: demandList
+                })
               }
-              this.setState({
-                list: demandList
-              })
             }
-          }
-        })
-      }else{
+          })
+        } else {
+          this.setState({ loading: false })
+        }
+      })
+      .catch(error => {
         this.setState({ loading: false })
-      }
-    }).catch(error=>{
-      this.setState({ loading: false })
-    })
+      })
   };
-
 
   getInfoList = (pn = 1) => {
     const that = { ...this }
 
-    getPosition(that).then(result => {
-      if (result.isSuccess) {
-        const {province,city,...params}=result.params
-        params.lng = params.longitude
-        params.lat = params.latitude
-        delete  params.longitude
-        delete  params.latitude
-        params.adcode = Number(params.adcode.substring(0,2))
-        this.state.params = params
-        console.log("getInfoList", params)
-        this.props.dispatch({
-          type: "app/getInfoListLoc",
-          payload: params,
-          callback: res => {
-            this.setState({ loading: false })
-            if (res.msg === "OK") {
-              let infoList = []
-              if (pn !== 1) {
-                infoList = [...this.state.infoList, ...res.result]
-              } else {
-                infoList = res.result
+    getPosition(that)
+      .then(result => {
+        if (result.isSuccess) {
+          const { province, city, ...params } = result.params
+          params.lng = params.longitude
+          params.lat = params.latitude
+          delete params.longitude
+          delete params.latitude
+          params.adcode = Number(params.adcode.substring(0, 2))
+          this.state.params = params
+          console.log("getInfoList", params)
+          this.props.dispatch({
+            type: "app/getInfoListLoc",
+            payload: params,
+            callback: res => {
+              this.setState({ loading: false })
+              if (res.msg === "OK") {
+                let infoList = []
+                if (pn !== 1) {
+                  infoList = [...this.state.infoList, ...res.result]
+                } else {
+                  infoList = res.result
+                }
+                console.log("getInfoList result", infoList)
+
+                this.setState({
+                  list: infoList
+                  // infoPageNum: res.result.pn
+                })
               }
-              this.setState({
-                list: infoList
-                // infoPageNum: res.result.pn
-              })
             }
-          }
-        })
-      }else{
+          })
+        } else {
+          this.setState({ loading: false })
+        }
+      })
+      .catch(error => {
         this.setState({ loading: false })
-      }
-    }).catch(error=>{
-      this.setState({ loading: false })
-    })
+      })
   };
 
-  renderItem = ({ item }) => (
-    <ListItem
-    data={item}
-    />
-  );
+  renderItem = ({ item }) => <View style={{paddingHorizontal:5}}><ListItem data={item} /></View> ;
 
   // 左侧点击
   onPress = key => {
@@ -136,7 +145,7 @@ class IndustryEntry extends Component {
 
   render() {
     // const { type } = this.props
-    const { activeKey, loading, list={} } = this.state
+    const { activeKey, loading, list = {} } = this.state
     const { id } = this.props
     return (
       <View style={styles.container}>
@@ -251,12 +260,13 @@ class IndustryEntry extends Component {
         <View style={styles.right}>
           <ActivityIndicator animating={loading} />
           {list.length ? (
-            <FlatList data={list} renderItem={this.renderItem} />
+            <FlatList style={{flex:1}} data={list} renderItem={this.renderItem} />
           ) : (
             <Text style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}>
               暂无数据
             </Text>
           )}
+          <View style={{height:50}} />
         </View>
       </View>
     )
@@ -266,7 +276,8 @@ class IndustryEntry extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF",
-    flexDirection: "row"
+    flexDirection: "row",
+    flex:1
   },
   title: {
     fontSize: 12,
@@ -278,14 +289,13 @@ const styles = StyleSheet.create({
   },
   left: {
     width: 95,
-    height: screenHeight,
+    // height: screenHeight,
     backgroundColor: "#EFEFEF"
   },
   right: {
     flex: 1,
     height: screenHeight,
     paddingVertical: 20,
-    paddingHorizontal: 10
   },
   item: {
     backgroundColor: "#EFEFEF",
