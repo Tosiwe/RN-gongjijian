@@ -41,7 +41,7 @@ class MsgList extends Component {
     this.props.dispatch({
       type: "app/guesslikeList",
       payload: {
-        ps: 100,
+        ps: 20,
         pn
       },
       callback: res => {

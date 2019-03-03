@@ -55,10 +55,10 @@ class MyLike extends Component {
     <Card style={styles.card} full>
       <Card.Body>
         <View style={styles.carBody}>
-          <Image
+        <Image
             resizeMode="contain"
             style={styles.carImg}
-            source={require("../../containers/img/img_logo.png")}
+            source={item.picture1 ? {uri:item.picture1}:require("../../containers/img/img_logo.png")}
           />
           <View style={styles.cardRight}>
             <Text style={styles.cardTitle}>{item.title}</Text>
