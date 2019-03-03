@@ -504,6 +504,16 @@ export default {
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },
+
+    // 下载图纸
+    *getFileUrl({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(messageService.getFileUrl, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
     // get token
     *getUploadToken({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))

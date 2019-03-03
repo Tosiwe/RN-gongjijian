@@ -50,6 +50,14 @@ export async function downloadPaper(params) {
     })
   }
 
+// 获取图纸
+export async function getFileUrl(params) {
+    return request(`http://118.24.107.177:7001/upload/getFileUrl`, {
+        method: "POST",
+        body: params,
+    })
+  }
+
 // token
 export async function getUploadToken(params) {
     return request(`http://118.24.107.177:7001/upload/getToken`, {

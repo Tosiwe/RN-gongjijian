@@ -47,7 +47,7 @@ class Detail extends Component {
   }
 
   like = () => {
-    const { id , type} = this.props.data
+    const { id, type } = this.props.data
     const { likeType } = this.state
     this.props.dispatch({
       type: "app/saveBookmark",
@@ -76,6 +76,28 @@ class Detail extends Component {
       // vip直接显示
       if (name === "phone") {
         Linking.openURL(data.phone ? `tel:${data.phone}` : "tel:10010")
+      } else if (name === "download") {
+        this.props.dispatch({
+          type: "app/getFileUrl",
+          payload: {
+            key: data.fileKey
+          },
+          callback: res => {
+            this.downloadFile(res.result.url)
+            this.props.dispatch({
+              type: "app/downloadPaper",
+              payload: {
+                id: data.id,
+                url: data.url,
+                title: data.title,
+                fileName: data.fileKey
+              },
+              callback: response => {
+                // TODO:下载附件
+              }
+            })
+          }
+        })
       } else {
         this.showModal(data[name], name)
       }
@@ -124,23 +146,32 @@ class Detail extends Component {
     const { hasPaied } = this.state
     const { data = {} } = this.props
 
-    if (true) {
+    if (hasPaied) {
       if (name === "phone") {
         Linking.openURL(data.phone ? `tel:${data.phone}` : "tel:10010")
       } else if (name === "download") {
-        this.downloadFile(data.url)
-        // this.props.dispatch({
-        //   type: "app/downloadPaper",
-        //   payload: {
-        //     id: data.id,
-        //     url: data.url,
-        //     title: data.title,
-        //     fileName: data.fileKey
-        //   },
-        //   callback: res => {
-        //     // TODO:下载附件
-        //   }
-        // })
+        this.props.dispatch({
+          type: "app/getFileUrl",
+          payload: {
+            key: data.fileKey
+          },
+          callback: res => {
+            this.downloadFile(res.result.url)
+            this.props.dispatch({
+              type: "app/downloadPaper",
+              payload: {
+                id: data.id,
+                url: data.url,
+                title: data.title,
+                fileName: data.fileKey
+              },
+              callback: response => {
+                // TODO:下载附件
+              }
+            })
+          }
+        })
+        // getFileUrl
       } else {
         this.showModal(data[name], name)
       }
@@ -319,7 +350,7 @@ class Detail extends Component {
           {!(type === "contact") && (
             <TouchableOpacity
               onPress={() => {
-                this.showPayModal("download")
+                this.checkType("download")
               }}
               style={[styles.btns, styles.downLoadBtn]}
             >
