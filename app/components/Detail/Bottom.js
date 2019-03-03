@@ -202,7 +202,7 @@ class Detail extends Component {
   paySuccess = pay => {
     this.state.hasPaied = true
     const { pressName } = this.state
-    const { data } = this.state
+    const { data } = this.props
     // vip直接显示
     if (pressName === "phone") {
       Linking.openURL(data.phone ? `tel:${data.phone}` : "tel:10010")
