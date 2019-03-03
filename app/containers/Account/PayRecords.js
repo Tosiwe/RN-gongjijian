@@ -1,14 +1,23 @@
 /* eslint-disable react/prefer-stateless-function */
 // native
 import React, { Component } from "react"
-import { View, StyleSheet, Text, TouchableOpacity, Image,ScrollView } from "react-native"
-import { List } from "@ant-design/react-native"
-import Icon from "react-native-vector-icons/AntDesign"
+import {
+  View,
+  StyleSheet,
+  Image,
+  ScrollView
+} from "react-native"
+import { List,ActivityIndicator } from "@ant-design/react-native"
 import { connect } from "react-redux"
-import { NavigationActions } from "react-navigation"
-import { INS_MAP } from "../../utils/dataDic"
+import moment from "moment"
 
 const { Item } = List
+const {Brief} = Item
+
+const PAY_MAP = {
+  0: require(`./images/icon_recharge.png`),
+  1: require(`./images/icon_consumption.png`)
+}
 @connect(({ app }) => ({ ...app }))
 class PayRecords extends Component {
   constructor(props) {
@@ -33,16 +42,19 @@ class PayRecords extends Component {
     const { joinList } = this.state
     return (
       <ScrollView style={styles.wrap}>
+      <ActivityIndicator animating={this.props.fetching} text="正在加载" />
         <List style={styles.list}>
           {joinList.map(item => (
             <Item
+              thumb={
+                <Image style={styles.icon} source={PAY_MAP[item.expense]} />
+              }
               key={item.id}
               label={10}
-              //   onPress={() => this.toMyPublish(item)}
-              //   arrow="horizontal"
               extra={`${item.amount}元`}
             >
               {item.subject}
+              <Brief>{ moment( item.createTime).format("YYYY-MM-DD HH:mm:ss")}</Brief>
             </Item>
           ))}
         </List>
@@ -67,7 +79,8 @@ const styles = StyleSheet.create({
   },
   icon: {
     width: 30,
-    height: 30
+    height: 30,
+    marginRight: 10
   },
   text: {
     fontSize: 16
