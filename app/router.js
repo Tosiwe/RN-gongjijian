@@ -37,6 +37,7 @@ import EditProfile from "./containers/Account/EditProfile"
 import Vip from "./containers/Account/Vip"
 import PayRecords from "./containers/Account/PayRecords"
 import Recommend from "./containers/Account/Recommend"
+import UserVerify from "./containers/Account/UserVerify"
 import Detail from "./components/Detail/Detail"
 import PaperDetail from "./components/Detail/PaperDetail"
 import AddButton from "./components/AddButton/AddButton"
@@ -217,6 +218,12 @@ const MainNavigator = createStackNavigator(
       navigationOptions: mainNavigationOptions
     },
     
+    UserVerify: {
+      // 消息
+      screen: UserVerify,
+      navigationOptions: mainNavigationOptions
+    },
+    
   },
   {
     transitionConfig: () => ({
@@ -229,7 +236,7 @@ const MainNavigator = createStackNavigator(
 // 基础页面
 const AppNavigator = createStackNavigator(
   {
-    // Result: { screen: Result },
+    UserVerify: { screen: UserVerify },
     Login: { screen: Login },
     Main: { screen: MainNavigator },
     BindPhone: { screen: BindPhone },

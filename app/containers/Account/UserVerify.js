@@ -1,20 +1,37 @@
 import React, { Component } from "react"
-import { StyleSheet, View } from "react-native"
+import { StyleSheet, View, Text } from "react-native"
 import { connect } from "react-redux"
-import { List, InputItem } from "@ant-design/react-native"
-import moment from "moment"
-import { primaryColor, iconSize } from "../../styles/common"
+import { List, InputItem, Button } from "@ant-design/react-native"
 import ImagePicker from "../../components/ImagePicker/ImagePicker"
-
 
 @connect(({ app }) => ({ ...app }))
 class UserVerify extends Component {
   constructor() {
     super()
-    this.state = {}
+    this.state = {
+      params: {
+        realName: "",
+        idCard: ""
+      }
+    }
   }
 
   componentDidMount() {}
+
+  onChange = (value, name) => {
+    const { params } = this.state
+    const payload = { ...params }
+    payload[name] = value
+    this.setState({ params: payload })
+  };
+
+  submit = () => {
+    this.props.dispatch({
+      type: "app/",
+      payload: this.state.params,
+      callback: res => {}
+    })
+  };
 
   render() {
     // const {  } = this.state
@@ -23,20 +40,31 @@ class UserVerify extends Component {
       <View style={styles.container}>
         <List>
           <InputItem
-            label="姓名"
+            placeholder="请输入"
             clear
             onChange={value => this.onChange(value, "name")}
             style={styles.item}
-          />
+          >
+            姓名
+          </InputItem>
           <InputItem
-            label="身份证号"
+            placeholder="请输入"
             clear
             onChange={value => this.onChange(value, "id")}
             style={styles.item}
-          />
+          >
+            身份证号
+          </InputItem>
         </List>
         <ImagePicker />
+        <Text style={{ marginLeft: 20 }}>身份证正面</Text>
         <ImagePicker />
+        <Text style={{ marginLeft: 20 }}>身份证背面</Text>
+        <View style={styles.btnWrap}>
+          <Button style={styles.btn} onPress={this.submit}>
+            <Text style={{ color: "#FFF" }}>提交认证信息</Text>
+          </Button>
+        </View>
       </View>
     )
   }
@@ -46,79 +74,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1
   },
-  icon: {
-    width: iconSize,
-    height: iconSize
-  },
-  payBox: {
-    flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 40
-  },
-  wrap: {
-    justifyContent: "center",
-    // width: 130,
-    height: 180,
-    borderWidth: 2,
-    borderColor: "#EEE",
-    borderRadius: 5,
-    padding: 10,
-    backgroundColor: "#FFF"
-  },
-  activeWrap: {
-    justifyContent: "center",
-    // width: 130,
-    height: 180,
-    borderWidth: 2,
-    borderColor: "#E7BC85",
-    borderRadius: 5,
-    padding: 10,
-    backgroundColor: "#FFF7E5"
-  },
-  content: {
-    flex: 1,
-    padding: 5
-  },
-  text: {
-    textAlign: "center"
-  },
-  title: {
-    fontSize: 18
-  },
-  price: {
-    color: "#C99A2E",
-    fontSize: 24
-  },
-  des: {
-    height: 80
-  },
-  rcmBg: {
-    right: 0,
-    width: 60,
-    height: 30,
-    position: "absolute"
-  },
-  rcmTxt: {
-    color: "#FFF",
-    fontSize: 16,
-    textAlign: "center"
-  },
+  btnWrap: { alignItems: "center" },
   btn: {
-    marginTop: 20,
-    height: 50,
-    backgroundColor: "#D4B87C",
-    marginHorizontal: 16,
+    marginTop: 40,
+    width: "80%",
+    backgroundColor: "#FE7B3E",
     borderRadius: 25
-  },
-  btnBg: {
-    width: "100%",
-    height: 50
-  },
-  btnText: {
-    lineHeight: 50,
-    fontSize: 20,
-    textAlign: "center",
-    color: "#FFF"
   }
 })
 

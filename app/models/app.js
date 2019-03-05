@@ -443,6 +443,26 @@ export default {
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
+    // 认证
+    *verify({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(profileService.verify, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
+    // 查询认证
+    *getVerify({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(profileService.getVerify, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
     // ---------- 消息类 ----------
 
     // 获取通知列表

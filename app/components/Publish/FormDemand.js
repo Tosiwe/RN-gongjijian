@@ -62,10 +62,6 @@ class FormDemand extends Component {
       Toast.info("请填写标题");
       return false;
     }
-    if (params.title.length < 10) {
-      Toast.info("标题字数应在10-28个字");
-      return false;
-    }
     if (params.contact === "") {
       Toast.info("请填写联系人");
       return false;

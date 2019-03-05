@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { StyleSheet, View, Image, Text, TouchableOpacity } from "react-native"
+import { StyleSheet, View, Text,  } from "react-native"
 import { connect } from "react-redux"
 import { Toast, Accordion, List } from "@ant-design/react-native"
 // import Icon from "react-native-vector-icons/AntDesign"
@@ -15,7 +15,7 @@ class BaseInfo extends Component {
   }
 
   checkFile = () => {
-    Toast.info("暂无附件")
+    Toast.info("暂无附件",1,null,false)
   };
 
   onChange = activeSections => {
