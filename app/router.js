@@ -236,7 +236,7 @@ const MainNavigator = createStackNavigator(
 // 基础页面
 const AppNavigator = createStackNavigator(
   {
-    UserVerify: { screen: UserVerify },
+    // UserVerify: { screen: UserVerify },
     Login: { screen: Login },
     Main: { screen: MainNavigator },
     BindPhone: { screen: BindPhone },

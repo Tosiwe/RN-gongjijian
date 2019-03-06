@@ -444,11 +444,11 @@ export default {
     },
 
     // 认证
-    *verify({ payload, callback }, { call, put }) {
+    *verify({ payload }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.verify, payload)
-      if (res && callback) {
-        callback(res)
+      if (res) {
+        yield put(NavigationActions.back())
       }
       yield put(createAction("updateState")({ res, fetching: false }))
     },

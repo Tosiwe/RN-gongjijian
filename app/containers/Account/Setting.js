@@ -13,7 +13,6 @@ const settingList = [
   // {title:"清除足迹"},
   // {title:"清空缓存"},
   { title: "修改资料", name: "ProfileSetting" },
-  { title: "实名认证", name: "UserVerify" },
   { title: "关于工机建", name: "About" }
 ]
 const { Item } = List

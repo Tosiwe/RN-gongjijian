@@ -78,3 +78,20 @@ export async function updateFollow(params) {
   }
   
   
+
+// 实名认证
+export async function verify(params) {
+    return request(`http://118.24.107.177:7001/user/verify/update`, {
+        method: "POST",
+        body: params,
+    })
+  }
+  
+  // 获取实名
+  export async function getVerify(params) {
+    return request(`http://118.24.107.177:7001/user/verify`, {
+        method: "POST",
+        body: params,
+    })
+  }
+  

@@ -1,7 +1,8 @@
+/* eslint-disable no-restricted-syntax */
 import React, { Component } from "react"
 import { StyleSheet, View, Text } from "react-native"
 import { connect } from "react-redux"
-import { List, InputItem, Button } from "@ant-design/react-native"
+import { List, InputItem, Button,Toast } from "@ant-design/react-native"
 import ImagePicker from "../../components/ImagePicker/ImagePicker"
 
 @connect(({ app }) => ({ ...app }))
@@ -11,7 +12,9 @@ class UserVerify extends Component {
     this.state = {
       params: {
         realName: "",
-        idCard: ""
+        idCard: "",
+        idCardPosUrl: "",
+        idCardVerUrl: ""
       }
     }
   }
@@ -26,11 +29,24 @@ class UserVerify extends Component {
   };
 
   submit = () => {
+    const { params } = this.state
+    const map={
+            realName: "姓名",
+            idCard: "身份证号",
+            idCardPosUrl: "身份证正面照",
+            idCardVerUrl: "身份证背面"
+    }
+    for (const name in params) {
+      if (params[name] === "") {
+        Toast.info(`${map[name]}不能为空`,1,null,false)
+        return null
+      }
+    }
     this.props.dispatch({
-      type: "app/",
+      type: "app/verify",
       payload: this.state.params,
-      callback: res => {}
     })
+    return null
   };
 
   render() {
@@ -42,7 +58,7 @@ class UserVerify extends Component {
           <InputItem
             placeholder="请输入"
             clear
-            onChange={value => this.onChange(value, "name")}
+            onChange={value => this.onChange(value, "realName")}
             style={styles.item}
           >
             姓名
@@ -50,15 +66,22 @@ class UserVerify extends Component {
           <InputItem
             placeholder="请输入"
             clear
-            onChange={value => this.onChange(value, "id")}
+            maxLength={18}
+            onChange={value => this.onChange(value, "idCard")}
             style={styles.item}
           >
             身份证号
           </InputItem>
         </List>
-        <ImagePicker />
+        <ImagePicker
+          onChange={v => this.onChange(v.picture1, "idCardPosUrl")}
+          maxLength={1}
+        />
         <Text style={{ marginLeft: 20 }}>身份证正面</Text>
-        <ImagePicker />
+        <ImagePicker
+          onChange={v => this.onChange(v.picture1, "idCardVerUrl")}
+          maxLength={1}
+        />
         <Text style={{ marginLeft: 20 }}>身份证背面</Text>
         <View style={styles.btnWrap}>
           <Button style={styles.btn} onPress={this.submit}>

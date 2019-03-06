@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable react/prefer-stateless-function */
 // native
 import React, { Component } from "react"
@@ -73,12 +74,23 @@ class ProfileSetting extends Component {
 
   toEdit = type => {
     const { userInfo } = this.state
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: "EditProfile",
-        params: { type, userInfo ,name:"修改"}
-      })
-    )
+
+    if(type==="UserVerify"){
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: "UserVerify",
+          params: { type, userInfo ,name:"实名认证"}
+        })
+      )
+    }else{
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: "EditProfile",
+          params: { type, userInfo ,name:"修改"}
+        })
+      )
+    }
+    
   };
 
   render() {
@@ -149,6 +161,13 @@ class ProfileSetting extends Component {
             extra={userInfo.city}
           >
             <Text style={styles.item}>所在地</Text>
+          </Item>
+          <Item
+            arrow={!userInfo.realNameVerify &&"horizontal"}
+            onPress={() => {!userInfo.realNameVerify && this.toEdit("UserVerify")}}
+            extra={userInfo.realNameVerify?"已实名认证":"未实名认证"}
+          >
+            <Text style={styles.item}>实名认证</Text>
           </Item>
         </List>
         <View style={styles.bottom} />
