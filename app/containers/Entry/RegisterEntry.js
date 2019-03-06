@@ -9,7 +9,7 @@ import {
   ActivityIndicator,
   TouchableOpacity
 } from "react-native"
-import { Tabs ,Toast} from "@ant-design/react-native"
+import { Tabs, Toast } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import { getPosition } from "../../utils/utils"
 
@@ -26,7 +26,7 @@ class RegisterEntry extends Component {
       loading: true,
       list: [],
       params: {
-        distance:0,
+        distance: 0,
         classifyId: props.id
       }
     }
@@ -64,41 +64,47 @@ class RegisterEntry extends Component {
   getInfoList = (pn = 1) => {
     const that = { ...this }
 
-    getPosition(that).then(result => {
-      if (result.isSuccess) {
-        const params = {...result.params}
-        params.lng = params.longitude
-        params.lat = params.latitude
-        delete  params.longitude
-        delete  params.latitude
-        params.adcode = Number(params.adcode.substring(0,2))
-        this.state.params = result.params
-        console.log("getInfoList 注册资质", result.params)
-        this.props.dispatch({
-          type: "app/getInfoListLoc",
-          payload: result.params,
-          callback: res => {
-            this.setState({ loading: false })
-            if (res.msg === "OK") {
-              let infoList = []
-              if (pn !== 1) {
-                infoList = [...this.state.infoList, ...res.result.data]
-              } else {
-                infoList = res.result.data
-              }
-              this.setState({
-                list: infoList
-                // infoPageNum: res.result.pn
-              })
-            }
+    getPosition(that)
+      .then(result => {
+        if (result.isSuccess) {
+          const params = { ...result.params }
+          params.lng = params.longitude
+          params.lat = params.latitude
+          delete params.longitude
+          delete params.latitude
+          if (params.adcode === "000000") {
+            delete params.adcode
+          } else {
+            params.adcode = Number(params.adcode.substring(0, 2))
           }
-        })
-      } else {
+          this.state.params = result.params
+          console.log("getInfoList 注册资质", result.params)
+          this.props.dispatch({
+            type: "app/getInfoListLoc",
+            payload: result.params,
+            callback: res => {
+              this.setState({ loading: false })
+              if (res.msg === "OK") {
+                let infoList = []
+                if (pn !== 1) {
+                  infoList = [...this.state.infoList, ...res.result.data]
+                } else {
+                  infoList = res.result.data
+                }
+                this.setState({
+                  list: infoList
+                  // infoPageNum: res.result.pn
+                })
+              }
+            }
+          })
+        } else {
+          this.setState({ loading: false })
+        }
+      })
+      .catch(error => {
         this.setState({ loading: false })
-      }
-    }).catch(error=>{
-      this.setState({ loading: false })
-    })
+      })
   };
 
   changeTab = tab => {

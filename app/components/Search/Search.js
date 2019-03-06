@@ -11,7 +11,10 @@ class Search extends Component {
   constructor() {
     super()
     this.state = {
-      params: {},
+      params: {
+        ps:10,
+        distance:0,
+      },
       hotSearchList: []
     }
   }
@@ -125,7 +128,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
     alignItems: "center",
     paddingVertical: 5,
-    paddingHorizontal: 10
+    paddingHorizontal: 10,
+    marginRight:5,
   }
 })
 

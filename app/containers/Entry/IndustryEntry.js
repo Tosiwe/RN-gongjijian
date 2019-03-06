@@ -51,7 +51,11 @@ class IndustryEntry extends Component {
           params.lat = params.latitude
           delete params.longitude
           delete params.latitude
+          if(params.adcode==='000000'){
+            delete params.adcode
+        } else{
           params.adcode = Number(params.adcode.substring(0, 2))
+        }
           this.state.params = params
           console.log("getDemandList", params)
           this.props.dispatch({
@@ -95,7 +99,11 @@ class IndustryEntry extends Component {
           params.lat = params.latitude
           delete params.longitude
           delete params.latitude
+          if(params.adcode==='000000'){
+            delete params.adcode
+        } else{
           params.adcode = Number(params.adcode.substring(0, 2))
+        }
           this.state.params = params
           console.log("getInfoList", params)
           this.props.dispatch({

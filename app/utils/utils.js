@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 /* eslint-disable default-case */
 /** 获取地理位置（经纬度） */
 export const getPosition = (that, Toast) =>
@@ -29,14 +30,14 @@ export const getPosition = (that, Toast) =>
               resole({ isSuccess: true, params: newParams })
             } else {
               reject()
-              Toast.info("获取定位失败")
+              Toast&&Toast.info("获取定位失败")
             }
           }
         })
       },
       error => {
         console.warn(`失败：${JSON.stringify(error.message)}`)
-        Toast.info(`失败：${JSON.stringify(error.message)}`)
+        Toast&&Toast.info(`失败：${JSON.stringify(error.message)}`)
         reject(error)
       },
       {

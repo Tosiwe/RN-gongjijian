@@ -36,13 +36,25 @@ class SearchResult extends Component {
       params.classifyId = classifyId
     }
     this.setState({ pageKey: classifyId })
-
-    getPosition({ ...this })
+    this.state.params =params
+    getPosition({ ...this },Toast)
       .then(result => {
+        const payload ={
+          keyword:result.params.keyword,
+          classifyId:result.params.classifyId,
+          ps:result.params.ps,
+          distance:result.params.distance,
+         lat:result.params.latitude,
+         lng:result.params.longitude,
+        }
+
+        if(result.params.adcode!=='000000'){
+            payload.adcode =Number(result.params.adcode.substring(0,2))
+        } 
         if (result.isSuccess) {
           this.props.dispatch({
             type: "app/search",
-            payload: result.params,
+            payload,
             callback: res => {
               if (res.msg === "OK") {
                 const { list } = this.state
@@ -57,18 +69,6 @@ class SearchResult extends Component {
   };
 
   renderItem = ({ item }) => <ListItem data={item} />;
-
-  // renderItem = ({ item }) => (
-  //   <View style={styles.wrap}>
-  //     <View style={styles.info}>
-  //       <Text style={styles.title}>{item.title}</Text>
-  //       <Text ellipsizeMode="tail" numberOfLines={1} style={styles.infoText}>
-  //         {item.des}
-  //       </Text>
-  //     </View>
-  //     <Image style={styles.img} source={{ uri: item.url }} />
-  //   </View>
-  // );
 
   render() {
     const { tabs, list, pageKey } = this.state
