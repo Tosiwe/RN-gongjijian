@@ -22,13 +22,13 @@ class MsgList extends Component {
     this.state = {
       list: [],
       refreshing: false,
-      pn: 1
     }
   }
 
   componentDidMount = () => {
     this.getList()
   };
+  
 
 
   getList = (pn = 1) => {

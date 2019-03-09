@@ -13,22 +13,27 @@ import { getPosition } from "../../utils/utils"
 const area = require("./data.json")
 
 // const FOUR_CITY = ["11", "50", "31", "12"]
-@connect()
+@connect(({ app }) => ({ ...app }))
 class LocationBtn extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      name: ["城市"]
+      name: ["全国"]
     }
   }
 
   componentDidMount() {
     const that = { ...this }
-    getPosition(that, Toast).then(res => {
-      if (res.isSuccess) {
-        this.setState({ name: [res.params.city] })
-      }
-    })
+    const { geoCode } = this.props
+    if (geoCode) {
+      this.setState({ name: [geoCode.city] })
+    } else {
+      getPosition(that, Toast).then(res => {
+        if (res.isSuccess) {
+          this.setState({ name: [res.params.city] })
+        }
+      })
+    }
   }
 
   getArea = () => {

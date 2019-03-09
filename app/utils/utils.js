@@ -1,9 +1,44 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable default-case */
 /** 获取地理位置（经纬度） */
+import { PermissionsAndroid } from "react-native"
+
+const requestExternalStoragePermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: "请开启定位权限",
+        message:
+          "查询数据需要位置信息哦"
+      }
+    )
+    return granted
+  } catch (err) {
+    console.error("Failed to request permission ", err)
+    return null
+  }
+}
+
 export const getPosition = (that, Toast) =>
   new Promise((resole, reject) => {
+    const grand = requestExternalStoragePermission()
+    if (!grand) {
+      resole()
+      return
+    }
+
     const { params } = that.state
+
+    if(that.props.geoCode){
+      const newParams = { ...params, ...that.props.geoCode }
+      // newParams.adcode = Number(newParams.adcode.substring(0,2))
+      // this.state.params = newParams;
+      resole({ isSuccess: true, params: newParams })
+      return
+    }
+
+   
     /** 获取地理位置 */
     navigator.geolocation.getCurrentPosition(
       position => {
@@ -29,15 +64,15 @@ export const getPosition = (that, Toast) =>
               // this.state.params = newParams;
               resole({ isSuccess: true, params: newParams })
             } else {
-              reject()
-              Toast&&Toast.info("获取定位失败")
+              resole()
+              Toast && Toast.info("获取定位失败")
             }
           }
         })
       },
       error => {
         console.warn(`失败：${JSON.stringify(error.message)}`)
-        Toast&&Toast.info(`失败：${JSON.stringify(error.message)}`)
+        Toast && Toast.info(`失败：${JSON.stringify(error.message)}`)
         reject(error)
       },
       {

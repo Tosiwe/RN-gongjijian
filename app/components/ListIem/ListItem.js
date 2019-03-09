@@ -10,6 +10,8 @@ import {INS_MAP} from "../../utils/dataDic"
 @connect()
 class ListItem extends Component {
   toDetail = () => {
+    const {isDownload}= this.props
+    if (isDownload)return
     const { data } = this.props
     console.log("List Item",data)
     this.props.dispatch(
@@ -24,22 +26,22 @@ class ListItem extends Component {
   };
 
   render() {
-    const { data } = this.props
+    const { data ,isDownload} = this.props
     return (
       <TouchableOpacity style={styles.container} key={data.id} onPress={this.toDetail}>
         <View style={styles.wrap}>
           <View style={styles.left}>
-            <Image source={{ uri: data.picture1 }} style={styles.img} />
+            <Image source={data.picture1  ?{ uri: data.picture1 } :require("../../containers/Account/images/logo.jpg")} style={styles.img} />
           </View>
           <View style={styles.right}>
-            <Image source={INS_MAP[data.classifyId].icon } style={styles.icon}/>
+            <Image source={INS_MAP[data.classifyId]&&INS_MAP[data.classifyId].icon } style={styles.icon}/>
             <Text style={styles.title} ellipsizeMode="tail" numberOfLines={1} >{data.title}</Text>
             <Text ellipsizeMode="tail" numberOfLines={2} style={styles.des}>
-              {data.desc}
+              {isDownload ? data.fileName : data.desc}
             </Text>
             <View style={{flexDirection:'row', justifyContent:"space-between"}}>
               <Text style={{fontSize:12}}>{moment(data.updateTime).format("YYYY-MM-DD HH:mm:ss")}</Text>
-              <Text style={{fontSize:12}} ellipsizeMode="tail" numberOfLines={1} >{data.city||"区域：未知"}</Text>
+            { !isDownload && <Text style={{fontSize:12}} ellipsizeMode="tail" numberOfLines={1} >{data.city||"区域：未知"}</Text>}
             </View>
           </View>
         </View>

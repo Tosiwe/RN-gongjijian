@@ -14,7 +14,7 @@ import Icon from "react-native-vector-icons/AntDesign"
 import * as wechat from "react-native-wechat"
 import { primaryColor } from "../../styles/common"
 import { createAction, NavigationActions, Storage } from "../../utils"
-
+ 
 
 @connect(({ app }) => ({ ...app }))
 class Login extends Component {
@@ -25,20 +25,18 @@ class Login extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      params: {}
+      params: {},
     }
   }
 
   componentDidMount(){
-    Storage.get("auth").then(value => {
-      if (value) {
-        this.props.dispatch(
-          NavigationActions.navigate({
-            routeName: "HomeNavigator"
-          })
-        )
-      }
-    })
+    if(this.props.login){
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: "HomeNavigator"
+        })
+      )
+    }
   }
 
   onClose = () => {

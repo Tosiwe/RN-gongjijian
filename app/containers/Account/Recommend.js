@@ -108,7 +108,7 @@ class Recommend extends Component {
         callback: () => {
           this.props.dispatch(
             NavigationActions.navigate({
-              routeName: "Detail",
+              routeName: "MessageDetail",
               params: {
                 name: item.title,
                 data: item
@@ -120,7 +120,18 @@ class Recommend extends Component {
     } else {
       dispatch({
         type: "app/noticeRead",
-        payload
+        payload,
+        callback: () => {
+          this.props.dispatch(
+            NavigationActions.navigate({
+              routeName: "MessageDetail",
+              params: {
+                name: item.title,
+                data: item
+              }
+            })
+          )
+        }
       })
     }
   };

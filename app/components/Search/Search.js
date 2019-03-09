@@ -25,7 +25,11 @@ class Search extends Component {
       // payload: result.params,
       callback: res => {
         if (res.msg === "OK") {
-          this.setState({ hotSearchList: res.result })
+          const list =[]
+          res.result.forEach(item=>{
+            if(item.keyword) list.push(item)
+          })
+          this.setState({ hotSearchList: list })
         }
       }
     })
@@ -121,6 +125,8 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   tags: {
+    width:'100%',
+    flexWrap: "wrap",
     flexDirection: "row"
   },
   tag: {
@@ -128,8 +134,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#eee",
     alignItems: "center",
     paddingVertical: 5,
-    paddingHorizontal: 10,
+    paddingHorizontal: 15,
     marginRight:5,
+    marginBottom:5,
   }
 })
 

@@ -10,9 +10,9 @@ import {
   PermissionsAndroid
 } from "react-native"
 import { Modal, Button, Toast } from "@ant-design/react-native"
+import WeChat from "react-native-wechat"
 import { connect } from "react-redux"
 import moment from "moment"
-import { NavigationActions } from "react-navigation"
 import RNFS from "react-native-fs"
 import Pay from "../Pay/Pay"
 // import Result from "../Pay/Result"
@@ -22,20 +22,22 @@ const use = {
   attach: "下载附件",
   charge: "充值"
 }
+
+const time = 0
 @connect(({ app }) => ({ ...app }))
 class Detail extends Component {
   constructor(props) {
     super(props)
     this.state = {
       hasPaied: false,
-      collected: false
+      collected: false,
+      time: 0
     }
   }
 
   componentDidMount() {
-    this.setState({ collected: this.props.data.collected })
-
     const { type } = this.props
+    this.state.time = 0
     this.props.dispatch({
       type: "app/getPriceList",
       callback: res => {
@@ -46,13 +48,24 @@ class Detail extends Component {
     })
   }
 
+  componentWillReceiveProps(nextProps) {
+    if (
+      this.state.time === 0 &&
+      nextProps.data.collected !== undefined &&
+      this.state.collected !== nextProps.data.collected
+    ) {
+      this.setState({ collected: nextProps.data.collected })
+      this.state.time += 1
+    }
+  }
+
   like = () => {
     const { id, type } = this.props.data
     const { collected } = this.state
-    const ActionType = collected ? "bookmark/cancel":"app/saveBookmark"
+    const ActionType = collected ? "app/cancelBookmark" : "app/saveBookmark"
     this.props.dispatch({
-      type:ActionType ,
-      payload: { recordId:id, type },
+      type: ActionType,
+      payload: { recordId: id, type },
       callback: res => {
         if (res.msg === "OK") {
           this.setState({ collected: !collected })
@@ -64,6 +77,8 @@ class Detail extends Component {
   onClose = () => {
     this.setState({ visible: false })
   };
+
+  checkPay = () => {};
 
   checkType = name => {
     const { data = {}, type, userFinance = {} } = this.props
@@ -85,6 +100,8 @@ class Detail extends Component {
           },
           callback: res => {
             this.downloadFile(res.result.url)
+            const da ={link:res.result.url, ...data}
+            this.wechatShare(da)
             this.props.dispatch({
               type: "app/downloadPaper",
               payload: {
@@ -114,30 +131,44 @@ class Detail extends Component {
     // const salePrice = data.price || price
 
     // type: contact\paper\attach
-    const map = {
-      vip: "app/createVipOrder",
-      contact: "app/createOrderContact",
-      paper: "app/createOrderPaper",
-      attach: "app/createOrderAttach"
-    }
-    const payload = {
-      sourceId: data.id
-    }
 
     this.props.dispatch({
-      type: map[type],
-      payload,
-      callback: response => {
-        if (response.status === "OK") {
+      type: "app/orderRecordQuery",
+      payload: {
+        sourceId: data.id
+      },
+      callback: res => {
+        if (res.result.paid) {
           this.state.hasPaied = true
           this.showPayModal(name)
-        } else if (response.status === "ERROR") {
-          Modal.alert("提示", "您的余额不足，直接购买", [
-            {
-              text: "取消"
-            },
-            { text: "确认", onPress: () => this.showPayModal(name) }
-          ])
+        } else {
+          const map = {
+            vip: "app/createVipOrder",
+            contact: "app/createOrderContact",
+            paper: "app/createOrderPaper",
+            attach: "app/createOrderAttach"
+          }
+          const payload = {
+            sourceId: data.id
+          }
+
+          this.props.dispatch({
+            type: map[type],
+            payload,
+            callback: response => {
+              if (response.status === "OK") {
+                this.state.hasPaied = true
+                this.showPayModal(name)
+              } else if (response.status === "ERROR") {
+                Modal.alert("提示", "您的余额不足，直接购买", [
+                  {
+                    text: "取消"
+                  },
+                  { text: "确认", onPress: () => this.showPayModal(name) }
+                ])
+              }
+            }
+          })
         }
       }
     })
@@ -158,6 +189,9 @@ class Detail extends Component {
           },
           callback: res => {
             this.downloadFile(res.result.url)
+            const da ={link:res.result.url, ...data}
+            this.wechatShare(da)
+
             this.props.dispatch({
               type: "app/downloadPaper",
               payload: {
@@ -216,10 +250,8 @@ class Detail extends Component {
       const granted = await PermissionsAndroid.request(
         PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE,
         {
-          title: "My App Storage Permission",
-          message:
-            "My App needs access to your storage " +
-            "so you can save your photos"
+          title: "请开启存储权限",
+          message: "需要将文件保存到本地哦"
         }
       )
       return granted
@@ -228,6 +260,27 @@ class Detail extends Component {
       return null
     }
   };
+
+
+  wechatShare=(data)=>{
+    WeChat.isWXAppInstalled()
+    .then((isInstalled) => {
+        if (isInstalled) {
+            WeChat.shareToSession({
+                title:data.title,
+                description: data.desc,
+                thumbImage: data.picture1||data.url,
+                type: 'file',
+                webpageUrl: data.link
+            })
+                .catch((error) => {
+                    Toast.info(error.message)
+                })
+        } else {
+            Toast.info('请安装微信')
+        }
+    })
+  }
 
   /* 下载文件 */
   downloadFile(formUrl, type) {
@@ -298,6 +351,7 @@ class Detail extends Component {
       console.log(e)
     }
   }
+
 
   render() {
     const { type, data, userFinance = {} } = this.props

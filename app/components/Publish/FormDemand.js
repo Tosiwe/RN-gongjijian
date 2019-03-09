@@ -23,6 +23,7 @@ class FormDemand extends Component {
     super(props);
     this.state = {
       animating: false,
+      tip:"发布",
 
       params: {
         title: "",
@@ -75,7 +76,7 @@ class FormDemand extends Component {
 
   onSave = () => {
     if (this.isLegal()) {
-      this.setState({ animating: true });
+      this.setState({ animating: true , tip:"保存"});
 
       getPosition({ ...this })
         .then(result => {
@@ -115,7 +116,7 @@ class FormDemand extends Component {
   onPublish = () => {
     const that = { ...this };
     if (this.isLegal()) {
-      this.setState({ animating: true });
+      this.setState({ animating: true, tip:"发布" });
 
       getPosition(that, Toast)
         .then(result => {
@@ -154,7 +155,7 @@ class FormDemand extends Component {
   };
 
   render() {
-    const { isReg } = this.state;
+    const { isReg ,tip} = this.state;
     // 选择发布分类
     return (
       <ScrollView
@@ -166,6 +167,7 @@ class FormDemand extends Component {
       >
         <ActivityIndicator
           animating={this.state.animating}
+          text={`正在${tip}`}
           toast
           size="small"
         />

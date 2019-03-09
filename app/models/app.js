@@ -393,6 +393,16 @@ export default {
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
+    // 新增收藏
+    *cancelBookmark({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(profileService.cancelBookmark, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
     // 收藏列表
     *getBookmark({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
@@ -550,7 +560,8 @@ export default {
       if (res && callback) {
         callback(res)
       }
-      yield put(createAction("updateState")({ gepCode:res.result, fetching: false }))
+      const {lng:longitude,lat:latitude}=payload
+      yield put(createAction("updateState")({ geoCode:res&&{longitude,latitude,...res.result}, fetching: false }))
     },
     // 搜索
     *search({ payload, callback }, { call, put }) {
@@ -648,6 +659,15 @@ export default {
     *queryOrder({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(orderService.queryOrder, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
+    *orderRecordQuery({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(orderService.orderRecordQuery, payload)
       if (res && callback) {
         callback(res)
       }

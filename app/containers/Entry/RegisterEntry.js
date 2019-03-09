@@ -18,7 +18,7 @@ const tabs = [
   { title: "注册人员", id: "reg" }
 ]
 
-@connect()
+@connect(({ app }) => ({ ...app }))
 class RegisterEntry extends Component {
   constructor(props) {
     super(props)
@@ -67,7 +67,7 @@ class RegisterEntry extends Component {
     getPosition(that)
       .then(result => {
         if (result.isSuccess) {
-          const params = { ...result.params }
+          const { province, city, ...params } = result.params
           params.lng = params.longitude
           params.lat = params.latitude
           delete params.longitude
@@ -77,19 +77,19 @@ class RegisterEntry extends Component {
           } else {
             params.adcode = Number(params.adcode.substring(0, 2))
           }
-          this.state.params = result.params
-          console.log("getInfoList 注册资质", result.params)
+          this.state.params = params
+          console.log("getInfoList 注册资质", params)
           this.props.dispatch({
             type: "app/getInfoListLoc",
-            payload: result.params,
+            payload: params,
             callback: res => {
               this.setState({ loading: false })
               if (res.msg === "OK") {
                 let infoList = []
                 if (pn !== 1) {
-                  infoList = [...this.state.infoList, ...res.result.data]
+                  infoList = [...this.state.infoList, ...res.result]
                 } else {
-                  infoList = res.result.data
+                  infoList = res.result
                 }
                 this.setState({
                   list: infoList
@@ -116,7 +116,7 @@ class RegisterEntry extends Component {
 
   render() {
     const { id } = this.props
-    const { loading, list } = this.state
+    const { loading, list=[] } = this.state
     return (
       <View style={styles.container}>
         <Tabs

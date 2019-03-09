@@ -47,11 +47,13 @@ class Home extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      timeStamp: 1
+      timeStamp: 1,
+      imgList:[]
     }
   }
 
   componentDidMount() {
+
     Storage.get("auth").then(value => {
       if (!value) {
         this.props.dispatch(
@@ -59,6 +61,16 @@ class Home extends Component {
             routeName: "Login"
           })
         )
+      }
+    })
+    this.props.dispatch({
+      type: "app/bannerList",
+      callback: res => {
+        if (res.msg === "OK") {
+          this.setState({
+            imgList: res.result
+          })
+        }
       }
     })
   }
@@ -81,7 +93,7 @@ class Home extends Component {
   };
 
   render() {
-    const { msgList,timeStamp } = this.state
+    const { msgList,timeStamp,imgList } = this.state
     return (
       <View style={styles.home}>
         <ScrollView
@@ -90,19 +102,10 @@ class Home extends Component {
           showsVerticalScrollIndicator={false}
           alwaysBounceVertical
           onScrollEndDrag={this.handleScrollEnd}
-          // refreshControl={
-          //   <RefreshControl
-          //     size={0}
-          //     refreshing={false}
-          //     onRefresh={() => {
-          //      this.setState({timeStamp:Math.random})
-          //     }}
-          //   />
-          // }
         >
           <View style={styles.topWrap}>
             <Top />
-            <Ads />
+            <Ads data={imgList} isAds/>
             <View style={{ paddingVertical: 10 }}>
               <Entries />
             </View>

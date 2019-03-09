@@ -19,7 +19,7 @@ const tabs = [
   { id: "ndsmach", title: "二手机械" }
 ]
 
-@connect()
+@connect(({ app }) => ({ ...app }))
 class SecondEntry extends Component {
   constructor(props) {
     super(props)

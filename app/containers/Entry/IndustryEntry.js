@@ -7,7 +7,8 @@ import {
   View,
   Text,
   FlatList,
-  ScrollView
+  ScrollView,
+  RefreshControl
 } from "react-native"
 import { List, ActivityIndicator } from "@ant-design/react-native"
 // import {NavigationActions} from "react-navigation"
@@ -62,7 +63,7 @@ class IndustryEntry extends Component {
             type: "app/getDemandListLoc",
             payload: params,
             callback: res => {
-              this.setState({ loading: false })
+              this.setState({ loading: false,isRefreshing:false })
 
               if (res.msg === "OK") {
                 let demandList = []
@@ -80,11 +81,11 @@ class IndustryEntry extends Component {
             }
           })
         } else {
-          this.setState({ loading: false })
+          this.setState({ loading: false,isRefreshing:false })
         }
       })
       .catch(error => {
-        this.setState({ loading: false })
+        this.setState({ loading: false,isRefreshing:false })
       })
   };
 
@@ -110,7 +111,7 @@ class IndustryEntry extends Component {
             type: "app/getInfoListLoc",
             payload: params,
             callback: res => {
-              this.setState({ loading: false })
+              this.setState({ loading: false ,isRefreshing:false})
               if (res.msg === "OK") {
                 let infoList = []
                 if (pn !== 1) {
@@ -128,20 +129,24 @@ class IndustryEntry extends Component {
             }
           })
         } else {
-          this.setState({ loading: false })
+          this.setState({ loading: false ,isRefreshing:false})
         }
       })
       .catch(error => {
-        this.setState({ loading: false })
+        this.setState({ loading: false ,isRefreshing:false})
       })
   };
 
   renderItem = ({ item }) => <View style={{paddingHorizontal:5}}><ListItem data={item} /></View> ;
 
   // 左侧点击
-  onPress = key => {
+  onPress = (key, refresh) => {
     const { id } = this.props
-    this.setState({ activeKey: key, loading: true })
+    if(refresh){
+      this.setState({isRefreshing:true})
+    }else{
+      this.setState({ activeKey: key, loading: true })
+    }
 
     if (key === id) {
       this.getDemandList()
@@ -268,7 +273,15 @@ class IndustryEntry extends Component {
         <View style={styles.right}>
           <ActivityIndicator animating={loading} />
           {list.length ? (
-            <FlatList style={{flex:1}} data={list} renderItem={this.renderItem} />
+            <FlatList 
+
+            refreshControl={
+              <RefreshControl
+                  refreshing={this.state.isRefreshing}
+                  onRefresh={()=>this.onPress(activeKey,true)}
+              />
+          }
+           style={{flex:1}} data={list} renderItem={this.renderItem} />
           ) : (
             <Text style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}>
               暂无数据
@@ -302,7 +315,7 @@ const styles = StyleSheet.create({
   },
   right: {
     flex: 1,
-    height: screenHeight,
+    // height: screenHeight,
     paddingVertical: 20,
   },
   item: {

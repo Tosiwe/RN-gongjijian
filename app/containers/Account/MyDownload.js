@@ -2,8 +2,8 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import { StyleSheet, View, FlatList, Text, Image } from "react-native"
-import { Card } from "@ant-design/react-native"
+import { StyleSheet, View, FlatList } from "react-native"
+import ListItem from "../../components/ListIem/ListItem"
 
 @connect(({ app }) => ({ ...app }))
 class MyDownload extends Component {
@@ -14,7 +14,7 @@ class MyDownload extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      likeList: [],
+      likeList: []
     }
   }
 
@@ -38,7 +38,7 @@ class MyDownload extends Component {
             likeList = res.result.data
           }
           this.setState({
-            likeList,
+            likeList
             // pageNum: res.result.pn
           })
         }
@@ -50,38 +50,24 @@ class MyDownload extends Component {
     this.getBookmark(pn)
   };
 
-  renderItem = ({ item }) => (
-    <View style={styles.card}>
-        <View style={styles.carBody}>
-          <Image
-            resizeMode="contain"
-            style={styles.carImg}
-            source={item.url ? {uri:item.url}:require("../../containers/img/img_logo.png")}
-          />
-          <View style={styles.cardRight}>
-            <Text style={styles.cardTitle}>{item.title}</Text>
-            <Text style={styles.cardDes} ellipsizeMode="tail" numberOfLines={1}>
-              {item.fileName}
-            </Text>
-          </View>
-        </View>
-    </View>
-  );
+  renderItem = ({ item }) =><View style={{paddingHorizontal:10}}><ListItem data={item} isDownload/></View> ;
 
   render() {
-    const { likeList,  } = this.state
+    const { likeList } = this.state
     const { fetching } = this.props
     // 选择发布分类
     return (
       <View style={styles.container}>
-        <FlatList
-          data={likeList}
-          renderItem={this.renderItem}
-          onRefresh={this.refresh}
-          refreshing={fetching}
-          onEndReachedThreshold={1}
-          onEndReached={() => this.refresh(1)}
-        />
+        {/* {likeList.length && ( */}
+          <FlatList
+            data={likeList}
+            renderItem={this.renderItem}
+            onRefresh={this.refresh}
+            refreshing={fetching}
+            onEndReachedThreshold={1}
+            onEndReached={() => this.refresh(1)}
+          />
+        {/* )} */}
       </View>
     )
   }
@@ -97,8 +83,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEE"
   },
   card: {
-    borderBottomWidth:1,
-    borderBottomColor:"#EEE",
+    borderBottomWidth: 1,
+    borderBottomColor: "#EEE",
     paddingVertical: 10
   },
   carBody: {
@@ -106,12 +92,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   carImg: {
-    flex:1,
+    flex: 1,
     width: 70,
     height: 70
   },
   cardRight: {
-    flex:5,
+    flex: 5,
     paddingHorizontal: 20
   },
   cardTitle: {

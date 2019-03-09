@@ -38,6 +38,7 @@ import Vip from "./containers/Account/Vip"
 import PayRecords from "./containers/Account/PayRecords"
 import Recommend from "./containers/Account/Recommend"
 import UserVerify from "./containers/Account/UserVerify"
+import MessageDetail from "./containers/Account/MessageDetail"
 import Detail from "./components/Detail/Detail"
 import PaperDetail from "./components/Detail/PaperDetail"
 import AddButton from "./components/AddButton/AddButton"
@@ -221,6 +222,11 @@ const MainNavigator = createStackNavigator(
     UserVerify: {
       // 消息
       screen: UserVerify,
+      navigationOptions: mainNavigationOptions
+    },
+    MessageDetail: {
+      // 消息详情
+      screen: MessageDetail,
       navigationOptions: mainNavigationOptions
     },
     

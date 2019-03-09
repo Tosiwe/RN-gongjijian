@@ -54,7 +54,7 @@ const tabs = [
   }
 ]
 
-@connect()
+@connect(({ app }) => ({ ...app }))
 class PaperEntry extends Component {
   constructor(props) {
     super(props)

@@ -32,6 +32,15 @@ export async function saveBookmark(params) {
   }
   
   
+// 取消收藏
+export async function cancelBookmark(params) {
+    return request(`http://118.24.107.177:7001/bookmark/cancel`, {
+        method: "POST",
+        body: params,
+    })
+  }
+  
+  
 // 收藏列表
 export async function getBookmark(params) {
     return request(`http://118.24.107.177:7001/bookmark/list`, {

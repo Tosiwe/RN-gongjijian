@@ -1,7 +1,7 @@
 /* eslint-disable react/prefer-stateless-function */
 // native
 import React, { Component } from "react"
-import { View, StyleSheet, Image } from "react-native"
+import { View, StyleSheet, Image,TouchableWithoutFeedback ,Linking} from "react-native"
 import { Carousel } from "@ant-design/react-native"
 import { connect } from "react-redux"
 // import { adsList } from "./data"
@@ -16,18 +16,12 @@ class Ads extends Component {
     }
   }
 
-  componentDidMount = () => {
-    this.props.dispatch({
-      type: "app/bannerList",
-      callback: res => {
-        if (res.msg === "OK") {
-          this.setState({
-            list: res.result
-          })
-        }
-      }
-    })
-  };
+  onOpen=(url)=>{
+    const {isAds}= this.props
+    if(isAds){
+      Linking.openURL(url).catch(err => console.error('An error occurred', err))
+    }
+  }
 
   render() {
     const {data}= this.props
@@ -42,7 +36,7 @@ class Ads extends Component {
       >
         {imgList.length ? (
           imgList.map(item => (
-            <View style={styles.containerHorizontal} key={Math.random()}>
+            <TouchableWithoutFeedback onPress={()=>this.onOpen(item.link)} style={styles.containerHorizontal} key={Math.random()}>
               <Image
                 style={styles.item}
                 imageStyle={{ borderRadius: 20 }}
@@ -50,7 +44,7 @@ class Ads extends Component {
                   uri: item.url
                 }}
               />
-            </View>
+            </TouchableWithoutFeedback>
           ))
         ) : (
           <Image

@@ -31,12 +31,15 @@ const SERVER = {
   project: "项目名称"
 }
 
-@connect()
+@connect(({ app }) => ({ ...app }))
 class FormInfo extends Component {
   constructor(props) {
     super(props)
     this.state = {
       animating: false,
+      tip:"发布",
+
+
       params: {
         title: "",
         desc: "",
@@ -91,7 +94,7 @@ class FormInfo extends Component {
 
   onSave = () => {
     if (this.isLegal()) {
-      this.setState({ animating: true })
+      this.setState({ animating: true,tip:"保存" })
       getPosition({ ...this })
         .then(result => {
           if (result.isSuccess) {
@@ -127,7 +130,7 @@ class FormInfo extends Component {
 
   onPublish = () => {
     if (this.isLegal()) {
-      this.setState({ animating: true })
+      this.setState({ animating: true,tip:"发布" })
       getPosition({ ...this })
         .then(result => {
           if (result.isSuccess) {
@@ -168,6 +171,7 @@ class FormInfo extends Component {
     const { name, ids } = this.props.navigation.state.params
     const id = ids.classifyId
     const sid = ids.subClassifyId
+    const {tip} = this.state
     // 选择发布分类
     return (
       <ScrollView
@@ -179,6 +183,7 @@ class FormInfo extends Component {
       >
         <ActivityIndicator
           animating={this.state.animating}
+          text={`正在${tip}`}
           toast
           size="small"
         />

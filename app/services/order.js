@@ -58,3 +58,11 @@ export async function createOrderAttach(params) {
         body: params,
     })
   }
+
+// order list
+export async function orderRecordQuery(params) {
+    return request(`http://118.24.107.177:7001/order/record/query`, {
+        method: "POST",
+        body: params,
+    })
+  }

@@ -2,8 +2,8 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import { StyleSheet, View, FlatList, Text, Image } from "react-native"
-import { Card } from "@ant-design/react-native"
+import { StyleSheet, View, FlatList, } from "react-native"
+import ListItem from "../../components/ListIem/ListItem"
 
 @connect(({ app }) => ({ ...app }))
 class MyLike extends Component {
@@ -51,25 +51,7 @@ class MyLike extends Component {
     this.getBookmark(pn)
   };
 
-  renderItem = ({ item }) => (
-    <Card style={styles.card} full>
-      <Card.Body>
-        <View style={styles.carBody}>
-        <Image
-            resizeMode="contain"
-            style={styles.carImg}
-            source={item.picture1 ? {uri:item.picture1}:require("../../containers/img/img_logo.png")}
-          />
-          <View style={styles.cardRight}>
-            <Text style={styles.cardTitle}>{item.title}</Text>
-            <Text style={styles.cardDes} ellipsizeMode="tail" numberOfLines={2}>
-              {item.desc}
-            </Text>
-          </View>
-        </View>
-      </Card.Body>
-    </Card>
-  );
+  renderItem = ({ item }) =><View style={{paddingHorizontal:10}}><ListItem data={item}/></View> ;
 
   render() {
     const { likeList, pageNum } = this.state
