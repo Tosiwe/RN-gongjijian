@@ -68,10 +68,35 @@ class BaseInfo extends Component {
           </View>
         )
       }
+
+      if (subClassifyId === "talent") {
+        return (
+          <View style={styles.row}>
+            <Td label="人才名称" text={data.extraName || "-"} />
+          </View>
+        )
+      }
+
+      if (subClassifyId === "team") {
+        return (
+          <View style={styles.row}>
+            <Td label="施工队名称" text={data.extraName || "-"} />
+          </View>
+        )
+      }
+
+      if (subClassifyId === "project") {
+        return (
+          <View style={styles.row}>
+            <Td label="项目名称" text={data.extraName || "-"} />
+          </View>
+        )
+      }
+      if (subClassifyId === "rent"||subClassifyId === "material"){
       return (
         <View>
           <View style={styles.row}>
-            <Td label="设备名称" text={data.extraName || "-"} />
+            <Td label={`${subClassifyId ==='material'?'材料':'设备'}名称`} text={data.extraName || "-"} />
             <Td label="品牌" text={data.extraBrand || "-"} />
           </View>
           <View style={styles.row}>
@@ -82,7 +107,8 @@ class BaseInfo extends Component {
             <Td label="租赁价格" text={`${data.extraPrice}元` || "-"} />
           </View>
         </View>
-      )
+      )}
+      return null
     }
 
     return (

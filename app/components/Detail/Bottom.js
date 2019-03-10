@@ -11,11 +11,7 @@ import {
   PermissionsAndroid,
   Clipboard
 } from "react-native"
-import {
-  Modal,
-  Button,
-  Toast,
-} from "@ant-design/react-native"
+import { Modal, Button, Toast } from "@ant-design/react-native"
 import * as wechat from "react-native-wechat"
 import { connect } from "react-redux"
 import moment from "moment"
@@ -36,7 +32,7 @@ class Detail extends Component {
     this.state = {
       hasPaied: false,
       collected: false,
-      time: 0,
+      time: 0
     }
   }
 
@@ -104,7 +100,7 @@ class Detail extends Component {
             key: data.fileKey
           },
           callback: res => {
-            this.downloadFile(res.result.url, data)
+            this.downloadFile(res.result, data)
             this.props.dispatch({
               type: "app/downloadPaper",
               payload: {
@@ -180,7 +176,7 @@ class Detail extends Component {
 
   showPayModal = name => {
     const { hasPaied } = this.state
-    const { data = {} ,onRefresh} = this.props
+    const { data = {}, onRefresh } = this.props
 
     if (hasPaied) {
       if (name === "phone") {
@@ -192,7 +188,7 @@ class Detail extends Component {
             key: data.fileKey
           },
           callback: res => {
-            this.downloadFile(res.result.url, data)
+            this.downloadFile(res.result, data)
 
             this.props.dispatch({
               type: "app/downloadPaper",
@@ -204,7 +200,7 @@ class Detail extends Component {
               },
               callback: response => {
                 console.log(response)
-                 onRefresh&&onRefresh(false)
+                onRefresh && onRefresh(false)
               }
             })
           }
@@ -264,20 +260,41 @@ class Detail extends Component {
     }
   };
 
-  wechatShare = data => {
-    wechat
+  wechatShare = (data, type) => {
+    if (type === "img") {
+      wechat
+        .isWXAppInstalled()
+        .then(isInstalled => {
+          if (isInstalled) {
+            wechat
+              .shareToSession({
+                type: "imageFile",
+                title: data.title,
+                description: data.desc,
+                mediaTagName: "图纸",
+                // thumbImage: 'https://tvax4.sinaimg.cn/crop.0.0.736.736.180/62fc3de5ly8fu6xizfsmhj20kg0kgtbh.jpg',
+                imageUrl: data.path
+                // fileExtension:'.jpg'
+              })
+              .catch(error => {
+                Toast.info(error.message)
+              })
+          } else {
+            Toast.info("请安装微信")
+          }
+        })
+        .catch(error => {
+          console.log(error)
+        })
+    }else{
+      wechat
       .isWXAppInstalled()
       .then(isInstalled => {
         if (isInstalled) {
           wechat
             .shareToSession({
-              type: "imageFile",
-              title: data.title,
-              description: data.desc,
-              mediaTagName: "email signature",
-              // thumbImage: 'https://tvax4.sinaimg.cn/crop.0.0.736.736.180/62fc3de5ly8fu6xizfsmhj20kg0kgtbh.jpg',
-              imageUrl: data.path
-              // fileExtension:'.jpg'
+              type: "text",
+              description: data.path,
             })
             .catch(error => {
               Toast.info(error.message)
@@ -289,18 +306,31 @@ class Detail extends Component {
       .catch(error => {
         console.log(error)
       })
+    }
   };
 
-  share = da => {
-    Modal.alert("分享", "将文件分享到微信", [
-      {
-        text: "取消"
-      },
-      {
-        text: "确认",
-        onPress: () => this.wechatShare(da)
-      }
-    ])
+  share = (da, type) => {
+    if (type === "img") {
+      Modal.alert("分享", "将文件分享到微信", [
+        {
+          text: "取消"
+        },
+        {
+          text: "去分享",
+          onPress: () => this.wechatShare(da, type)
+        }
+      ])
+    } else {
+      Modal.alert("分享链接到微信", da.path, [
+        {
+          text: "取消"
+        },
+        {
+          text: "去分享",
+          onPress: () => this.wechatShare(da, type)
+        }
+      ])
+    }
   };
 
   copy = txt => {
@@ -309,18 +339,24 @@ class Detail extends Component {
   };
 
   /* 下载文件 */
-  downloadFile(formUrl, data) {
-    const {onRefresh}= this.props
-    onRefresh&&onRefresh(true)
+  downloadFile(response, data) {
+    const formUrl = response.url
+    const { key } = response
+    const isPic = key.include("jpg") || key.include("png")
+    const { onRefresh } = this.props
+    onRefresh && onRefresh(true)
     // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
     // 图片
-    const downloadDest = `${RNFS.MainBundlePath ||
-      RNFS.DocumentDirectoryPath}/${Math.random() * 1000}.jpg`
+
+    const downloadDest = isPic
+      ? `${RNFS.MainBundlePath || RNFS.DocumentDirectoryPath}/${Math.random() *
+          1000}.jpg`
+      : `${RNFS.MainBundlePath}/${Math.random() * 1000}.zip`
     // const formUrl =
     //   "http://img.kaiyanapp.com/c7b46c492261a7c19fa880802afe93b3.png?imageMogr2/quality/60/format/jpg"
 
     // 文件
-    // const downloadDest = `${RNFS.MainBundlePath}/${((Math.random() * 1000))}.zip`;
+
     // const formUrl = 'http://files.cnblogs.com/zhuqil/UIWebViewDemo.zip';
 
     const options = {
@@ -331,13 +367,6 @@ class Detail extends Component {
         console.log("begin", res)
         console.log("contentLength:", res.contentLength / 1024 / 1024, "M")
       }
-      // progress: res => {
-      // const pro = res.bytesWritten / res.contentLength
-
-      // this.setState({
-      //   progressNum: pro
-      // })
-      // }
     }
     try {
       const ret = RNFS.downloadFile(options)
@@ -350,33 +379,38 @@ class Detail extends Component {
           const grand = this.requestExternalStoragePermission()
 
           if (grand) {
-            CameraRoll.saveToCameraRoll(path)
-              .then(() => {
-                const da = { path, ...data }
-                onRefresh&&onRefresh(false)
-                Toast.info(
-                  "保存成功，请在相册中查看",
-                  1,
-                  () => this.share(da),
-                  false
-                )
-                // Toast.info("保存成功，请在相册中查看")
-              })
-              .catch(e => {
-                 onRefresh&&onRefresh(false)
+            if (isPic) {
+              CameraRoll.saveToCameraRoll(path)
+                .then(() => {
+                  const da = { path, ...data }
+                  onRefresh && onRefresh(false)
+                  Toast.info(
+                    "保存成功，请在相册中查看",
+                    1,
+                    () => this.share(da, "img"),
+                    false
+                  )
+                  // Toast.info("保存成功，请在相册中查看")
+                })
+                .catch(e => {
+                  onRefresh && onRefresh(false)
 
-                Toast.info(`保存失败！\n${e}`)
-              })
+                  Toast.info(`保存失败！\n${e}`)
+                })
+            } else {
+              const da = { path: formUrl, ...data }
+              Toast.info("下载完成", 1, () => this.share(da, "file"), false)
+            }
           }
           // 例如保存图片
         })
         .catch(err => {
-           onRefresh&&onRefresh(false)
+          onRefresh && onRefresh(false)
 
           console.log("err", err)
         })
     } catch (e) {
-       onRefresh&&onRefresh(false)
+      onRefresh && onRefresh(false)
 
       console.log(e)
     }

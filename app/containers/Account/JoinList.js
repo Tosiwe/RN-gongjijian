@@ -27,18 +27,19 @@ class JoinList extends Component {
   componentWillReceiveProps(nextProps) {
     const { settleList: nextSettleList } = nextProps
 
-    if(nextSettleList&&nextSettleList.length){
-        this.setState({ settleList: nextSettleList })
-      }
+    if (nextSettleList && nextSettleList.length) {
+      this.setState({ settleList: nextSettleList })
+    }
   }
 
   ToSettle = () => {
     this.props.dispatch(
       NavigationActions.navigate({
         routeName: "Settle",
-        params: { 
-          name: "入驻行业",
-      }})
+        params: {
+          name: "入驻行业"
+        }
+      })
     )
   };
 
@@ -80,23 +81,28 @@ class JoinList extends Component {
           </TouchableOpacity>
         </View>
         <List style={styles.list}>
-          {settleList.map(item => (
-            <Item
-              key={item.id}
-              thumb={
-                <Image
-                  style={styles.icon}
-                  source={INS_MAP[item.classifyId].icon}
-                />
-              }
-              onPress={() => this.toMyPublish(item)}
-              arrow="horizontal"
-            >
-              {`${INS_MAP[item.classifyId].name}-${
-                INS_MAP[item.subClassifyId].name
-              }`}
-            </Item>
-          ))}
+          {settleList.map(item => {
+            if (item.state === 1) {
+              return (
+                <Item
+                  key={item.id}
+                  thumb={
+                    <Image
+                      style={styles.icon}
+                      source={INS_MAP[item.classifyId].icon}
+                    />
+                  }
+                  onPress={() => this.toMyPublish(item)}
+                  arrow="horizontal"
+                >
+                  {`${INS_MAP[item.classifyId].name}-${
+                    INS_MAP[item.subClassifyId].name
+                  }`}
+                </Item>
+              )
+            }
+            return null
+          })}
         </List>
         <View style={styles.bottom} />
       </View>
