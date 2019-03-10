@@ -73,6 +73,9 @@ class Home extends Component {
         }
       }
     })
+    this.props.dispatch({
+      type: "app/getUserFinance",
+    })
   }
 
   onclose=()=>{

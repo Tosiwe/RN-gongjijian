@@ -95,7 +95,7 @@ class FormInfo extends Component {
   onSave = () => {
     if (this.isLegal()) {
       this.setState({ animating: true,tip:"保存" })
-      getPosition({ ...this })
+      getPosition({ ...this },Toast)
         .then(result => {
           if (result.isSuccess) {
             this.state.params = result.params
@@ -131,7 +131,7 @@ class FormInfo extends Component {
   onPublish = () => {
     if (this.isLegal()) {
       this.setState({ animating: true,tip:"发布" })
-      getPosition({ ...this })
+      getPosition({ ...this },Toast)
         .then(result => {
           if (result.isSuccess) {
             this.state.params = result.params

@@ -13,7 +13,6 @@ import {
 import { Tabs, Toast } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import { screenWidth } from "../../styles/common"
-import { getPosition } from "../../utils/utils"
 
 const tabs = [
   {

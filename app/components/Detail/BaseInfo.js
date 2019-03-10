@@ -47,9 +47,9 @@ class BaseInfo extends Component {
     )
 
     const form = () => {
-      const { classifyId, type } = data
+      const { classifyId, type, subClassifyId } = data
 
-      if (type === 0 || classifyId === "company") {
+      if (type === 0 || subClassifyId === "company") {
         return null
       }
 

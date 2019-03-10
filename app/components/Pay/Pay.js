@@ -102,7 +102,7 @@ export default class App extends Component {
     if (data.type === "vip") {
       payload.type = data.vip
     } else {
-      payload.id = data.id
+      payload.sourceId = data.id
     }
 
     this.props.dispatch({
@@ -136,7 +136,6 @@ export default class App extends Component {
         },
         callback: res => {
           if (res.msg === "OK") {
-            Toast.info("order/recharge/create 成功")
             this.state.orderId = res.result.id
             resole(res.result.data)
           }

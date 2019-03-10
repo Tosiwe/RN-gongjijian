@@ -1,7 +1,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import { StyleSheet, View,TouchableOpacity ,Text} from "react-native"
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native"
 import LocationBtn from "../../components/LocationBtn/LocationBtn"
 
 // import { NavigationActions } from 'react-navigation'
@@ -13,11 +13,15 @@ import PaperEntry from "./PaperEntry"
 
 @connect()
 class Entry extends Component {
-  static navigationOptions = ({ navigation }) => ({
-    headerRight: (
-      <LocationBtn  />
-    )
-  });
+  static navigationOptions = ({ navigation }) => {
+    if (navigation.state.params.id !== "download") {
+      return {
+        headerRight: <LocationBtn />
+      }
+    } 
+      return null
+    
+  };
 
   constructor(props) {
     super(props)

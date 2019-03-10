@@ -28,12 +28,25 @@ class RegisterEntry extends Component {
       params: {
         distance: 0,
         classifyId: props.id
-      }
+      },
+      geoCode: {}
+
     }
   }
 
   componentDidMount() {
     this.getInfoList()
+  }
+
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      JSON.stringify(this.state.geoCode) !== JSON.stringify(nextProps.geoCode)
+    ) {
+      this.state.geoCode = nextProps.geoCode
+      this.setState({loading:true})
+      this.getInfoList(1,nextProps.geoCode)
+    }
   }
 
   onPressItem = item => {
@@ -61,10 +74,10 @@ class RegisterEntry extends Component {
     </TouchableOpacity>
   );
 
-  getInfoList = (pn = 1) => {
+  getInfoList = (pn = 1,geoCode) => {
     const that = { ...this }
 
-    getPosition(that)
+    getPosition(that,Toast,geoCode)
       .then(result => {
         if (result.isSuccess) {
           const { province, city, ...params } = result.params
@@ -75,7 +88,7 @@ class RegisterEntry extends Component {
           if (params.adcode === "000000") {
             delete params.adcode
           } else {
-            params.adcode = Number(params.adcode.substring(0, 2))
+            params.adcode = Number(params.shortAdcode||params.adcode.substring(0, 2))
           }
           this.state.params = params
           console.log("getInfoList 注册资质", params)

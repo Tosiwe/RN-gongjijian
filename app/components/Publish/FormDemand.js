@@ -78,7 +78,7 @@ class FormDemand extends Component {
     if (this.isLegal()) {
       this.setState({ animating: true , tip:"保存"});
 
-      getPosition({ ...this })
+      getPosition({ ...this },Toast)
         .then(result => {
           if (result.isSuccess) {
             this.state.params = result.params;

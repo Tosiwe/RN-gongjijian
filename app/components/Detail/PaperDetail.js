@@ -2,7 +2,7 @@
 import React, { Component } from "react"
 import { StyleSheet, View, ScrollView, Text } from "react-native"
 import { connect } from "react-redux"
-
+import {ActivityIndicator} from "@ant-design/react-native"
 import Bottom from "./Bottom"
 
 import { statusBarHeight } from "../../styles/common"
@@ -13,20 +13,15 @@ class PaperDetail extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      paperPrice: "-"
+      paperPrice: "-",
+      refreshing:false
     }
   }
 
-  componentDidMount() {
-    // this.props.dispatch({
-    //   type: "app/getPriceList",
-    //   callback: res => {
-    //     if (res.msg === "OK") {
-    //       this.setState({ paperPrice: res.result.paper })
-    //     }
-    //   }
-    // })
+  onRefresh=(refreshing)=>{
+    this.setState({refreshing})
   }
+
 
   render() {
     const { data = {}, type = "paper" } = this.props.navigation.state.params
@@ -67,9 +62,15 @@ class PaperDetail extends Component {
             </View>
             <Text style={styles.detailText}>{data.desc || "-"}</Text>
           </View>
+          <ActivityIndicator
+          animating={this.state.refreshing}
+          text="请求中..."
+          toast
+          size="small"
+        />
           <View style={[styles.row, styles.bottomRow]} />
         </ScrollView>
-        <Bottom type={type} data={data} />
+        <Bottom type={type} data={data} onRefresh={this.onRefresh} />
       </View>
     )
   }

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import React, { Component } from "react"
 import {
   StyleSheet,
@@ -7,9 +8,14 @@ import {
   Text,
   Linking,
   CameraRoll,
-  PermissionsAndroid
+  PermissionsAndroid,
+  Clipboard
 } from "react-native"
-import { Modal, Button, Toast } from "@ant-design/react-native"
+import {
+  Modal,
+  Button,
+  Toast,
+} from "@ant-design/react-native"
 import * as wechat from "react-native-wechat"
 import { connect } from "react-redux"
 import moment from "moment"
@@ -23,7 +29,6 @@ const use = {
   charge: "充值"
 }
 
-const time = 0
 @connect(({ app }) => ({ ...app }))
 class Detail extends Component {
   constructor(props) {
@@ -31,7 +36,7 @@ class Detail extends Component {
     this.state = {
       hasPaied: false,
       collected: false,
-      time: 0
+      time: 0,
     }
   }
 
@@ -99,7 +104,7 @@ class Detail extends Component {
             key: data.fileKey
           },
           callback: res => {
-            this.downloadFile(res.result.url,data)
+            this.downloadFile(res.result.url, data)
             this.props.dispatch({
               type: "app/downloadPaper",
               payload: {
@@ -109,6 +114,7 @@ class Detail extends Component {
                 fileName: data.fileKey
               },
               callback: response => {
+                console.log(response)
                 // TODO:下载附件
               }
             })
@@ -141,7 +147,7 @@ class Detail extends Component {
           this.showPayModal(name)
         } else {
           const map = {
-            vip: "app/createVipOrder",
+            // vip: "app/createVipOrder",
             contact: "app/createOrderContact",
             paper: "app/createOrderPaper",
             attach: "app/createOrderAttach"
@@ -174,7 +180,7 @@ class Detail extends Component {
 
   showPayModal = name => {
     const { hasPaied } = this.state
-    const { data = {} } = this.props
+    const { data = {} ,onRefresh} = this.props
 
     if (hasPaied) {
       if (name === "phone") {
@@ -186,7 +192,7 @@ class Detail extends Component {
             key: data.fileKey
           },
           callback: res => {
-            this.downloadFile(res.result.url,data)
+            this.downloadFile(res.result.url, data)
 
             this.props.dispatch({
               type: "app/downloadPaper",
@@ -197,7 +203,8 @@ class Detail extends Component {
                 fileName: data.fileKey
               },
               callback: response => {
-                // TODO:下载附件
+                console.log(response)
+                 onRefresh&&onRefresh(false)
               }
             })
           }
@@ -257,47 +264,54 @@ class Detail extends Component {
     }
   };
 
-
-  wechatShare=(data)=>{
-    wechat.isWXAppInstalled()
-    .then((isInstalled) => {
+  wechatShare = data => {
+    wechat
+      .isWXAppInstalled()
+      .then(isInstalled => {
         if (isInstalled) {
-          wechat.shareToSession({
-                type: 'imageFile',
-                title:data.title,
-                description: data.desc,
-                mediaTagName: 'email signature',
-                // thumbImage: 'https://tvax4.sinaimg.cn/crop.0.0.736.736.180/62fc3de5ly8fu6xizfsmhj20kg0kgtbh.jpg',
-                imageUrl: data.path,
-                // fileExtension:'.jpg'
+          wechat
+            .shareToSession({
+              type: "imageFile",
+              title: data.title,
+              description: data.desc,
+              mediaTagName: "email signature",
+              // thumbImage: 'https://tvax4.sinaimg.cn/crop.0.0.736.736.180/62fc3de5ly8fu6xizfsmhj20kg0kgtbh.jpg',
+              imageUrl: data.path
+              // fileExtension:'.jpg'
             })
-                .catch((error) => {
-                    Toast.info(error.message)
-                })
+            .catch(error => {
+              Toast.info(error.message)
+            })
         } else {
-            Toast.info('请安装微信')
+          Toast.info("请安装微信")
         }
-    }).catch(error=>{
-      console.log(error)
-    })
-  }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  };
 
-  
-
-  share=(da)=>{
+  share = da => {
     Modal.alert("分享", "将文件分享到微信", [
       {
         text: "取消"
       },
       {
         text: "确认",
-        onPress: () =>  this.wechatShare(da)
+        onPress: () => this.wechatShare(da)
       }
     ])
-  }
+  };
+
+  copy = txt => {
+    Clipboard.setString(txt)
+    Toast.info("复制成功", 1, null, false)
+  };
 
   /* 下载文件 */
   downloadFile(formUrl, data) {
+    const {onRefresh}= this.props
+    onRefresh&&onRefresh(true)
     // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
     // 图片
     const downloadDest = `${RNFS.MainBundlePath ||
@@ -309,18 +323,6 @@ class Detail extends Component {
     // const downloadDest = `${RNFS.MainBundlePath}/${((Math.random() * 1000))}.zip`;
     // const formUrl = 'http://files.cnblogs.com/zhuqil/UIWebViewDemo.zip';
 
-    // 视频
-    // const downloadDest = `${RNFS.MainBundlePath}/${((Math.random() * 1000))}.mp4`;
-    // http://gslb.miaopai.com/stream/SnY~bbkqbi2uLEBMXHxGqnNKqyiG9ub8.mp4?vend=miaopai&
-    // https://gslb.miaopai.com/stream/BNaEYOL-tEwSrAiYBnPDR03dDlFavoWD.mp4?vend=miaopai&
-    // const formUrl = 'https://gslb.miaopai.com/stream/9Q5ADAp2v5NHtQIeQT7t461VkNPxvC2T.mp4?vend=miaopai&';
-
-    // 音频
-    // const downloadDest = `${RNFS.MainBundlePath}/${Math.random() * 1000}.mp3`
-    // // http://wvoice.spriteapp.cn/voice/2015/0902/55e6fc6e4f7b9.mp3
-    // const formUrl =
-    //   "http://wvoice.spriteapp.cn/voice/2015/0818/55d2248309b09.mp3"
-
     const options = {
       fromUrl: formUrl,
       toFile: downloadDest,
@@ -328,13 +330,13 @@ class Detail extends Component {
       begin: res => {
         console.log("begin", res)
         console.log("contentLength:", res.contentLength / 1024 / 1024, "M")
-      },
+      }
       // progress: res => {
-        // const pro = res.bytesWritten / res.contentLength
+      // const pro = res.bytesWritten / res.contentLength
 
-        // this.setState({
-        //   progressNum: pro
-        // })
+      // this.setState({
+      //   progressNum: pro
+      // })
       // }
     }
     try {
@@ -350,25 +352,35 @@ class Detail extends Component {
           if (grand) {
             CameraRoll.saveToCameraRoll(path)
               .then(() => {
-                const da={path,...data}
-                Toast.info("保存成功，请在相册中查看",1,()=>this.share(da),false)
+                const da = { path, ...data }
+                onRefresh&&onRefresh(false)
+                Toast.info(
+                  "保存成功，请在相册中查看",
+                  1,
+                  () => this.share(da),
+                  false
+                )
                 // Toast.info("保存成功，请在相册中查看")
               })
               .catch(e => {
+                 onRefresh&&onRefresh(false)
+
                 Toast.info(`保存失败！\n${e}`)
               })
           }
           // 例如保存图片
         })
         .catch(err => {
+           onRefresh&&onRefresh(false)
+
           console.log("err", err)
         })
     } catch (e) {
+       onRefresh&&onRefresh(false)
+
       console.log(e)
     }
   }
-
-
 
   render() {
     const { type, data, userFinance = {} } = this.props
@@ -395,11 +407,14 @@ class Detail extends Component {
         >
           <View style={{ paddingVertical: 20 }}>
             <Text
-              style={{ textAlign: "center" }}
-            >{`${ModalTitle}:${content}`}</Text>
+              onLongPress={() => this.copy(content)}
+              style={{ textAlign: "center", fontSize: 16, marginVertical: 10 }}
+            >
+              {content}
+            </Text>
             {userFinance.vip && (
-              <Text style={{ textAlign: "center" }}>
-                尊贵的VIP，您可以无限次查看联系方式
+              <Text style={{ textAlign: "center", marginTop: 10 }}>
+                VIP免费查看
               </Text>
             )}
           </View>

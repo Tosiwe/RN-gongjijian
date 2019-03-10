@@ -57,11 +57,11 @@ class LocationBtn extends Component {
 
   onChangeArea = v => {
     const { onChange,cols,geoCode } = this.props
-    const provice = v[0]
+    const province = v[0]
     const city = v[1]
     const label = []
     area.forEach(item => {
-      if (item.value === provice) {
+      if (item.value === province) {
         label.push(item.label)
         item.children.forEach(i => {
           if (i.value === city) {
@@ -75,11 +75,11 @@ class LocationBtn extends Component {
     }
     if(cols!==1){
       const code = {...geoCode}
-      code.provice = label[0]
+      code.province = label[0]
       code.city = label[1]
       code.shortAdcode = v[0]
       this.props.dispatch({
-        type:"app/updateState",
+        type:"app/updateGeo",
         payload:{
           geoCode:code
         }

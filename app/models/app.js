@@ -27,6 +27,10 @@ export default {
       yield put(createAction("updateState")({ login, loading: false }))
     },
 
+    *updateGeo({payload}, {  put }) {
+      yield put(createAction("updateState")({geoCode: payload.geoCode, loading: false }))
+    },
+
     // 登陆
     *login({ payload }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))

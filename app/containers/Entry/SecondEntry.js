@@ -29,7 +29,8 @@ class SecondEntry extends Component {
       params: {
         distance: 0,
         subClassifyId: props.id
-      }
+      },
+      geoCode:{}
     }
   }
 
@@ -37,10 +38,21 @@ class SecondEntry extends Component {
     this.getInfoList()
   }
 
-  getInfoList = (pn = 1) => {
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      JSON.stringify(this.state.geoCode) !== JSON.stringify(nextProps.geoCode)
+    ) {
+      this.state.geoCode = nextProps.geoCode
+      this.setState({loading:true})
+      this.getInfoList(1,nextProps.geoCode)
+    }
+  }
+
+  getInfoList = (pn = 1,geoCode) => {
     const that = { ...this }
 
-    getPosition(that)
+    getPosition(that,Toast,geoCode)
       .then(result => {
         if (result.isSuccess) {
           const params = { ...result.params }
@@ -51,7 +63,7 @@ class SecondEntry extends Component {
           if (params.adcode === "000000") {
             delete params.adcode
           } else {
-            params.adcode = Number(params.adcode.substring(0, 2))
+            params.adcode = Number(params.shortAdcode||params.adcode.substring(0, 2))
           }
           this.state.params = result.params
           console.log("getInfoList 二手", result.params)

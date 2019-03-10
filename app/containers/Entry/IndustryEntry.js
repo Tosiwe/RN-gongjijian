@@ -10,7 +10,7 @@ import {
   ScrollView,
   RefreshControl
 } from "react-native"
-import { List, ActivityIndicator } from "@ant-design/react-native"
+import { List, ActivityIndicator ,Toast} from "@ant-design/react-native"
 // import {NavigationActions} from "react-navigation"
 import { screenHeight, primaryColor } from "../../styles/common"
 import ListItem from "../../components/ListIem/ListItem"
@@ -30,21 +30,38 @@ class IndustryEntry extends Component {
       params: {
         distance: 0,
         classifyId: props.id
-      }
+      },
+      geoCode: {}
     }
   }
 
   componentDidMount() {
     this.getDemandList()
     // this.getInfoList()
-
+    this.state.geoCode = this.props.geoCode
     this.setState({ activeKey: this.props.id })
   }
 
-  getDemandList = (pn = 1) => {
+  componentWillReceiveProps(nextProps) {
+    const { activeKey } = this.state
+    const { id } = this.props
+    if (
+      JSON.stringify(this.state.geoCode) !== JSON.stringify(nextProps.geoCode)
+    ) {
+      this.state.geoCode = nextProps.geoCode
+      this.setState({isRefreshing:true})
+      if (activeKey === id) {
+        this.getDemandList(1,nextProps.geoCode)
+      } else {
+        this.getInfoList(1,nextProps.geoCode)
+      }
+    }
+  }
+
+  getDemandList = (pn = 1,geoCode) => {
     delete this.state.params.subClassifyId
     const that = { ...this }
-    getPosition(that)
+    getPosition(that,Toast,geoCode)
       .then(result => {
         if (result.isSuccess) {
           const { province, city, ...params } = result.params
@@ -52,18 +69,20 @@ class IndustryEntry extends Component {
           params.lat = params.latitude
           delete params.longitude
           delete params.latitude
-          if(params.adcode==='000000'){
+          if (params.adcode === "000000") {
             delete params.adcode
-        } else{
-          params.adcode = Number(params.shortAdcode ||params.adcode.substring(0, 2))
-        }
+          } else {
+            params.adcode = Number(
+              params.shortAdcode || params.adcode.substring(0, 2)
+            )
+          }
           this.state.params = params
           console.log("getDemandList", params)
           this.props.dispatch({
             type: "app/getDemandListLoc",
             payload: params,
             callback: res => {
-              this.setState({ loading: false,isRefreshing:false })
+              this.setState({ loading: false, isRefreshing: false })
 
               if (res.msg === "OK") {
                 let demandList = []
@@ -81,18 +100,18 @@ class IndustryEntry extends Component {
             }
           })
         } else {
-          this.setState({ loading: false,isRefreshing:false })
+          this.setState({ loading: false, isRefreshing: false })
         }
       })
       .catch(error => {
-        this.setState({ loading: false,isRefreshing:false })
+        this.setState({ loading: false, isRefreshing: false })
       })
   };
 
-  getInfoList = (pn = 1) => {
+  getInfoList = (pn = 1,geoCode) => {
     const that = { ...this }
 
-    getPosition(that)
+    getPosition(that,Toast,geoCode)
       .then(result => {
         if (result.isSuccess) {
           const { province, city, ...params } = result.params
@@ -100,18 +119,20 @@ class IndustryEntry extends Component {
           params.lat = params.latitude
           delete params.longitude
           delete params.latitude
-          if(params.adcode==='000000'){
+          if (params.adcode === "000000") {
             delete params.adcode
-        } else{
-          params.adcode = Number(params.shortAdcode||params.adcode.substring(0, 2))
-        }
+          } else {
+            params.adcode = Number(
+              params.shortAdcode || params.adcode.substring(0, 2)
+            )
+          }
           this.state.params = params
           console.log("getInfoList", params)
           this.props.dispatch({
             type: "app/getInfoListLoc",
             payload: params,
             callback: res => {
-              this.setState({ loading: false ,isRefreshing:false})
+              this.setState({ loading: false, isRefreshing: false })
               if (res.msg === "OK") {
                 let infoList = []
                 if (pn !== 1) {
@@ -129,22 +150,26 @@ class IndustryEntry extends Component {
             }
           })
         } else {
-          this.setState({ loading: false ,isRefreshing:false})
+          this.setState({ loading: false, isRefreshing: false })
         }
       })
       .catch(error => {
-        this.setState({ loading: false ,isRefreshing:false})
+        this.setState({ loading: false, isRefreshing: false })
       })
   };
 
-  renderItem = ({ item }) => <View style={{paddingHorizontal:5}}><ListItem data={item} /></View> ;
+  renderItem = ({ item }) => (
+    <View style={{ paddingHorizontal: 5 }}>
+      <ListItem data={item} />
+    </View>
+  );
 
   // 左侧点击
   onPress = (key, refresh) => {
     const { id } = this.props
-    if(refresh){
-      this.setState({isRefreshing:true})
-    }else{
+    if (refresh) {
+      this.setState({ isRefreshing: true })
+    } else {
       this.setState({ activeKey: key, loading: true })
     }
 
@@ -273,21 +298,23 @@ class IndustryEntry extends Component {
         <View style={styles.right}>
           <ActivityIndicator animating={loading} />
           {list.length ? (
-            <FlatList 
-
-            refreshControl={
-              <RefreshControl
+            <FlatList
+              refreshControl={
+                <RefreshControl
                   refreshing={this.state.isRefreshing}
-                  onRefresh={()=>this.onPress(activeKey,true)}
-              />
-          }
-           style={{flex:1}} data={list} renderItem={this.renderItem} />
+                  onRefresh={() => this.onPress(activeKey, true)}
+                />
+              }
+              style={{ flex: 1 }}
+              data={list}
+              renderItem={this.renderItem}
+            />
           ) : (
             <Text style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}>
               暂无数据
             </Text>
           )}
-          <View style={{height:50}} />
+          <View style={{ height: 50 }} />
         </View>
       </View>
     )
@@ -298,7 +325,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF",
     flexDirection: "row",
-    flex:1
+    flex: 1
   },
   title: {
     fontSize: 12,
@@ -316,7 +343,7 @@ const styles = StyleSheet.create({
   right: {
     flex: 1,
     // height: screenHeight,
-    paddingVertical: 20,
+    paddingVertical: 20
   },
   item: {
     backgroundColor: "#EFEFEF",

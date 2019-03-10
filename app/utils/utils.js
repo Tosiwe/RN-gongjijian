@@ -20,7 +20,7 @@ const requestExternalStoragePermission = async () => {
   }
 }
 
-export const getPosition = (that, Toast) =>
+export const getPosition = (that, Toast,geoCode) =>
   new Promise((resole, reject) => {
     const grand = requestExternalStoragePermission()
     if (!grand) {
@@ -31,7 +31,12 @@ export const getPosition = (that, Toast) =>
     const { params } = that.state
 
     if(that.props.geoCode){
-      const newParams = { ...params, ...that.props.geoCode }
+      let newParams={}
+      if(geoCode){
+        newParams= { ...params, ...geoCode }
+      }else{
+         newParams = { ...params, ...that.props.geoCode }
+      }
       // newParams.adcode = Number(newParams.adcode.substring(0,2))
       // this.state.params = newParams;
       resole({ isSuccess: true, params: newParams })
