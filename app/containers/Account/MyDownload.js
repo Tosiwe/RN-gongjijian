@@ -3,6 +3,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 
 import { StyleSheet, View, FlatList } from "react-native"
+import { Modal,Toast } from "@ant-design/react-native"
 import ListItem from "../../components/ListIem/ListItem"
 
 @connect(({ app }) => ({ ...app }))
@@ -19,10 +20,10 @@ class MyDownload extends Component {
   }
 
   componentDidMount() {
-    this.getBookmark()
+    this.getDownList()
   }
 
-  getBookmark = (pn = 1) => {
+  getDownList = (pn = 1) => {
     this.props.dispatch({
       type: "app/getDownList",
       //   payload: {
@@ -47,10 +48,38 @@ class MyDownload extends Component {
   };
 
   refresh = (pn = 1) => {
-    this.getBookmark(pn)
+    this.getDownList(pn)
   };
 
-  renderItem = ({ item }) =><View style={{paddingHorizontal:10}}><ListItem data={item} isDownload/></View> ;
+  remove = data => {
+    Modal.alert("移除", "您确定要移除吗？", [
+      {
+        text: "取消"
+      },
+      {
+        text: "确认",
+        onPress: () => this.delete(data)
+      }
+    ])
+  };
+
+  delete = data => {
+    this.props.dispatch({
+      type: "app/deleteDownload",
+      payload: {
+        id: data.id
+      },
+      callback:res=>{
+        Toast.success("删除成功", 1,  this.refresh(), false)
+      }
+    })
+  };
+
+  renderItem = ({ item }) => (
+    <View style={{ paddingHorizontal: 10 }}>
+      <ListItem data={item} isDownload onRemove={this.remove} />
+    </View>
+  );
 
   render() {
     const { likeList } = this.state
@@ -59,14 +88,14 @@ class MyDownload extends Component {
     return (
       <View style={styles.container}>
         {/* {likeList.length && ( */}
-          <FlatList
-            data={likeList}
-            renderItem={this.renderItem}
-            onRefresh={this.refresh}
-            refreshing={fetching}
-            onEndReachedThreshold={1}
-            onEndReached={() => this.refresh(1)}
-          />
+        <FlatList
+          data={likeList}
+          renderItem={this.renderItem}
+          onRefresh={this.refresh}
+          refreshing={fetching}
+          onEndReachedThreshold={1}
+          onEndReached={() => this.refresh(1)}
+        />
         {/* )} */}
       </View>
     )

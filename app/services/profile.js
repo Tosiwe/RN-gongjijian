@@ -8,6 +8,14 @@ export async function getDownList(params) {
     })
   }
 
+// 获取下载列表
+export async function deleteDownload(params) {
+    return request(`http://118.24.107.177:7001/download/delete`, {
+        method: "POST",
+        body: params,
+    })
+  }
+
 // 获取用户信息
 export async function getProfile() {
     return request(`http://118.24.107.177:7001/profile`, {
@@ -62,6 +70,16 @@ export async function saveHistory(params) {
 // 历史记录
 export async function getHistory(params) {
     return request(`http://118.24.107.177:7001/history/list`, {
+        method: "POST",
+        body: params,
+    })
+  }
+  
+  
+  
+// 清除历史记录
+export async function historyClean(params) {
+    return request(`http://118.24.107.177:7001/history/clean`, {
         method: "POST",
         body: params,
     })

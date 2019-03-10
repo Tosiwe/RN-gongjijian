@@ -36,7 +36,6 @@ export default function request(url, options) {
     if(!auth){
       delete options.headers.Authorization
     }
-
     return (
       fetch(url, options)
         // eslint-disable-next-line consistent-return

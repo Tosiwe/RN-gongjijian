@@ -351,6 +351,16 @@ export default {
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
+    // 获取下载列表
+    *deleteDownload({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(profileService.deleteDownload, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
     // 获取用户信息
     *getProfile({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
@@ -417,6 +427,16 @@ export default {
     *saveHistory({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(profileService.saveHistory, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
+    // 新增历史记录
+    *historyClean({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(profileService.historyClean, payload)
       if (res && callback) {
         callback(res)
       }

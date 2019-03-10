@@ -1,15 +1,25 @@
 /* eslint-disable no-underscore-dangle */
 import React, { Component } from "react"
 import { connect } from "react-redux"
-
-import { StyleSheet, View, FlatList } from "react-native"
+import { Toast } from "@ant-design/react-native"
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  TouchableOpacity,
+  Text
+} from "react-native"
 import ListItem from "../../components/ListIem/ListItem"
 
 @connect(({ app }) => ({ ...app }))
 class MyHistory extends Component {
-  static navigationOptions = {
-    title: "历史记录"
-  };
+  static navigationOptions = ({ navigation }) => ({
+    headerRight: (
+      <TouchableOpacity onPress={() => navigation.state.params.navigatePress()}>
+        <Text style={{ fontSize: 16, marginRight: 20 }}>清空</Text>
+      </TouchableOpacity>
+    )
+  });
 
   constructor(props) {
     super(props)
@@ -20,8 +30,19 @@ class MyHistory extends Component {
   }
 
   componentDidMount() {
+    this.props.navigation.setParams({ navigatePress: this.clear })
+
     this.getBookmark()
   }
+
+  clear = () => {
+    this.props.dispatch({
+      type: "app/historyClean",
+      callback: res => {
+        Toast.success("清空成功", 1, this.getBookmark(), false)
+      }
+    })
+  };
 
   getBookmark = (pn = 1) => {
     this.props.dispatch({
@@ -51,8 +72,11 @@ class MyHistory extends Component {
     this.getBookmark(pn)
   };
 
-  renderItem = ({ item }) =><View style={{paddingHorizontal:10}}><ListItem data={item}/></View> ;
-
+  renderItem = ({ item }) => (
+    <View style={{ paddingHorizontal: 10 }}>
+      <ListItem data={item} />
+    </View>
+  );
 
   render() {
     const { likeList, pageNum } = this.state
@@ -83,8 +107,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#EEE"
   },
   card: {
-    borderBottomWidth:1,
-    borderBottomColor:"#EEE",
+    borderBottomWidth: 1,
+    borderBottomColor: "#EEE",
     paddingVertical: 10
   },
   carBody: {

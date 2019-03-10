@@ -20,8 +20,8 @@ export default class BaseInfo extends Component {
   }
 
   componentDidMount(){
-    const { gepCode={} } = this.props
-    const city = `${gepCode.city}`
+    const { geoCode={} } = this.props
+    const city = `${geoCode.city}`
     this.state.params.city=city
     this.setState({city})
   }

@@ -10,7 +10,7 @@ import {
   PermissionsAndroid
 } from "react-native"
 import { Modal, Button, Toast } from "@ant-design/react-native"
-import WeChat from "react-native-wechat"
+import * as wechat from "react-native-wechat"
 import { connect } from "react-redux"
 import moment from "moment"
 import RNFS from "react-native-fs"
@@ -99,9 +99,7 @@ class Detail extends Component {
             key: data.fileKey
           },
           callback: res => {
-            this.downloadFile(res.result.url)
-            const da ={link:res.result.url, ...data}
-            this.wechatShare(da)
+            this.downloadFile(res.result.url,data)
             this.props.dispatch({
               type: "app/downloadPaper",
               payload: {
@@ -188,9 +186,7 @@ class Detail extends Component {
             key: data.fileKey
           },
           callback: res => {
-            this.downloadFile(res.result.url)
-            const da ={link:res.result.url, ...data}
-            this.wechatShare(da)
+            this.downloadFile(res.result.url,data)
 
             this.props.dispatch({
               type: "app/downloadPaper",
@@ -263,15 +259,17 @@ class Detail extends Component {
 
 
   wechatShare=(data)=>{
-    WeChat.isWXAppInstalled()
+    wechat.isWXAppInstalled()
     .then((isInstalled) => {
         if (isInstalled) {
-            WeChat.shareToSession({
+          wechat.shareToSession({
+                type: 'imageFile',
                 title:data.title,
                 description: data.desc,
-                thumbImage: data.picture1||data.url,
-                type: 'file',
-                webpageUrl: data.link
+                mediaTagName: 'email signature',
+                // thumbImage: 'https://tvax4.sinaimg.cn/crop.0.0.736.736.180/62fc3de5ly8fu6xizfsmhj20kg0kgtbh.jpg',
+                imageUrl: data.path,
+                // fileExtension:'.jpg'
             })
                 .catch((error) => {
                     Toast.info(error.message)
@@ -279,11 +277,27 @@ class Detail extends Component {
         } else {
             Toast.info('请安装微信')
         }
+    }).catch(error=>{
+      console.log(error)
     })
   }
 
+  
+
+  share=(da)=>{
+    Modal.alert("分享", "将文件分享到微信", [
+      {
+        text: "取消"
+      },
+      {
+        text: "确认",
+        onPress: () =>  this.wechatShare(da)
+      }
+    ])
+  }
+
   /* 下载文件 */
-  downloadFile(formUrl, type) {
+  downloadFile(formUrl, data) {
     // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
     // 图片
     const downloadDest = `${RNFS.MainBundlePath ||
@@ -315,13 +329,13 @@ class Detail extends Component {
         console.log("begin", res)
         console.log("contentLength:", res.contentLength / 1024 / 1024, "M")
       },
-      progress: res => {
-        const pro = res.bytesWritten / res.contentLength
+      // progress: res => {
+        // const pro = res.bytesWritten / res.contentLength
 
-        this.setState({
-          progressNum: pro
-        })
-      }
+        // this.setState({
+        //   progressNum: pro
+        // })
+      // }
     }
     try {
       const ret = RNFS.downloadFile(options)
@@ -336,6 +350,8 @@ class Detail extends Component {
           if (grand) {
             CameraRoll.saveToCameraRoll(path)
               .then(() => {
+                // const da={path,...data}
+                // Toast.info("保存成功，请在相册中查看",1,()=>this.share(da),false)
                 Toast.info("保存成功，请在相册中查看")
               })
               .catch(e => {
@@ -351,6 +367,7 @@ class Detail extends Component {
       console.log(e)
     }
   }
+
 
 
   render() {
