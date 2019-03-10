@@ -37,7 +37,14 @@ class LocationBtn extends Component {
   }
 
   getArea = () => {
-    const { name } = this.state
+    const { geoCode } = this.props
+    let name = []
+    if(geoCode){
+      name = [geoCode.city]
+    }else{
+       name  = this.state.name
+    }
+    
     if (name.length < 2) {
       return name[0]
     }
@@ -49,7 +56,7 @@ class LocationBtn extends Component {
   };
 
   onChangeArea = v => {
-    const { onChange } = this.props
+    const { onChange,cols,geoCode } = this.props
     const provice = v[0]
     const city = v[1]
     const label = []
@@ -66,6 +73,19 @@ class LocationBtn extends Component {
     if (onChange) {
       onChange({ code: v, name: label })
     }
+    if(cols!==1){
+      const code = {...geoCode}
+      code.provice = label[0]
+      code.city = label[1]
+      code.shortAdcode = v[0]
+      this.props.dispatch({
+        type:"app/updateState",
+        payload:{
+          geoCode:code
+        }
+      })
+    }
+   
     this.setState({ name: label })
   };
 

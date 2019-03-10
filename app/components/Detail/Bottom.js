@@ -350,9 +350,9 @@ class Detail extends Component {
           if (grand) {
             CameraRoll.saveToCameraRoll(path)
               .then(() => {
-                // const da={path,...data}
-                // Toast.info("保存成功，请在相册中查看",1,()=>this.share(da),false)
-                Toast.info("保存成功，请在相册中查看")
+                const da={path,...data}
+                Toast.info("保存成功，请在相册中查看",1,()=>this.share(da),false)
+                // Toast.info("保存成功，请在相册中查看")
               })
               .catch(e => {
                 Toast.info(`保存失败！\n${e}`)

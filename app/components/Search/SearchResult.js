@@ -55,7 +55,7 @@ class SearchResult extends Component {
       }
 
       if (result.params.adcode !== "000000") {
-        payload.adcode = Number(result.params.adcode.substring(0, 2))
+        payload.adcode = Number(result.params.shortAdcode || result.params.adcode.substring(0, 2))
       }
       if (result.isSuccess) {
         this.props.dispatch({
