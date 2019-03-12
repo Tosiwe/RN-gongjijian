@@ -26,9 +26,9 @@ class CommonFile extends Component {
     // 选择发布分类
     return (
       <View style={styles.wrap}>
-        <Text style={{marginTop:15,marginBottom:5, marginLeft:10}}>营业执照<Text style={{ color: "red" }}>*</Text></Text>
+        <Text style={{marginTop:15,marginBottom:5, marginLeft:15}}><Text style={{ color: "red" }}>*</Text>营业执照</Text>
         <Picker maxLength={1} onChange={v => this.handleInput(v, "bisLicenseUrl")} />
-        <Text style={{marginTop:15,marginBottom:5,marginLeft:10}}>产品图片</Text>
+        <Text style={{marginTop:15,marginBottom:5,marginLeft:15}}>产品图片</Text>
         <Picker maxLength={2} onChange={v => this.handleInput(v, "picture")} />
       </View>
     )

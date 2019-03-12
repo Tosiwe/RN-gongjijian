@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import React, { Component } from "react"
 import { connect } from "react-redux"
-
+import {Modal, Toast} from '@ant-design/react-native'
 import { StyleSheet, View, FlatList, } from "react-native"
 import ListItem from "../../components/ListIem/ListItem"
 
@@ -51,7 +51,31 @@ class MyLike extends Component {
     this.getBookmark(pn)
   };
 
-  renderItem = ({ item }) =><View style={{paddingHorizontal:10}}><ListItem data={item}/></View> ;
+  onRemove = data => {
+    Modal.alert("移除", "您确定要移除吗？", [
+      {
+        text: "取消"
+      },
+      {
+        text: "确认",
+        onPress: () => this.delete(data)
+      }
+    ])
+  };
+
+  delete = data => {
+    this.props.dispatch({
+      type: "app/cancelBookmark",
+      payload: {
+        recordId: data.id
+      },
+      callback:res=>{
+        Toast.success("删除成功", 1,  this.refresh(), false)
+      }
+    })
+  };
+
+  renderItem = ({ item }) =><View style={{paddingHorizontal:10}}><ListItem data={item} isMylike onRemove={this.onRemove}/></View> ;
 
   render() {
     const { likeList, pageNum } = this.state

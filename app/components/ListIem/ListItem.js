@@ -33,7 +33,7 @@ class ListItem extends Component {
   };
 
   render() {
-    const { data, isDownload } = this.props
+    const { data, isDownload,isMylike } = this.props
     return (
       <TouchableOpacity
         style={styles.container}
@@ -52,10 +52,10 @@ class ListItem extends Component {
             />
           </View>
           <View style={styles.right}>
-            <Image
+           {!isMylike&& <Image
               source={INS_MAP[data.classifyId] && INS_MAP[data.classifyId].icon}
               style={styles.icon}
-            />
+            />}
             <Text style={styles.title} ellipsizeMode="tail" numberOfLines={1}>
               {data.title}
             </Text>
@@ -66,9 +66,9 @@ class ListItem extends Component {
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <Text style={{ fontSize: 12 }}>
-                {moment(data.updateTime||data.createTime).format("YYYY-MM-DD HH:mm:ss")}
+                {moment(data.updateTime||data.createTime).format("YYYY-MM-DD")}
               </Text>
-              {!isDownload && (
+              {(!isDownload&&!isMylike) && (
                 <Text
                   style={{ fontSize: 12 }}
                   ellipsizeMode="tail"
@@ -77,9 +77,18 @@ class ListItem extends Component {
                   {data.city || "区域：未知"}
                 </Text>
               )}
+              {(!isDownload&&!isMylike) && (
+                <Text
+                  style={{ fontSize: 12 }}
+                  ellipsizeMode="tail"
+                  numberOfLines={1}
+                >
+                  { data.dist ? (data.dist>1000 ? `${Math.round(data.dist/1000)}公里`:`${Math.round(data.dist)}米`) : "距离：未知"}
+                </Text>
+              )}
             </View>
           </View>
-          {isDownload && (
+          {(isDownload||isMylike) && (
             <View style={styles.extra}>
               <Button type="primary" size="small" onPress={this.remove}>
                 删除
@@ -134,6 +143,7 @@ const styles = StyleSheet.create({
     position: "absolute"
   },
   extra: {
+    marginLeft:10,
     justifyContent: "center"
   }
 })

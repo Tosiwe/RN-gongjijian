@@ -10,17 +10,23 @@ import {
   TouchableOpacity,
   ScrollView
 } from "react-native"
-import { List, InputItem, Toast, Radio } from "@ant-design/react-native"
+import {
+  List,
+  InputItem,
+  Toast,
+  Modal,
+  Button,
+  TextareaItem
+} from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import CommonFile from "./CommonFile"
-
-const { RadioItem } = Radio
 
 @connect(({ app }) => ({ ...app }))
 class SettleForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
+      visible: false,
       params: {}
     }
   }
@@ -35,8 +41,6 @@ class SettleForm extends Component {
     } else if (name === "province" && value.name) {
       // eslint-disable-next-line prefer-destructuring
       newParams[name] = value.name[0]
-    }else if(name==="settleTime"){
-      this.setState({checked:value})
     } else {
       newParams[name] = value
     }
@@ -48,11 +52,15 @@ class SettleForm extends Component {
     const { classifyId, subClassifyId } = this.props.navigation.state.params
 
     if (!params.company) {
-      Toast.info("请输入公司名称")
+      Toast.info("请输入公司名称", 1, null, false)
+      return
+    }
+    if (!params.contact) {
+      Toast.info("请输入联系方式", 1, null, false)
       return
     }
     if (!params.bisLicenseUrl) {
-      Toast.info("请选择营业执照")
+      Toast.info("请选择营业执照", 1, null, false)
       return
     }
 
@@ -64,19 +72,30 @@ class SettleForm extends Component {
       payload: params,
       callback: res => {
         if (res.msg === "OK") {
-          Toast.info("入驻成功！", 1, () => {
-            this.props.dispatch({
-              type: "app/settleList"
-            })
-            const { callback } = this.props.navigation.state.params
-            if (callback) {
-              callback()
-            } else {
-              this.props.dispatch(NavigationActions.back())
-            }
-          })
+          Toast.info(
+            "入驻成功！",
+            1,
+            () => {
+              this.props.dispatch({
+                type: "app/settleList"
+              })
+              const { callback } = this.props.navigation.state.params
+              if (callback) {
+                callback()
+              } else {
+                this.props.dispatch(NavigationActions.back())
+              }
+            },
+            false
+          )
         }
       }
+    })
+  };
+
+  toVip = () => {
+    this.setState({ visible: false }, () => {
+      this.props.dispatch(NavigationActions.navigate({ routeName: "Vip" }))
     })
   };
 
@@ -89,15 +108,30 @@ class SettleForm extends Component {
         <List style={styles.inputBox}>
           <InputItem
             multipleLine={false}
-            labelNumber={5}
+            labelNumber={6}
             style={styles.input}
             clear
             maxLength={28}
             onChange={v => this.handleChange(v, "company")}
             placeholder="请输入"
-            thumb={<Text style={{ color: "red" }}>*</Text>}
           >
-            公司名称
+            <Text style={{ color: "#000", fontSize: 16 }}>
+              <Text style={{ color: "red" }}>*</Text>公司名称
+            </Text>
+          </InputItem>
+          <InputItem
+            type="phone"
+            multipleLine={false}
+            labelNumber={6}
+            style={styles.input}
+            clear
+            maxLength={28}
+            onChange={v => this.handleChange(v, "contact")}
+            placeholder="请输入"
+          >
+            <Text style={{ color: "#000", fontSize: 16 }}>
+              <Text style={{ color: "red" }}>*</Text>联系方式
+            </Text>
           </InputItem>
         </List>
         <CommonFile onChange={v => this.handleChange(v, "files")} />
@@ -136,57 +170,43 @@ class SettleForm extends Component {
               法人身份证
             </InputItem>
           )}
-          <InputItem
-            multipleLine={false}
-            labelNumber={5}
-            style={styles.input}
+          <TextareaItem
+            rows={5}
             clear
-            onChange={v => this.handleChange(v, "productDesc")}
-            placeholder="请输入"
-          >
-            产品描述
-          </InputItem>
-        </List>
-
-        <List style={{ marginTop: 12 }}>
-          <Text style={{ marginTop: 12,marginLeft:15 }}>
-           选择入驻时长
-          </Text>
-          <RadioItem
-            checked={this.state.checked === 1}
-            onChange={event => {
-              if (event.target.checked) {
-                this.handleChange(1,'settleTime')
-              }
-            }}
-          >
-            月度
-          </RadioItem>
-          <RadioItem
-            checked={this.state.checked === 2}
-            onChange={event => {
-              if (event.target.checked) {
-                this.handleChange(2,'settleTime')
-              }
-            }}
-          >
-            季度
-          </RadioItem>
-          <RadioItem
-            checked={this.state.checked === 3}
-            onChange={event => {
-              if (event.target.checked) {
-                this.handleChange(3,'settleTime')
-              }
-            }}
-          >
-            年度
-          </RadioItem>
+            onChange={v => this.handleInput(v, "productDesc")}
+            placeholder="请输入产品描述，建议至少50字。"
+          />
         </List>
         <TouchableOpacity style={styles.btn} onPress={this.onSave}>
           <Text style={styles.btnText}>入驻</Text>
         </TouchableOpacity>
         <View style={{ height: 100 }} />
+        <Modal
+          title="入驻成功！"
+          transparent
+          onClose={() => {
+            this.setState({ visible: false })
+          }}
+          maskClosable
+          visible={this.state.visible}
+        >
+          <View
+            style={{
+              height: 200,
+              justifyContent: "space-around",
+              alignItems: "center"
+            }}
+          >
+            <Text>成为超级商家，享受更多特权</Text>
+            <Button
+              type="primary"
+              onPress={this.toVip}
+              style={{ backgroundColor: "#FF7720", borderColor: "#FF7720" }}
+            >
+              去看看吧
+            </Button>
+          </View>
+        </Modal>
       </ScrollView>
     )
   }

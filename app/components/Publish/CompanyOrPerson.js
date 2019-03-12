@@ -4,7 +4,7 @@ import { connect } from "react-redux"
 import { NavigationActions } from "react-navigation"
 
 import { StyleSheet, View, Image, Text } from "react-native"
-import { List, NoticeBar ,Modal} from "@ant-design/react-native"
+import { List, NoticeBar, Modal } from "@ant-design/react-native"
 
 const { Item } = List
 const { Brief } = Item
@@ -28,7 +28,7 @@ class CompanyOrPerson extends Component {
       settleList: []
     }
   }
-  
+
   componentDidMount() {
     this.props.dispatch({
       type: "app/settleList"
@@ -38,34 +38,49 @@ class CompanyOrPerson extends Component {
   componentWillReceiveProps(nextProps) {
     const { settleList: nextSettleList } = nextProps
 
-    if(nextSettleList&&nextSettleList.length){
-        this.setState({ settleList: nextSettleList })
-      }
+    if (nextSettleList && nextSettleList.length) {
+      const newSettleList = []
+      nextSettleList.forEach(item=>{
+        if(item.state===1)  newSettleList.push(item)
+      })
+      this.setState({ settleList: newSettleList })
+    }
   }
 
-  checkSettle=(info)=>{
-    const {settleList}= this.state
-    const settleIn =[]
-    settleList.forEach(item=>{
-      settleIn.push(item.classifyId)
-    })
-
+  checkSettle = info => {
+    const { settleList } = this.state
+    const { id } = this.props.navigation.state.params
+    const isSettled = settleList.some(item=>item.classifyId === id && item.subClassifyId === info.id)
+    if (isSettled) {
       this.fillForm(info)
+    } else {
+      this.showDeleteModal(id)
+    }
+  };
 
-  }
+  showDeleteModal = id => {
+    Modal.alert("提示", "您目前还未入驻该行业公司，请先入驻", [
+      {
+        text: "取消",
+        // onPress: () => modal.close(),
+        style: "取消"
+      },
+      { text: "马上入驻", onPress: () => this.toSettleForm(id, "company") }
+    ])
+  };
 
-  toSettleForm=(id,sid)=>{
-    this.props.dispatch(NavigationActions.navigate({
-        routeName:"SettleForm",
-        params:{
-            name:"新建入驻",
-            classifyId:id,
-            subClassifyId:sid,
+  toSettleForm = (id, sid) => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "SettleForm",
+        params: {
+          name: "新建入驻",
+          classifyId: id,
+          subClassifyId: sid
         }
-    }))
-  }
-
-
+      })
+    )
+  };
 
   fillForm = info => {
     const { name, id } = this.props.navigation.state.params
@@ -100,7 +115,9 @@ class CompanyOrPerson extends Component {
           {COMPANY.map(data => (
             <Item
               key={Math.random()}
-              onPress={() => {data.id==="company" ? this.checkSettle(data) :this.fillForm(data)}}
+              onPress={() => {
+                  this.checkSettle(data)
+              }}
               style={styles.item}
               arrow="horizontal"
             >

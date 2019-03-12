@@ -686,6 +686,15 @@ export default {
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
+    *createSettleOrder({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(orderService.createSettleOrder, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
     *createOrderContact({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(orderService.createOrderContact, payload)

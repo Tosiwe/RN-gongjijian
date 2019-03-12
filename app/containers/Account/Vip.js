@@ -19,23 +19,42 @@ import Top from "./Vip/VipTop"
 const payArray = [
   {
     key: "vipMonth",
-    title: "包月",
+    title: "VIP包月",
     price: "30.00",
     des: "月度可查100次联系方式"
   },
   {
     key: "vipQuarter",
-    title: "包季",
+    title: "VIP包季",
     price: "80.00",
     des: "季度可无限次获取联系方式"
   },
   {
     key: "vipYear",
-    title: "包年",
+    title: "VIP包年",
     price: "300.00",
     des: "一年内可无限次获取联系方式"
+  },
+  {
+    key: "settleMonth",
+    title: "超级商家包月",
+    price: "30.00",
+    des: "1个月内所有入驻的行业享受超级商家权益"
+  },
+  {
+    key: "settleQuarter",
+    title: "超级商家包季",
+    price: "80.00",
+    des: "1个季度所有入驻的行业享受超级商家权益"
+  },
+  {
+    key: "settleYear",
+    title: "超级商家包年",
+    price: "300.00",
+    des: "1个年度内所有入驻的行业享受超级商家权益"
   }
 ]
+
 @connect(({ app }) => ({ ...app }))
 class Vip extends Component {
   static navigationOptions = {
@@ -75,6 +94,7 @@ class Vip extends Component {
       type: "app/getPriceList",
       callback: res => {
         if (res.msg === "OK") {
+          console.log("getPriceList", res.result)
           const vipInfo = []
           payArray.forEach(item => {
             const data = { ...item }
@@ -106,10 +126,12 @@ class Vip extends Component {
     }
     return (
       <TouchableOpacity
+        activeOpacity={1}
+        key={payType.key}
         onPress={() => {
           this.setState({ activeKey: index })
         }}
-        style={{ flex: 1, alignItems: "center" }}
+        style={{ width: "33%", alignItems: "center" }}
       >
         <View style={styles.content}>
           <View style={wrap}>
@@ -130,13 +152,17 @@ class Vip extends Component {
 
   payByBalance = () => {
     const { activeKey, vipInfo } = this.state
-
+    const { key } = vipInfo[activeKey]
     const payload = {
-      type: vipInfo[activeKey].key
+      type: key
     }
 
+    const type = key.includes("vip")
+      ? "app/createVipOrder"
+      : "app/createSettleOrder"
+
     this.props.dispatch({
-      type: "app/createVipOrder",
+      type,
       payload,
       callback: response => {
         if (response.status === "OK") {
@@ -200,6 +226,9 @@ class Vip extends Component {
           showsVerticalScrollIndicator={false}
         >
           <Top />
+          <Text style={{ fontSize: 16, color: "#009688", margin: 10 }}>
+            超级商家享有Vip的所有权限
+          </Text>
           <View style={styles.payBox}>
             {vipInfo.map(this.renderPayWays)}
             <ImageBackground
@@ -211,10 +240,9 @@ class Vip extends Component {
           </View>
           <View />
           <TouchableOpacity style={styles.btn} onPress={this.payByBalance}>
-            <Text style={styles.btnText}>
-              {userFinance.vip ? "继续购买" : "立即开通"}
-            </Text>
+            <Text style={styles.btnText}>立即开通</Text>
           </TouchableOpacity>
+          <View style={{ height: 100 }} />
         </ScrollView>
         <Pay
           onSuccess={this.paySuccess}
@@ -237,8 +265,8 @@ const styles = StyleSheet.create({
   },
   payBox: {
     flexDirection: "row",
-    justifyContent: "space-around",
-    marginTop: 40
+    flexWrap: "wrap",
+    justifyContent: "space-around"
   },
   wrap: {
     justifyContent: "center",
@@ -272,9 +300,10 @@ const styles = StyleSheet.create({
   },
   price: {
     color: "#C99A2E",
-    fontSize: 24
+    fontSize: 20
   },
   des: {
+    fontSize: 14,
     height: 80
   },
   rcmBg: {

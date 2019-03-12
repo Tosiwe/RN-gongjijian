@@ -16,7 +16,15 @@ export async function createVipOrder(params) {
     })
   }
 
-// create vip order
+// create settle order
+export async function createSettleOrder(params) {
+    return request(`http://118.24.107.177:7001/order/settle/create`, {
+        method: "POST",
+        body: params,
+    })
+  }
+
+// get vip order
 export async function getOrderList(params) {
     return request(`http://118.24.107.177:7001/order/list`, {
         method: "POST",
@@ -24,7 +32,7 @@ export async function getOrderList(params) {
     })
   }
 
-// create vip order
+// create contact order
 export async function createOrderContact(params) {
     return request(`http://118.24.107.177:7001/order/contact/create`, {
         method: "POST",

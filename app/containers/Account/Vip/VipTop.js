@@ -56,7 +56,7 @@ class VipTop extends Component {
 
   paySuccess = () => {
     this.props.dispatch({
-      type: "app/getUserFinance",
+      type: "app/getUserFinance"
     })
   };
 
@@ -71,19 +71,15 @@ class VipTop extends Component {
   inputPrice = () => {
     Modal.prompt("充值", "请输入您要充值的金额", [
       { text: "取消" },
-      { text: "确认", onPress: this.toPay },
+      { text: "确认", onPress: this.toPay }
     ])
   };
 
   render() {
     let { data = {} } = this.props
-    const {userFinance={},userInfo = {},}=this.props
+    const { userFinance = {}, userInfo = {} } = this.props
 
-    const {
-      payVisible,
-      timeStamp,
-      price
-    } = this.state
+    const { payVisible, timeStamp, price } = this.state
 
     if (userFinance) {
       data = userFinance
@@ -120,7 +116,7 @@ class VipTop extends Component {
           </TouchableOpacity>
         </View>
         <View style={styles.body}>
-          <TouchableOpacity style={styles.flex1} onPress={this.setProfile}>
+          <TouchableOpacity style={styles.flex2} onPress={this.setProfile}>
             <Image
               style={styles.avator}
               source={
@@ -130,30 +126,40 @@ class VipTop extends Component {
               }
             />
           </TouchableOpacity>
-          <View style={styles.flex1}>
+          <View style={[styles.flex5 ,{top:-5}]}>
             <Text style={styles.text}>{userInfo.nick}</Text>
             <Text style={styles.gold}>
-              {data.vip ? "会员" : "您还不是会员"}
+              {data.vip
+                ? `会员 ${moment(data.endTime).format("YYYY-MM-DD")} 到期`
+                : "您还不是会员"}
             </Text>
-            <Text style={styles.gold}>余额：{data.balance||"0.00"}元</Text>
+            <Text style={styles.gold}>
+              {data.settle
+                ? `超级商家 ${moment(data.endTime).format("YYYY-MM-DD")} 到期`
+                : "您还不是超级商家"}
+            </Text>
           </View>
-          <TouchableOpacity
-            style={[styles.vipPay, styles.flex1]}
-            // onPress={() => {
-            //   this.setState({
-            //     payVisible: true,
-            //     timeStamp: moment().format("x")
-            //   })
-            // }}
-            onPress={this.inputPrice}
-          >
-            <ImageBackground
-              style={styles.vipBg}
-              source={require("./images/btn_recharge_bg.png")}
+          <View style={styles.flex3}>
+            <Text style={styles.gold}>余额：{data.balance || "0.00"}元</Text>
+
+            <TouchableOpacity
+              style={styles.vipPay}
+              // onPress={() => {
+              //   this.setState({
+              //     payVisible: true,
+              //     timeStamp: moment().format("x")
+              //   })
+              // }}
+              onPress={this.inputPrice}
             >
-              <Text style={styles.vipText}>立即充值</Text>
-            </ImageBackground>
-          </TouchableOpacity>
+              <ImageBackground
+                style={styles.vipBg}
+                source={require("./images/btn_recharge_bg.png")}
+              >
+                <Text style={styles.vipText}>立即充值</Text>
+              </ImageBackground>
+            </TouchableOpacity>
+          </View>
         </View>
         <Pay
           onSuccess={this.paySuccess}
@@ -188,8 +194,7 @@ const styles = StyleSheet.create({
   body: {
     flexDirection: "row",
     top: 40,
-    paddingLeft: 40,
-    paddingRight: 20
+    paddingHorizontal:10
   },
   text: {
     fontSize: 24,
@@ -215,15 +220,16 @@ const styles = StyleSheet.create({
     flexDirection: "row"
   },
   avator: {
-    width: 90,
-    height: 90,
+    width: 60,
+    height: 60,
     borderRadius: 50,
     borderWidth: 3,
     borderColor: "#FFF"
   },
   title: {
     color: "#F8E3B1",
-    fontSize: 22
+    fontSize: 22,
+    left:15
   },
   topLeft: {
     color: "#F8E3B1",
@@ -233,8 +239,14 @@ const styles = StyleSheet.create({
     color: "#F8E3B1"
   },
   gold: { color: "#F8E3B1" },
-  flex1: {
-    flex: 1
+  flex5: {
+    flex: 5
+  },
+  flex2: {
+    flex: 2
+  },
+  flex3: {
+    flex: 3
   }
 })
 export default VipTop
