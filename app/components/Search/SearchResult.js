@@ -36,6 +36,8 @@ class SearchResult extends Component {
     this.setState({ tabs }, this.getList)
   }
 
+  
+
   getList = (classifyId = "hbuilding") => {
     this.setState({loading:true})
     const { params } = this.props.navigation.state.params

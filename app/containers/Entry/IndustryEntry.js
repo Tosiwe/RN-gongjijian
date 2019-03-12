@@ -2,17 +2,10 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import {
-  StyleSheet,
-  View,
-  Text,
-  FlatList,
-  ScrollView,
-  RefreshControl
-} from "react-native"
-import { List, ActivityIndicator ,Toast} from "@ant-design/react-native"
+import { StyleSheet, View, Text, FlatList, RefreshControl } from "react-native"
+import { List, ActivityIndicator, Toast } from "@ant-design/react-native"
 // import {NavigationActions} from "react-navigation"
-import { screenHeight, primaryColor } from "../../styles/common"
+import { primaryColor } from "../../styles/common"
 import ListItem from "../../components/ListIem/ListItem"
 import { getPosition } from "../../utils/utils"
 // import { list } from './data'
@@ -24,94 +17,37 @@ class IndustryEntry extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      activeKey: "hBuilding",
+      activeKey: "company",
       loading: true,
       list: [],
       params: {
         distance: 0,
-        classifyId: props.id
+        classifyId: props.id,
+        subClassifyId: "company"
       },
       geoCode: {}
     }
   }
 
   componentDidMount() {
-    this.getDemandList()
-    // this.getInfoList()
+    this.getInfoList()
     this.state.geoCode = this.props.geoCode
-    this.setState({ activeKey: this.props.id })
   }
 
   componentWillReceiveProps(nextProps) {
-    const { activeKey } = this.state
-    const { id } = this.props
     if (
       JSON.stringify(this.state.geoCode) !== JSON.stringify(nextProps.geoCode)
     ) {
       this.state.geoCode = nextProps.geoCode
-      this.setState({isRefreshing:true})
-      if (activeKey === id) {
-        this.getDemandList(1,nextProps.geoCode)
-      } else {
-        this.getInfoList(1,nextProps.geoCode)
-      }
+      this.setState({ isRefreshing: true })
+      this.getInfoList(1, nextProps.geoCode)
     }
   }
 
-  getDemandList = (pn = 1,geoCode) => {
-    delete this.state.params.subClassifyId
-    const that = { ...this }
-    getPosition(that,Toast,geoCode)
-      .then(result => {
-        if (result.isSuccess) {
-          const { province, city, ...params } = result.params
-          params.lng = params.longitude
-          params.lat = params.latitude
-          delete params.longitude
-          delete params.latitude
-          if (params.adcode === "000000") {
-            delete params.adcode
-          } else {
-            params.adcode = Number(
-              params.shortAdcode || params.adcode.substring(0, 2)
-            )
-          }
-          this.state.params = params
-          console.log("getDemandList", params)
-          this.props.dispatch({
-            type: "app/getDemandListLoc",
-            payload: params,
-            callback: res => {
-              this.setState({ loading: false, isRefreshing: false })
-
-              if (res.msg === "OK") {
-                let demandList = []
-                if (pn !== 1) {
-                  demandList = [...this.state.demandList, ...res.result]
-                } else {
-                  demandList = res.result
-                }
-                console.log("getdemandList result", demandList)
-
-                this.setState({
-                  list: demandList
-                })
-              }
-            }
-          })
-        } else {
-          this.setState({ loading: false, isRefreshing: false })
-        }
-      })
-      .catch(error => {
-        this.setState({ loading: false, isRefreshing: false })
-      })
-  };
-
-  getInfoList = (pn = 1,geoCode) => {
+  getInfoList = (pn = 1, geoCode) => {
     const that = { ...this }
 
-    getPosition(that,Toast,geoCode)
+    getPosition(that, Toast, geoCode)
       .then(result => {
         if (result.isSuccess) {
           const { province, city, ...params } = result.params
@@ -166,44 +102,26 @@ class IndustryEntry extends Component {
 
   // 左侧点击
   onPress = (key, refresh) => {
-    const { id } = this.props
     if (refresh) {
-      this.setState({ isRefreshing: true })
+      this.setState({ isRefreshing: true }, () => {
+        this.state.params.subClassifyId = key
+        this.getInfoList()
+      })
     } else {
-      this.setState({ activeKey: key, loading: true })
-    }
-
-    if (key === id) {
-      this.getDemandList()
-    } else {
-      this.state.params.subClassifyId = key
-      this.getInfoList()
+      this.setState({ activeKey: key, loading: true }, () => {
+        this.state.params.subClassifyId = key
+        this.getInfoList()
+      })
     }
   };
 
   render() {
-    // const { type } = this.props
     const { activeKey, loading, list = {} } = this.state
-    const { id } = this.props
+    debugger
     return (
       <View style={styles.container}>
         <View style={styles.left}>
-          <List renderHeader={<Text style={styles.title}>需求</Text>}>
-            <Item
-              onPress={() => this.onPress(id)}
-              style={[styles.item, activeKey === id ? styles.active : ""]}
-            >
-              <Text
-                style={[
-                  styles.itemText,
-                  activeKey === id ? styles.activeText : ""
-                ]}
-              >
-                需求
-              </Text>
-            </Item>
-          </List>
-          <List renderHeader={<Text style={styles.title}>商家</Text>}>
+          <List>
             <Item
               onPress={() => this.onPress("company")}
               style={[
@@ -249,8 +167,6 @@ class IndustryEntry extends Component {
                 设备租赁
               </Text>
             </Item>
-          </List>
-          <List renderHeader={<Text style={styles.title}>个人</Text>}>
             <Item
               onPress={() => this.onPress("talent")}
               style={[styles.item, activeKey === "talent" ? styles.active : ""]}

@@ -49,6 +49,7 @@ class Seconds extends Component {
         >
           {COMPANY.map(data => (
             <Item
+              key={data.id}
               onPress={() => this.fillForm(data)}
               style={styles.item}
               arrow="horizontal"

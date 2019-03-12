@@ -3,7 +3,6 @@
 /* eslint-disable react/sort-comp */
 import React, { Component } from "react"
 import { connect } from "react-redux"
-
 import {
   StyleSheet,
   View,
@@ -11,19 +10,18 @@ import {
   TouchableOpacity,
   ScrollView
 } from "react-native"
-import { List, InputItem, Toast } from "@ant-design/react-native"
-import Icon from "react-native-vector-icons/AntDesign"
+import { List, InputItem, Toast, Radio } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import CommonFile from "./CommonFile"
-import LocationBtn from "../LocationBtn/LocationBtn"
+
+const { RadioItem } = Radio
 
 @connect(({ app }) => ({ ...app }))
 class SettleForm extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      params: {},
-      province: "请选择"
+      params: {}
     }
   }
 
@@ -32,12 +30,13 @@ class SettleForm extends Component {
     const newParams = { ...params }
     if (name === "files") {
       for (const str in value) {
-        newParams[str] = value[str].path
+        newParams[str] = value[str]
       }
     } else if (name === "province" && value.name) {
       // eslint-disable-next-line prefer-destructuring
       newParams[name] = value.name[0]
-      this.setState({ province: value.name[0] })
+    }else if(name==="settleTime"){
+      this.setState({checked:value})
     } else {
       newParams[name] = value
     }
@@ -59,12 +58,12 @@ class SettleForm extends Component {
 
     params.classifyId = classifyId
     params.subClassifyId = subClassifyId
+    console.log("settleNew", params)
     this.props.dispatch({
       type: "app/settleNew",
       payload: params,
       callback: res => {
         if (res.msg === "OK") {
-          
           Toast.info("入驻成功！", 1, () => {
             this.props.dispatch({
               type: "app/settleList"
@@ -82,7 +81,6 @@ class SettleForm extends Component {
   };
 
   render() {
-    const { province } = this.state
     const { subClassifyId } = this.props.navigation.state.params
 
     // 选择发布分类
@@ -138,35 +136,57 @@ class SettleForm extends Component {
               法人身份证
             </InputItem>
           )}
+          <InputItem
+            multipleLine={false}
+            labelNumber={5}
+            style={styles.input}
+            clear
+            onChange={v => this.handleChange(v, "productDesc")}
+            placeholder="请输入"
+          >
+            产品描述
+          </InputItem>
         </List>
-        {subClassifyId === "company" && (
-          <List style={styles.inputBox}>
-            <LocationBtn
-              cols={1}
-              button={
-                <TouchableOpacity style={styles.province}>
-                  <Text style={styles.provinceLabel}>注册省份 </Text>
-                  <View style={{ flexDirection: "row" }}>
-                    <Text style={styles.provinceExtra}>
-                      {province || "请选择"}{" "}
-                    </Text>
-                    <Icon
-                      name="right"
-                      color="#aaa"
-                      size={17}
-                      style={{ lineHeight: 40 }}
-                    />
-                  </View>
-                </TouchableOpacity>
+
+        <List style={{ marginTop: 12 }}>
+          <Text style={{ marginTop: 12,marginLeft:15 }}>
+           选择入驻时长
+          </Text>
+          <RadioItem
+            checked={this.state.checked === 1}
+            onChange={event => {
+              if (event.target.checked) {
+                this.handleChange(1,'settleTime')
               }
-              onChange={v => this.handleChange(v, "province")}
-            />
-          </List>
-        )}
+            }}
+          >
+            月度
+          </RadioItem>
+          <RadioItem
+            checked={this.state.checked === 2}
+            onChange={event => {
+              if (event.target.checked) {
+                this.handleChange(2,'settleTime')
+              }
+            }}
+          >
+            季度
+          </RadioItem>
+          <RadioItem
+            checked={this.state.checked === 3}
+            onChange={event => {
+              if (event.target.checked) {
+                this.handleChange(3,'settleTime')
+              }
+            }}
+          >
+            年度
+          </RadioItem>
+        </List>
         <TouchableOpacity style={styles.btn} onPress={this.onSave}>
           <Text style={styles.btnText}>入驻</Text>
         </TouchableOpacity>
-        <View style={{ height: 300 }} />
+        <View style={{ height: 100 }} />
       </ScrollView>
     )
   }

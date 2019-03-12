@@ -99,9 +99,10 @@ class FormInfo extends Component {
         .then(result => {
           if (result.isSuccess) {
             this.state.params = result.params
+            const {shortAdcode,... params}  = result.params
             this.props.dispatch({
               type: "app/saveInfoDraft",
-              payload: result.params,
+              payload: params,
               callback: res => {
                 if (res.msg === "OK") {
                   Toast.success("保存成功！", 1, this.goHome)
@@ -135,10 +136,12 @@ class FormInfo extends Component {
         .then(result => {
           if (result.isSuccess) {
             this.state.params = result.params
-            console.log("Publish Info", result.params)
+            const {shortAdcode,... params}  = result.params
+
+            console.log("Publish Info", params)
             this.props.dispatch({
               type: "app/saveInfo",
-              payload: result.params,
+              payload: params,
               callback: res => {
                 if (res.msg === "OK") {
                   Toast.success("发布成功！", 1, this.goHome)
@@ -211,6 +214,7 @@ class FormInfo extends Component {
           {id === "smarket"  &&
             LABEL.map(label => (
               <InputItem
+                key={label.key}
                 multipleLine={false}
                 clear
                 onChange={v => this.handleChange(v, label.key)}

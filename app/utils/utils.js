@@ -20,7 +20,7 @@ const requestExternalStoragePermission = async () => {
   }
 }
 
-export const getPosition = (that, Toast,geoCode) =>
+export const getPosition = (that, Toast,geoCode, forceUpdate) =>
   new Promise((resole, reject) => {
     const grand = requestExternalStoragePermission()
     if (!grand) {
@@ -30,7 +30,8 @@ export const getPosition = (that, Toast,geoCode) =>
 
     const { params } = that.state
 
-    if(that.props.geoCode){
+     
+    if(!forceUpdate && that.props.geoCode){
       let newParams={}
       if(geoCode){
         newParams= { ...params, ...geoCode }
@@ -56,12 +57,16 @@ export const getPosition = (that, Toast,geoCode) =>
         const { longitude, latitude } = position.coords
         newParams.longitude = longitude
         newParams.latitude = latitude
+        const payload ={
+          lng: longitude,
+          lat: latitude,
+        }
+        if(forceUpdate){
+          payload.forceUpdate = forceUpdate
+        }
         that.props.dispatch({
           type: "app/getGeoCode",
-          payload: {
-            lng: longitude,
-            lat: latitude
-          },
+          payload,
           callback: res => {
             if (res.msg === "OK") {
               newParams = { ...newParams, ...res.result }

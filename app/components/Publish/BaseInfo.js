@@ -1,60 +1,31 @@
 /* eslint-disable react/sort-comp */
 import React, { Component } from "react"
 
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native"
-import { List, TextareaItem, InputItem } from "@ant-design/react-native"
-import RNFileSelector from "react-native-file-selector"
+import { StyleSheet, View,  Text } from "react-native"
+import { List, TextareaItem, InputItem ,Toast} from "@ant-design/react-native"
 import { connect } from "react-redux"
 import ImagePicker from "../ImagePicker/ImagePicker"
-import uploadFile from "../../utils/rpc"
+import { getPosition } from "../../utils/utils"
+
 @connect(({ app }) => ({ ...app }))
 export default class BaseInfo extends Component {
   constructor(props) {
     super(props)
     this.state = {
       params: {},
-      fileName: ""
-      // visible: false
-      // avatarSource: null
     }
   }
 
   componentDidMount(){
-    const { geoCode={} } = this.props
-    const city = `${geoCode.city}`
-    this.state.params.city=city
-    this.setState({city})
-  }
-
-  showFileSelector = () => {
-    RNFileSelector.Show({
-      title: "选择文件",
-      onDone: path => {
-        const name = path.split("/")
-        const fileName = name[name.length - 1]
-        this.props.dispatch({
-          type: "app/getUploadToken",
-          callback: res => {
-            if (res.msg === "OK") {
-              const formInput = {
-                key: `${fileName}_${new Date().valueOf()}`
-              }
-              const { token } = res.result
-              const url = `http://pmzyq6wog.bkt.clouddn.com/${formInput.key}`
-              uploadFile(path, token, formInput, () => {
-                this.setState({ fileName: path })
-                this.handleInput({ url, title: fileName }, "attchments")
-              })
-            }
-          }
-        })
+    const that = {...this}
+    getPosition(that, Toast, false, true).then(res => {
+      if (res.isSuccess) {
+        this.state.params=res.params
+        this.setState({ city: res.params.city })
       }
     })
-  };
 
-  onDone = path => {
-    this.setState({ path })
-  };
+  }
 
   handleInput = (value, name) => {
     const { params } = this.state
@@ -70,7 +41,7 @@ export default class BaseInfo extends Component {
   };
 
   render() {
-    const { path, fileName, city } = this.state
+    const {  city } = this.state
     return (
       <View style={styles.wrap}>
         <ImagePicker onChange={v => this.handleInput(v, "picture")} />
@@ -123,17 +94,7 @@ export default class BaseInfo extends Component {
             placeholder="请填写地域，如：全国、沧州市、河北省"
           />
         </List>
-        <View>
-          <Text style={styles.selectorTitle}>附件上传</Text>
-          {!!fileName && <Text>{`已选择：${fileName}`}</Text>}
-          <TouchableOpacity
-            style={styles.selectBtn}
-            onPress={this.showFileSelector}
-          >
-            <Text style={styles.selectBtnText}>选择文件</Text>
-          </TouchableOpacity>
-          <Text style={{ color: "#737373" }}>{path}</Text>
-        </View>
+        
       </View>
     )
   }

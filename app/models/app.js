@@ -27,8 +27,13 @@ export default {
       yield put(createAction("updateState")({ login, loading: false }))
     },
 
-    *updateGeo({payload}, {  put }) {
-      yield put(createAction("updateState")({geoCode: payload.geoCode, loading: false }))
+    *updateGeo({ payload }, { put }) {
+      yield put(
+        createAction("updateState")({
+          geoCode: payload.geoCode,
+          loading: false
+        })
+      )
     },
 
     // 登陆
@@ -134,7 +139,12 @@ export default {
       if (res && callback) {
         callback(res)
       }
-      yield put(createAction("updateState")({ userFinance:res.result, fetching: false }))
+      yield put(
+        createAction("updateState")({
+          userFinance: res.result,
+          fetching: false
+        })
+      )
     },
 
     // ---------- 需求类 ----------
@@ -330,7 +340,12 @@ export default {
       if (res && callback) {
         callback(res)
       }
-      yield put(createAction("updateState")({ settleList:res.result.data, fetching: false }))
+      yield put(
+        createAction("updateState")({
+          settleList: res.result.data,
+          fetching: false
+        })
+      )
     },
 
     // 已入驻列表-个人中心中使用
@@ -500,7 +515,7 @@ export default {
     // ---------- 消息类 ----------
 
     // 获取通知列表
-    *noticeList({ payload,callback }, { call, put }) {
+    *noticeList({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.noticeList, payload)
       if (res && callback) {
@@ -510,7 +525,7 @@ export default {
     },
 
     // 消息已读记录
-    *noticeRead({ payload, callback}, { call, put }) {
+    *noticeRead({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.noticeRead, payload)
       if (res && callback) {
@@ -520,7 +535,7 @@ export default {
     },
 
     // 获取推荐列表
-    *recommendList({ payload ,callback}, { call, put }) {
+    *recommendList({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.recommendList, payload)
       if (res && callback) {
@@ -530,7 +545,7 @@ export default {
     },
 
     // 推荐已读
-    *recommendRead({ payload ,callback}, { call, put }) {
+    *recommendRead({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(messageService.recommendRead, payload)
       if (res && callback) {
@@ -580,12 +595,30 @@ export default {
     // get token
     *getGeoCode({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
-      const res = yield call(messageService.getGeoCode, payload)
-      if (res && callback) {
-        callback(res)
+      if (payload.forceUpdate) {
+        const {forceUpdate,...pa} = payload
+        const res = yield call(messageService.getGeoCode, pa)
+        if (res && callback) {
+          callback(res)
+        }
+        yield put(
+          createAction("updateState")({
+            fetching: false
+          })
+        )
+      } else {
+        const res = yield call(messageService.getGeoCode, payload)
+        if (res && callback) {
+          callback(res)
+        }
+        const { lng: longitude, lat: latitude } = payload
+        yield put(
+          createAction("updateState")({
+            geoCode: res && { longitude, latitude, ...res.result },
+            fetching: false
+          })
+        )
       }
-      const {lng:longitude,lat:latitude}=payload
-      yield put(createAction("updateState")({ geoCode:res&&{longitude,latitude,...res.result}, fetching: false }))
     },
     // 搜索
     *search({ payload, callback }, { call, put }) {

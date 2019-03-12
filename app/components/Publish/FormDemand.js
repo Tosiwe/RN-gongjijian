@@ -82,11 +82,12 @@ class FormDemand extends Component {
         .then(result => {
           if (result.isSuccess) {
             this.state.params = result.params;
+            const {shortAdcode,... params}  = result.params
             this.props.dispatch({
               type: this.state.isReg
                 ? "app/saveInfoDraft"
                 : "app/saveDemandDraft",
-              payload: result.params,
+              payload: params,
               callback: res => {
                 if (res.msg === "OK") {
                   Toast.success("保存成功！", 1, this.goHome);
@@ -122,10 +123,11 @@ class FormDemand extends Component {
         .then(result => {
           if (result.isSuccess) {
             this.state.params = result.params;
-            console.log("Publish Demand", result.params)
+            const {shortAdcode,... params}  = result.params
+            console.log("Publish Demand", params)
             this.props.dispatch({
               type: this.state.isReg ? "app/saveInfo" : "app/saveDemand",
-              payload: result.params,
+              payload: params,
               callback: res => {
                 if (res.msg === "OK") {
                   Toast.success("发布成功！", 1, this.goHome);

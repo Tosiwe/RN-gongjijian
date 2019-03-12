@@ -341,8 +341,14 @@ class Detail extends Component {
   /* 下载文件 */
   downloadFile(response, data) {
     const formUrl = response.url
-    const { key } = response
-    const isPic = key.include("jpg") || key.include("png")
+    const  key  = data.fileKey
+    const arr =  key.split(".")
+    const isPic =arr[arr.length-1] === "jpg" ||arr[arr.length-1] === "png"
+
+    // TODO:
+    // if(!isPic){
+       
+    // }
     const { onRefresh } = this.props
     onRefresh && onRefresh(true)
     // On Android, use "RNFS.DocumentDirectoryPath" (MainBundlePath is not defined)
@@ -351,7 +357,7 @@ class Detail extends Component {
     const downloadDest = isPic
       ? `${RNFS.MainBundlePath || RNFS.DocumentDirectoryPath}/${Math.random() *
           1000}.jpg`
-      : `${RNFS.MainBundlePath}/${Math.random() * 1000}.zip`
+      : `${RNFS.MainBundlePath || RNFS.DocumentDirectoryPath}/${Math.random() * 1000}.zip`
     // const formUrl =
     //   "http://img.kaiyanapp.com/c7b46c492261a7c19fa880802afe93b3.png?imageMogr2/quality/60/format/jpg"
 

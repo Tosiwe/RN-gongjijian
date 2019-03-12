@@ -64,14 +64,14 @@ class AddButton extends Component {
             top: 20,
             bottom: 20,
           }}
-          onPress={this.handleAddButtonPress}
+          onPress={()=>this.toPublish(2)}
         >
           <Image
             style={style.addImage}
             source={require('./images/icon_tool_release.png')}
           />
         </TouchableOpacity>
-        <Modal
+        {/* <Modal
           transparent
           visible={this.state.visible}
           animationType="slide"
@@ -96,7 +96,7 @@ class AddButton extends Component {
             <Text style={style.btnText}>发布信息</Text>
             <Icon style={style.icon} name="right" />
           </TouchableOpacity>
-        </Modal>
+        </Modal> */}
       </View>
     )
   }

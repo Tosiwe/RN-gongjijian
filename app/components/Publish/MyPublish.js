@@ -10,10 +10,9 @@ import {
   Image,
   TouchableOpacity
 } from "react-native"
-import { Tabs, Card, Modal } from "@ant-design/react-native"
+import {  Modal } from "@ant-design/react-native"
 import Icon from "react-native-vector-icons/AntDesign"
 
-const tabs = [{ title: "我的需求" }, { title: "我的信息" }]
 
 const RECORD_STATE = {
   0: {
@@ -50,7 +49,6 @@ class MyPublish extends Component {
             }
           >
             <Icon name="plus" style={{ fontSize: 20, marginRight: 20 }} />
-            {/* <Text style={{ fontSize: 16, marginRight: 20 }}>我的发布</Text> */}
           </TouchableOpacity>
         )
       }
@@ -61,48 +59,14 @@ class MyPublish extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      demandList: [],
       infoList: [],
-      tabKey: 0,
-      demandPageNum: 0,
       infoPageNum: 0
     }
   }
 
   componentDidMount() {
-    this.state.tabKey = this.props.navigation.state.params.type === 1 ? 0 : 1
-    const { ids } = this.props.navigation.state.params
-    if (ids) {
-      this.getInfoList()
-    } else {
-      this.getDemandList()
-      this.getInfoList()
-    }
+    this.getInfoList()
   }
-
-  getDemandList = (pn = 1) => {
-    this.props.dispatch({
-      type: "app/getDemandList",
-      //   payload: {
-      //     pn,
-      //     ps: 10
-      //   },
-      callback: res => {
-        if (res.msg === "OK") {
-          let demandList = []
-          if (pn !== 1) {
-            demandList = [...this.state.demandList, ...res.result.data]
-          } else {
-            demandList = res.result.data
-          }
-          this.setState({
-            demandList,
-            demandPageNum: res.result.pn
-          })
-        }
-      }
-    })
-  };
 
   getInfoList = (pn = 1) => {
     const { ids } = this.props.navigation.state.params
@@ -132,27 +96,21 @@ class MyPublish extends Component {
   };
 
   onAction = (state, id) => {
-    const { tabKey } = this.state
-
     if (Number(state) === 0) {
       // 发布
       this.props.dispatch({
-        type: tabKey === 0 ? "app/reviewDemand" : "app/reviewInfo",
+        type: "app/reviewInfo",
         payload: { id },
         callback: res => {
           if (res.msg === "OK") {
-            if (tabKey === 0) {
-              this.getDemandList()
-            } else {
-              this.getInfoList()
-            }
+            this.getInfoList()
           }
         }
       })
     } else {
       // 下架
       this.props.dispatch({
-        type: tabKey === 0 ? "app/draftDemand" : "app/draftInfo",
+        type: "app/draftInfo",
         payload: { id },
         callback: res => {
           if (res.msg === "OK") {
@@ -168,17 +126,16 @@ class MyPublish extends Component {
       {
         text: "取消",
         // onPress: () => modal.close(),
-        style: "取消"
+        style: "cancel"
       },
       { text: "确认", onPress: () => this.onDelete(id) }
     ])
   };
 
   onDelete = id => {
-    const { tabKey } = this.state
     // 删除
     this.props.dispatch({
-      type: tabKey === 0 ? "app/deleteDemand" : "app/deleteInfo",
+      type: "app/deleteInfo",
       payload: { id },
       callback: res => {
         if (res.msg === "OK") {
@@ -189,12 +146,7 @@ class MyPublish extends Component {
   };
 
   refresh = (pn = 1) => {
-    const { tabKey } = this.state
-    if (tabKey === 0) {
-      this.getDemandList(pn)
-    } else {
-      this.getInfoList(pn)
-    }
+    this.getInfoList(pn)
   };
 
   renderItem = ({ item }) => (
@@ -235,56 +187,21 @@ class MyPublish extends Component {
   );
 
   render() {
-    const { demandList, infoList, demandPageNum, infoPageNum } = this.state
+    const { infoList, infoPageNum } = this.state
     const { fetching } = this.props
-    const { type: publishType, ids } = this.props.navigation.state.params
+    // const { type: publishType, ids } = this.props.navigation.state.params
 
     // 选择发布分类
     return (
       <View style={styles.container}>
-        {ids ? (
-          <View style={styles.content}>
-            <FlatList
-              data={infoList}
-              renderItem={this.renderItem}
-              onRefresh={this.refresh}
-              refreshing={fetching}
-              onEndReachedThreshold={1}
-              onEndReached={() => this.refresh(1)}
-            />
-          </View>
-        ) : (
-          <Tabs
-            tabs={tabs}
-            initialPage={publishType === 1 ? 0 : 1}
-            styles={{ topTabBarSplitLine: "#000" }}
-            onChange={(data, index) => {
-              this.state.tabKey = index
-            }}
-            tabBarUnderlineStyle={{ backgroundColor: "#FF7720" }}
-          >
-            <View style={styles.content}>
-              <FlatList
-                data={demandList}
-                renderItem={this.renderItem}
-                onRefresh={this.refresh}
-                refreshing={fetching}
-                onEndReachedThreshold={1}
-                onEndReached={() => this.refresh(1)}
-              />
-            </View>
-            <View style={styles.content}>
-              <FlatList
-                data={infoList}
-                renderItem={this.renderItem}
-                onRefresh={this.refresh}
-                refreshing={fetching}
-                onEndReachedThreshold={1}
-                onEndReached={() => this.refresh(1)}
-              />
-            </View>
-          </Tabs>
-        )}
+        <FlatList
+          data={infoList}
+          renderItem={this.renderItem}
+          onRefresh={this.refresh}
+          refreshing={fetching}
+          onEndReachedThreshold={1}
+          onEndReached={() => this.refresh(1)}
+        />
       </View>
     )
   }
