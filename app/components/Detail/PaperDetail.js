@@ -2,11 +2,10 @@
 import React, { Component } from "react"
 import { StyleSheet, View, ScrollView, Text } from "react-native"
 import { connect } from "react-redux"
-import {ActivityIndicator} from "@ant-design/react-native"
-import Bottom from "./Bottom"
+import { ActivityIndicator, Progress } from "@ant-design/react-native"
+import Bottom from "./PaperBottom"
 
 import { statusBarHeight } from "../../styles/common"
-// import Pics from "../../containers/Home/Ads"
 
 @connect()
 class PaperDetail extends Component {
@@ -14,17 +13,18 @@ class PaperDetail extends Component {
     super(props)
     this.state = {
       paperPrice: "-",
-      refreshing:false
+      refreshing: false,
+      percent: 0
     }
   }
 
-  onRefresh=(refreshing)=>{
-    this.setState({refreshing})
-  }
-
+  onRefresh = (refreshing, percent = 10) => {
+    this.setState({ refreshing, percent })
+  };
 
   render() {
-    const { data = {}, type = "paper" } = this.props.navigation.state.params
+    const { data = {} } = this.props.navigation.state.params
+    const {percent}=this.state
     const Td = props => (
       <View style={styles.td}>
         <Text style={styles.tdLabel}>{props.label}</Text>
@@ -39,6 +39,7 @@ class PaperDetail extends Component {
           showsVerticalScrollIndicator={false}
           onScrollEndDrag={this.handleScrollEnd}
         >
+          <Progress position="fixed" style={{width:"100%",backgroundColor:"#FFF" }} percent={percent}/>
           <View style={[styles.row, styles.border]}>
             <Text style={styles.title}>{data.title}</Text>
           </View>
@@ -60,17 +61,19 @@ class PaperDetail extends Component {
               <View style={styles.detailLeft} />
               <Text style={styles.detailTitle}>详情介绍</Text>
             </View>
-            <Text style={styles.detailText}>{data.desc || "-"}</Text>
+            <Text numberOfLines={10} style={styles.detailText}>
+              {data.desc || "-"}
+            </Text>
           </View>
-          <ActivityIndicator
-          animating={this.state.refreshing}
-          text="请求中..."
-          toast
-          size="small"
-        />
+          {/* <ActivityIndicator
+            animating={this.state.refreshing}
+            text="下载中..."
+            toast
+            size="small"
+          /> */}
           <View style={[styles.row, styles.bottomRow]} />
         </ScrollView>
-        <Bottom type={type} data={data} onRefresh={this.onRefresh} />
+        <Bottom data={data} onRefresh={this.onRefresh} onProgress={(p)=>this.setState({percent:p})}/>
       </View>
     )
   }
@@ -136,7 +139,8 @@ const styles = StyleSheet.create({
   detailText: {
     paddingHorizontal: 10,
     fontSize: 12,
-    color: "#727272"
+    color: "#727272",
+    height: 150
   },
   bottomRow: {
     height: 80

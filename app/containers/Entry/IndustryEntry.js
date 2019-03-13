@@ -117,7 +117,6 @@ class IndustryEntry extends Component {
 
   render() {
     const { activeKey, loading, list = {} } = this.state
-    debugger
     return (
       <View style={styles.container}>
         <View style={styles.left}>

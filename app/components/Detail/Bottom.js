@@ -17,6 +17,8 @@ import { connect } from "react-redux"
 import moment from "moment"
 import RNFS from "react-native-fs"
 import Pay from "../Pay/Pay"
+import LikeBtn from "./LikeBtn"
+
 // import Result from "../Pay/Result"
 const use = {
   contact: "查看联系方式",
@@ -26,19 +28,16 @@ const use = {
 }
 
 @connect(({ app }) => ({ ...app }))
-class Detail extends Component {
+class Bottom extends Component {
   constructor(props) {
     super(props)
     this.state = {
       hasPaied: false,
-      collected: false,
-      time: 0
     }
   }
 
   componentDidMount() {
     const { type } = this.props
-    this.state.time = 0
     this.props.dispatch({
       type: "app/getPriceList",
       callback: res => {
@@ -48,32 +47,6 @@ class Detail extends Component {
       }
     })
   }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      this.state.time === 0 &&
-      nextProps.data.collected !== undefined &&
-      this.state.collected !== nextProps.data.collected
-    ) {
-      this.setState({ collected: nextProps.data.collected })
-      this.state.time += 1
-    }
-  }
-
-  like = () => {
-    const { id, type } = this.props.data
-    const { collected } = this.state
-    const ActionType = collected ? "app/cancelBookmark" : "app/saveBookmark"
-    this.props.dispatch({
-      type: ActionType,
-      payload: { recordId: id, type },
-      callback: res => {
-        if (res.msg === "OK") {
-          this.setState({ collected: !collected })
-        }
-      }
-    })
-  };
 
   onClose = () => {
     this.setState({ visible: false })
@@ -463,17 +436,7 @@ class Detail extends Component {
           </Button>
         </Modal>
         <View style={styles.bottom}>
-          <TouchableOpacity style={styles.cBtn} onPress={this.like}>
-            <Image
-              style={styles.cImg}
-              source={
-                collected
-                  ? require("./images/icon_collection_pressed.png")
-                  : require("./images/icon_collection.png")
-              }
-            />
-            <Text style={styles.cText}>收藏</Text>
-          </TouchableOpacity>
+        <LikeBtn data={data} />
           {!(type === "contact") && (
             <TouchableOpacity
               onPress={() => {
@@ -596,4 +559,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Detail
+export default Bottom
