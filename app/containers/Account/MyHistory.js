@@ -39,7 +39,7 @@ class MyHistory extends Component {
     this.props.dispatch({
       type: "app/historyClean",
       callback: res => {
-        Toast.success("清空成功", 1, this.getBookmark(), false)
+        Toast.success("清空成功", 2, this.getBookmark(), false)
       }
     })
   };

@@ -1,9 +1,6 @@
 import React, { Component } from "react"
 import { StyleSheet, View, Text,  } from "react-native"
 import { connect } from "react-redux"
-import { Toast, Accordion, List } from "@ant-design/react-native"
-// import Icon from "react-native-vector-icons/AntDesign"
-import { NavigationActions } from "react-navigation"
 
 @connect()
 class BaseInfo extends Component {
@@ -13,27 +10,6 @@ class BaseInfo extends Component {
       // refreshing: false
     }
   }
-
-  checkFile = () => {
-    Toast.info("暂无附件",1,null,false)
-  };
-
-  onChange = activeSections => {
-    this.setState({ activeSections })
-  };
-
-  toPaperDetail = data => {
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: "PaperDetail",
-        params: {
-          name: "附件详情",
-          data,
-          typ:"attach"
-        }
-      })
-    )
-  };
 
   render() {
     const { data = {} } = this.props
@@ -131,37 +107,8 @@ class BaseInfo extends Component {
             <Text style={styles.detailTitle}>详情介绍</Text>
           </View>
           <Text style={styles.detailText}>{data.desc}</Text>
-        </View>
-        <View style={styles.fileRow}>
-          <Accordion
-            onChange={this.onChange}
-            activeSections={this.state.activeSections}
-          >
-            <Accordion.Panel
-              header={
-                <Text style={{ fontSize: 16, lineHeight: 40, flex: 1 }}>
-                  查看附件
-                </Text>
-              }
-            >
-              <List>
-                {data.attach ? (
-                  data.attach.map(item => (
-                    <List.Item
-                      arrow="horizontal"
-                      onPress={() => this.toPaperDetail(item)}
-                    >
-                      {item.title}
-                    </List.Item>
-                  ))
-                ) : (
-                  <List.Item>无附件</List.Item>
-                )}
-              </List>
-            </Accordion.Panel>
-          </Accordion>
-        </View>
-        <View style={styles.bottomRow} />
+        </View> 
+         <View style={styles.bottomRow} />
       </View>
     )
   }

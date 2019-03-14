@@ -28,17 +28,17 @@ class SignUp extends Component {
   handlePress = () => {
     const { params: payload } = this.state
     if(!payload.phone){
-      Toast.info("请输入电话")
+      Toast.info("请输入电话",2,null,false)
       return null
     }
 
     if(!payload.password){
-      Toast.info("请输入密码")
+      Toast.info("请输入密码",2,null,false)
       return null
     }
 
     if(!payload.verifyCode){
-      Toast.info("请输入验证码")
+      Toast.info("请输入验证码",2,null,false)
       return null
     }
 
@@ -76,7 +76,7 @@ class SignUp extends Component {
       const payload = { phone: params.phone,type:0 }
       this.props.dispatch(createAction("app/sendCode")(payload))
     } else {
-      Toast.info("请输入电话号码")
+      Toast.info("请输入电话号码",2,null,false)
     }
   };
 

@@ -43,6 +43,11 @@ class JoinList extends Component {
     )
   };
 
+  toVip = () => {
+    this.props.dispatch(NavigationActions.navigate({ routeName: "Vip" }))
+  };
+
+
   toMyPublish = item => {
     const ids = {
       classifyId: item.classifyId,
@@ -63,6 +68,7 @@ class JoinList extends Component {
 
   render() {
     const { settleList } = this.state
+    const { userFinance={} } = this.props
     return (
       <View style={styles.wrap}>
         <View style={styles.listHeader}>
@@ -71,6 +77,13 @@ class JoinList extends Component {
             <Text style={{ fontSize: 16, fontWeight: "bold", marginLeft: 20 }}>
               我的入驻
             </Text>
+            <TouchableOpacity
+            style={{ flexDirection: "row" ,marginLeft:10}}
+            activeOpacity={1}
+            onPress={userFinance.superVip ? null: this.toVip}
+          >
+            <Text style={{ fontSize: 14, color: "#009688" }}>{userFinance.superVip ? '已是超级商家': '成为超级商家'}</Text>
+          </TouchableOpacity>
           </View>
           <TouchableOpacity
             style={{ flexDirection: "row" }}

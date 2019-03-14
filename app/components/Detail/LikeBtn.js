@@ -34,9 +34,10 @@ class LikeBtn extends Component {
 
   // 收藏
   like = () => {
-    const { id } = this.props.data
-    const { collected } = this.state
+    const { id,likeType } = this.props.data
+    const { collected, } = this.state
     const ActionType = collected ? "app/cancelBookmark" : "app/saveBookmark"
+    const payload = collected ? "app/cancelBookmark" : "app/saveBookmark"
     this.props.dispatch({
       type: ActionType,
       payload: { recordId: id },

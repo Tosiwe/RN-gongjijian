@@ -14,6 +14,7 @@ import * as wechat from "react-native-wechat"
 import { connect } from "react-redux"
 import moment from "moment"
 import RNFS from "react-native-fs"
+import Icon from "react-native-vector-icons/AntDesign"
 import Pay from "../Pay/Pay"
 import LikeBtn from "./LikeBtn"
 
@@ -28,8 +29,8 @@ class PaperBottom extends Component {
 
   // 检查是否已购买
   checkPay = () => {
-    const { data, } = this.props
-    // onRefresh(true)
+    const { data ,onRefresh} = this.props
+    onRefresh(true)
 
     if (data.price <= 0) {
       this.getFile()
@@ -53,9 +54,9 @@ class PaperBottom extends Component {
     })
   };
 
-  // 余额支付
+  // 创建图纸订单-即余额支付
   payByBalance = () => {
-    const { data } = this.props
+    const { data,onRefresh } = this.props
 
     const payload = {
       sourceId: data.id
@@ -68,6 +69,7 @@ class PaperBottom extends Component {
           // 余额足够
           this.getFile()
         } else if (response.status === "ERROR") {
+          onRefresh(false)
           // 余额不够
           Modal.alert("提示", "您的余额不足，直接购买", [
             {
@@ -82,18 +84,18 @@ class PaperBottom extends Component {
 
   // 请求文件
   getFile = () => {
-    const { data = {},onProgress } = this.props
-
+    const { data = {}, onProgress,onRefresh } = this.props
+    onRefresh(true)
     this.props.dispatch({
       type: "app/getFileUrl",
       payload: {
         key: data.fileKey
       },
-      callback: res => {
-        this.downloadFile(res.result, data).then(res => {
+      callback: resdata => {
+        this.downloadFile(resdata.result, data).then(res => {
           if (res) {
             onProgress(100)
-
+            this.state.shareData = res
             this.props.dispatch({
               type: "app/downloadPaper",
               payload: {
@@ -104,12 +106,12 @@ class PaperBottom extends Component {
               },
               callback: response => {
                 console.log(response)
-                // onRefresh(false)
+                onRefresh(false)
                 const msg =
                   res.type === "img"
                     ? "下载成功，请在相册中查看"
-                    : "下载成功，请在文件管理中查看"
-                Toast.success(msg, 1,  ()=>onProgress(0), false)
+                    : "下载成功，请在本地文件中查看"
+                Toast.success(msg, 3, () => onProgress(0), false)
               }
             })
           }
@@ -126,6 +128,7 @@ class PaperBottom extends Component {
     })
   };
 
+  // 权限请求
   requestExternalStoragePermission = async () => {
     try {
       const granted = await PermissionsAndroid.request(
@@ -142,6 +145,7 @@ class PaperBottom extends Component {
     }
   };
 
+  // 微信分享
   wechatShare = (data, type) => {
     if (type === "img") {
       wechat
@@ -191,33 +195,41 @@ class PaperBottom extends Component {
     }
   };
 
-  share = (da, type) => {
-    if (type === "img") {
-      Modal.alert("分享", "将文件分享到微信", [
-        {
-          text: "取消"
-        },
-        {
-          text: "去分享",
-          onPress: () => this.wechatShare(da, type)
-        }
-      ])
-    } else {
-      Modal.alert("分享链接到微信", da.path, [
-        {
-          text: "取消"
-        },
-        {
-          text: "去分享",
-          onPress: () => this.wechatShare(da, type)
-        }
-      ])
+  // 分享modal
+  share = () => {
+    const {shareData}= this.state
+    if(this.state.shareData){
+      if (shareData) {
+        Modal.alert("分享", "将文件分享到微信", [
+          {
+            text: "取消"
+          },
+          {
+            text: "去分享",
+            onPress: () => this.wechatShare(shareData.data, shareData.type)
+          }
+        ])
+      } else {
+        Modal.alert("分享链接到微信", shareData.data.path, [
+          {
+            text: "取消"
+          },
+          {
+            text: "去分享",
+            onPress: () => this.wechatShare(shareData.data, shareData.type)
+          }
+        ])
+      }
+    }else{
+      Toast.info("先下载文件才能分享哦",2,null,false)
     }
+   
   };
 
+  // 复制
   copy = txt => {
     Clipboard.setString(txt)
-    Toast.info("复制成功", 1, null, false)
+    Toast.info("复制成功", 2, null, false)
   };
 
   // 下载文件
@@ -247,19 +259,21 @@ class PaperBottom extends Component {
       )
 
       const downloadDest = isPic
-        ? `${RNFS.MainBundlePath ||
-            RNFS.ExternalDirectoryPath}/${Math.random() * 1000}.jpg`
-        : `${RNFS.MainBundlePath ||
-            RNFS.ExternalDirectoryPath}/${Math.random() * 1000}.dwg`
+        ? `${RNFS.MainBundlePath || RNFS.ExternalDirectoryPath}/${
+            data.title
+          }_${Math.round(Math.random() * 1000)}.jpg`
+        : `${RNFS.MainBundlePath || RNFS.ExternalDirectoryPath}/${
+            data.title
+          }_${Math.round(Math.random() * 1000)}.dwg`
 
       const options = {
         fromUrl: formUrl,
         toFile: downloadDest,
         background: true,
         progress: res => {
-          onProgress(res.bytesWritten*100/res.contentLength)
+          onProgress((res.bytesWritten * 100) / res.contentLength)
           // onRefresh(true,res)
-          console.log("progress", res.bytesWritten*100/res.contentLength)
+          console.log("progress", (res.bytesWritten * 100) / res.contentLength)
         },
         begin: res => {
           console.log("begin", res)
@@ -308,12 +322,15 @@ class PaperBottom extends Component {
     return (
       <View>
         <View style={styles.bottom}>
-          <LikeBtn data={data} />
+          <LikeBtn data={data} likeType="2" />
           <TouchableOpacity
-            onPress={this.getFile}
+            onPress={this.checkPay}
             style={[styles.btns, styles.downLoadBtn]}
           >
             <Text style={styles.downText}>下载</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this.share}>
+            <Icon name="sharealt" color="#ccc" size={28} />
           </TouchableOpacity>
         </View>
         <View>
@@ -345,7 +362,7 @@ const styles = StyleSheet.create({
     height: 70,
     width: "100%",
     justifyContent: "space-around",
-    alignItems: "flex-start",
+    alignItems: "center",
     backgroundColor: "#fff"
   },
   img: {
@@ -370,7 +387,7 @@ const styles = StyleSheet.create({
     alignItems: "center"
   },
   downLoadBtn: {
-    marginTop: 10,
+    // marginTop: 10,
     backgroundColor: "#FF7720",
     width: "60%",
     height: 40,

@@ -28,34 +28,40 @@ class ListItem extends Component {
   };
 
   remove = () => {
-    const { data, onRemove} = this.props
-    onRemove&&onRemove(data)
+    const { data, onRemove } = this.props
+    onRemove && onRemove(data)
   };
 
   render() {
-    const { data, isDownload,isMylike } = this.props
+    const { data, isDownload, isMylike, isGuessLike } = this.props
+    let source = data.picture1
+      ? { uri: data.picture1 }
+      : require("../../containers/Account/images/logo.jpg")
+    if (isDownload) {
+      source =  data.thumbUrl
+        ? { uri: data.thumbUrl }
+        : require("../../containers/Account/images/logo.jpg")
+    }
     return (
       <TouchableOpacity
         style={styles.container}
         key={data.id}
         onPress={this.toDetail}
+        activeOpacity={1}
       >
         <View style={styles.wrap}>
           <View style={styles.left}>
-            <Image
-              source={
-                data.picture1
-                  ? { uri: data.picture1 }
-                  : require("../../containers/Account/images/logo.jpg")
-              }
-              style={styles.img}
-            />
+            <Image source={source} style={styles.img} />
           </View>
           <View style={styles.right}>
-           {!isMylike&& <Image
-              source={INS_MAP[data.classifyId] && INS_MAP[data.classifyId].icon}
-              style={styles.icon}
-            />}
+            {!isMylike && (
+              <Image
+                source={
+                  INS_MAP[data.classifyId] && INS_MAP[data.classifyId].icon
+                }
+                style={styles.icon}
+              />
+            )}
             <Text style={styles.title} ellipsizeMode="tail" numberOfLines={1}>
               {data.title}
             </Text>
@@ -66,9 +72,11 @@ class ListItem extends Component {
               style={{ flexDirection: "row", justifyContent: "space-between" }}
             >
               <Text style={{ fontSize: 12 }}>
-                {moment(data.updateTime||data.createTime).format("YYYY-MM-DD")}
+                {moment(data.updateTime || data.createTime).format(
+                  "YYYY-MM-DD"
+                )}
               </Text>
-              {(!isDownload&&!isMylike) && (
+              {!isDownload && !isMylike && (
                 <Text
                   style={{ fontSize: 12 }}
                   ellipsizeMode="tail"
@@ -77,18 +85,22 @@ class ListItem extends Component {
                   {data.city || "区域：未知"}
                 </Text>
               )}
-              {(!isDownload&&!isMylike) && (
+              {!isDownload && !isMylike && !isGuessLike && (
                 <Text
                   style={{ fontSize: 12 }}
                   ellipsizeMode="tail"
                   numberOfLines={1}
                 >
-                  { data.dist ? (data.dist>1000 ? `${Math.round(data.dist/1000)}公里`:`${Math.round(data.dist)}米`) : "距离：未知"}
+                  {data.dist
+                    ? data.dist > 1000
+                      ? `${Math.round(data.dist / 1000)}公里`
+                      : `${Math.round(data.dist)}米`
+                    : "距离：未知"}
                 </Text>
               )}
             </View>
           </View>
-          {(isDownload||isMylike) && (
+          {(isDownload || isMylike) && (
             <View style={styles.extra}>
               <Button type="primary" size="small" onPress={this.remove}>
                 删除
@@ -143,7 +155,7 @@ const styles = StyleSheet.create({
     position: "absolute"
   },
   extra: {
-    marginLeft:10,
+    marginLeft: 10,
     justifyContent: "center"
   }
 })

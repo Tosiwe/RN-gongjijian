@@ -65,12 +65,12 @@ class PaperDetail extends Component {
               {data.desc || "-"}
             </Text>
           </View>
-          {/* <ActivityIndicator
+          <ActivityIndicator
             animating={this.state.refreshing}
             text="下载中..."
             toast
             size="small"
-          /> */}
+          />
           <View style={[styles.row, styles.bottomRow]} />
         </ScrollView>
         <Bottom data={data} onRefresh={this.onRefresh} onProgress={(p)=>this.setState({percent:p})}/>

@@ -38,7 +38,7 @@ class UserVerify extends Component {
     }
     for (const name in params) {
       if (params[name] === "") {
-        Toast.info(`${map[name]}不能为空`,1,null,false)
+        Toast.info(`${map[name]}不能为空`,2,null,false)
         return null
       }
     }

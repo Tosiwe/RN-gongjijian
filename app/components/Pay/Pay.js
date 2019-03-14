@@ -42,10 +42,12 @@ export default class App extends Component {
     }
   }
 
+  // 关闭付款弹窗
   onClose = () => {
     this.setState({ visible: false })
   };
 
+  // 支付宝支付
   aliPay = () => {
     const { data = {} } = this.props
 
@@ -54,7 +56,7 @@ export default class App extends Component {
         type: "app/creatRechargeOrder",
         payload: {
           amount: Number(data.price),
-          type: 0
+          type: 0 // 0 支付宝
         },
         callback: res => {
           if (res.msg === "OK") {
@@ -89,13 +91,13 @@ export default class App extends Component {
     })
   };
 
+  // 创建业务订单
   createOrder = () => {
     const { data } = this.props
     const map = {
       vip: "app/createVipOrder",
       contact: "app/createOrderContact",
       paper: "app/createOrderPaper",
-      attach: "app/createOrderAttach"
     }
     const payload = {  }
 
@@ -124,6 +126,7 @@ export default class App extends Component {
     })
   };
 
+  // 微信支付
   wechatPay = () => {
     const { data = {} } = this.props
 
@@ -132,7 +135,7 @@ export default class App extends Component {
         type: "app/creatRechargeOrder",
         payload: {
           amount: Number(data.price),
-          type: 1
+          type: 1 // 1 微信
         },
         callback: res => {
           if (res.msg === "OK") {
@@ -167,12 +170,14 @@ export default class App extends Component {
     })
   };
 
+  // 结果弹窗确认
   onOK = () => {
     const { data } = this.props
     // eslint-disable-next-line no-unused-expressions
     this.props.onSuccess && this.props.onSuccess(data)
   };
 
+  // 选择支付方式
   pay = () => {
     const { payType } = this.state
     if (payType === "alipay") {

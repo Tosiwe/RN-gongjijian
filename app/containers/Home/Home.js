@@ -91,12 +91,18 @@ class Home extends Component {
     const isContentFillPage = contentHeight >= scrollViewHeight // 内容高度是否大于列表高度
 
     if (isContentFillPage && isEndReached) {
-      Toast.info("已经到底啦～",0.5,this.onclose,false)
+      if(this.props.guesslikePage==="-1"){
+        Toast.info("已经到底啦～",2,this.onclose,false)
+      }else{
+        this.setState({guesslikePage:this.props.guesslikePage+1}) 
+      }
+
+
     }
   };
 
   render() {
-    const { msgList,timeStamp,imgList } = this.state
+    const { msgList,timeStamp,imgList,guesslikePage=1 } = this.state
     return (
       <View style={styles.home}>
         <ScrollView
@@ -114,7 +120,7 @@ class Home extends Component {
             </View>
           </View>
           <View style={styles.gap} />
-          <MsgList data={msgList} timeStamp={timeStamp}/>
+          <MsgList data={msgList} timeStamp={timeStamp} guesslikePage={guesslikePage}/>
         </ScrollView>
       </View>
     )

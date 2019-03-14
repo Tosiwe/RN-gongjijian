@@ -46,12 +46,12 @@ class Login extends Component {
   login = () => {
     const { params: payload } = this.state
     if (!payload.phone) {
-      Toast.info("请输入电话")
+      Toast.info("请输入电话",2,null,false)
       return null
     }
 
     if (!payload.password) {
-      Toast.info("请输入密码")
+      Toast.info("请输入密码",2,null,false)
       return null
     }
     payload.noNendAuth = true
