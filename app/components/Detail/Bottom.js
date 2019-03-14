@@ -43,8 +43,8 @@ class Bottom extends Component {
   checkPay = type => {
     this.state.contactType = type
     // 自己发布的
-    const { data, userInfo = {} } = this.props
-    if (data.userId === userInfo.id) {
+    const { data, userFinance = {} } = this.props
+    if (data.userId === userFinance.id) {
       this.showModal()
     } else {
       this.payByBalance()
@@ -64,7 +64,7 @@ class Bottom extends Component {
       payload,
       callback: response => {
         if (response.status === "OK") {
-          if(response.amount === 0){ this.showModal()}
+          if(response.result.amount === 0){ this.showModal()}
         } else if (response.status === "ERROR") {
           Modal.alert("提示", "您的余额不足，直接购买", [
             {

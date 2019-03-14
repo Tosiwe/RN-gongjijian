@@ -46,6 +46,14 @@ export default {
           createAction("updateState")({ login: true, fetching: false })
         )
         yield put(
+          createAction("getUserFinance")({ login: true, fetching: false })
+        )
+        
+        yield put(
+          createAction("getProfile")({ login: true, fetching: false })
+        )
+        
+        yield put(
           NavigationActions.navigate({
             routeName: "HomeNavigator"
           })

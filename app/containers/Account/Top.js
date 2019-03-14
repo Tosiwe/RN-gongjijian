@@ -10,7 +10,6 @@ import {
   Image,
   Linking
 } from "react-native"
-import { Toast } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 
 import { connect } from "react-redux"
@@ -29,15 +28,19 @@ class Top extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch({
-      type: "app/getProfile",
-      callback: res => {
-        if (res.msg === "OK") {
-          const userInfo = res.result
-          this.setState({ userInfo })
+    if (this.props.userInfo) {
+      this.setState({ userInfo: this.props.userInfo })
+    } else {
+      this.props.dispatch({
+        type: "app/getProfile",
+        callback: res => {
+          if (res.msg === "OK") {
+            const userInfo = res.result
+            this.setState({ userInfo })
+          }
         }
-      }
-    })
+      })
+    }
   }
 
   componentWillReceiveProps(nextProps) {

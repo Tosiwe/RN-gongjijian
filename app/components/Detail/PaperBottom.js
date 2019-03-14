@@ -32,26 +32,21 @@ class PaperBottom extends Component {
     const { data ,onRefresh} = this.props
     onRefresh(true)
 
-    if (data.price <= 0) {
-      this.getFile()
-      return
-    }
-
-    this.props.dispatch({
-      type: "app/orderRecordQuery",
-      payload: {
-        sourceId: data.id
-      },
-      callback: res => {
-        if (res.result.paid) {
-          // 已购买
-          this.getFile()
-        } else {
-          // 未购买
-          this.payByBalance()
+      this.props.dispatch({
+        type: "app/orderRecordQuery",
+        payload: {
+          sourceId: data.id
+        },
+        callback: res => {
+          if (res.result.paid) {
+            // 已购买
+            this.getFile()
+          } else {
+            // 未购买
+            this.payByBalance()
+          }
         }
-      }
-    })
+      })
   };
 
   // 创建图纸订单-即余额支付
