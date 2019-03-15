@@ -169,13 +169,13 @@ repositories {
 }
 
 dependencies {
+    implementation project(':react-native-file-opener')
     implementation project(':react-native-wechat')
     implementation project(':react-native-fs')
     implementation project(':react-native-yunpeng-alipay')
     implementation project(':react-native-image-picker')
     implementation project(':react-native-file-selector')
     implementation project(':react-native-vector-icons')
-    implementation project(':RCTWeChat')
     implementation 'com.android.support:design:28.0.0'
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
