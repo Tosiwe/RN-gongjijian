@@ -38,7 +38,7 @@ class Ads extends Component {
           imgList.map(item => (
             <TouchableWithoutFeedback onPress={()=>this.onOpen(item.link)} style={styles.containerHorizontal} key={Math.random()}>
               <Image
-                style={styles.item}
+                style={this.props.noRadius?styles.detaiTtem:styles.item }
                 imageStyle={{ borderRadius: 20 }}
                 source={{
                   uri: item.url
@@ -69,8 +69,12 @@ const styles = StyleSheet.create({
   },
   item: {
     width: screenWidth,
-    height: 200
-    // borderWidth: 1,
+    height: 200,
+  },
+  detaiTtem: {
+    width: screenWidth,
+    height: 200,
+    resizeMode:'contain'
   },
   block:{
     backgroundColor: "#DDD"

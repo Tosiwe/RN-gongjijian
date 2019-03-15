@@ -134,7 +134,7 @@ class VipTop extends Component {
                 : "您还不是会员"}
             </Text>
             <Text style={styles.gold}>
-              {data.settle
+              {data.superVip
                 ? `超级商家 ${moment(data.endTime).format("YYYY-MM-DD")} 到期`
                 : "您还不是超级商家"}
             </Text>

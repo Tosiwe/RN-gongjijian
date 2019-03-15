@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unused-state */
 import React, { Component } from "react"
-import { StyleSheet, View, ScrollView, Text } from "react-native"
+import { StyleSheet, View, ScrollView, Text,Image } from "react-native"
 import { connect } from "react-redux"
 import { ActivityIndicator, Progress } from "@ant-design/react-native"
 import Bottom from "./PaperBottom"
@@ -31,6 +31,10 @@ class PaperDetail extends Component {
         <Text style={styles.tdText}>{props.text}</Text>
       </View>
     )
+    const source =  data.thumbUrl
+    ? { uri: data.thumbUrl }
+    : require("../../containers/Account/images/logo.jpg")
+
     return (
       <View style={styles.home}>
         <ScrollView
@@ -40,6 +44,7 @@ class PaperDetail extends Component {
           onScrollEndDrag={this.handleScrollEnd}
         >
           <Progress position="fixed" style={{width:"100%",backgroundColor:"#FFF" }} percent={percent}/>
+          <Image style={{width:"100%",resizeMode:'contain'}} source={source} />
           <View style={[styles.row, styles.border]}>
             <Text style={styles.title}>{data.title}</Text>
           </View>

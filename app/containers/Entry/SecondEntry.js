@@ -9,7 +9,6 @@ import {
   Text
 } from "react-native"
 import { Tabs, Toast } from "@ant-design/react-native"
-import { NavigationActions } from "react-navigation"
 import ListItem from "../../components/ListIem/ListItem"
 import { getPosition } from "../../utils/utils"
 
@@ -28,6 +27,7 @@ class SecondEntry extends Component {
       list: [],
       params: {
         pn:1,
+        ps:50,
         distance: 0,
         subClassifyId: props.id
       },

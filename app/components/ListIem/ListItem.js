@@ -85,7 +85,7 @@ class ListItem extends Component {
                   {data.city || "区域：未知"}
                 </Text>
               )}
-              {!isDownload && !isMylike && !isGuessLike && (
+              {!isDownload && !isMylike  && (
                 <Text
                   style={{ fontSize: 12 }}
                   ellipsizeMode="tail"

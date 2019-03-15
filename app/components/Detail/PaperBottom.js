@@ -25,31 +25,34 @@ import { Storage } from "../../utils"
 class PaperBottom extends Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      paid: false
+    }
   }
 
-  componentDidMount() {}
-
-  // 检查是否已购买
-  checkPay = () => {
-    const { data, onRefresh } = this.props
-    onRefresh(true)
-
+  componentDidMount() {
+    const { data } = this.props
     this.props.dispatch({
       type: "app/orderRecordQuery",
       payload: {
         sourceId: data.id
       },
       callback: res => {
-        if (res.result.paid) {
-          // 已购买
-          this.getFile()
-        } else {
-          // 未购买
-          this.payByBalance()
+        if (res.result && res.result.paid) {
+          this.setState({ paid: true })
         }
       }
     })
+  }
+
+  // 下载按钮处理
+  handleDownload = () => {
+    const { paid } = this.state
+    if (paid) {
+      this.openFile()
+    } else {
+      this.payByBalance()
+    }
   };
 
   // 创建图纸订单-即余额支付
@@ -102,10 +105,13 @@ class PaperBottom extends Component {
                 fileName: data.fileKey
               },
               callback: response => {
-                Storage.get("files").then(files=>{
-                  const newFiles={...JSON.parse(files)}
-                  newFiles[data.id] = {fromUrl :res.data.fromUrl, path:res.data.path}
-                  Storage.set("files",JSON.stringify(newFiles))
+                Storage.get("files").then(files => {
+                  const newFiles = { ...JSON.parse(files) }
+                  newFiles[data.id] = {
+                    fromUrl: res.data.fromUrl,
+                    path: res.data.path
+                  }
+                  Storage.set("files", JSON.stringify(newFiles))
                 })
                 // Storage.set("auth", res.result.token)
 
@@ -115,7 +121,15 @@ class PaperBottom extends Component {
                   res.type === "img"
                     ? "下载成功，请在相册中查看"
                     : "下载成功，请在本地文件中查看"
-                Toast.success(msg, 3, () => onProgress(0), false)
+                Toast.success(
+                  msg,
+                  3,
+                  () => {
+                    this.setState({ paid: true })
+                    onProgress(0)
+                  },
+                  false
+                )
               }
             })
           }
@@ -150,13 +164,13 @@ class PaperBottom extends Component {
   };
 
   // 微信分享
-  wechatShare = (file) => {
-    const arrType = file.path.split('.')
-    const arrName = file.path.split('/')
-    const type = arrType[arrType.length-1]
-    const name = arrName[arrName.length-1]
+  wechatShare = file => {
+    const arrType = file.path.split(".")
+    const arrName = file.path.split("/")
+    const type = arrType[arrType.length - 1]
+    const name = arrName[arrName.length - 1]
 
-    if (type === "jpg"||type === "png") {
+    if (type === "jpg" || type === "png") {
       wechat
         .isWXAppInstalled()
         .then(isInstalled => {
@@ -168,7 +182,7 @@ class PaperBottom extends Component {
                 description: "图纸下载",
                 mediaTagName: "图纸",
                 // thumbImage: 'https://tvax4.sinaimg.cn/crop.0.0.736.736.180/62fc3de5ly8fu6xizfsmhj20kg0kgtbh.jpg',
-                imageUrl:`file://${file.path}`
+                imageUrl: `file://${file.path}`
                 // fileExtension:'.jpg'
               })
               .catch(error => {
@@ -204,42 +218,43 @@ class PaperBottom extends Component {
     }
   };
 
+  // 读取缓存
+  readStorage = () =>
+   new Promise((resolve) => {
+      const { data } = this.props
+      Storage.get("files").then(response => {
+        const files = JSON.parse(response)
+        if (files && files[data.id]) {
+          const file = files[data.id]
+          resolve(file)
+        } else {
+          Toast.info("文件找不到了，将重新下载", 2, this.getFile, false)
+          this.setState({paid:false})
+          resolve()
+        }
+      })
+    });
+
   // 分享modal
   share = () => {
-    const { data } = this.props
-    this.props.dispatch({
-      type: "app/orderRecordQuery",
-      payload: {
-        sourceId: data.id
-      },
-      callback: res => {
-        if (res.result.paid) {
-          Storage.get("files").then(response => {
-          const files = JSON.parse(response)
-            if (files&& files[data.id]) {
-              const file = files[data.id]
-            
-              Modal.operation([
-                {
-                  text: "打开文件",
-                  onPress:()=> this.openFile(file.path)
-                },
-                {
-                  text: "分享到微信",
-                  onPress: () => this.wechatShare(file)
-                }
-              ])
-
-            }else{
-              Toast.info("文件找不到了，请重新下载", 2, null, false)
-            }
-          })
-        } else {
-          // 未购买
-          Toast.info("先下载文件才能分享哦", 2, null, false)
+    const { paid } = this.state
+    if (paid) {
+      this.readStorage().then(file=>{
+        if(file){
+          this.wechatShare(file)
+          // Modal.operation([
+          //   {
+          //     text: "分享到微信",
+          //     onPress: () => this.wechatShare(file)
+          //   }
+          // ])
         }
-      }
-    })
+       
+      })
+    } else {
+      // 未购买
+      Toast.info("先下载文件才能分享哦", 2, null, false)
+    }
   };
 
   // 复制
@@ -249,39 +264,38 @@ class PaperBottom extends Component {
   };
 
   // 打开文件
-  openFile = (filePath) => {
-
-    const arrType = filePath.split('.')
-    const arrName = filePath.split('/')
-    const type = arrType[arrType.length-1]
-    const name = arrName[arrName.length-1]
-
-
-    const mime = {
-      dwg: "application/x-dwg",
-      dxf: "application/x-dxf",
-      dwf: "application/x-dwf",
-      pdf: "application/pdf"
-    }
-
-    // const SavePath =
-    //   Platform.OS === "ios"
-    //     ? RNFS.DocumentDirectoryPath
-    //     : RNFS.ExternalDirectoryPath
-    const sampleDocFilePath = filePath
-    FileOpener.open(`${sampleDocFilePath}`, mime[type]).then(
-      () => {
-        console.log("success!!")
-      },
-      e => {
-        console.log("error!!")
+  openFile = () => {
+    this.readStorage().then(res => {
+      if(!res){
+        return
       }
-    )
+      const filePath = res.path
+      const arrType = filePath.split(".")
+      const type = arrType[arrType.length - 1]
+
+      const mime = {
+        dwg: "application/x-dwg",
+        dxf: "application/x-dxf",
+        dwf: "application/x-dwf",
+        pdf: "application/pdf"
+      }
+
+      const sampleDocFilePath = filePath
+      FileOpener.open(`${sampleDocFilePath}`, mime[type]).then(
+        () => {
+          console.log("success!!")
+        },
+        e => {
+          Toast.info("文件找不到了，将重新下载", 2, this.getFile, false)
+          this.setState({paid:false})
+        }
+      )
+    })
   };
 
   // 下载文件
   downloadFile(response, data) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const fromUrl = response.url
       const key = data.fileKey
       const arr = key.split(".")
@@ -306,12 +320,12 @@ class PaperBottom extends Component {
       )
 
       const downloadDest = isPic
-        ? `${RNFS.MainBundlePath || RNFS.ExternalDirectoryPath}/${
-            data.title
-          }_${data.id}.${FileMimeType}`
-        : `${RNFS.MainBundlePath || RNFS.ExternalDirectoryPath}/${
-            data.title
-          }_${data.id}.${FileMimeType}`
+        ? `${RNFS.MainBundlePath || RNFS.ExternalDirectoryPath}/${data.title}_${
+            data.id
+          }.${FileMimeType}`
+        : `${RNFS.MainBundlePath || RNFS.ExternalDirectoryPath}/${data.title}_${
+            data.id
+          }.${FileMimeType}`
 
       const options = {
         fromUrl,
@@ -346,7 +360,7 @@ class PaperBottom extends Component {
                     resolve()
                   })
               } else {
-                const da = {fromUrl, path: downloadDest, ...data }
+                const da = { fromUrl, path: downloadDest, ...data }
                 resolve({ data: da, type: "file" })
               }
             }
@@ -364,20 +378,21 @@ class PaperBottom extends Component {
   render() {
     const { data } = this.props
 
-    const { payVisible, timeStamp } = this.state
+    const { payVisible, timeStamp,paid } = this.state
 
     return (
       <View>
         <View style={styles.bottom}>
           <LikeBtn data={data} likeType="2" />
           <TouchableOpacity
-            onPress={this.checkPay}
+            onPress={this.handleDownload}
             style={[styles.btns, styles.downLoadBtn]}
           >
-            <Text style={styles.downText}>下载</Text>
+            <Text style={styles.downText}>{paid? '打开':'下载'}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.share}>
-            <Icon name="sharealt" color="#ccc" size={28} />
+            <Icon name="sharealt" color="#ccc" size={24} />
+            <Text style={{ color: "#727272",fontSize: 12}}>分享</Text>
           </TouchableOpacity>
         </View>
         <View>

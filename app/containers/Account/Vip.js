@@ -21,7 +21,7 @@ const payArray = [
     key: "vipMonth",
     title: "VIP包月",
     price: "30.00",
-    des: "月度可查100次联系方式"
+    des: "月度可无限次获取联系方式"
   },
   {
     key: "vipQuarter",
@@ -33,25 +33,25 @@ const payArray = [
     key: "vipYear",
     title: "VIP包年",
     price: "300.00",
-    des: "一年内可无限次获取联系方式"
+    des: "年度可无限次获取联系方式"
   },
   {
     key: "settleMonth",
     title: "超级商家包月",
     price: "30.00",
-    des: "1个月内所有入驻的行业享受超级商家权益"
+    des: "月度所有入驻的行业享受超级商家权益"
   },
   {
     key: "settleQuarter",
     title: "超级商家包季",
     price: "80.00",
-    des: "1个季度所有入驻的行业享受超级商家权益"
+    des: "季度所有入驻的行业享受超级商家权益"
   },
   {
     key: "settleYear",
     title: "超级商家包年",
     price: "300.00",
-    des: "1个年度内所有入驻的行业享受超级商家权益"
+    des: "年度所有入驻的行业享受超级商家权益"
   }
 ]
 
@@ -236,6 +236,12 @@ class Vip extends Component {
             >
               <Text style={styles.rcmTxt}>推荐</Text>
             </ImageBackground>
+            <ImageBackground
+              style={styles.rcmBg2}
+              source={require("./Vip/images/bg_recommend.png")}
+            >
+              <Text style={styles.rcmTxt}>推荐</Text>
+            </ImageBackground>
           </View>
           <View />
           <TouchableOpacity style={styles.btn} onPress={this.payByBalance}>
@@ -306,6 +312,13 @@ const styles = StyleSheet.create({
     minHeight: 50
   },
   rcmBg: {
+    right: 0,
+    width: 60,
+    height: 30,
+    position: "absolute"
+  },
+  rcmBg2: {
+    top:140,
     right: 0,
     width: 60,
     height: 30,

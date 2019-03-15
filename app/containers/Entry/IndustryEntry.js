@@ -22,6 +22,7 @@ class IndustryEntry extends Component {
       list: [],
       params: {
         pn:1,
+        ps:50,
         distance: 0,
         classifyId: props.id,
         subClassifyId: "company"
