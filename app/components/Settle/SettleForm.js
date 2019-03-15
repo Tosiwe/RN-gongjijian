@@ -48,7 +48,6 @@ class SettleForm extends Component {
   };
 
   onSave = () => {
-    debugger
     const { params } = this.state
     const { classifyId, subClassifyId } = this.props.navigation.state.params
 

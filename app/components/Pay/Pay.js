@@ -120,7 +120,7 @@ export default class App extends Component {
       payload,
       callback: response => {
         if (response.status === "OK") {
-          const resultData = { orderId: response.result.id, ...data }
+          const resultData = { orderId: response.result? response.result.id:"请联系工作人员查询", ...data }
           this.setState({
             visible: false,
             resultVisible: true,

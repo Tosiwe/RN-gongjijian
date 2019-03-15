@@ -19,6 +19,7 @@ import Icon from "react-native-vector-icons/AntDesign"
 import FileOpener from "react-native-file-opener"
 import Pay from "../Pay/Pay"
 import LikeBtn from "./LikeBtn"
+import { Storage } from "../../utils"
 
 @connect(({ app }) => ({ ...app }))
 class PaperBottom extends Component {
@@ -92,7 +93,6 @@ class PaperBottom extends Component {
         this.downloadFile(resdata.result, data).then(res => {
           if (res) {
             onProgress(100)
-            this.state.shareData = res
             this.props.dispatch({
               type: "app/downloadPaper",
               payload: {
@@ -102,6 +102,13 @@ class PaperBottom extends Component {
                 fileName: data.fileKey
               },
               callback: response => {
+                Storage.get("files").then(files=>{
+                  const newFiles={...JSON.parse(files)}
+                  newFiles[data.id] = {fromUrl :res.data.fromUrl, path:res.data.path}
+                  Storage.set("files",JSON.stringify(newFiles))
+                })
+                // Storage.set("auth", res.result.token)
+
                 console.log(response)
                 onRefresh(false)
                 const msg =
@@ -143,8 +150,13 @@ class PaperBottom extends Component {
   };
 
   // 微信分享
-  wechatShare = (data, type) => {
-    if (type === "img") {
+  wechatShare = (file) => {
+    const arrType = file.path.split('.')
+    const arrName = file.path.split('/')
+    const type = arrType[arrType.length-1]
+    const name = arrName[arrName.length-1]
+
+    if (type === "jpg"||type === "png") {
       wechat
         .isWXAppInstalled()
         .then(isInstalled => {
@@ -152,15 +164,15 @@ class PaperBottom extends Component {
             wechat
               .shareToSession({
                 type: "imageFile",
-                title: data.title,
-                description: data.desc,
+                title: name,
+                description: "图纸下载",
                 mediaTagName: "图纸",
                 // thumbImage: 'https://tvax4.sinaimg.cn/crop.0.0.736.736.180/62fc3de5ly8fu6xizfsmhj20kg0kgtbh.jpg',
-                imageUrl: data.path
+                imageUrl:`file://${file.path}`
                 // fileExtension:'.jpg'
               })
               .catch(error => {
-                Toast.info(error.message)
+                // Toast.info(error.message)
               })
           } else {
             Toast.info("请安装微信")
@@ -177,10 +189,10 @@ class PaperBottom extends Component {
             wechat
               .shareToSession({
                 type: "text",
-                description: data.path
+                description: file.fromUrl
               })
               .catch(error => {
-                Toast.info(error.message)
+                // Toast.info(error.message)
               })
           } else {
             Toast.info("请安装微信")
@@ -194,43 +206,40 @@ class PaperBottom extends Component {
 
   // 分享modal
   share = () => {
-    const { shareData  } = this.state
-    if (shareData) {
-      Modal.operation([
-        // {
-        //   text: "打开文件夹",
-        //   onPress: this.openFile
-        // },
-        {
-          text: "分享到微信",
-          onPress: this.wechatShare(shareData.data, shareData.type)
-        }
-      ])
+    const { data } = this.props
+    this.props.dispatch({
+      type: "app/orderRecordQuery",
+      payload: {
+        sourceId: data.id
+      },
+      callback: res => {
+        if (res.result.paid) {
+          Storage.get("files").then(response => {
+          const files = JSON.parse(response)
+            if (files&& files[data.id]) {
+              const file = files[data.id]
+            
+              Modal.operation([
+                {
+                  text: "打开文件",
+                  onPress:()=> this.openFile(file.path)
+                },
+                {
+                  text: "分享到微信",
+                  onPress: () => this.wechatShare(file)
+                }
+              ])
 
-      // if (shareData.type==='img') {
-      //   Modal.alert("分享", "将文件分享到微信", [
-      //     {
-      //       text: "取消"
-      //     },
-      //     {
-      //       text: "去分享",
-      //       onPress: () => this.wechatShare(shareData.data, shareData.type)
-      //     }
-      //   ])
-      // } else {
-      //   Modal.alert("分享链接到微信", shareData.data.path, [
-      //     {
-      //       text: "取消"
-      //     },
-      //     {
-      //       text: "去分享",
-      //       onPress: () => this.wechatShare(shareData.data, shareData.type)
-      //     }
-      //   ])
-      // }
-    } else {
-      Toast.info("先下载文件才能分享哦", 2, null, false)
-    }
+            }else{
+              Toast.info("文件找不到了，请重新下载", 2, null, false)
+            }
+          })
+        } else {
+          // 未购买
+          Toast.info("先下载文件才能分享哦", 2, null, false)
+        }
+      }
+    })
   };
 
   // 复制
@@ -240,13 +249,27 @@ class PaperBottom extends Component {
   };
 
   // 打开文件
-  openFile = () => {
-    const SavePath =
-      Platform.OS === "ios"
-        ? RNFS.DocumentDirectoryPath
-        : RNFS.ExternalDirectoryPath
-    const sampleDocFilePath = `${SavePath}/123.2627707192897.dwg`
-    FileOpener.open(sampleDocFilePath, "application/msword").then(
+  openFile = (filePath) => {
+
+    const arrType = filePath.split('.')
+    const arrName = filePath.split('/')
+    const type = arrType[arrType.length-1]
+    const name = arrName[arrName.length-1]
+
+
+    const mime = {
+      dwg: "application/x-dwg",
+      dxf: "application/x-dxf",
+      dwf: "application/x-dwf",
+      pdf: "application/pdf"
+    }
+
+    // const SavePath =
+    //   Platform.OS === "ios"
+    //     ? RNFS.DocumentDirectoryPath
+    //     : RNFS.ExternalDirectoryPath
+    const sampleDocFilePath = filePath
+    FileOpener.open(`${sampleDocFilePath}`, mime[type]).then(
       () => {
         console.log("success!!")
       },
@@ -259,7 +282,7 @@ class PaperBottom extends Component {
   // 下载文件
   downloadFile(response, data) {
     return new Promise((resolve, reject) => {
-      const formUrl = response.url
+      const fromUrl = response.url
       const key = data.fileKey
       const arr = key.split(".")
       const FileMimeType = arr[arr.length - 1]
@@ -285,13 +308,13 @@ class PaperBottom extends Component {
       const downloadDest = isPic
         ? `${RNFS.MainBundlePath || RNFS.ExternalDirectoryPath}/${
             data.title
-          }_${key}.${FileMimeType}`
+          }_${data.id}.${FileMimeType}`
         : `${RNFS.MainBundlePath || RNFS.ExternalDirectoryPath}/${
             data.title
-          }_${key}.${FileMimeType}`
+          }_${data.id}.${FileMimeType}`
 
       const options = {
-        fromUrl: formUrl,
+        fromUrl,
         toFile: downloadDest,
         background: true,
         progress: res => {
@@ -323,7 +346,7 @@ class PaperBottom extends Component {
                     resolve()
                   })
               } else {
-                const da = { path: formUrl, ...data }
+                const da = {fromUrl, path: downloadDest, ...data }
                 resolve({ data: da, type: "file" })
               }
             }

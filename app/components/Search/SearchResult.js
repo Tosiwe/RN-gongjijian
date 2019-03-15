@@ -38,12 +38,13 @@ class SearchResult extends Component {
 
   
 
-  getList = (classifyId = "hbuilding") => {
+  getList = (classifyId = "hbuilding", isTab) => {
+    // debugger
     this.setState({loading:true})
     const { params } = this.props.navigation.state.params
-    if (!params.classifyId) {
+    // if (!params.classifyId||isTab) {
       params.classifyId = classifyId
-    }
+    // }
     // this.setState({ pageKey: classifyId })
     this.state.params = params
     getPosition({ ...this }, Toast).then(result => {
@@ -51,6 +52,7 @@ class SearchResult extends Component {
         keyword: result.params.keyword,
         classifyId:result.params.classifyId,
         ps: result.params.ps,
+        pn: result.params.pn,
         distance: result.params.distance,
         lat: result.params.latitude,
         lng: result.params.longitude

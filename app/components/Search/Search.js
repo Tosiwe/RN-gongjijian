@@ -12,7 +12,8 @@ class Search extends Component {
     super()
     this.state = {
       params: {
-        ps:10,
+        pn:1,
+        ps:50,
         distance:0,
       },
       hotSearchList: []

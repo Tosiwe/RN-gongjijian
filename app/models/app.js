@@ -662,7 +662,7 @@ export default {
       if (res && callback) {
         callback(res)
       }
-      yield put(createAction("updateState")({ guesslikePage:res.result.length===0 ?'-1': payload.pn, fetching: false }))
+      yield put(createAction("updateState")({ guesslikePage:res.result && res.result.length===0 ?'-1': payload.pn, fetching: false }))
     },
 
     // ---------------订单相关------------

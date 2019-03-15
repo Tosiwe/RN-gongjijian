@@ -36,6 +36,9 @@ export default function request(url, options) {
     if(!auth){
       delete options.headers.Authorization
     }
+
+    console.log("url",url)
+    console.log("options",options.body && JSON.parse(options.body))
     return (
       fetch(url, options)
         // eslint-disable-next-line consistent-return

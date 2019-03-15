@@ -121,7 +121,7 @@ class Bottom extends Component {
                 // fileExtension:'.jpg'
               })
               .catch(error => {
-                Toast.info(error.message)
+                // Toast.info(error.message)
               })
           } else {
             Toast.info("请安装微信")
@@ -141,7 +141,7 @@ class Bottom extends Component {
                 description: data.path
               })
               .catch(error => {
-                Toast.info(error.message)
+                // Toast.info(error.message)
               })
           } else {
             Toast.info("请安装微信")
