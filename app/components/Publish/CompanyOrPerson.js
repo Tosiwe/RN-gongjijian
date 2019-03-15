@@ -12,7 +12,7 @@ const { Brief } = Item
 const COMPANY = [
   { title: "公司", id: "company", brief: "公司简介、公司业务等" },
   { title: "租赁", id: "rent", brief: "租赁相关信息" },
-  { title: "材料供应", id: "material", brief: "租赁相关信息" }
+  { title: "材料供应", id: "material", brief: "材料供应相关信息" }
 ]
 
 const PERSON = [

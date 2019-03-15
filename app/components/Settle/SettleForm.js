@@ -48,6 +48,7 @@ class SettleForm extends Component {
   };
 
   onSave = () => {
+    debugger
     const { params } = this.state
     const { classifyId, subClassifyId } = this.props.navigation.state.params
 
@@ -173,7 +174,7 @@ class SettleForm extends Component {
           <TextareaItem
             rows={5}
             clear
-            onChange={v => this.handleInput(v, "productDesc")}
+            onChange={v => this.handleChange(v, "productDesc")}
             placeholder="请输入产品描述，建议至少50字。"
           />
         </List>

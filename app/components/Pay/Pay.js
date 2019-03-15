@@ -96,9 +96,17 @@ export default class App extends Component {
     const { data } = this.props
     const map = {
       vip: "app/createVipOrder",
+      superVip: "app/createSuperVipOrder",
       contact: "app/createOrderContact",
       paper: "app/createOrderPaper",
     }
+    const textMap = {
+      vip: "会员",
+      superVip: "超级商家",
+      contact: "联系方式",
+      paper: "图纸",
+    }
+
     const payload = {  }
 
     if (data.type === "vip") {
@@ -120,7 +128,7 @@ export default class App extends Component {
             resultCode: Math.random()
           })
         } else if (response.status === "ERROR") {
-          Toast.info(response.msg)
+          Toast.info(`创建${textMap[data.type]}订单失败`)
         }
       }
     })
@@ -163,7 +171,7 @@ export default class App extends Component {
         err => {
           console.log(err)
           // alert()
-          alert(`付款出错了，erroeCode：${err.code}`,1)
+          alert(`付款出错了，erroeCode：${err.code}`)
           // this.createOrder()
         }
       )

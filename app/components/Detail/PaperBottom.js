@@ -7,7 +7,8 @@ import {
   Text,
   CameraRoll,
   PermissionsAndroid,
-  Clipboard
+  Clipboard,
+  Platform
 } from "react-native"
 import { Modal, Toast } from "@ant-design/react-native"
 import * as wechat from "react-native-wechat"
@@ -15,6 +16,7 @@ import { connect } from "react-redux"
 import moment from "moment"
 import RNFS from "react-native-fs"
 import Icon from "react-native-vector-icons/AntDesign"
+import FileOpener from "react-native-file-opener"
 import Pay from "../Pay/Pay"
 import LikeBtn from "./LikeBtn"
 
@@ -29,29 +31,29 @@ class PaperBottom extends Component {
 
   // 检查是否已购买
   checkPay = () => {
-    const { data ,onRefresh} = this.props
+    const { data, onRefresh } = this.props
     onRefresh(true)
 
-      this.props.dispatch({
-        type: "app/orderRecordQuery",
-        payload: {
-          sourceId: data.id
-        },
-        callback: res => {
-          if (res.result.paid) {
-            // 已购买
-            this.getFile()
-          } else {
-            // 未购买
-            this.payByBalance()
-          }
+    this.props.dispatch({
+      type: "app/orderRecordQuery",
+      payload: {
+        sourceId: data.id
+      },
+      callback: res => {
+        if (res.result.paid) {
+          // 已购买
+          this.getFile()
+        } else {
+          // 未购买
+          this.payByBalance()
         }
-      })
+      }
+    })
   };
 
   // 创建图纸订单-即余额支付
   payByBalance = () => {
-    const { data,onRefresh } = this.props
+    const { data, onRefresh } = this.props
 
     const payload = {
       sourceId: data.id
@@ -79,7 +81,7 @@ class PaperBottom extends Component {
 
   // 请求文件
   getFile = () => {
-    const { data = {}, onProgress,onRefresh } = this.props
+    const { data = {}, onProgress, onRefresh } = this.props
     onRefresh(true)
     this.props.dispatch({
       type: "app/getFileUrl",
@@ -192,33 +194,43 @@ class PaperBottom extends Component {
 
   // 分享modal
   share = () => {
-    const {shareData}= this.state
-    if(this.state.shareData){
-      if (shareData) {
-        Modal.alert("分享", "将文件分享到微信", [
-          {
-            text: "取消"
-          },
-          {
-            text: "去分享",
-            onPress: () => this.wechatShare(shareData.data, shareData.type)
-          }
-        ])
-      } else {
-        Modal.alert("分享链接到微信", shareData.data.path, [
-          {
-            text: "取消"
-          },
-          {
-            text: "去分享",
-            onPress: () => this.wechatShare(shareData.data, shareData.type)
-          }
-        ])
-      }
-    }else{
-      Toast.info("先下载文件才能分享哦",2,null,false)
+    const { shareData  } = this.state
+    if (shareData) {
+      Modal.operation([
+        // {
+        //   text: "打开文件夹",
+        //   onPress: this.openFile
+        // },
+        {
+          text: "分享到微信",
+          onPress: this.wechatShare(shareData.data, shareData.type)
+        }
+      ])
+
+      // if (shareData.type==='img') {
+      //   Modal.alert("分享", "将文件分享到微信", [
+      //     {
+      //       text: "取消"
+      //     },
+      //     {
+      //       text: "去分享",
+      //       onPress: () => this.wechatShare(shareData.data, shareData.type)
+      //     }
+      //   ])
+      // } else {
+      //   Modal.alert("分享链接到微信", shareData.data.path, [
+      //     {
+      //       text: "取消"
+      //     },
+      //     {
+      //       text: "去分享",
+      //       onPress: () => this.wechatShare(shareData.data, shareData.type)
+      //     }
+      //   ])
+      // }
+    } else {
+      Toast.info("先下载文件才能分享哦", 2, null, false)
     }
-   
   };
 
   // 复制
@@ -227,14 +239,31 @@ class PaperBottom extends Component {
     Toast.info("复制成功", 2, null, false)
   };
 
+  // 打开文件
+  openFile = () => {
+    const SavePath =
+      Platform.OS === "ios"
+        ? RNFS.DocumentDirectoryPath
+        : RNFS.ExternalDirectoryPath
+    const sampleDocFilePath = `${SavePath}/123.2627707192897.dwg`
+    FileOpener.open(sampleDocFilePath, "application/msword").then(
+      () => {
+        console.log("success!!")
+      },
+      e => {
+        console.log("error!!")
+      }
+    )
+  };
+
   // 下载文件
   downloadFile(response, data) {
     return new Promise((resolve, reject) => {
       const formUrl = response.url
       const key = data.fileKey
       const arr = key.split(".")
-      const isPic =
-        arr[arr.length - 1] === "jpg" || arr[arr.length - 1] === "png"
+      const FileMimeType = arr[arr.length - 1]
+      const isPic = FileMimeType === "jpg" || FileMimeType === "png"
 
       // TODO:
       // if(!isPic){
@@ -256,10 +285,10 @@ class PaperBottom extends Component {
       const downloadDest = isPic
         ? `${RNFS.MainBundlePath || RNFS.ExternalDirectoryPath}/${
             data.title
-          }_${Math.round(Math.random() * 1000)}.jpg`
+          }_${key}.${FileMimeType}`
         : `${RNFS.MainBundlePath || RNFS.ExternalDirectoryPath}/${
             data.title
-          }_${Math.round(Math.random() * 1000)}.dwg`
+          }_${key}.${FileMimeType}`
 
       const options = {
         fromUrl: formUrl,

@@ -67,6 +67,7 @@
 		6D2666690B054B2F8AF124BA /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C99CEDD670094A778391E057 /* libRNFS.a */; };
 		8A669C2500BC4552B6F8B324 /* libRCTWeChat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9E7A81D87B9C4ECCB545701E /* libRCTWeChat.a */; };
 		68352147DBC541569F7E1A95 /* RCTWeChatTests.xctest in Resources */ = {isa = PBXBuildFile; fileRef = 904C73210CCA4F8B94C7AD17 /* RCTWeChatTests.xctest */; };
+		83558374A6D248E59259BCC0 /* libRNFileOpener.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ED9E87F934224510BA35C11A /* libRNFileOpener.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -466,6 +467,8 @@
 		00F1E86326CA4BA8B5C93628 /* RCTWeChat.xcodeproj */ = {isa = PBXFileReference; name = "RCTWeChat.xcodeproj"; path = "../node_modules/react-native-wechat/ios/RCTWeChat.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		9E7A81D87B9C4ECCB545701E /* libRCTWeChat.a */ = {isa = PBXFileReference; name = "libRCTWeChat.a"; path = "libRCTWeChat.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		904C73210CCA4F8B94C7AD17 /* RCTWeChatTests.xctest */ = {isa = PBXFileReference; name = "RCTWeChatTests.xctest"; path = "RCTWeChatTests.xctest"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.cfbundle; explicitFileType = undefined; includeInIndex = 0; };
+		2301EBE859614560A43FC394 /* RNFileOpener.xcodeproj */ = {isa = PBXFileReference; name = "RNFileOpener.xcodeproj"; path = "../node_modules/react-native-file-opener/ios/RNFileOpener.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		ED9E87F934224510BA35C11A /* libRNFileOpener.a */ = {isa = PBXFileReference; name = "libRNFileOpener.a"; path = "libRNFileOpener.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -502,6 +505,7 @@
 				6D2666690B054B2F8AF124BA /* libRNFS.a in Frameworks */,
 				8A669C2500BC4552B6F8B324 /* libRCTWeChat.a in Frameworks */,
 				68352147DBC541569F7E1A95 /* RCTWeChatTests.xctest in Resources */,
+				83558374A6D248E59259BCC0 /* libRNFileOpener.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -737,6 +741,7 @@
 				31E803A7B7D9407A915FE0A5 /* AlipayModule.xcodeproj */,
 				EB0A2B1FB8BE4EEF82ABD258 /* RNFS.xcodeproj */,
 				00F1E86326CA4BA8B5C93628 /* RCTWeChat.xcodeproj */,
+				2301EBE859614560A43FC394 /* RNFileOpener.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1460,12 +1465,14 @@
 					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 				);
 				INFOPLIST_FILE = rn_gongjijianTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1490,12 +1497,14 @@
 					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 				);
 				INFOPLIST_FILE = rn_gongjijianTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1526,6 +1535,7 @@
 					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 				);
 				INFOPLIST_FILE = rn_gongjijian/Info.plist;
 				INSTALL_PATH = "$(LOCAL_APPS_DIR)";
@@ -1562,6 +1572,7 @@
 					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 				);
 				INFOPLIST_FILE = rn_gongjijian/Info.plist;
 				INSTALL_PATH = "$(LOCAL_APPS_DIR)";
@@ -1599,11 +1610,13 @@
 					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 				);
 				INFOPLIST_FILE = "rn_gongjijian-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1637,11 +1650,13 @@
 					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 				);
 				INFOPLIST_FILE = "rn_gongjijian-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1674,11 +1689,13 @@
 					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 				);
 				INFOPLIST_FILE = "rn_gongjijian-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",
@@ -1711,11 +1728,13 @@
 					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
+					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 				);
 				INFOPLIST_FILE = "rn_gongjijian-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				OTHER_LDFLAGS = (
 					"-ObjC",

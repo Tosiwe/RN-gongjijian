@@ -159,7 +159,7 @@ class Vip extends Component {
 
     const type = key.includes("vip")
       ? "app/createVipOrder"
-      : "app/createSettleOrder"
+      : "app/createSuperVipOrder"
 
     this.props.dispatch({
       type,
@@ -200,13 +200,12 @@ class Vip extends Component {
       resultCode,
       orderId
     } = this.state
-    const { userFinance = {} } = this.props
     const info = vipInfo[activeKey]
     const payData = {
       use: "购买VIP",
       name: info && info.title,
       price: info && info.price,
-      type: "vip",
+      type: info && info.key.includes("vip") ? "vip" : "superVip",
       vip: info && info.key
     }
 
@@ -271,7 +270,7 @@ const styles = StyleSheet.create({
   wrap: {
     justifyContent: "center",
     // width: 130,
-    height: 180,
+    height: 130,
     borderWidth: 2,
     borderColor: "#EEE",
     borderRadius: 5,
@@ -281,7 +280,7 @@ const styles = StyleSheet.create({
   activeWrap: {
     justifyContent: "center",
     // width: 130,
-    height: 180,
+    height: 130,
     borderWidth: 2,
     borderColor: "#E7BC85",
     borderRadius: 5,
@@ -296,15 +295,15 @@ const styles = StyleSheet.create({
     textAlign: "center"
   },
   title: {
-    fontSize: 18
+    fontSize: 12
   },
   price: {
     color: "#C99A2E",
     fontSize: 20
   },
   des: {
-    fontSize: 14,
-    height: 80
+    fontSize: 12,
+    minHeight: 50
   },
   rcmBg: {
     right: 0,

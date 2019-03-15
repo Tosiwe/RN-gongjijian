@@ -96,8 +96,6 @@ class Home extends Component {
       }else{
         this.setState({guesslikePage:this.props.guesslikePage+1}) 
       }
-
-
     }
   };
 

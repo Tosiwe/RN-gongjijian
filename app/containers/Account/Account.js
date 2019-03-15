@@ -62,11 +62,6 @@ class Account extends Component {
           <Top />
           <My />
           <JoinList />
-          {/* {login ? (
-          <Button text="Logout" onPress={this.logout} />
-        ) : (
-          <Button text="Goto Login" onPress={this.gotoLogin} />
-        )} */}
         </ScrollView>
       </View>
     )
