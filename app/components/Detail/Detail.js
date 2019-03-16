@@ -43,7 +43,7 @@ class Detail extends Component {
           data.picture1,
           data.picture2,
           data.picture3,
-          data.picture3
+          data.picture4
         ]
         const imgList = []
         imgSet.forEach(item => {
