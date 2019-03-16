@@ -25,7 +25,7 @@ class BaseInfo extends Component {
     const form = () => {
       const { classifyId, type, subClassifyId } = data
 
-      if (type === 0 || subClassifyId === "company") {
+      if (type === 0 ) {
         return null
       }
 
@@ -41,6 +41,14 @@ class BaseInfo extends Component {
         return (
           <View style={styles.row}>
             <Td label="资质名称" text={data.extraName || "-"} />
+          </View>
+        )
+      }
+
+      if (subClassifyId === "company") {
+        return (
+          <View style={styles.row}>
+            <Td label="业务名称" text={data.extraName || "-"} />
           </View>
         )
       }

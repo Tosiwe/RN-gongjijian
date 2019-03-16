@@ -81,9 +81,9 @@ class SecondEntry extends Component {
               if (res.msg === "OK") {
                 let infoList = []
                 if (pn !== 1) {
-                  infoList = [...this.state.infoList, ...res.result.data]
+                  infoList = [...this.state.infoList, ...res.result]
                 } else {
-                  infoList = res.result.data
+                  infoList = res.result
                 }
                 this.setState({
                   list: infoList
@@ -121,7 +121,7 @@ class SecondEntry extends Component {
           onChange={this.changeTab}
         >
           <View style={styles.content}>
-            <ActivityIndicator animating={loading} />
+          {loading && <ActivityIndicator animating={loading} />}
             {list.length ? (
               <FlatList data={list} renderItem={this.renderItem} />
             ) : (
@@ -140,7 +140,7 @@ class SecondEntry extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingHorizontal: 10,
+    // paddingHorizontal: 10,
     backgroundColor: "#FFF"
   },
   content: {

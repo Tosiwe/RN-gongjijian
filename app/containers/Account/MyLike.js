@@ -26,10 +26,10 @@ class MyLike extends Component {
   getBookmark = (pn = 1) => {
     this.props.dispatch({
       type: "app/getBookmark",
-      //   payload: {
-      //     pn,
-      //     ps: 10
-      //   },
+        payload: {
+          pn,
+          ps: 50
+        },
       callback: res => {
         if (res.msg === "OK") {
           let likeList = []

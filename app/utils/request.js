@@ -44,7 +44,9 @@ export default function request(url, options) {
         .then(response => {
           console.log(`${url}  response`,response._bodyText&& JSON.parse(response._bodyText))
           if (response.status === 500) {
-            Toast.info(response._bodyText&& JSON.parse(response._bodyText).msg)
+            const msg =response._bodyText&& JSON.parse(response._bodyText).msg
+           
+            Toast.info( msg|| '请求异常')
             return response.json()
             // console.log("error", response)
           } 

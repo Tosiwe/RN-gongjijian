@@ -19,6 +19,8 @@ class LikeBtn extends Component {
 
   componentDidMount() {
     this.state.time = 0
+    this.setState({ collected: this.props.data.collected })
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -44,6 +46,7 @@ class LikeBtn extends Component {
       type: ActionType,
       payload,
       callback: res => {
+        debugger
         if (res.msg === "OK") {
           this.setState({ collected: !collected })
         }

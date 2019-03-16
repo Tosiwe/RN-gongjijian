@@ -70,7 +70,7 @@ class ListItem extends Component {
               {isDownload ? data.fileName : data.desc}
             </Text>
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between" }}
+              style={{ flexDirection: "row", justifyContent: "space-between",marginTop:5 }}
             >
               <Text style={{ fontSize: 12 }}>
                 {moment(data.updateTime || data.createTime).format(

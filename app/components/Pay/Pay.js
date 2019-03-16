@@ -128,7 +128,11 @@ export default class App extends Component {
             resultCode: Math.random()
           })
         } else if (response.status === "ERROR") {
-          Toast.info(`创建${textMap[data.type]}订单失败`)
+          if(response.msg){
+            Toast.info(response.msg)
+          }else{
+            Toast.info(`创建${textMap[data.type]}订单失败`)
+          }
         }
       }
     })
