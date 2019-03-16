@@ -29,7 +29,7 @@ class SearchResult extends Component {
   componentDidMount() {
     const tabs = []
     ENTRY_ARRAY.forEach((item, index) => {
-      if (index < 9) {
+      if (index < 12) {
         tabs.push({ title: item.text, ...item })
       }
     })
