@@ -61,7 +61,9 @@ class PaperEntry extends Component {
       loading: true,
       list: [],
       params: {
-        classifyId: "hbuilding"
+        classifyId: "hbuilding",
+        pn: 1,
+        ps: 20
       }
     }
   }
@@ -72,27 +74,38 @@ class PaperEntry extends Component {
 
   changeTab = tab => {
     this.state.params.classifyId = tab.id
-    this.getPeperList()
+    this.state.pageNum = 1
+    this.getPeperList(1, true)
   };
 
-  getPeperList = (pn = 1) => {
+  getPeperList = (pn = 1, forceUpdate) => {
+    if (this.state.pageNum === pn && !forceUpdate) {
+      return
+    }
+    
     const { params } = this.state
+    const pa={...params}
+    // this.state.pageNum = pn
+    pa.pn = pn
     this.setState({ loading: true })
     this.props.dispatch({
       type: "app/paperList",
-      payload: params,
+      payload: pa,
       callback: res => {
         this.setState({ loading: false })
         if (res.msg === "OK") {
           let infoList = []
           if (pn !== 1) {
-            infoList = [...this.state.infoList, ...res.result.data]
+            infoList = [...this.state.list, ...res.result.data]
           } else {
             infoList = res.result.data
           }
+          if (pn !== 1 && !res.result.data.length) {
+            return
+          }
           this.setState({
-            list: infoList
-            // infoPageNum: res.result.pn
+            list: infoList,
+            pageNum:pn
           })
         }
       }
@@ -104,9 +117,9 @@ class PaperEntry extends Component {
       NavigationActions.navigate({
         routeName: "PaperDetail",
         params: {
-          name: '图纸详情',
+          name: "图纸详情",
           data,
-          type:"paper"
+          type: "paper"
         }
       })
     )
@@ -132,7 +145,7 @@ class PaperEntry extends Component {
   );
 
   render() {
-    const { list, loading } = this.state
+    const { list, loading, pageNum = 0 } = this.state
     return (
       <View style={styles.container}>
         <Tabs
@@ -144,7 +157,16 @@ class PaperEntry extends Component {
           <View style={styles.content}>
             <ActivityIndicator animating={loading} />
             {list.length ? (
-              <FlatList data={list} renderItem={this.renderItem} />
+              <FlatList
+                data={list}
+                renderItem={this.renderItem}
+                 onRefresh={()=>{
+                   setTimeout( this.getPeperList)
+                  }}
+                 refreshing={loading}
+                onEndReachedThreshold={0.2}
+                onEndReached={() => this.getPeperList(pageNum + 1)}
+              />
             ) : (
               <Text
                 style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}
@@ -166,11 +188,11 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: "#FFF",
-    flex: 1,
+    // flex: 1,
     paddingHorizontal: 10
   },
   container: {
-    backgroundColor: "#FFF",
+    backgroundColor: "#FFF"
   },
   wrap: {
     flexDirection: "row",

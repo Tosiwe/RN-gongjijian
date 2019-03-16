@@ -94,7 +94,7 @@ class MyDownload extends Component {
           renderItem={this.renderItem}
           onRefresh={this.refresh}
           refreshing={fetching}
-          onEndReachedThreshold={1}
+          onEndReachedThreshold={0.2}
           onEndReached={() => this.refresh(pageNum+1)}
         />
         {/* )} */}

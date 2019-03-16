@@ -199,7 +199,7 @@ class MyPublish extends Component {
           renderItem={this.renderItem}
           onRefresh={this.refresh}
           refreshing={fetching}
-          onEndReachedThreshold={1}
+          onEndReachedThreshold={0.2}
           onEndReached={() => this.refresh(infoPageNum+1)}
         />
       </View>

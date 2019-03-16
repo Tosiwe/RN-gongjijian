@@ -185,7 +185,7 @@ class Recommend extends Component {
               renderItem={({item}) => this.renderItem(item, true)}
               onRefresh={this.refresh}
               refreshing={fetching}
-              onEndReachedThreshold={1}
+              onEndReachedThreshold={0.2}
               onEndReached={() => this.refresh(1)}
             />
           </View>
@@ -195,7 +195,7 @@ class Recommend extends Component {
               renderItem={({item}) => this.renderItem(item)}
               onRefresh={this.refresh}
               refreshing={fetching}
-              onEndReachedThreshold={1}
+              onEndReachedThreshold={0.2}
               onEndReached={() => this.refresh(1)}
             />
           </View>

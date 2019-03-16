@@ -49,7 +49,7 @@ class MyHistory extends Component {
       type: "app/getHistory",
         payload: {
           pn,
-          ps: 50
+          ps: 20
         },
       callback: res => {
         if (res.msg === "OK"&& res.result.data.length) {
@@ -86,7 +86,7 @@ class MyHistory extends Component {
           renderItem={this.renderItem}
           onRefresh={this.refresh}
           refreshing={fetching}
-          onEndReachedThreshold={1}
+          onEndReachedThreshold={0.2}
           onEndReached={() => this.getBookmark(pageNum+1)}
         />
       </View>

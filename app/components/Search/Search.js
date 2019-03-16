@@ -2,7 +2,7 @@ import React, { Component } from "react"
 import { connect } from "react-redux"
 
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native"
-import { SearchBar } from "@ant-design/react-native"
+import { SearchBar,ActivityIndicator } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import { screenWidth } from "../../styles/common"
 
@@ -13,7 +13,7 @@ class Search extends Component {
     this.state = {
       params: {
         pn:1,
-        ps:50,
+        ps:20,
         distance:0,
       },
       hotSearchList: []
@@ -21,10 +21,12 @@ class Search extends Component {
   }
 
   componentDidMount() {
+    this.setState({loading:true})
     this.props.dispatch({
       type: "app/searchHotList",
       // payload: result.params,
       callback: res => {
+        this.setState({loading:false})
         if (res.msg === "OK") {
           const list =[]
           res.result.forEach(item=>{
@@ -56,7 +58,7 @@ class Search extends Component {
   };
 
   render() {
-    const { hotSearchList } = this.state
+    const { hotSearchList,loading } = this.state
     return (
       <View style={styles.container}>
         <SearchBar
@@ -65,22 +67,10 @@ class Search extends Component {
           onSubmit={this.toSearch}
         />
         <View style={styles.wrap}>
-          {/* <View style={styles.history}>
-            <Text style={styles.title}>历史搜索</Text>
-            <View style={styles.tags}>
-              {hotSearchList.map(item => (
-                <TouchableOpacity
-                  onPress={() => this.toSearch(item.keyword)}
-                  key={Math.random()}
-                  style={styles.tag}
-                >
-                  <Text style={styles.tagText}>{item.keyword}</Text>
-                </TouchableOpacity>
-              ))}
-            </View>
-              </View> */}
           <View> 
             <Text style={styles.title}>热门搜索</Text>
+            {loading && <ActivityIndicator animating={loading} />}
+
             <View style={styles.tags}>
             {hotSearchList.map(item => (
                 <TouchableOpacity

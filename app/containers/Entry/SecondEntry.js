@@ -27,7 +27,7 @@ class SecondEntry extends Component {
       list: [],
       params: {
         pn: 1,
-        ps: 50,
+        ps: 20,
         distance: 0,
         classifyId: "smarket",
         subClassifyId: "ndssteel"
@@ -46,47 +46,55 @@ class SecondEntry extends Component {
     ) {
       this.state.geoCode = nextProps.geoCode
       this.setState({ loading: true })
-      this.getInfoList(1, nextProps.geoCode)
+      this.getInfoList(1, nextProps.geoCode,true)
     }
   }
 
-  getInfoList = (pn = 1, geoCode) => {
+  getInfoList = (pn = 1, geoCode,forceUpdate) => {
     const that = { ...this }
+
+
+    if(pn===this.state.pageNum&&!forceUpdate){
+      return
+    }
+    if(forceUpdate||pn===1){
+      this.state.distance=0
+    }
 
     getPosition(that, Toast, geoCode)
       .then(result => {
         if (result.isSuccess) {
-          const { province, city, ...params } = result.params
-          params.lng = params.longitude
-          params.lat = params.latitude
-          delete params.longitude
-          delete params.latitude
-          if (params.adcode === "000000") {
-            delete params.adcode
-          } else {
-            params.adcode = params.shortAdcode || params.adcode.substring(0, 2)
+          const payload = {
+            classifyId:result.params.classifyId,
+            subClassifyId:result.params.subClassifyId,
+            ps: result.params.ps,
+            pn,
+            distance: this.state.distance||0,
+            lat: result.params.latitude,
+            lng: result.params.longitude
           }
-          if (params.adcode === "00") {
-            delete params.adcode
+          if (result.params.adcode !== "000000") {
+            payload.adcode = Number(result.params.shortAdcode || result.params.adcode.substring(0, 2))
           }
-          delete params.shortAdcode
-          this.state.params = params
-          console.log("getInfoList 二手", params)
+
           this.props.dispatch({
             type: "app/getInfoListLoc",
-            payload: params,
+            payload,
             callback: res => {
               this.setState({ loading: false })
               if (res.msg === "OK") {
                 let infoList = []
                 if (pn !== 1) {
-                  infoList = [...this.state.infoList, ...res.result]
+                  infoList = [...this.state.list, ...res.result]
                 } else {
                   infoList = res.result
                 }
+                const dist = Math.round( infoList[infoList.length-1]&&infoList[infoList.length-1].dist)
+
                 this.setState({
-                  list: infoList
-                  // infoPageNum: res.result.pn
+                  list: infoList,
+                  pageNum: pn,
+                  distance :dist+1
                 })
               }
             }
@@ -106,11 +114,11 @@ class SecondEntry extends Component {
     this.setState({ loading: true })
 
     this.state.params.subClassifyId = tab.id
-    this.getInfoList()
+    this.getInfoList(1, null,true)
   };
 
   render() {
-    const { list = [], loading } = this.state
+    const { list = [], loading,pageNum } = this.state
     return (
       <View style={styles.container}>
         <Tabs
@@ -122,7 +130,14 @@ class SecondEntry extends Component {
           <View style={styles.content}>
             {loading && <ActivityIndicator animating={loading} />}
             {list.length ? (
-              <FlatList data={list} renderItem={this.renderItem} />
+              <FlatList 
+              data={list}
+               renderItem={this.renderItem} 
+               onRefresh={this.getInfoList}
+               refreshing={loading}
+               onEndReachedThreshold={0.2}
+               onEndReached={() => this.getInfoList(pageNum+1)}
+               />
             ) : (
               <Text
                 style={{ textAlign: "center", fontSize: 16, marginTop: 20 }}
