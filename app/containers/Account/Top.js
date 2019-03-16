@@ -41,6 +41,18 @@ class Top extends Component {
         }
       })
     }
+
+
+    this.props.dispatch({
+      type: "app/getPriceList",
+      callback: res => {
+        if (res.msg === "OK") {
+          this.setState({ serviceTel:res.result.serviceTel })
+        }
+      }
+    })
+
+
   }
 
   componentWillReceiveProps(nextProps) {
@@ -90,7 +102,7 @@ class Top extends Component {
   };
 
   render() {
-    const { userInfo } = this.state
+    const { userInfo,serviceTel } = this.state
     return (
       <ImageBackground
         style={styles.wrap}
@@ -108,7 +120,7 @@ class Top extends Component {
               justifyContent: "flex-end"
             }}
           >
-            <TouchableOpacity onPress={() => Linking.openURL("tel:10010")}>
+            <TouchableOpacity onPress={() => Linking.openURL(`tel:${serviceTel ||10010}`)}>
               <Image source={require("./images/icon_nav_service.png")} />
             </TouchableOpacity>
             <TouchableOpacity onPress={this.toMessage}>

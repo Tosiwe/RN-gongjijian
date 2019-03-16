@@ -54,18 +54,18 @@ class CompanyOrPerson extends Component {
     if (isSettled) {
       this.fillForm(info)
     } else {
-      this.showDeleteModal(id)
+      this.showDeleteModal(id,info.id)
     }
   };
 
-  showDeleteModal = id => {
+  showDeleteModal = (id,sid) => {
     Modal.alert("提示", "您目前还未入驻该行业公司，请先入驻", [
       {
         text: "取消",
         // onPress: () => modal.close(),
         style: "取消"
       },
-      { text: "马上入驻", onPress: () => this.toSettleForm(id, "company") }
+      { text: "马上入驻", onPress: () => this.toSettleForm(id, sid) }
     ])
   };
 

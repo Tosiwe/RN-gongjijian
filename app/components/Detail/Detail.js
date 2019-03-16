@@ -24,6 +24,7 @@ class Detail extends Component {
 
   componentDidMount() {
     const oldData = this.props.navigation.state.params.data
+    const isMylike = this.props.navigation.state.params.isMylike
     console.log("oldData", oldData)
     const type =
       oldData.type === 0 ? "app/getDemandDetail" : "app/getInfoDetail"
@@ -31,12 +32,13 @@ class Detail extends Component {
     this.props.dispatch({
       type,
       payload: {
-        id: oldData.id
+        id: isMylike ? oldData.recordId: oldData.id
       },
       callback: res => {
         data = res.result.data
         console.log("newData", data)
 
+        if(!data) return
         const imgSet = [
           data.picture1,
           data.picture2,

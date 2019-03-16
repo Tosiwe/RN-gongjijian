@@ -46,7 +46,6 @@ class LikeBtn extends Component {
       type: ActionType,
       payload,
       callback: res => {
-        debugger
         if (res.msg === "OK") {
           this.setState({ collected: !collected })
         }

@@ -13,7 +13,7 @@ import { INS_MAP } from "../../utils/dataDic"
 @connect()
 class ListItem extends Component {
   toDetail = () => {
-    const { isDownload } = this.props
+    const { isDownload ,isMylike} = this.props
     if (isDownload) return
     const { data } = this.props
     console.log("List Item", data)
@@ -22,7 +22,8 @@ class ListItem extends Component {
         routeName: "Detail",
         params: {
           name: data.title,
-          data
+          data,
+          isMylike,
         }
       })
     )

@@ -15,7 +15,6 @@ class CommonFile extends Component {
  
 
   handleInput=(params,str)=>{
-    debugger
   if(str === "bisLicenseUrl"){
     this.props.onChange({bisLicenseUrl:params.picture1})
   }else{
