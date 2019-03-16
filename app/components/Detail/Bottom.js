@@ -7,12 +7,15 @@ import {
   TouchableOpacity,
   Text,
   Linking,
-  Clipboard
+  Clipboard,
+  Platform,
+  BackHandler
 } from "react-native"
 import { Modal, Button, Toast } from "@ant-design/react-native"
 import * as wechat from "react-native-wechat"
 import { connect } from "react-redux"
 import moment from "moment"
+import {NavigationActions} from "react-navigation"
 import Pay from "../Pay/Pay"
 import LikeBtn from "./LikeBtn"
 
@@ -25,6 +28,16 @@ class Bottom extends Component {
     }
   }
 
+  // componentWillMount() {
+  //   if (Platform.OS === "android") {
+  //     this.listener = BackHandler.addEventListener(
+  //       "hardwareBackPress",
+  //       this.onBackAndroid,
+  //       true
+  //     )
+  //   }
+  // }
+
   componentDidMount() {
     this.props.dispatch({
       type: "app/getPriceList",
@@ -35,6 +48,22 @@ class Bottom extends Component {
       }
     })
   }
+
+  // componentWillUnmount() {
+  //   if (Platform.OS === "android") {
+  //     this.listener.remove("hardwareBackPress")
+  //   }
+  // }
+
+  // onBackAndroid = () => {
+  //   debugger
+  //   const {visible} = this.state
+  //   if(visible){
+  //     this.onClose()
+  //   }else{
+  //     this.props.dispatch(NavigationActions.back())
+  //   }
+  // };
 
   onClose = () => {
     this.setState({ visible: false })

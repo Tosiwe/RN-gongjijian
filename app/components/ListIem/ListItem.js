@@ -13,7 +13,7 @@ import { INS_MAP } from "../../utils/dataDic"
 @connect()
 class ListItem extends Component {
   toDetail = () => {
-    const { isDownload ,isMylike} = this.props
+    const { isDownload, isMylike } = this.props
     if (isDownload) return
     const { data } = this.props
     console.log("List Item", data)
@@ -23,7 +23,7 @@ class ListItem extends Component {
         params: {
           name: data.title,
           data,
-          isMylike,
+          isMylike
         }
       })
     )
@@ -35,12 +35,12 @@ class ListItem extends Component {
   };
 
   render() {
-    const { data, isDownload, isMylike, isGuessLike } = this.props
+    const { data, isDownload, isMylike } = this.props
     let source = data.picture1
       ? { uri: data.picture1 }
       : require("../../containers/Account/images/logo.jpg")
     if (isDownload) {
-      source =  data.thumbUrl
+      source = data.thumbUrl
         ? { uri: data.thumbUrl }
         : require("../../containers/Account/images/logo.jpg")
     }
@@ -52,6 +52,7 @@ class ListItem extends Component {
         activeOpacity={1}
       >
         <View style={styles.wrap}>
+          <View style={styles.tag} />
           <View style={styles.left}>
             <Image source={source} style={styles.img} />
           </View>
@@ -64,14 +65,18 @@ class ListItem extends Component {
                 style={styles.icon}
               />
             )}
-            <Text style={styles.title} ellipsizeMode="tail" numberOfLines={1}>
+            <Text style={data.superVip? styles.superTitle:styles.title} ellipsizeMode="tail" numberOfLines={1}>
               {data.title}
             </Text>
             <Text ellipsizeMode="tail" numberOfLines={2} style={styles.des}>
               {isDownload ? data.fileName : data.desc}
             </Text>
             <View
-              style={{ flexDirection: "row", justifyContent: "space-between",marginTop:5 }}
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                marginTop: 5
+              }}
             >
               <Text style={{ fontSize: 12 }}>
                 {moment(data.updateTime || data.createTime).format(
@@ -87,7 +92,7 @@ class ListItem extends Component {
                   {data.city || "区域：未知"}
                 </Text>
               )}
-              {!isDownload && !isMylike  && (
+              {!isDownload && !isMylike && (
                 <Text
                   style={{ fontSize: 12 }}
                   ellipsizeMode="tail"
@@ -117,7 +122,16 @@ class ListItem extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    marginVertical: 5
+    // marginVertical: 5
+  },
+  tag: {
+    right:0,
+    position:'absolute',
+    borderColor: "transparent",
+    borderTopWidth: 7,
+    borderBottomWidth: 7,
+    borderRightWidth: 10,
+    borderRightColor: "#1890ff"
   },
   wrap: {
     flexDirection: "row",
@@ -143,8 +157,14 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: "400",
     fontSize: 16,
-    paddingRight:20
+    paddingRight: 20
     // marginBottom: 5
+  },
+  superTitle: {
+    fontWeight: "400",
+    fontSize: 16,
+    paddingRight: 20,
+    color:"#ed1941"
   },
   des: {
     height: 30,

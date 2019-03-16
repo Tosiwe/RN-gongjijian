@@ -192,6 +192,12 @@ const MainNavigator = createStackNavigator(
       screen: SettleForm,
       navigationOptions: mainNavigationOptions
     },
+    Search: { 
+      screen: Search,
+      navigationOptions: {
+        header:null
+      }
+     },
     
     SearchResult: {
       // 搜索结果
@@ -249,7 +255,6 @@ const AppNavigator = createStackNavigator(
     ResetPassword: { screen: ResetPassword },
     SignUp: { screen: SignUp },
     Publish: { screen: Publish },
-    Search: { screen: Search },
     Vip: { screen: Vip },
   },
   {
@@ -303,12 +308,9 @@ class Router extends Component {
 
   backHandle = () => {
     const currentScreen = getActiveRouteName(this.props.router)
-    if (currentScreen === "Login") {
-      return true
-    }
-    if (currentScreen === "Publish") {
-      return true
-    }
+    // if (currentScreen === "Login") {
+    //   return true
+    // }
     if (currentScreen !== "Home") {
       this.props.dispatch(NavigationActions.back())
       return true

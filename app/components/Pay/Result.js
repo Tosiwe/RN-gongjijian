@@ -50,18 +50,22 @@ class Result extends Component {
     const list = [
       {
         label: "支付项目",
+        key:1,
         text: use
       },
       {
         label: "支付金额",
+        key:2,
         text: `¥${price}元`
       },
       {
         label: "支付时间",
+        key:3,
         text: moment(timeStamp).format("YYYY-MM-DD HH:mm:ss")
       },
       {
         label: "订单号",
+        key:4,
         text: orderId
       }
     ]
@@ -88,7 +92,7 @@ class Result extends Component {
           <View />
           <View style={{ marginVertical: 30 }}>
             {list.map(item => (
-              <View style={styles.row} key={item.format}>
+              <View style={styles.row} key={item.key}>
                 <Text style={styles.label}>{item.label}</Text>
                 <Text
                   style={[
@@ -113,7 +117,8 @@ class Result extends Component {
 const styles = StyleSheet.create({
   wrap: {
     alignItems: "center",
-    textAlign: "center"
+    textAlign: "center",
+    minHeight: 500
   },
   logo: {
     width: 150

@@ -166,11 +166,11 @@ const styles = StyleSheet.create({
   },
   content: {
     backgroundColor: "#FFF",
-    flex: 1
+    flex: 1,
+    paddingHorizontal: 10
   },
   container: {
     backgroundColor: "#FFF",
-    paddingHorizontal: 10
   },
   wrap: {
     flexDirection: "row",

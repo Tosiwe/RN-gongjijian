@@ -36,18 +36,26 @@ class SearchResult extends Component {
     this.setState({ tabs }, this.getList)
   }
 
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      JSON.stringify(this.state.geoCode) !== JSON.stringify(nextProps.geoCode)
+    ) {
+      this.state.geoCode = nextProps.geoCode
+      this.setState({ loading: true })
+      this.getList(this.state.classifyId, nextProps.geoCode)
+    }
+  }
+
   
 
-  getList = (classifyId = "hbuilding", isTab) => {
+  getList = (classifyId = "hbuilding",geoCode) => {
     // debugger
-    this.setState({loading:true})
+    this.setState({loading:true,classifyId})
     const { params } = this.props.navigation.state.params
-    // if (!params.classifyId||isTab) {
-      params.classifyId = classifyId
-    // }
-    // this.setState({ pageKey: classifyId })
+    params.classifyId = classifyId
     this.state.params = params
-    getPosition({ ...this }, Toast).then(result => {
+    getPosition({ ...this }, Toast,geoCode).then(result => {
       const payload = {
         keyword: result.params.keyword,
         classifyId:result.params.classifyId,

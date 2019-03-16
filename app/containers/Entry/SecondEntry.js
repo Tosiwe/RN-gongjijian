@@ -26,13 +26,13 @@ class SecondEntry extends Component {
       loading: true,
       list: [],
       params: {
-        pn:1,
-        ps:50,
+        pn: 1,
+        ps: 50,
         distance: 0,
-        classifyId: 'smarket',
-        subClassifyId: 'ndssteel'
+        classifyId: "smarket",
+        subClassifyId: "ndssteel"
       },
-      geoCode:{}
+      geoCode: {}
     }
   }
 
@@ -40,24 +40,23 @@ class SecondEntry extends Component {
     this.getInfoList()
   }
 
-
   componentWillReceiveProps(nextProps) {
     if (
       JSON.stringify(this.state.geoCode) !== JSON.stringify(nextProps.geoCode)
     ) {
       this.state.geoCode = nextProps.geoCode
-      this.setState({loading:true})
-      this.getInfoList(1,nextProps.geoCode)
+      this.setState({ loading: true })
+      this.getInfoList(1, nextProps.geoCode)
     }
   }
 
-  getInfoList = (pn = 1,geoCode) => {
+  getInfoList = (pn = 1, geoCode) => {
     const that = { ...this }
 
-    getPosition(that,Toast,geoCode)
+    getPosition(that, Toast, geoCode)
       .then(result => {
         if (result.isSuccess) {
-          const {province, city,...params} =result.params
+          const { province, city, ...params } = result.params
           params.lng = params.longitude
           params.lat = params.latitude
           delete params.longitude
@@ -65,12 +64,12 @@ class SecondEntry extends Component {
           if (params.adcode === "000000") {
             delete params.adcode
           } else {
-            params.adcode =   params.shortAdcode || params.adcode.substring(0, 2)
+            params.adcode = params.shortAdcode || params.adcode.substring(0, 2)
           }
-          if(params.adcode === "00"){
+          if (params.adcode === "00") {
             delete params.adcode
           }
-          delete  params.shortAdcode
+          delete params.shortAdcode
           this.state.params = params
           console.log("getInfoList 二手", params)
           this.props.dispatch({
@@ -111,7 +110,7 @@ class SecondEntry extends Component {
   };
 
   render() {
-    const { list=[], loading } = this.state
+    const { list = [], loading } = this.state
     return (
       <View style={styles.container}>
         <Tabs
@@ -121,7 +120,7 @@ class SecondEntry extends Component {
           onChange={this.changeTab}
         >
           <View style={styles.content}>
-          {loading && <ActivityIndicator animating={loading} />}
+            {loading && <ActivityIndicator animating={loading} />}
             {list.length ? (
               <FlatList data={list} renderItem={this.renderItem} />
             ) : (
@@ -146,7 +145,8 @@ const styles = StyleSheet.create({
   content: {
     backgroundColor: "#FFF",
     flex: 1,
-    paddingTop: 20
+    paddingTop: 20,
+    paddingHorizontal: 10
   }
 })
 

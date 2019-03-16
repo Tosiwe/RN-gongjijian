@@ -4,11 +4,13 @@ import {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  Platform,
+  BackHandler
 } from "react-native"
 import Alipay from "react-native-yunpeng-alipay"
 import * as wechat from "react-native-wechat"
-
+import {  NavigationActions} from "react-navigation"
 import {
   Modal,
   Button,
@@ -32,6 +34,16 @@ export default class App extends Component {
     }
   }
 
+
+  // componentWillMount() {
+  //   if (Platform.OS === "android") {
+  //     this.listener = BackHandler.addEventListener(
+  //       "hardwareBackPress",
+  //       this.onBackAndroid
+  //     )
+  //   }
+  // }
+
   componentWillReceiveProps(nextProps) {
     const { visible, timeStamp } = this.state
     if (visible !== nextProps.visible && timeStamp !== nextProps.timeStamp) {
@@ -41,6 +53,29 @@ export default class App extends Component {
       })
     }
   }
+
+  // componentWillUnmount() {
+  //   if (Platform.OS === "android") {
+  //     this.listener.remove("hardwareBackPress")
+  //   }
+  // }
+
+  // onBackAndroid = () => {
+
+  //   const {visible,resultVisible} = this.state
+  //   if(resultVisible){
+  //     this.setState({resultVisible:false})
+  //     return
+  //   }
+  //   if(visible){
+  //     this.setState({visible:false})
+  //   }else{
+  //     this.props.dispatch(NavigationActions.back())
+  //   }
+  // };
+
+
+
 
   // 关闭付款弹窗
   onClose = () => {

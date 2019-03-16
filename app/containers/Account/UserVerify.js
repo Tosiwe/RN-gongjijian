@@ -61,7 +61,9 @@ class UserVerify extends Component {
             onChange={value => this.onChange(value, "realName")}
             style={styles.item}
           >
-            姓名
+            <Text style={{ color: "#000", fontSize: 16 }}>
+              <Text style={{ color: "red" }}>*</Text>姓名
+            </Text>
           </InputItem>
           <InputItem
             placeholder="请输入"
@@ -70,19 +72,22 @@ class UserVerify extends Component {
             onChange={value => this.onChange(value, "idCard")}
             style={styles.item}
           >
-            身份证号
+            <Text style={{ color: "#000", fontSize: 16 }}>
+              <Text style={{ color: "red" }}>*</Text>身份证号
+            </Text>
           </InputItem>
         </List>
+        <View style={{height:10}} />
+        <Text style={{ marginLeft: 20 }}><Text style={{ color: "red" }}>*</Text>身份证正面</Text>
         <ImagePicker
           onChange={v => this.onChange(v.picture1, "idCardPosUrl")}
           maxLength={1}
         />
-        <Text style={{ marginLeft: 20 }}>身份证正面</Text>
+        <Text style={{ marginLeft: 20 }}><Text style={{ color: "red" }}>*</Text>身份证背面面</Text>
         <ImagePicker
           onChange={v => this.onChange(v.picture1, "idCardVerUrl")}
           maxLength={1}
         />
-        <Text style={{ marginLeft: 20 }}>身份证背面</Text>
         <View style={styles.btnWrap}>
           <Button style={styles.btn} onPress={this.submit}>
             <Text style={{ color: "#FFF" }}>提交认证信息</Text>

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
@@ -11,6 +12,7 @@ import {
 } from "react-native"
 import { Tabs, Toast } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
+import moment from "moment"
 import { getPosition } from "../../utils/utils"
 
 const tabs = [
@@ -26,13 +28,12 @@ class RegisterEntry extends Component {
       loading: true,
       list: [],
       params: {
-        pn:1,
-        ps:50,
+        pn: 1,
+        ps: 50,
         distance: 0,
         classifyId: props.id
       },
       geoCode: {}
-
     }
   }
 
@@ -40,14 +41,13 @@ class RegisterEntry extends Component {
     this.getInfoList()
   }
 
-
   componentWillReceiveProps(nextProps) {
     if (
       JSON.stringify(this.state.geoCode) !== JSON.stringify(nextProps.geoCode)
     ) {
       this.state.geoCode = nextProps.geoCode
-      this.setState({loading:true})
-      this.getInfoList(1,nextProps.geoCode)
+      this.setState({ loading: true })
+      this.getInfoList(1, nextProps.geoCode)
     }
   }
 
@@ -70,16 +70,26 @@ class RegisterEntry extends Component {
     >
       <Text style={styles.title}>{item.title || "现有一名工程师"}</Text>
       <View style={styles.info}>
+        <Text style={styles.infoText}>
+          {moment(item.updateTime || item.createTime).format("YYYY-MM-DD")}
+        </Text>
         <Text style={styles.infoText}>{item.city || "未知"}</Text>
-        <Text style={styles.infoText}>{item.timeStamp || "未知"}</Text>
+        <Text style={styles.infoText}>
+          {" "}
+          {item.dist
+            ? item.dist > 1000
+              ? `${Math.round(item.dist / 1000)}公里`
+              : `${Math.round(item.dist)}米`
+            : "距离：未知"}
+        </Text>
       </View>
     </TouchableOpacity>
   );
 
-  getInfoList = (pn = 1,geoCode) => {
+  getInfoList = (pn = 1, geoCode) => {
     const that = { ...this }
 
-    getPosition(that,Toast,geoCode)
+    getPosition(that, Toast, geoCode)
       .then(result => {
         if (result.isSuccess) {
           const { province, city, ...params } = result.params
@@ -90,12 +100,12 @@ class RegisterEntry extends Component {
           if (params.adcode === "000000") {
             delete params.adcode
           } else {
-            params.adcode =   params.shortAdcode || params.adcode.substring(0, 2)
+            params.adcode = params.shortAdcode || params.adcode.substring(0, 2)
           }
-          if(params.adcode === "00"){
+          if (params.adcode === "00") {
             delete params.adcode
           }
-          delete  params.shortAdcode
+          delete params.shortAdcode
 
           this.state.params = params
           console.log("getInfoList 注册资质", params)
@@ -136,7 +146,7 @@ class RegisterEntry extends Component {
 
   render() {
     const { id } = this.props
-    const { loading, list=[] } = this.state
+    const { loading, list = [] } = this.state
     return (
       <View style={styles.container}>
         <Tabs
@@ -174,15 +184,16 @@ const styles = StyleSheet.create({
     // backgroundColor: "#FFF",
     flex: 1,
     paddingTop: 10,
-    paddingHorizontal: 10
+    // paddingHorizontal: 10
   },
   wrap: {
+    marginHorizontal:10,
     borderWidth: 1,
     borderColor: "#efefef",
     backgroundColor: "#fff",
-    shadowColor: "#ddd",
+    shadowColor: "#eee",
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.8,
+    shadowOpacity: 0.5,
     shadowRadius: 4,
     elevation: 4,
     marginTop: 10,

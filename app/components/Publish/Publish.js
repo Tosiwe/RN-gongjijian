@@ -1,7 +1,14 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native"
+import {
+  StyleSheet,
+  View,
+  Text,
+  TouchableOpacity,
+  Platform,
+  BackHandler
+} from "react-native"
 // import { Toast } from '@ant-design/react-native'
 import { NavigationActions } from "react-navigation"
 import Entries from "../Entries/Entries"
@@ -11,13 +18,15 @@ class Publish extends Component {
   static navigationOptions = ({ navigation }) => ({
     headerRight: (
       <TouchableOpacity
-        onPress={()=>navigation.navigate({
-          routeName: "MyPublish",
-          params:{
-            name:"我的发布",
-            type:navigation.state.params.type
-          }
-        })}
+        onPress={() =>
+          navigation.navigate({
+            routeName: "MyPublish",
+            params: {
+              name: "我的发布",
+              type: navigation.state.params.type
+            }
+          })
+        }
       >
         <Text style={{ fontSize: 16, marginRight: 20 }}>我的发布</Text>
       </TouchableOpacity>

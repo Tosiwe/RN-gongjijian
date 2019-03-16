@@ -76,19 +76,19 @@ class BaseInfo extends Component {
           </View>
         )
       }
-      if (subClassifyId === "rent"||subClassifyId === "material"){
+      if (classifyId === "smarket"||subClassifyId === "rent"||subClassifyId === "material"){
       return (
         <View>
           <View style={styles.row}>
-            <Td label={`${subClassifyId ==='material'?'材料':'设备'}名称`} text={data.extraName || "-"} />
+            <Td label={`${subClassifyId ==='rent'?'设备':'材料'}名称`} text={data.extraName || "-"} />
             <Td label="品牌" text={data.extraBrand || "-"} />
           </View>
           <View style={styles.row}>
             <Td label="型号规格" text={data.extraSpec || "-"} />
-            <Td label="租赁单位" text={data.extraUnit || "-"} />
+            <Td label={`${subClassifyId ==='rent'?'租赁':'材料'}单位`} text={data.extraUnit || "-"} />
           </View>
           <View style={styles.row}>
-            <Td label="租赁价格" text={`${data.extraPrice}元` || "-"} />
+            <Td  label={`${subClassifyId ==='rent'?'租赁':'材料'}价格`} text={`${data.extraPrice}元` || "-"} />
           </View>
         </View>
       )}
