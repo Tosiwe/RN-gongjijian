@@ -25,21 +25,21 @@ class MyHistory extends Component {
     super(props)
     this.state = {
       likeList: [],
-      pageNum: 0
+      pageNum: 1
     }
   }
 
   componentDidMount() {
     this.props.navigation.setParams({ navigatePress: this.clear })
 
-    this.getBookmark()
+    this.getBookmark(1)
   }
 
   clear = () => {
     this.props.dispatch({
       type: "app/historyClean",
       callback: res => {
-        Toast.success("清空成功", 2, this.getBookmark(), false)
+        Toast.success("清空成功", 2, this.getBookmark(1), false)
       }
     })
   };
@@ -47,12 +47,12 @@ class MyHistory extends Component {
   getBookmark = (pn = 1) => {
     this.props.dispatch({
       type: "app/getHistory",
-      //   payload: {
-      //     pn,
-      //     ps: 10
-      //   },
+        payload: {
+          pn,
+          ps: 50
+        },
       callback: res => {
-        if (res.msg === "OK") {
+        if (res.msg === "OK"&& res.result.data.length) {
           let likeList = []
           if (pn !== 1) {
             likeList = [...this.state.likeList, ...res.result.data]
@@ -61,16 +61,13 @@ class MyHistory extends Component {
           }
           this.setState({
             likeList,
-            pageNum: res.result.pn
+            pageNum:pn
           })
         }
       }
     })
   };
 
-  refresh = (pn = 1) => {
-    this.getBookmark(pn)
-  };
 
   renderItem = ({ item }) => (
     <View style={{ paddingHorizontal: 10 }}>
@@ -90,7 +87,7 @@ class MyHistory extends Component {
           onRefresh={this.refresh}
           refreshing={fetching}
           onEndReachedThreshold={1}
-          onEndReached={() => this.refresh(1)}
+          onEndReached={() => this.getBookmark(pageNum+1)}
         />
       </View>
     )

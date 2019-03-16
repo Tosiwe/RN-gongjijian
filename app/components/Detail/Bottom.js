@@ -15,7 +15,6 @@ import { Modal, Button, Toast } from "@ant-design/react-native"
 import * as wechat from "react-native-wechat"
 import { connect } from "react-redux"
 import moment from "moment"
-import {NavigationActions} from "react-navigation"
 import Pay from "../Pay/Pay"
 import LikeBtn from "./LikeBtn"
 
@@ -56,12 +55,12 @@ class Bottom extends Component {
   }
 
   onBackAndroid = () => {
-    const {visible} = this.state
-    if(visible){
+    const { visible } = this.state
+    if (visible) {
       this.onClose()
       return true
     }
-
+    return false
   };
 
   onClose = () => {
@@ -92,14 +91,16 @@ class Bottom extends Component {
       payload,
       callback: response => {
         if (response.status === "OK") {
-          if(response.result.amount === 0){ this.showModal()}
+          this.showModal()
         } else if (response.status === "ERROR") {
-          Modal.alert("提示", "您的余额不足，直接购买", [
-            {
-              text: "取消"
-            },
-            { text: "确认", onPress: () => this.showPayModal() }
-          ])
+          if (response.errorCode === '12000') {
+            Modal.alert("提示", "您的余额不足，直接购买", [
+              {
+                text: "取消"
+              },
+              { text: "确认", onPress: () => this.showPayModal() }
+            ])
+          }
         }
       }
     })
@@ -116,7 +117,7 @@ class Bottom extends Component {
   // 业务功能
   showModal = () => {
     const { data = {} } = this.props
-    const {contactType} = this.state
+    const { contactType } = this.state
     const map = {
       wechat: "微信",
       qq: "QQ"
@@ -211,7 +212,7 @@ class Bottom extends Component {
   };
 
   render() {
-    const { data, } = this.props
+    const { data } = this.props
 
     const {
       visible,
@@ -235,13 +236,16 @@ class Bottom extends Component {
           <View style={{ paddingVertical: 20 }}>
             <Text
               onLongPress={() => this.copy(content)}
-              style={{ textAlign: "center",color:"#000", fontSize: 16, marginVertical: 10 }}
+              style={{
+                textAlign: "center",
+                color: "#000",
+                fontSize: 16,
+                marginVertical: 10
+              }}
             >
               {content}
             </Text>
-              <Text style={{ textAlign: "center", marginTop: 10 }}>
-                长按复制
-              </Text>
+            <Text style={{ textAlign: "center", marginTop: 10 }}>长按复制</Text>
           </View>
           <Button type="primary" onPress={this.onClose}>
             关闭
@@ -296,7 +300,7 @@ class Bottom extends Component {
               use: "查看联系方式",
               name: data.title,
               price,
-              type:"contact"
+              type: "contact"
             }}
           />
         </View>

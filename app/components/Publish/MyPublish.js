@@ -74,12 +74,12 @@ class MyPublish extends Component {
     this.props.dispatch({
       type,
       payload: {
-        ...ids
-        // pn,
-        // ps: 10
+        ...ids,
+        pn,
+        ps: 10
       },
       callback: res => {
-        if (res.msg === "OK") {
+        if (res.msg === "OK"&& res.result.data.length) {
           let infoList = []
           if (pn !== 1) {
             infoList = [...this.state.infoList, ...res.result.data]
@@ -88,7 +88,7 @@ class MyPublish extends Component {
           }
           this.setState({
             infoList,
-            infoPageNum: res.result.pn
+            infoPageNum: pn
           })
         }
       }
@@ -200,7 +200,7 @@ class MyPublish extends Component {
           onRefresh={this.refresh}
           refreshing={fetching}
           onEndReachedThreshold={1}
-          onEndReached={() => this.refresh(1)}
+          onEndReached={() => this.refresh(infoPageNum+1)}
         />
       </View>
     )

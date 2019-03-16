@@ -172,12 +172,14 @@ class Vip extends Component {
             resultCode: Math.random()
           })
         } else if (response.status === "ERROR") {
-          Modal.alert("提示", "您的余额不足，直接购买", [
-            {
-              text: "取消"
-            },
-            { text: "确认", onPress: this.pay }
-          ])
+          if (response.errorCode === "12000") {
+            Modal.alert("提示", "您的余额不足，直接购买", [
+              {
+                text: "取消"
+              },
+              { text: "确认", onPress: this.pay }
+            ])
+          }
         }
       }
     })
@@ -318,7 +320,7 @@ const styles = StyleSheet.create({
     position: "absolute"
   },
   rcmBg2: {
-    top:140,
+    top: 140,
     right: 0,
     width: 60,
     height: 30,

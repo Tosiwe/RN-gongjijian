@@ -31,7 +31,7 @@ class MyLike extends Component {
           ps: 50
         },
       callback: res => {
-        if (res.msg === "OK") {
+        if (res.msg === "OK"&& res.result.data.length) {
           let likeList = []
           if (pn !== 1) {
             likeList = [...this.state.likeList, ...res.result.data]
@@ -40,7 +40,7 @@ class MyLike extends Component {
           }
           this.setState({
             likeList,
-            pageNum: res.result.pn
+            pageNum: pn
           })
         }
       }
@@ -89,7 +89,7 @@ class MyLike extends Component {
           onRefresh={this.refresh}
           refreshing={fetching}
           onEndReachedThreshold={1}
-          onEndReached={() => this.refresh(1)}
+          onEndReached={() => this.refresh(pageNum+1)}
         />
       </View>
     )

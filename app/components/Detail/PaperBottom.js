@@ -71,13 +71,15 @@ class PaperBottom extends Component {
           this.getFile()
         } else if (response.status === "ERROR") {
           onRefresh(false)
-          // 余额不够
-          Modal.alert("提示", "您的余额不足，直接购买", [
-            {
-              text: "取消"
-            },
-            { text: "确认", onPress: this.showPayModal }
-          ])
+          if (response.errorCode === '12000') {
+            // 余额不够
+            Modal.alert("提示", "您的余额不足，直接购买", [
+              {
+                text: "取消"
+              },
+              { text: "确认", onPress: this.showPayModal }
+            ])
+          }
         }
       }
     })
@@ -220,7 +222,7 @@ class PaperBottom extends Component {
 
   // 读取缓存
   readStorage = () =>
-   new Promise((resolve) => {
+    new Promise(resolve => {
       const { data } = this.props
       Storage.get("files").then(response => {
         const files = JSON.parse(response)
@@ -229,7 +231,7 @@ class PaperBottom extends Component {
           resolve(file)
         } else {
           Toast.info("文件找不到了，将重新下载", 2, this.getFile, false)
-          this.setState({paid:false})
+          this.setState({ paid: false })
           resolve()
         }
       })
@@ -239,8 +241,8 @@ class PaperBottom extends Component {
   share = () => {
     const { paid } = this.state
     if (paid) {
-      this.readStorage().then(file=>{
-        if(file){
+      this.readStorage().then(file => {
+        if (file) {
           this.wechatShare(file)
           // Modal.operation([
           //   {
@@ -249,7 +251,6 @@ class PaperBottom extends Component {
           //   }
           // ])
         }
-       
       })
     } else {
       // 未购买
@@ -266,7 +267,7 @@ class PaperBottom extends Component {
   // 打开文件
   openFile = () => {
     this.readStorage().then(res => {
-      if(!res){
+      if (!res) {
         return
       }
       const filePath = res.path
@@ -287,7 +288,7 @@ class PaperBottom extends Component {
         },
         e => {
           Toast.info("文件找不到了，将重新下载", 2, this.getFile, false)
-          this.setState({paid:false})
+          this.setState({ paid: false })
         }
       )
     })
@@ -295,7 +296,7 @@ class PaperBottom extends Component {
 
   // 下载文件
   downloadFile(response, data) {
-    return new Promise((resolve) => {
+    return new Promise(resolve => {
       const fromUrl = response.url
       const key = data.fileKey
       const arr = key.split(".")
@@ -378,7 +379,7 @@ class PaperBottom extends Component {
   render() {
     const { data } = this.props
 
-    const { payVisible, timeStamp,paid } = this.state
+    const { payVisible, timeStamp, paid } = this.state
 
     return (
       <View>
@@ -388,11 +389,11 @@ class PaperBottom extends Component {
             onPress={this.handleDownload}
             style={[styles.btns, styles.downLoadBtn]}
           >
-            <Text style={styles.downText}>{paid? '打开':'下载'}</Text>
+            <Text style={styles.downText}>{paid ? "打开" : "下载"}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={this.share}>
             <Icon name="sharealt" color="#ccc" size={24} />
-            <Text style={{ color: "#727272",fontSize: 12}}>分享</Text>
+            <Text style={{ color: "#727272", fontSize: 12 }}>分享</Text>
           </TouchableOpacity>
         </View>
         <View>

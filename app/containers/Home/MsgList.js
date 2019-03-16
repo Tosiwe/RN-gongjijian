@@ -107,7 +107,7 @@ componentWillReceiveProps(nextProps){
           refreshing={refreshing}
           data={list}
           renderItem={this.renderItem}
-          onRefresh
+          onRefresh=  {()=>this.getList(1)}
         />
       </View>
     )

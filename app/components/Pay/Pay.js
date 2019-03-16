@@ -118,7 +118,6 @@ export default class App extends Component {
         err => {
           console.log(err)
           Toast.info("付款出错了")
-          // this.createOrder()
         }
       )
     })
@@ -161,9 +160,7 @@ export default class App extends Component {
             resultCode: Math.random()
           })
         } else if (response.status === "ERROR") {
-          if(response.msg){
-            Toast.info(response.msg)
-          }else{
+          if(!response.msg){
             Toast.info(`创建${textMap[data.type]}订单失败`)
           }
         }

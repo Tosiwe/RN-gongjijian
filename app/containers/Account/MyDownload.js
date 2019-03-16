@@ -15,7 +15,8 @@ class MyDownload extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      likeList: []
+      likeList: [],
+      pageNum:1
     }
   }
 
@@ -26,12 +27,12 @@ class MyDownload extends Component {
   getDownList = (pn = 1) => {
     this.props.dispatch({
       type: "app/getDownList",
-      //   payload: {
-      //     pn,
-      //     ps: 10
-      //   },
+        payload: {
+          pn,
+          ps: 10
+        },
       callback: res => {
-        if (res.msg === "OK") {
+        if (res.msg === "OK" && res.result.data.length) {
           let likeList = []
           if (pn !== 1) {
             likeList = [...this.state.likeList, ...res.result.data]
@@ -39,8 +40,8 @@ class MyDownload extends Component {
             likeList = res.result.data
           }
           this.setState({
-            likeList
-            // pageNum: res.result.pn
+            likeList,
+            pageNum:pn
           })
         }
       }
@@ -82,7 +83,7 @@ class MyDownload extends Component {
   );
 
   render() {
-    const { likeList } = this.state
+    const { likeList ,pageNum} = this.state
     const { fetching } = this.props
     // 选择发布分类
     return (
@@ -94,7 +95,7 @@ class MyDownload extends Component {
           onRefresh={this.refresh}
           refreshing={fetching}
           onEndReachedThreshold={1}
-          onEndReached={() => this.refresh(1)}
+          onEndReached={() => this.refresh(pageNum+1)}
         />
         {/* )} */}
       </View>

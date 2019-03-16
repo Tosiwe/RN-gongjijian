@@ -36,7 +36,6 @@ export default function request(url, options) {
     if(!auth){
       delete options.headers.Authorization
     }
-
     console.log(`${url}  params`,options.body && JSON.parse(options.body))
     return (
       fetch(url, options)
@@ -45,7 +44,6 @@ export default function request(url, options) {
           console.log(`${url}  response`,response._bodyText&& JSON.parse(response._bodyText))
           if (response.status === 500) {
             const msg =response._bodyText&& JSON.parse(response._bodyText).msg
-           
             Toast.info( msg|| '请求异常')
             return response.json()
             // console.log("error", response)
@@ -58,7 +56,7 @@ export default function request(url, options) {
           error =>{
             
             console.log("error------------", error)
-            // Toast.info("网络连接错误")
+            Toast.info("网络请求错误",3,null,false)
             return {status:"ERROR",msg:error,error }
             // callback(error);
             // null

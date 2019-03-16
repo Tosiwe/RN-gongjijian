@@ -14,11 +14,12 @@ class Auth extends Component {
 
   render() {
     const { data } = this.props
+    const company=['company', 'rent','material']
     return (
       <View style={styles.title}>
         <Text style={styles.authTitle}>{data.title || "标题"}</Text>
         {/* TODO:认证标志 */}
-        {data.classifyId && (
+        {company.includes( data.subClassifyId) && (
           <View style={styles.authWrap}>
             <Image
               style={styles.auth}
