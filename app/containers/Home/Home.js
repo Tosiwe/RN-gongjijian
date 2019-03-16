@@ -87,7 +87,7 @@ class Home extends Component {
     const scrollViewHeight = event.nativeEvent.layoutMeasurement.height
     const scrollOffset = event.nativeEvent.contentOffset.y
 
-    const isEndReached = scrollOffset + scrollViewHeight >= contentHeight // 是否滑动到底部
+    const isEndReached = scrollOffset + scrollViewHeight >= contentHeight-50 // 是否滑动到底部
     const isContentFillPage = contentHeight >= scrollViewHeight // 内容高度是否大于列表高度
 
     if (isContentFillPage && isEndReached) {

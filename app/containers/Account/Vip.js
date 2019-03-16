@@ -202,7 +202,7 @@ class Vip extends Component {
     } = this.state
     const info = vipInfo[activeKey]
     const payData = {
-      use: "购买VIP",
+      use: info && info.key.includes("vip") ? "购买vip" : "购买超级商家",
       name: info && info.title,
       price: info && info.price,
       type: info && info.key.includes("vip") ? "vip" : "superVip",

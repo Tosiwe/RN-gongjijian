@@ -22,7 +22,7 @@ class Top extends Component {
 
     this.state = {
       userInfo: {
-        nick: "user"
+        nick: "无昵称"
       }
     }
   }
@@ -135,7 +135,7 @@ class Top extends Component {
             }
           />
         </TouchableOpacity>
-        <Text style={styles.text}>{userInfo.nick}</Text>
+        <Text style={styles.text} onPress={this.setProfil}>{userInfo.nick||"无昵称"}</Text>
       </ImageBackground>
     )
   }

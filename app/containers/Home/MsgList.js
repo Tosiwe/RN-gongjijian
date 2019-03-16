@@ -14,6 +14,7 @@ import { connect } from "react-redux"
 import {Toast}from "@ant-design/react-native"
 import Icon from "react-native-vector-icons/AntDesign"
 import ListItem from "../../components/ListIem/ListItem"
+import { getPosition } from "../../utils/utils"
 
 @connect()
 class MsgList extends Component {
@@ -22,6 +23,7 @@ class MsgList extends Component {
     this.state = {
       list: [],
       refreshing: false,
+      params:{}
     }
   }
 
@@ -39,22 +41,35 @@ componentWillReceiveProps(nextProps){
   getList = (pn = 1) => {
     const { list } = this.state
     this.setState({ refreshing: true })
-    this.props.dispatch({
-      type: "app/guesslikeList",
-      payload: {
-        ps: 20,
-        pn
-      },
-      callback: res => {
-        if (res.msg === "OK" && res.result && res.result.length) {
-          const newList = [...list, ...res.result]
-          this.setState({
-            list: newList
+
+    getPosition({...this}, Toast,false,true).then(
+      res=>{
+        if (res.isSuccess) {
+          const {longitude:lng,latitude:lat} = res.params
+          this.props.dispatch({
+            type: "app/guesslikeList",
+            payload: {
+              ps: 20,
+              pn,
+              lng,
+              lat
+            },
+            callback: res => {
+              if (res.msg === "OK" && res.result && res.result.length) {
+                const newList = [...list, ...res.result]
+                this.setState({
+                  list: newList
+                })
+              }
+              this.setState({ refreshing: false })
+            }
           })
+
         }
-        this.setState({ refreshing: false })
       }
-    })
+    )
+
+   
   };
 
   renderItem = ({ item }) => <ListItem data={item} isGuessLike />;
@@ -80,7 +95,7 @@ componentWillReceiveProps(nextProps){
           refreshing={refreshing}
           data={list}
           renderItem={this.renderItem}
-          onRefresh
+          // onRefresh
         />
       </View>
     )

@@ -88,7 +88,7 @@ class Result extends Component {
           <View />
           <View style={{ marginVertical: 30 }}>
             {list.map(item => (
-              <View style={styles.row}>
+              <View style={styles.row} key={item.format}>
                 <Text style={styles.label}>{item.label}</Text>
                 <Text
                   style={[

@@ -16,9 +16,17 @@ export async function createVipOrder(params) {
     })
   }
 
+// // create settle order
+// export async function createSuperVipOrder(params) {
+//     return request(`http://118.24.107.177:7001/order/settle/create`, {
+//         method: "POST",
+//         body: params,
+//     })
+//   }
+
 // create settle order
 export async function createSuperVipOrder(params) {
-    return request(`http://118.24.107.177:7001/order/settle/create`, {
+    return request(`http://118.24.107.177:7001/order/supervip/create`, {
         method: "POST",
         body: params,
     })

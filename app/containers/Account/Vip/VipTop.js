@@ -135,7 +135,7 @@ class VipTop extends Component {
             </Text>
             <Text style={styles.gold}>
               {data.superVip
-                ? `超级商家 ${moment(data.endTime).format("YYYY-MM-DD")} 到期`
+                ? `超级商家 ${moment(data.superEndTime).format("YYYY-MM-DD")} 到期`
                 : "您还不是超级商家"}
             </Text>
           </View>

@@ -64,14 +64,14 @@ class AddButton extends Component {
             top: 20,
             bottom: 20,
           }}
-          onPress={()=>this.toPublish(2)}
+          onPress={()=>this.handleAddButtonPress()}
         >
           <Image
             style={style.addImage}
             source={require('./images/icon_tool_release.png')}
           />
         </TouchableOpacity>
-        {/* <Modal
+        <Modal
           transparent
           visible={this.state.visible}
           animationType="slide"
@@ -80,14 +80,14 @@ class AddButton extends Component {
           footer={null}
           style={style.modal}
         >
-          <TouchableOpacity style={style.btn} onPress={() => this.toPublish(1)}>
+          {/* <TouchableOpacity style={style.btn} onPress={() => this.toPublish(1)}>
             <Image
               style={style.btnImg}
               source={require('./images/icon_demand.png')}
             />
             <Text style={style.btnText}>发布需求</Text>
             <Icon style={style.icon} name="right" />
-          </TouchableOpacity>
+          </TouchableOpacity> */}
           <TouchableOpacity style={style.btn} onPress={() => this.toPublish(2)}>
             <Image
               style={style.btnImg}
@@ -96,7 +96,7 @@ class AddButton extends Component {
             <Text style={style.btnText}>发布信息</Text>
             <Icon style={style.icon} name="right" />
           </TouchableOpacity>
-        </Modal> */}
+        </Modal>
       </View>
     )
   }

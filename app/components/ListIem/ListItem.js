@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable no-unused-expressions */
 /* eslint-disable react/prefer-stateless-function */
 // native
@@ -140,7 +141,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "400",
-    fontSize: 16
+    fontSize: 16,
+    paddingRight:20
     // marginBottom: 5
   },
   des: {

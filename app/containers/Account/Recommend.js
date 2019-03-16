@@ -229,7 +229,9 @@ const styles = StyleSheet.create({
     height: 70
   },
   cardRight: {
-    paddingHorizontal: 20
+    flex:1,
+    paddingHorizontal: 20,
+    paddingRight:20,
   },
   cardTitle: {
     fontSize: 16,

@@ -43,8 +43,8 @@ class PaperDetail extends Component {
           showsVerticalScrollIndicator={false}
           onScrollEndDrag={this.handleScrollEnd}
         >
-          <Progress position="fixed" style={{width:"100%",backgroundColor:"#FFF" }} percent={percent}/>
-          <Image style={{width:"100%",resizeMode:'contain'}} source={source} />
+          <Progress style={{width:"100%",backgroundColor:"#FFF",height:10 }} percent={percent}/>
+          <Image style={{width:"100%", height: 200,resizeMode:'contain'}} source={source} />
           <View style={[styles.row, styles.border]}>
             <Text style={styles.title}>{data.title}</Text>
           </View>
@@ -86,7 +86,7 @@ class PaperDetail extends Component {
 
 const styles = StyleSheet.create({
   home: {
-    paddingTop: statusBarHeight,
+    // paddingTop: statusBarHeight,
     flex: 1,
     flexDirection: "column",
     backgroundColor: "#fff"

@@ -29,7 +29,8 @@ class SecondEntry extends Component {
         pn:1,
         ps:50,
         distance: 0,
-        subClassifyId: props.id
+        classifyId: 'smarket',
+        subClassifyId: 'ndssteel'
       },
       geoCode:{}
     }
@@ -56,7 +57,7 @@ class SecondEntry extends Component {
     getPosition(that,Toast,geoCode)
       .then(result => {
         if (result.isSuccess) {
-          const params = { ...result.params }
+          const {province, city,...params} =result.params
           params.lng = params.longitude
           params.lat = params.latitude
           delete params.longitude
@@ -64,13 +65,17 @@ class SecondEntry extends Component {
           if (params.adcode === "000000") {
             delete params.adcode
           } else {
-            params.adcode = Number(params.shortAdcode||params.adcode.substring(0, 2))
+            params.adcode =   params.shortAdcode || params.adcode.substring(0, 2)
           }
-          this.state.params = result.params
-          console.log("getInfoList 二手", result.params)
+          if(params.adcode === "00"){
+            delete params.adcode
+          }
+          delete  params.shortAdcode
+          this.state.params = params
+          console.log("getInfoList 二手", params)
           this.props.dispatch({
             type: "app/getInfoListLoc",
-            payload: result.params,
+            payload: params,
             callback: res => {
               this.setState({ loading: false })
               if (res.msg === "OK") {
@@ -106,7 +111,7 @@ class SecondEntry extends Component {
   };
 
   render() {
-    const { list, loading } = this.state
+    const { list=[], loading } = this.state
     return (
       <View style={styles.container}>
         <Tabs

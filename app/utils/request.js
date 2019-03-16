@@ -37,12 +37,12 @@ export default function request(url, options) {
       delete options.headers.Authorization
     }
 
-    console.log("url",url)
-    console.log("options",options.body && JSON.parse(options.body))
+    console.log(`${url}  params`,options.body && JSON.parse(options.body))
     return (
       fetch(url, options)
         // eslint-disable-next-line consistent-return
         .then(response => {
+          console.log(`${url}  response`,response._bodyText&& JSON.parse(response._bodyText))
           if (response.status === 500) {
             Toast.info(response._bodyText&& JSON.parse(response._bodyText).msg)
             return response.json()

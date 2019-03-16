@@ -90,8 +90,13 @@ class RegisterEntry extends Component {
           if (params.adcode === "000000") {
             delete params.adcode
           } else {
-            params.adcode = Number(params.shortAdcode||params.adcode.substring(0, 2))
+            params.adcode =   params.shortAdcode || params.adcode.substring(0, 2)
           }
+          if(params.adcode === "00"){
+            delete params.adcode
+          }
+          delete  params.shortAdcode
+
           this.state.params = params
           console.log("getInfoList 注册资质", params)
           this.props.dispatch({
