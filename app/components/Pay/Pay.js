@@ -35,14 +35,14 @@ export default class App extends Component {
   }
 
 
-  // componentWillMount() {
-  //   if (Platform.OS === "android") {
-  //     this.listener = BackHandler.addEventListener(
-  //       "hardwareBackPress",
-  //       this.onBackAndroid
-  //     )
-  //   }
-  // }
+  componentWillMount() {
+    if (Platform.OS === "android") {
+      this.listener = BackHandler.addEventListener(
+        "hardwareBackPress",
+        this.onBackAndroid
+      )
+    }
+  }
 
   componentWillReceiveProps(nextProps) {
     const { visible, timeStamp } = this.state
@@ -54,27 +54,25 @@ export default class App extends Component {
     }
   }
 
-  // componentWillUnmount() {
-  //   if (Platform.OS === "android") {
-  //     this.listener.remove("hardwareBackPress")
-  //   }
-  // }
+  componentWillUnmount() {
+    if (Platform.OS === "android") {
+      this.listener.remove("hardwareBackPress")
+    }
+  }
 
-  // onBackAndroid = () => {
+  onBackAndroid = () => {
 
-  //   const {visible,resultVisible} = this.state
-  //   if(resultVisible){
-  //     this.setState({resultVisible:false})
-  //     return
-  //   }
-  //   if(visible){
-  //     this.setState({visible:false})
-  //   }else{
-  //     this.props.dispatch(NavigationActions.back())
-  //   }
-  // };
-
-
+    const {visible,resultVisible} = this.state
+    if(resultVisible){
+      this.setState({resultVisible:false})
+      return true
+    }
+    if(visible){
+      this.setState({visible:false})
+      return true
+    }
+    
+  };
 
 
   // 关闭付款弹窗

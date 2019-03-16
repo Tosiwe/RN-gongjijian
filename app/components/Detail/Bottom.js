@@ -28,15 +28,15 @@ class Bottom extends Component {
     }
   }
 
-  // componentWillMount() {
-  //   if (Platform.OS === "android") {
-  //     this.listener = BackHandler.addEventListener(
-  //       "hardwareBackPress",
-  //       this.onBackAndroid,
-  //       true
-  //     )
-  //   }
-  // }
+  componentWillMount() {
+    if (Platform.OS === "android") {
+      this.listener = BackHandler.addEventListener(
+        "hardwareBackPress",
+        this.onBackAndroid,
+        true
+      )
+    }
+  }
 
   componentDidMount() {
     this.props.dispatch({
@@ -49,21 +49,20 @@ class Bottom extends Component {
     })
   }
 
-  // componentWillUnmount() {
-  //   if (Platform.OS === "android") {
-  //     this.listener.remove("hardwareBackPress")
-  //   }
-  // }
+  componentWillUnmount() {
+    if (Platform.OS === "android") {
+      this.listener.remove("hardwareBackPress")
+    }
+  }
 
-  // onBackAndroid = () => {
-  //   debugger
-  //   const {visible} = this.state
-  //   if(visible){
-  //     this.onClose()
-  //   }else{
-  //     this.props.dispatch(NavigationActions.back())
-  //   }
-  // };
+  onBackAndroid = () => {
+    const {visible} = this.state
+    if(visible){
+      this.onClose()
+      return true
+    }
+
+  };
 
   onClose = () => {
     this.setState({ visible: false })

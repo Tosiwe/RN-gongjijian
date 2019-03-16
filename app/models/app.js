@@ -487,7 +487,7 @@ export default {
       if (res && callback) {
         callback(res)
       }
-      yield put(createAction("updateState")({ res, fetching: false }))
+      yield put(createAction("updateState")({ followList:res.result, fetching: false }))
     },
 
     // 修改关注行业列表

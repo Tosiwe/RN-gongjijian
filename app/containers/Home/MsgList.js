@@ -23,7 +23,6 @@ class MsgList extends Component {
     this.state = {
       list: [],
       refreshing: false,
-      params:{}
     }
   }
 
@@ -32,10 +31,16 @@ class MsgList extends Component {
   };
   
 componentWillReceiveProps(nextProps){
+  if(JSON.stringify(this.state.followList)  !== JSON.stringify(nextProps.followList) ){
+    this.state.followList = nextProps.followList
+    this.getList(1)
+  }
+
   if(nextProps.guesslikePage !== this.state.guesslikePage){
     this.state.guesslikePage = nextProps.guesslikePage
     this.getList(nextProps.guesslikePage)
   }
+ 
 }
 
   getList = (pn = 1) => {
@@ -43,23 +48,30 @@ componentWillReceiveProps(nextProps){
     this.setState({ refreshing: true })
 
     getPosition({...this}, Toast,false,true).then(
-      res=>{
-        if (res.isSuccess) {
-          const {longitude:lng,latitude:lat} = res.params
+      response=>{
+        if (response.isSuccess) {
+          const {longitude:lng,latitude:lat} = response.params
           this.props.dispatch({
             type: "app/guesslikeList",
             payload: {
               ps: 20,
-              pn,
+               pn,
               lng,
               lat
             },
             callback: res => {
               if (res.msg === "OK" && res.result && res.result.length) {
-                const newList = [...list, ...res.result]
-                this.setState({
-                  list: newList
-                })
+                if(pn===1){
+                  this.setState({
+                    list: res.result
+                  })
+                }else{
+                  const newList = [...list, ...res.result]
+                  this.setState({
+                    list: newList
+                  })
+                }
+
               }
               this.setState({ refreshing: false })
             }
@@ -95,7 +107,7 @@ componentWillReceiveProps(nextProps){
           refreshing={refreshing}
           data={list}
           renderItem={this.renderItem}
-          // onRefresh
+          onRefresh
         />
       </View>
     )
@@ -105,7 +117,9 @@ const styles = StyleSheet.create({
   reload: {
     position: "absolute",
     left: 5,
-    top: 13
+    top: 13,
+    width:30,
+    height:30,
   },
   wrap: {
     backgroundColor: "#fff",
