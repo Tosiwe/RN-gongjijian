@@ -5,6 +5,7 @@ import { View, StyleSheet, Image,TouchableWithoutFeedback ,Linking} from "react-
 import { Carousel } from "@ant-design/react-native"
 import { connect } from "react-redux"
 // import { adsList } from "./data"
+import {NavigationActions}from "react-navigation"
 import { screenWidth } from "../../styles/common"
 
 @connect()
@@ -16,10 +17,22 @@ class Ads extends Component {
     }
   }
 
-  onOpen=(url)=>{
+  onOpen=(item)=>{
     const {isAds}= this.props
     if(isAds){
-      Linking.openURL(url).catch(err => console.error('An error occurred', err))
+      Linking.openURL(item.link).catch(err => console.error('An error occurred', err))
+    }else{
+        
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: 'ImageReader',
+        params: {
+          name: '查看图片',
+          url:item.url
+        }
+      })
+    )
+      
     }
   }
 
@@ -36,7 +49,7 @@ class Ads extends Component {
       >
         {imgList.length ? (
           imgList.map(item => (
-            <TouchableWithoutFeedback onPress={()=>this.onOpen(item.link)} style={styles.containerHorizontal} key={Math.random()}>
+            <TouchableWithoutFeedback onPress={()=>this.onOpen(item)} style={styles.containerHorizontal} key={Math.random()}>
               <Image
                 style={this.props.noRadius?styles.detaiTtem:styles.item }
                 imageStyle={{ borderRadius: 20 }}

@@ -116,7 +116,7 @@ class CompanyOrPerson extends Component {
             <Item
               key={Math.random()}
               onPress={() => {
-                  this.checkSettle(data)
+                  this.fillForm(data)
               }}
               style={styles.item}
               arrow="horizontal"

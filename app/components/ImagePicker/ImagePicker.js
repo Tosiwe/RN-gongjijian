@@ -50,7 +50,7 @@ export default class App extends Component {
     const { maxLength = 4 } = this.props
 
     if (imgs.length === maxLength) {
-      Toast.info(`最多添加${maxLength}张图片`, 1, null, false)
+      Toast.info(`最多添加${maxLength}张图片`, 3, null, false)
       return null
     }
 

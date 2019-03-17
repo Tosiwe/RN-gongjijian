@@ -54,7 +54,7 @@ class BindPhone extends Component {
       const payload = { phone: params.phone }
       this.props.dispatch(createAction("app/sendCode")(payload))
     } else {
-      Toast.info("请输入电话号码",2,null,false)
+      Toast.info("请输入电话号码",3,null,false)
     }
   };
 

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import React, { Component } from "react"
 import { StyleSheet, View, Image, TouchableOpacity, Text,Platform } from "react-native"
 import { connect } from "react-redux"
@@ -28,17 +29,17 @@ class SignUp extends Component {
   handlePress = () => {
     const { params: payload } = this.state
     if(!payload.phone){
-      Toast.info("请输入电话",2,null,false)
+      Toast.info("请输入电话",3,null,false)
       return null
     }
 
     if(!payload.password){
-      Toast.info("请输入密码",2,null,false)
+      Toast.info("请输入密码",3,null,false)
       return null
     }
 
     if(!payload.verifyCode){
-      Toast.info("请输入验证码",2,null,false)
+      Toast.info("请输入验证码",3,null,false)
       return null
     }
 
@@ -76,7 +77,7 @@ class SignUp extends Component {
       const payload = { phone: params.phone,type:0 }
       this.props.dispatch(createAction("app/sendCode")(payload))
     } else {
-      Toast.info("请输入电话号码",2,null,false)
+      Toast.info("请输入电话号码",3,null,false)
     }
   };
 
@@ -96,12 +97,12 @@ class SignUp extends Component {
             this.getAccessToken(responseCode.code)
           })
           .catch(err => {
-            Toast.info("登录授权发生错误：", err.message, [{ text: "确定" }])
+            Toast.info("登录授权发生错误：",3, err.message, false)
           })
       } else {
         Platform.OS === "ios"
-          ? Toast.info("没有安装微信，请先安装微信客户端再进行登录")
-          : Toast.info("没有安装微信，请先安装微信客户端再进行登录")
+          ? Toast.info("没有安装微信，请先安装微信客户端再进行登录", 3, null, false)
+          : Toast.info("没有安装微信，请先安装微信客户端再进行登录", 3, null, false)
       }
     })
   };

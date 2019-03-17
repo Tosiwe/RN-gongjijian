@@ -71,7 +71,7 @@ class MyDownload extends Component {
         id: data.id
       },
       callback:res=>{
-        Toast.success("删除成功", 2,  this.refresh(), false)
+        Toast.success("删除成功", 3,  this.refresh(), false)
       }
     })
   };

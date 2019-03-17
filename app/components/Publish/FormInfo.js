@@ -78,15 +78,15 @@ class FormInfo extends Component {
   isLegal = () => {
     const { params } = this.state
     if (params.title === "") {
-      Toast.info("请填写标题", 2, null, false)
+      Toast.info("请填写标题", 3, null, false)
       return false
     }
     if (params.contact === "") {
-      Toast.info("请填写联系人", 2, null, false)
+      Toast.info("请填写联系人", 3, null, false)
       return false
     }
     if (params.phone === "") {
-      Toast.info("请填写电话", 2, null, false)
+      Toast.info("请填写电话", 3, null, false)
       return false
     }
     return true
@@ -105,7 +105,7 @@ class FormInfo extends Component {
               payload: params,
               callback: res => {
                 if (res.msg === "OK") {
-                  Toast.success("保存成功！", 2, this.goHome, false)
+                  Toast.success("保存成功！", 3, this.goHome, false)
                 }
                 this.setState({ animating: false })
               }
@@ -144,7 +144,7 @@ class FormInfo extends Component {
               payload: params,
               callback: res => {
                 if (res.msg === "OK") {
-                  Toast.success("发布成功！", 2, this.goHome,false)
+                  Toast.success("发布成功！", 3, this.goHome,false)
                 }
                 this.setState({ animating: false })
               }
@@ -249,6 +249,7 @@ class FormInfo extends Component {
           )}
         </List>
         <BaseInfo
+        subClassifyId={ids.subClassifyId}
           onChange={v => this.handleChange(v, "baseInfo")}
           params={this.state.params}
         />

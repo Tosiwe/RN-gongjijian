@@ -41,6 +41,7 @@ import UserVerify from "./containers/Account/UserVerify"
 import MessageDetail from "./containers/Account/MessageDetail"
 import Detail from "./components/Detail/Detail"
 import PaperDetail from "./components/Detail/PaperDetail"
+import ImageReader from "./components/Detail/ImageReader"
 import AddButton from "./components/AddButton/AddButton"
 import Search from "./components/Search/Search"
 import SearchResult from "./components/Search/SearchResult"
@@ -78,6 +79,7 @@ const mainNavigationOptions = ({ navigation }) => ({
   headerStyle: { backgroundColor: "#F9F9F9" , fontSize:20},
   headerLeft: (
     <TouchableOpacity
+    style={{height:40, justifyContent:"center",width:40}}
       onPress={() => {
         navigation.goBack()
       }}
@@ -233,6 +235,11 @@ const MainNavigator = createStackNavigator(
     MessageDetail: {
       // 消息详情
       screen: MessageDetail,
+      navigationOptions: mainNavigationOptions
+    },
+    ImageReader: {
+      // 消息详情
+      screen: ImageReader,
       navigationOptions: mainNavigationOptions
     },
     

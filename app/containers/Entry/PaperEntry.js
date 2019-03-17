@@ -155,7 +155,7 @@ class PaperEntry extends Component {
           onChange={this.changeTab}
         >
           <View style={styles.content}>
-            <ActivityIndicator animating={loading} />
+            {/* <ActivityIndicator animating={loading} /> */}
             {list.length ? (
               <FlatList
                 data={list}

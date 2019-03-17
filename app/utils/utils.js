@@ -75,14 +75,14 @@ export const getPosition = (that, Toast,geoCode, forceUpdate) =>
               resole({ isSuccess: true, params: newParams })
             } else {
               resole()
-              Toast && Toast.info("获取定位失败")
+              Toast && Toast.info("获取定位失败", 1, null, false)
             }
           }
         })
       },
       error => {
         console.warn(`失败：${JSON.stringify(error.message)}`)
-        Toast && Toast.info(`失败：${JSON.stringify(error.message)}`)
+        Toast && Toast.info(`失败：${JSON.stringify(error.message)}`, 3, null, false)
         reject(error)
       },
       {

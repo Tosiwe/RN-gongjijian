@@ -107,7 +107,7 @@ class RegisterEntry extends Component {
             lat: result.params.latitude,
             lng: result.params.longitude
           }
-          if (result.params.adcode !== "000000") {
+          if (result.params.adcode !== "000000"&& result.params.shortAdcode !=="00") {
             payload.adcode = Number(result.params.shortAdcode || result.params.adcode.substring(0, 2))
           }
 
@@ -154,16 +154,16 @@ class RegisterEntry extends Component {
     const { loading, list = [],pageNum=0 } = this.state
     return (
       <View style={styles.container}>
-        <Tabs
+        {/* <Tabs
           tabs={tabs}
           styles={{ topTabBarSplitLine: "#000" }}
           tabBarUnderlineStyle={{ backgroundColor: "#FF7720" }}
           initialPage={id === "aptitude" ? 0 : 1}
           onChange={this.changeTab}
           // renderTab={tab=>(<Text style={{color:"red",borderBottomWidth:0}}>123</Text>   )}
-        >
+        > */}
           <View style={styles.content}>
-            <ActivityIndicator animating={loading} />
+            {/* <ActivityIndicator animating={loading} /> */}
             {list.length ? (
               <FlatList 
               data={list} 
@@ -181,7 +181,7 @@ class RegisterEntry extends Component {
               </Text>
             )}
           </View>
-        </Tabs>
+        {/* </Tabs> */}
       </View>
     )
   }
@@ -189,6 +189,8 @@ class RegisterEntry extends Component {
 
 const styles = StyleSheet.create({
   container: {
+    width:'100%',
+    flex: 1,
     backgroundColor: "#FFF",
     paddingHorizontal: 10
   },

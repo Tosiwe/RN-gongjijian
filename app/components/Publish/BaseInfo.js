@@ -1,8 +1,8 @@
 /* eslint-disable react/sort-comp */
 import React, { Component } from "react"
 
-import { StyleSheet, View,  Text } from "react-native"
-import { List, TextareaItem, InputItem ,Toast} from "@ant-design/react-native"
+import { StyleSheet, View, Text } from "react-native"
+import { List, TextareaItem, InputItem, Toast } from "@ant-design/react-native"
 import { connect } from "react-redux"
 import ImagePicker from "../ImagePicker/ImagePicker"
 import { getPosition } from "../../utils/utils"
@@ -12,19 +12,18 @@ export default class BaseInfo extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      params: {},
+      params: {}
     }
   }
 
-  componentDidMount(){
-    const that = {...this}
+  componentDidMount() {
+    const that = { ...this }
     getPosition(that, Toast, false, true).then(res => {
       if (res.isSuccess) {
-        this.state.params=res.params
+        this.state.params = res.params
         this.setState({ city: res.params.city })
       }
     })
-
   }
 
   handleInput = (value, name) => {
@@ -36,15 +35,31 @@ export default class BaseInfo extends Component {
       p[name] = value
     }
     this.props.onChange(p)
-    if(name==="city")this.state.city=value
+    if (name === "city") this.state.city = value
     this.setState({ params: p })
   };
 
   render() {
-    const {  city } = this.state
+    const { city } = this.state
+    const { subClassifyId } = this.props
     return (
       <View style={styles.wrap}>
+        <Text style={{ marginLeft: 20 }}>展示图片</Text>
         <ImagePicker onChange={v => this.handleInput(v, "picture")} />
+        {subClassifyId === "talent" && (
+          <View>
+            <Text style={{ marginLeft: 20 }}>身份证正面</Text>
+            <ImagePicker
+              onChange={v => this.handleInput(v.picture1, "idCardPosUrl")}
+              maxLength={1}
+            />
+            <Text style={{ marginLeft: 20 }}>身份证背面</Text>
+            <ImagePicker
+              onChange={v => this.handleInput(v.picture1, "idCardVerUrl")}
+              maxLength={1}
+            />
+          </View>
+        )}
         <List style={styles.inputBox}>
           <TextareaItem
             style={styles.input}
@@ -89,12 +104,11 @@ export default class BaseInfo extends Component {
           <InputItem
             multipleLine={false}
             style={styles.input}
-            value={city }
+            value={city}
             onChange={v => this.handleInput(v, "city")}
             placeholder="请填写地域，如：全国、沧州市、河北省"
           />
         </List>
-        
       </View>
     )
   }

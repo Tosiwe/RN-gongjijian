@@ -60,15 +60,15 @@ class FormDemand extends Component {
   isLegal = () => {
     const { params } = this.state;
     if (params.title === "") {
-      Toast.info("请填写标题");
+      Toast.info("请填写标题", 3, null, false);
       return false;
     }
     if (params.contact === "") {
-      Toast.info("请填写联系人");
+      Toast.info("请填写联系人", 3, null, false);
       return false;
     }
     if (params.phone === "") {
-      Toast.info("请填写电话");
+      Toast.info("请填写电话", 3, null, false);
       return false;
     }
     return true;
@@ -90,7 +90,7 @@ class FormDemand extends Component {
               payload: params,
               callback: res => {
                 if (res.msg === "OK") {
-                  Toast.success("保存成功！", 1, this.goHome);
+                  Toast.success("信息保存成功", 3, this.goHome,false);
                 }
                 this.setState({ animating: false });
               }
@@ -130,7 +130,7 @@ class FormDemand extends Component {
               payload: params,
               callback: res => {
                 if (res.msg === "OK") {
-                  Toast.success("发布成功！", 1, this.goHome);
+                  Toast.success("信息上传成功，系统管理员将在1-24小时之内审核！", 3, this.goHome,false);
                 }
                 this.setState({ animating: false });
               }

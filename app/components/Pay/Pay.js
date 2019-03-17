@@ -117,7 +117,7 @@ export default class App extends Component {
         },
         err => {
           console.log(err)
-          Toast.info("付款出错了")
+          Toast.info("付款出错了", 3, null, false)
         }
       )
     })
@@ -161,7 +161,7 @@ export default class App extends Component {
           })
         } else if (response.status === "ERROR") {
           if(!response.msg){
-            Toast.info(`创建${textMap[data.type]}订单失败`)
+            Toast.info(`创建${textMap[data.type]}订单失败`, 3, null, false)
           }
         }
       }

@@ -14,12 +14,13 @@ import { INS_MAP } from "../../utils/dataDic"
 class ListItem extends Component {
   toDetail = () => {
     const { isDownload, isMylike } = this.props
-    if (isDownload) return
+   
     const { data } = this.props
     console.log("List Item", data)
+    
     this.props.dispatch(
       NavigationActions.navigate({
-        routeName: "Detail",
+        routeName: isDownload?"PaperDetail":"Detail",
         params: {
           name: data.title,
           data,

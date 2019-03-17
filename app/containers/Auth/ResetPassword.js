@@ -30,22 +30,22 @@ class ResetPassword extends Component {
     const { params: payload } = this.state
 
     if(!payload.phone){
-      Toast.info("请输入电话",2,null,false)
+      Toast.info("请输入电话",3,null,false)
       return null
     }
 
     if(!payload.password){
-      Toast.info("请输入密码",2,null,false)
+      Toast.info("请输入密码",3,null,false)
       return null
     }
 
     if(!payload.verifyPassword){
-      Toast.info("请输入确认密码",2,null,false)
+      Toast.info("请输入确认密码",3,null,false)
       return null
     }
 
     if(!payload.verifyCode){
-      Toast.info("请输入验证码",2,null,false)
+      Toast.info("请输入验证码",3,null,false)
       return null
     }
 
@@ -85,7 +85,7 @@ class ResetPassword extends Component {
       const payload = { phone: params.phone,type:1 }
       this.props.dispatch(createAction("app/sendCode")(payload))
     } else {
-      Toast.info("请输入电话号码",2,null,false)
+      Toast.info("请输入电话号码",3,null,false)
     }
   };
 

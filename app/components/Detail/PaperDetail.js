@@ -1,10 +1,17 @@
 /* eslint-disable react/no-unused-state */
 import React, { Component } from "react"
-import { StyleSheet, View, ScrollView, Text,Image } from "react-native"
+import {
+  StyleSheet,
+  View,
+  ScrollView,
+  Text,
+  Image,
+  TouchableOpacity
+} from "react-native"
 import { connect } from "react-redux"
 import { ActivityIndicator, Progress } from "@ant-design/react-native"
+import { NavigationActions } from "react-navigation"
 import Bottom from "./PaperBottom"
-
 import { statusBarHeight } from "../../styles/common"
 
 @connect()
@@ -22,18 +29,32 @@ class PaperDetail extends Component {
     this.setState({ refreshing, percent })
   };
 
+  toImg = url => {
+    if (url) {
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: "ImageReader",
+          params: {
+            name: "查看图片",
+            url
+          }
+        })
+      )
+    }
+  };
+
   render() {
     const { data = {} } = this.props.navigation.state.params
-    const {percent}=this.state
+    const { percent } = this.state
     const Td = props => (
       <View style={styles.td}>
         <Text style={styles.tdLabel}>{props.label}</Text>
         <Text style={styles.tdText}>{props.text}</Text>
       </View>
     )
-    const source =  data.thumbUrl
-    ? { uri: data.thumbUrl }
-    : require("../../containers/Account/images/logo.jpg")
+    const source = data.thumbUrl
+      ? { uri: data.thumbUrl }
+      : require("../../containers/Account/images/logo.jpg")
 
     return (
       <View style={styles.home}>
@@ -43,8 +64,16 @@ class PaperDetail extends Component {
           showsVerticalScrollIndicator={false}
           onScrollEndDrag={this.handleScrollEnd}
         >
-          <Progress style={{width:"100%",backgroundColor:"#FFF",height:10 }} percent={percent}/>
-          <Image style={{width:"100%", height: 200,resizeMode:'contain'}} source={source} />
+          <Progress
+            style={{ width: "100%", backgroundColor: "#FFF", height: 10 }}
+            percent={percent}
+          />
+          <TouchableOpacity onPress={() => this.toImg(data.thumbUrl)}>
+            <Image
+              style={{ width: "100%", height: 200, resizeMode: "contain" }}
+              source={source}
+            />
+          </TouchableOpacity>
           <View style={[styles.row, styles.border]}>
             <Text style={styles.title}>{data.title}</Text>
           </View>
@@ -78,7 +107,11 @@ class PaperDetail extends Component {
           />
           <View style={[styles.row, styles.bottomRow]} />
         </ScrollView>
-        <Bottom data={data} onRefresh={this.onRefresh} onProgress={(p)=>this.setState({percent:p})}/>
+        <Bottom
+          data={data}
+          onRefresh={this.onRefresh}
+          onProgress={p => this.setState({ percent: p })}
+        />
       </View>
     )
   }

@@ -10,7 +10,7 @@ export default function request(url, options) {
   return Storage.get("auth").then(auth => {
 
     if (!auth && (options.body && !options.body.noNendAuth ) ) {
-      Toast.info("请先登录")
+      Toast.info("请先登录", 3, null, false)
       return null
     }
 
@@ -44,7 +44,7 @@ export default function request(url, options) {
           console.log(`${url}  response`,response._bodyText&& JSON.parse(response._bodyText))
           if (response.status === 500) {
             const msg =response._bodyText&& JSON.parse(response._bodyText).msg
-            Toast.info( msg|| '请求异常')
+            Toast.info( msg|| '请求异常', 3, null, false)
             return response.json()
             // console.log("error", response)
           } 

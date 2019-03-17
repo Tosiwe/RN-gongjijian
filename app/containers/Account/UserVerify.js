@@ -38,7 +38,7 @@ class UserVerify extends Component {
     }
     for (const name in params) {
       if (params[name] === "") {
-        Toast.info(`${map[name]}不能为空`,2,null,false)
+        Toast.info(`${map[name]}不能为空`,3,null,false)
         return null
       }
     }
@@ -83,7 +83,7 @@ class UserVerify extends Component {
           onChange={v => this.onChange(v.picture1, "idCardPosUrl")}
           maxLength={1}
         />
-        <Text style={{ marginLeft: 20 }}><Text style={{ color: "red" }}>*</Text>身份证背面面</Text>
+        <Text style={{ marginLeft: 20 }}><Text style={{ color: "red" }}>*</Text>身份证背面</Text>
         <ImagePicker
           onChange={v => this.onChange(v.picture1, "idCardVerUrl")}
           maxLength={1}

@@ -52,15 +52,15 @@ class SettleForm extends Component {
     const { classifyId, subClassifyId } = this.props.navigation.state.params
 
     if (!params.company) {
-      Toast.info("请输入公司名称", 2, null, false)
+      Toast.info("请输入公司名称", 3, null, false)
       return
     }
     if (!params.contact) {
-      Toast.info("请输入联系方式", 2, null, false)
+      Toast.info("请输入联系方式", 3, null, false)
       return
     }
     if (!params.bisLicenseUrl) {
-      Toast.info("请选择营业执照", 2, null, false)
+      Toast.info("请选择营业执照", 3, null, false)
       return
     }
 

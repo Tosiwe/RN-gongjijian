@@ -101,7 +101,7 @@ export default {
       yield put(createAction("updateState")({ fetching: true }))
       const registed = yield call(authService.register, payload)
       if (registed) {
-        Toast.success("注册成功！")
+        Toast.success("注册成功！", 3, null, false)
         yield put(NavigationActions.navigate({ routeName: "Login" }))
       }
       yield put(createAction("updateState")({ registed, fetching: false }))
@@ -113,7 +113,7 @@ export default {
       yield put(createAction("updateState")({ fetching: true }))
       const seted = yield call(authService.resetPwd, payload)
       if (seted) {
-        Toast.success("修改成功！")
+        Toast.success("修改成功！", 3, null, false)
         yield put(NavigationActions.navigate({ routeName: "Login" }))
       }
       yield put(createAction("updateState")({ seted, fetching: false }))

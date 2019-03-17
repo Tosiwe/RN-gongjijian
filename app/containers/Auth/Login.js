@@ -46,12 +46,12 @@ class Login extends Component {
   login = () => {
     const { params: payload } = this.state
     if (!payload.phone) {
-      Toast.info("请输入电话",2,null,false)
+      Toast.info("请输入电话",3,null,false)
       return null
     }
 
     if (!payload.password) {
-      Toast.info("请输入密码",2,null,false)
+      Toast.info("请输入密码",3,null,false)
       return null
     }
     payload.noNendAuth = true
@@ -95,12 +95,12 @@ class Login extends Component {
             this.getAccessToken(responseCode.code)
           })
           .catch(err => {
-            Toast.info("登录授权发生错误：", err.message, [{ text: "确定" }])
+            Toast.info("登录授权发生错误：",3, err.message, false)
           })
       } else {
         Platform.OS === "ios"
-          ? Toast.info("没有安装微信，请先安装微信客户端再进行登录")
-          : Toast.info("没有安装微信，请先安装微信客户端再进行登录")
+          ? Toast.info("没有安装微信，请先安装微信客户端再进行登录", 3, null, false)
+          : Toast.info("没有安装微信，请先安装微信客户端再进行登录", 3, null, false)
       }
     })
   };

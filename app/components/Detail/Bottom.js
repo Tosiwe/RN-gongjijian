@@ -153,7 +153,7 @@ class Bottom extends Component {
                 // Toast.info(error.message)
               })
           } else {
-            Toast.info("请安装微信")
+            Toast.info("请安装微信", 3, null, false)
           }
         })
         .catch(error => {
@@ -173,7 +173,7 @@ class Bottom extends Component {
                 // Toast.info(error.message)
               })
           } else {
-            Toast.info("请安装微信")
+            Toast.info("请安装微信", 3, null, false)
           }
         })
         .catch(error => {
@@ -208,7 +208,7 @@ class Bottom extends Component {
 
   copy = txt => {
     Clipboard.setString(txt)
-    Toast.info("复制成功", 1, null, false)
+    Toast.info("复制成功", 3, null, false)
   };
 
   render() {

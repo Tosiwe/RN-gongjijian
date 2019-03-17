@@ -10,9 +10,9 @@ import {
   Image,
   TouchableOpacity
 } from "react-native"
-import {  Modal } from "@ant-design/react-native"
+import { Modal } from "@ant-design/react-native"
 import Icon from "react-native-vector-icons/AntDesign"
-
+import { NavigationActions } from "react-navigation"
 
 const RECORD_STATE = {
   0: {
@@ -29,7 +29,7 @@ const RECORD_STATE = {
   },
   3: {
     state: "删除",
-    text: ""
+    text: "已删除"
   }
 }
 
@@ -79,7 +79,7 @@ class MyPublish extends Component {
         ps: 10
       },
       callback: res => {
-        if (res.msg === "OK"&& res.result.data.length) {
+        if (res.msg === "OK" && res.result.data.length) {
           let infoList = []
           if (pn !== 1) {
             infoList = [...this.state.infoList, ...res.result.data]
@@ -149,38 +149,63 @@ class MyPublish extends Component {
     this.getInfoList(pn)
   };
 
+  toDetail = data => {
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "Detail",
+        params: {
+          name: data.title,
+          data
+        }
+      })
+    )
+  };
+
   renderItem = ({ item }) => (
     <View style={styles.card} full>
-      <View style={styles.carBody}>
-        <Image
-          resizeMode="contain"
-          style={styles.carImg}
-          source={require("../../containers/img/img_logo.png")}
-        />
+      <TouchableOpacity
+        disabled={item.state === 3 && true}
+        onPress={() => this.toDetail(item)}
+        style={styles.carBody}
+      >
+        <View style={{ width: 70, height: 70, padding: 5 }}>
+          <Image
+            // resizeMode="contain"
+            style={styles.carImg}
+            source={
+              item.picture1
+                ? { uri: item.picture1 }
+                : require("../../containers/Account/images/logo.jpg")
+            }
+          />
+        </View>
         <View style={styles.cardRight}>
           <Text style={styles.cardTitle}>{item.title}</Text>
           <Text style={styles.cardDes} ellipsizeMode="tail" numberOfLines={2}>
             {item.desc}
           </Text>
         </View>
-      </View>
+      </TouchableOpacity>
       <View style={styles.carFoot}>
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity
+          style={styles.btn}
+          disabled={item.state === 3 && true}
+        >
           <Text style={styles.btnText}>刷新</Text>
         </TouchableOpacity>
         <TouchableOpacity
+          disabled={item.state === 3 && true}
           style={[styles.btn, styles.midBtn]}
           onPress={() => this.onAction(item.state, item.id)}
         >
           <Text style={styles.btnText}>{RECORD_STATE[item.state].text}</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.btn}>
-          <Text
-            style={styles.btnText}
-            onPress={() => this.showDeleteModal(item.id)}
-          >
-            删除
-          </Text>
+        <TouchableOpacity
+          style={styles.btn}
+          disabled={item.state === 3 && true}
+          onPress={() => this.showDeleteModal(item.id)}
+        >
+          <Text style={styles.btnText}>删除</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -200,7 +225,7 @@ class MyPublish extends Component {
           onRefresh={this.refresh}
           refreshing={fetching}
           onEndReachedThreshold={0.2}
-          onEndReached={() => this.refresh(infoPageNum+1)}
+          onEndReached={() => this.refresh(infoPageNum + 1)}
         />
       </View>
     )
@@ -230,8 +255,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10
   },
   carImg: {
-    width: 70,
-    height: 70
+    width: 60,
+    height: 60
   },
   cardRight: {
     paddingHorizontal: 20

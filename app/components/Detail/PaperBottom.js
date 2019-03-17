@@ -166,11 +166,34 @@ class PaperBottom extends Component {
   };
 
   // 微信分享
-  wechatShare = file => {
+  wechatShare = (file,shareType) => {
     const arrType = file.path.split(".")
     const arrName = file.path.split("/")
     const type = arrType[arrType.length - 1]
     const name = arrName[arrName.length - 1]
+
+    if(shareType==="text"){
+      wechat
+      .isWXAppInstalled()
+      .then(isInstalled => {
+        if (isInstalled) {
+          wechat
+            .shareToSession({
+              type: "text",
+              description: file.fromUrl
+            })
+            .catch(error => {
+              // Toast.info(error.message)
+            })
+        } else {
+          Toast.info("请安装微信", 3, null, false)
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
+      return
+    }
 
     if (type === "jpg" || type === "png") {
       wechat
@@ -183,15 +206,13 @@ class PaperBottom extends Component {
                 title: name,
                 description: "图纸下载",
                 mediaTagName: "图纸",
-                // thumbImage: 'https://tvax4.sinaimg.cn/crop.0.0.736.736.180/62fc3de5ly8fu6xizfsmhj20kg0kgtbh.jpg',
                 imageUrl: `file://${file.path}`
-                // fileExtension:'.jpg'
               })
               .catch(error => {
-                // Toast.info(error.message)
+                console.log(error)
               })
           } else {
-            Toast.info("请安装微信")
+            Toast.info("请安装微信", 3, null, false)
           }
         })
         .catch(error => {
@@ -199,24 +220,28 @@ class PaperBottom extends Component {
         })
     } else {
       wechat
-        .isWXAppInstalled()
-        .then(isInstalled => {
-          if (isInstalled) {
-            wechat
-              .shareToSession({
-                type: "text",
-                description: file.fromUrl
-              })
-              .catch(error => {
-                // Toast.info(error.message)
-              })
-          } else {
-            Toast.info("请安装微信")
-          }
-        })
-        .catch(error => {
-          console.log(error)
-        })
+      .isWXAppInstalled()
+      .then(isInstalled => {
+        if (isInstalled) {
+          wechat
+            .shareToSession({
+              type: "file",
+              title: name,
+              description: "图纸下载",
+              mediaTagName: "图纸",
+              filePath: file.path,
+              fileExtension:type
+            })
+            .catch(error => {
+              console.log(error)
+            })
+        } else {
+          Toast.info("请安装微信", 3, null, false)
+        }
+      })
+      .catch(error => {
+        console.log(error)
+      })
     }
   };
 
@@ -230,7 +255,7 @@ class PaperBottom extends Component {
           const file = files[data.id]
           resolve(file)
         } else {
-          Toast.info("文件找不到了，将重新下载", 2, this.getFile, false)
+          Toast.info("文件找不到了，将重新下载", 3, this.getFile, false)
           this.setState({ paid: false })
           resolve()
         }
@@ -243,25 +268,29 @@ class PaperBottom extends Component {
     if (paid) {
       this.readStorage().then(file => {
         if (file) {
-          this.wechatShare(file)
-          // Modal.operation([
-          //   {
-          //     text: "分享到微信",
-          //     onPress: () => this.wechatShare(file)
-          //   }
-          // ])
+          Modal.operation([
+            {
+              text: "分享文件到微信",
+              onPress: () => this.wechatShare(file,'file')
+            },
+            {
+              text: "分享下载链接到微信",
+              onPress: () => this.wechatShare(file,'text')
+            },
+          
+          ])
         }
       })
     } else {
       // 未购买
-      Toast.info("先下载文件才能分享哦", 2, null, false)
+      Toast.info("先下载文件才能分享哦", 3, null, false)
     }
   };
 
   // 复制
   copy = txt => {
     Clipboard.setString(txt)
-    Toast.info("复制成功", 2, null, false)
+    Toast.info("复制成功", 3, null, false)
   };
 
   // 打开文件
@@ -287,7 +316,7 @@ class PaperBottom extends Component {
           console.log("success!!")
         },
         e => {
-          Toast.info("文件找不到了，将重新下载", 2, this.getFile, false)
+          Toast.info("文件找不到了，将重新下载", 3, this.getFile, false)
           this.setState({ paid: false })
         }
       )
