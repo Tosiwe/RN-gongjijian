@@ -79,7 +79,7 @@ class MyPublish extends Component {
         ps: 10
       },
       callback: res => {
-        if (res.msg === "OK" && res.result.data.length) {
+        if (res.msg === "OK") {
           let infoList = []
           if (pn !== 1) {
             infoList = [...this.state.infoList, ...res.result.data]

@@ -32,12 +32,12 @@ class MyDownload extends Component {
           ps: 10
         },
       callback: res => {
-        if (res.msg === "OK" && res.result.data.length) {
+        if (res.msg === "OK") {
           let likeList = []
           if (pn !== 1) {
             likeList = [...this.state.likeList, ...res.result.data]
           } else {
-            likeList = res.result.data
+            likeList = res.result.data||[]
           }
           this.setState({
             likeList,
@@ -77,7 +77,7 @@ class MyDownload extends Component {
   };
 
   renderItem = ({ item }) => (
-    <View style={{ paddingHorizontal: 10 }}>
+    <View style={{ paddingHorizontal: 10 }} key={item.id}>
       <ListItem data={item} isDownload onRemove={this.remove} />
     </View>
   );

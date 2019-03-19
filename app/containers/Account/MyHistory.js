@@ -52,7 +52,7 @@ class MyHistory extends Component {
           ps: 20
         },
       callback: res => {
-        if (res.msg === "OK"&& res.result.data.length) {
+        if (res.msg === "OK") {
           let likeList = []
           if (pn !== 1) {
             likeList = [...this.state.likeList, ...res.result.data]

@@ -16,10 +16,12 @@ import {
   Toast,
   Modal,
   Button,
+  ActivityIndicator,
   TextareaItem
 } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import CommonFile from "./CommonFile"
+import { getPosition } from "../../utils/utils"
 
 @connect(({ app }) => ({ ...app }))
 class SettleForm extends Component {
@@ -27,7 +29,8 @@ class SettleForm extends Component {
     super(props)
     this.state = {
       visible: false,
-      params: {}
+      params: {},
+      animating:false
     }
   }
 
@@ -63,34 +66,44 @@ class SettleForm extends Component {
       Toast.info("请选择营业执照", 3, null, false)
       return
     }
+    this.setState({animating:true})
 
     params.classifyId = classifyId
     params.subClassifyId = subClassifyId
     console.log("settleNew", params)
-    this.props.dispatch({
-      type: "app/settleNew",
-      payload: params,
-      callback: res => {
-        if (res.msg === "OK") {
-          Toast.info(
-            "入驻成功！",
-            2,
-            () => {
-              this.props.dispatch({
-                type: "app/settleList"
-              })
-              const { callback } = this.props.navigation.state.params
-              if (callback) {
-                callback()
-              } else {
-                this.props.dispatch(NavigationActions.back())
-              }
-            },
-            false
-          )
-        }
+    getPosition({ ...this },Toast,false,true).then(result=>{
+      if(result.isSuccess){
+        this.props.dispatch({
+          type: "app/settleNew",
+          payload: result.params,
+          callback: res => {
+            this.setState({animating:false})
+
+            if (res.msg === "OK") {
+              Toast.info(
+                "入驻成功！",
+                2,
+                () => {
+                  this.props.dispatch({
+                    type: "app/settleList"
+                  })
+                  const { callback } = this.props.navigation.state.params
+                  if (callback) {
+                    callback()
+                  } else {
+                    this.props.dispatch(NavigationActions.back())
+                  }
+                },
+                false
+              )
+            }else if(res.status === "ERROR"){
+              Toast.info(res.msg,2,null,false)
+            }
+          }
+        })
       }
     })
+  
   };
 
   toVip = () => {
@@ -105,6 +118,12 @@ class SettleForm extends Component {
     // 选择发布分类
     return (
       <ScrollView style={styles.wrap}>
+       <ActivityIndicator
+          animating={this.state.animating}
+          text="入驻中..."
+          toast
+          size="small"
+        />
         <List style={styles.inputBox}>
           <InputItem
             multipleLine={false}
