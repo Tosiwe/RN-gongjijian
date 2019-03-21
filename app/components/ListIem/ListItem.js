@@ -39,11 +39,11 @@ class ListItem extends Component {
     const { data, isDownload, isMylike } = this.props
     let source = data.picture1
       ? { uri: data.picture1 }
-      : require("../../containers/Account/images/logo.jpg")
+      : require("../../containers/Account/images/logo.png")
     if (isDownload) {
       source = data.thumbUrl
         ? { uri: data.thumbUrl }
-        : require("../../containers/Account/images/logo.jpg")
+        : require("../../containers/Account/images/logo.png")
     }
     return (
       <TouchableOpacity

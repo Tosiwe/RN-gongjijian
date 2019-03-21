@@ -54,7 +54,7 @@ class PaperDetail extends Component {
     )
     const source = data.thumbUrl
       ? { uri: data.thumbUrl }
-      : require("../../containers/Account/images/logo.jpg")
+      : require("../../containers/Account/images/logo.png")
 
     return (
       <View style={styles.home}>

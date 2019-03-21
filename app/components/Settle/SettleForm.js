@@ -165,6 +165,26 @@ class SettleForm extends Component {
           >
             地址
           </InputItem>
+          <InputItem
+            multipleLine={false}
+            labelNumber={5}
+            style={styles.input}
+            clear
+            onChange={v => this.handleChange(v, "wechat")}
+            placeholder="请输入"
+          >
+            微信
+          </InputItem>
+          <InputItem
+            multipleLine={false}
+            labelNumber={5}
+            style={styles.input}
+            clear
+            onChange={v => this.handleChange(v, "qq")}
+            placeholder="请输入"
+          >
+            QQ
+          </InputItem>
           {subClassifyId === "company" && (
             <InputItem
               multipleLine={false}

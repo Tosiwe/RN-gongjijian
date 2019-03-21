@@ -1,5 +1,5 @@
 import React, { Component } from "react"
-import { StyleSheet, View, Text,  } from "react-native"
+import { StyleSheet, View, Text } from "react-native"
 import { connect } from "react-redux"
 
 @connect()
@@ -14,7 +14,7 @@ class BaseInfo extends Component {
   render() {
     const { data = {} } = this.props
 
-    console.log("BaseInfo data",data)
+    console.log("BaseInfo data", data)
     const Td = props => (
       <View style={styles.td}>
         <Text style={styles.tdLabel}>{props.label}</Text>
@@ -25,7 +25,7 @@ class BaseInfo extends Component {
     const form = () => {
       const { classifyId, type, subClassifyId } = data
 
-      if (type === 0 ) {
+      if (type === 0) {
         return null
       }
 
@@ -45,7 +45,7 @@ class BaseInfo extends Component {
         )
       }
 
-      if (subClassifyId === "company") {
+      if (subClassifyId === "company" && !data.settleId) {
         return (
           <View style={styles.row}>
             <Td label="业务名称" text={data.extraName || "-"} />
@@ -76,22 +76,39 @@ class BaseInfo extends Component {
           </View>
         )
       }
-      if (classifyId === "smarket"||subClassifyId === "rent"||subClassifyId === "material"){
-      return (
-        <View>
-          <View style={styles.row}>
-            <Td label={`${subClassifyId ==='rent'?'设备':'材料'}名称`} text={data.extraName || "-"} />
-            <Td label="品牌" text={data.extraBrand || "-"} />
+      if (
+        classifyId === "smarket" ||
+        subClassifyId === "rent" ||
+        subClassifyId === "material"
+      ) {
+        if (data.settleId) {
+          return null
+        }
+        return (
+          <View>
+            <View style={styles.row}>
+              <Td
+                label={`${subClassifyId === "rent" ? "设备" : "材料"}名称`}
+                text={data.extraName || "-"}
+              />
+              <Td label="品牌" text={data.extraBrand || "-"} />
+            </View>
+            <View style={styles.row}>
+              <Td label="型号规格" text={data.extraSpec || "-"} />
+              <Td
+                label={`${subClassifyId === "rent" ? "租赁" : "材料"}单位`}
+                text={data.extraUnit || "-"}
+              />
+            </View>
+            <View style={styles.row}>
+              <Td
+                label={`${subClassifyId === "rent" ? "租赁" : "材料"}价格`}
+                text={`${data.extraPrice}元` || "-"}
+              />
+            </View>
           </View>
-          <View style={styles.row}>
-            <Td label="型号规格" text={data.extraSpec || "-"} />
-            <Td label={`${subClassifyId ==='rent'?'租赁':'材料'}单位`} text={data.extraUnit || "-"} />
-          </View>
-          <View style={styles.row}>
-            <Td  label={`${subClassifyId ==='rent'?'租赁':'材料'}价格`} text={`${data.extraPrice}元` || "-"} />
-          </View>
-        </View>
-      )}
+        )
+      }
       return null
     }
 
@@ -115,8 +132,8 @@ class BaseInfo extends Component {
             <Text style={styles.detailTitle}>详情介绍</Text>
           </View>
           <Text style={styles.detailText}>{data.desc}</Text>
-        </View> 
-         <View style={styles.bottomRow} />
+        </View>
+        <View style={styles.bottomRow} />
       </View>
     )
   }

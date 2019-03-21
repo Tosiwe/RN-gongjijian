@@ -20,16 +20,40 @@ const requestExternalStoragePermission = async () => {
   }
 }
 
+
+const checkPermission=()=>{
+  try {
+      // 返回Promise类型
+      const granted = PermissionsAndroid.check(
+          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
+      )
+      granted.then((data)=>{
+          this.show(`是否获取读写权限${data}`)
+      }).catch((err)=>{
+          this.show(err.toString())
+      })
+  } catch (err) {
+      this.show(err.toString())
+  }
+}
+
+
 export const getPosition = (that, Toast,geoCode, forceUpdate) =>
   new Promise((resole, reject) => {
-    const grand = requestExternalStoragePermission()
-    if (!grand) {
-      resole()
-      return
-    }
-
     const { params } = that.state
 
+    requestExternalStoragePermission().then(
+      res=>{
+        if (res==="never_ask_again"||res==="denied") {
+          resole({ isSuccess: true, params:{
+            longitude:undefined,
+            latitude:undefined,
+            ...params
+          } })
+          
+        }
+      }
+    )
      
     if(!forceUpdate && that.props.geoCode){
       let newParams={}
@@ -83,7 +107,11 @@ export const getPosition = (that, Toast,geoCode, forceUpdate) =>
       error => {
         console.warn(`失败：${JSON.stringify(error.message)}`)
         Toast && Toast.info(`失败：${JSON.stringify(error.message)}`, 3, null, false)
-        reject(error)
+        resole({ isSuccess: true, params:{
+          longitude:undefined,
+          latitude:undefined,
+          ...params
+        } })
       },
       {
         // 提高精确度，但是获取的速度会慢一点

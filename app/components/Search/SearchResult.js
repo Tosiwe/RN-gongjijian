@@ -79,8 +79,9 @@ class SearchResult extends Component {
         lng: result.params.longitude
       }
 
-      if (result.params.adcode !== "000000"&& result.params.shortAdcode !=="00") {
+      if (result.params.adcode && result.params.adcode !== "000000" && result.params.shortAdcode &&result.params.shortAdcode !=="00") {
         payload.adcode = Number(result.params.shortAdcode || result.params.adcode.substring(0, 2))
+        
       }
       if (result.isSuccess) {
         this.props.dispatch({
@@ -131,8 +132,6 @@ class SearchResult extends Component {
         onChange={this.changeTab}
       >
         <View style={styles.content}>
-          {loading && <ActivityIndicator animating={loading} />}
-
           {(list[activeKey]&&list[activeKey].length) ? (
             <FlatList 
             data={list[activeKey]}

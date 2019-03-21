@@ -29,7 +29,7 @@ class LocationBtn extends Component {
       this.setState({ name: [geoCode.city] })
     } else {
       getPosition(that, Toast).then(res => {
-        if (res.isSuccess) {
+        if (res.isSuccess && res.params.city) {
           this.setState({ name: [res.params.city] })
         }
       })

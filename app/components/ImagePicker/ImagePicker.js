@@ -97,7 +97,7 @@ export default class App extends Component {
                 key: `${name}_${new Date().valueOf()}`
               }
               const { token } = res.result
-              const url = `http://pmzyq6wog.bkt.clouddn.com/${formInput.key}`
+              const url = `http://s.kunzepower.com/${formInput.key}`
               newParams[`picture${newImgs.length}`] = url
 
               this.setState({

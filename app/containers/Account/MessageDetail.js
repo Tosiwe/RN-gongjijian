@@ -26,7 +26,7 @@ class MessageDetail extends Component {
             source={
               data.pictureUrl
                 ? { uri: data.pictureUrl }
-                : require("./images/logo.jpg")
+                : require("./images/logo.png")
             }
           />
         </View>

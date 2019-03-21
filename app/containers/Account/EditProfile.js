@@ -47,7 +47,7 @@ class EditProfile extends Component {
               key: `${userInfo.nick}_logo_${new Date().valueOf()}`
             }
             const { token } = res.result
-            const url = `http://pmzyq6wog.bkt.clouddn.com/${formInput.key}`
+            const url = `http://s.kunzepower.com/${formInput.key}`
             uploadFile(avatarSource.uri, token, formInput, ()=>this.saveProfile(url,"headshotUrl"))
           }
         }
@@ -150,7 +150,7 @@ class EditProfile extends Component {
               avatarSource ||
               (userInfo.headshotUrl && userInfo.headshotUrl.includes("http")
                 ? { uri: userInfo.headshotUrl }
-                : require("./images/logo.jpg"))
+                : require("./images/logo.png"))
             }
             resizeMode="contain"
             style={styles.logo}

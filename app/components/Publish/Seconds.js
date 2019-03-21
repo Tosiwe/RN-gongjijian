@@ -9,7 +9,7 @@ const { Item } = List
 const { Brief } = Item
 
 const COMPANY = [
-  { title: "二手钢材", id: "ndssteel", brief: "资质办理、资质挂靠等" },
+  { title: "二手钢材", id: "ndssteel", brief: "二手钢材相关" },
   { title: "二手机械", id: "ndsmach", brief: "二手机械相关" },
   { title: "二手木材", id: "ndswood", brief: "二手木材相关" }
 ]

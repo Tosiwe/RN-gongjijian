@@ -143,7 +143,7 @@ class Top extends Component {
             source={
               userInfo.headshotUrl && userInfo.headshotUrl.includes("http")
                 ? { uri: userInfo.headshotUrl }
-                : require("./images/logo.jpg")
+                : require("./images/logo.png")
             }
           />
         </TouchableOpacity>

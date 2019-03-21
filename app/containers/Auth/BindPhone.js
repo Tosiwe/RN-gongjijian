@@ -63,7 +63,7 @@ class BindPhone extends Component {
     const { codeBtnDisable, count } = this.state
     return (
       <View style={styles.container}>
-        <Image source={require("../img/img_logo.png")} />
+        <Image  style={{width:100, height:100, marginBottom:50}}  source={require("../img/img_logo.png")} />
         <View>
           <List style={styles.list}>
             <InputItem

@@ -54,16 +54,16 @@ class CompanyOrPerson extends Component {
     if (isSettled) {
       this.fillForm(info)
     } else {
-      this.showDeleteModal(id,info.id)
+      this.showDeleteModal(id,info.id,info)
     }
   };
 
-  showDeleteModal = (id,sid) => {
+  showDeleteModal = (id,sid,info) => {
     Modal.alert("提示", "您目前还未入驻该行业公司，请先入驻", [
       {
-        text: "取消",
-        // onPress: () => modal.close(),
-        style: "取消"
+        text: "继续发布",
+        onPress: () => this.fillForm(info),
+        // style: "取消"
       },
       { text: "马上入驻", onPress: () => this.toSettleForm(id, sid) }
     ])
@@ -116,7 +116,7 @@ class CompanyOrPerson extends Component {
             <Item
               key={Math.random()}
               onPress={() => {
-                  this.fillForm(data)
+                  this.checkSettle(data)
               }}
               style={styles.item}
               arrow="horizontal"

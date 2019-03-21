@@ -175,7 +175,7 @@ class MyPublish extends Component {
             source={
               item.picture1
                 ? { uri: item.picture1 }
-                : require("../../containers/Account/images/logo.jpg")
+                : require("../../containers/Account/images/logo.png")
             }
           />
         </View>
