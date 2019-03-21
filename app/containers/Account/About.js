@@ -40,7 +40,7 @@ class About extends Component {
   };
 
   share=()=>{
-    Modal.alert("分享", "将文件分享到微信", [
+    Modal.alert("分享", "将二维码分享到微信", [
       {
         text: "取消"
       },
@@ -87,7 +87,7 @@ class About extends Component {
           />
           <Text>v1.0.0</Text>
         </View>
-        <View style={{ alignItems: "center" }}>
+        <View style={{ alignItems: "center", marginTop:20 }}>
         <TouchableOpacity
         onPress={this.share}
         activeOpacity={1}>
@@ -98,7 +98,6 @@ class About extends Component {
           />
           </TouchableOpacity>
           
-          <Text>微信号：gongjijian</Text>
         </View>
         <View style={styles.info}>
           <Text>Copyright@2017-2019</Text>
@@ -120,7 +119,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 150,
     height: 150,
-    marginBottom:50,
+    marginBottom:20,
   },
   info: {
     marginTop:50,
