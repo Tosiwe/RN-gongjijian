@@ -100,7 +100,7 @@ class VipTop extends Component {
       >
         <View style={styles.head}>
           <TouchableOpacity onPress={this.goBack}>
-            <Icon name="left" style={styles.topLeft} />
+            <Text style={styles.topLeft} >取消</Text>
           </TouchableOpacity>
           <Text style={styles.title}>VIP会员</Text>
           <TouchableOpacity onPress={this.toRecords}>
@@ -233,7 +233,6 @@ const styles = StyleSheet.create({
   },
   topLeft: {
     color: "#F8E3B1",
-    fontSize: 22
   },
   topRight: {
     color: "#F8E3B1"

@@ -169,8 +169,8 @@ repositories {
 }
 
 dependencies {
-    implementation project(':react-native-file-opener')
     implementation project(':react-native-wechat')
+    implementation project(':react-native-file-opener')
     implementation project(':react-native-fs')
     implementation project(':react-native-yunpeng-alipay')
     implementation project(':react-native-image-picker')

@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable default-case */
 /** 获取地理位置（经纬度） */
-import { PermissionsAndroid } from "react-native"
+import { PermissionsAndroid , Platform} from "react-native"
 
 const requestExternalStoragePermission = async () => {
   try {
@@ -20,40 +20,28 @@ const requestExternalStoragePermission = async () => {
   }
 }
 
-
-const checkPermission=()=>{
-  try {
-      // 返回Promise类型
-      const granted = PermissionsAndroid.check(
-          PermissionsAndroid.PERMISSIONS.WRITE_EXTERNAL_STORAGE
-      )
-      granted.then((data)=>{
-          this.show(`是否获取读写权限${data}`)
-      }).catch((err)=>{
-          this.show(err.toString())
-      })
-  } catch (err) {
-      this.show(err.toString())
-  }
-}
-
-
 export const getPosition = (that, Toast,geoCode, forceUpdate) =>
   new Promise((resole, reject) => {
     const { params } = that.state
 
-    requestExternalStoragePermission().then(
+    if(Platform.OS==="android"){
+      requestExternalStoragePermission().then(
       res=>{
         if (res==="never_ask_again"||res==="denied") {
           resole({ isSuccess: true, params:{
-            longitude:undefined,
-            latitude:undefined,
+            latitude: 0,
+            longitude: 0,
+            adcode: "130902",
+            city: "沧州市",
+            province: "河北省",
             ...params
           } })
           
         }
       }
     )
+    }
+    
      
     if(!forceUpdate && that.props.geoCode){
       let newParams={}
@@ -108,8 +96,11 @@ export const getPosition = (that, Toast,geoCode, forceUpdate) =>
         console.warn(`失败：${JSON.stringify(error.message)}`)
         Toast && Toast.info(`失败：${JSON.stringify(error.message)}`, 3, null, false)
         resole({ isSuccess: true, params:{
-          longitude:undefined,
-          latitude:undefined,
+          latitude: 0,
+          longitude: 0,
+          adcode: "130902",
+          city: "沧州市",
+          province: "河北省",
           ...params
         } })
       },

@@ -349,11 +349,13 @@ class PaperBottom extends Component {
         `ExternalStorageDirectoryPath=${RNFS.ExternalStorageDirectoryPath}`
       )
 
+      const SavePath = Platform.OS === 'ios' ? RNFS.DocumentDirectoryPath : RNFS.ExternalDirectoryPath
+
       const downloadDest = isPic
-        ? `${RNFS.MainBundlePath || RNFS.ExternalDirectoryPath}/${data.title}_${
+        ? `${SavePath}/${data.title}_${
             data.id
           }.${FileMimeType}`
-        : `${RNFS.MainBundlePath || RNFS.ExternalDirectoryPath}/${data.title}_${
+        : `${SavePath}/${data.title}_${
             data.id
           }.${FileMimeType}`
 
@@ -378,7 +380,11 @@ class PaperBottom extends Component {
             const path = `file://${downloadDest}`
             console.log("success", res)
             console.log(path)
-            const grand = this.requestExternalStoragePermission()
+            let grand = true
+            if(Platform.OS==="android"){
+               grand =  this.requestExternalStoragePermission()
+            }
+          debugger
             if (grand) {
               if (isPic) {
                 CameraRoll.saveToCameraRoll(path)

@@ -53,7 +53,6 @@ class ListItem extends Component {
         activeOpacity={1}
       >
         <View style={styles.wrap}>
-          <View style={styles.tag} />
           <View style={styles.left}>
             <Image source={source} style={styles.img} />
           </View>
@@ -125,15 +124,6 @@ const styles = StyleSheet.create({
   container: {
     // marginVertical: 5
   },
-  tag: {
-    right:0,
-    position:'absolute',
-    borderColor: "transparent",
-    borderTopWidth: 7,
-    borderBottomWidth: 7,
-    borderRightWidth: 10,
-    borderRightColor: "#1890ff"
-  },
   wrap: {
     flexDirection: "row",
     paddingVertical: 10,
@@ -152,7 +142,6 @@ const styles = StyleSheet.create({
   img: {
     width: 70,
     height: 70,
-    backgroundColor: "#ddd",
     marginBottom: 5
   },
   title: {

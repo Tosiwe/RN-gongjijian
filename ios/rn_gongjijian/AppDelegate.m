@@ -6,17 +6,52 @@
  */
 
 #import "AppDelegate.h"
+#import "AlipayModule.h"
+
 
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import <React/RCTLinkingManager.h>
 
 @implementation AppDelegate
+
+//NSURL *jsCodeLocation;
+//#ifdef DEBUG
+////开发包
+//jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index.ios" fallbackResource:nil];
+//#else
+////离线包
+//jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"bundle/index.ios" withExtension:@"jsbundle"];
+//#endif
+
+// ios 8.x or older
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+  [AlipayModule handleCallback:url];
+  return YES;
+  
+  return [RCTLinkingManager application:application openURL:url
+                            sourceApplication:sourceApplication annotation:annotation];
+}
+
+// ios 9.0+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
+            options:(NSDictionary<NSString*, id> *)options
+{
+  return [RCTLinkingManager application:application openURL:url options:options];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   NSURL *jsCodeLocation;
+#ifdef DEBUG
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
+#else
+
+  jsCodeLocation = [[NSBundle mainBundle] URLForResource:@"bundle/index.ios" withExtension:@"jsbundle"];
+#endif
 
   RCTRootView *rootView = [[RCTRootView alloc] initWithBundleURL:jsCodeLocation
                                                       moduleName:@"rn_gongjijian"
