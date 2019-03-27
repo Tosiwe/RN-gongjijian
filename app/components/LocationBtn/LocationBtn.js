@@ -37,9 +37,10 @@ class LocationBtn extends Component {
   }
 
   getArea = () => {
-    const { geoCode } = this.props
+    const { geoCode, isSelect } = this.props
     let name = []
-    if(geoCode){
+
+    if(geoCode&&!isSelect){
       name = [geoCode.city]
     }else{
        name  = this.state.name
@@ -70,9 +71,13 @@ class LocationBtn extends Component {
         })
       }
     })
+    this.setState({ name: label })
+
     if (onChange) {
       onChange({ code: v, name: label })
+      return
     }
+
     if(cols!==1){
       const code = {...geoCode}
       code.province = label[0]
@@ -86,26 +91,24 @@ class LocationBtn extends Component {
       })
     }
    
-    this.setState({ name: label })
+   
   };
 
   render() {
-    const { button, cols } = this.props
+    const {  cols ,isSelect} = this.props
 
     return (
       <Picker data={area} cols={cols || 2} onChange={this.onChangeArea}>
-        {button || (
-          <TouchableOpacity style={styles.cityButton}>
+          <TouchableOpacity style={[styles.cityButton, isSelect?{width:"100%"}:""]}>
             <Text
               numberOfLines={1}
               ellipsizeMode="tail"
-              style={{ fontSize: 14, marginLeft: 5 }}
+              style={{ fontSize: isSelect ?16:14, marginLeft: 5 }}
             >
               {this.getArea()}
             </Text>
-            <Icon name="down" size={14} color="#000" />
+           { !isSelect &&  <Icon name="down" size={14} color="#000" />}
           </TouchableOpacity>
-        )}
       </Picker>
     )
   }

@@ -1,3 +1,4 @@
+/* eslint-disable prefer-destructuring */
 /* eslint-disable react/sort-comp */
 import React, { Component } from "react"
 
@@ -6,7 +7,7 @@ import { List, TextareaItem, InputItem, Toast } from "@ant-design/react-native"
 import { connect } from "react-redux"
 import ImagePicker from "../ImagePicker/ImagePicker"
 import { getPosition } from "../../utils/utils"
-
+import LocationBtn from "../LocationBtn/LocationBtn"
 @connect(({ app }) => ({ ...app }))
 export default class BaseInfo extends Component {
   constructor(props) {
@@ -16,31 +17,32 @@ export default class BaseInfo extends Component {
     }
   }
 
-  componentDidMount() {
-    const that = { ...this }
-    getPosition(that, Toast, false, true).then(res => {
-      if (res.isSuccess) {
-        this.state.params = res.params
-        this.setState({ city: res.params.city })
-      }
-    })
-  }
+  // componentDidMount() {
+  //   const that = { ...this }
+  //   getPosition(that, Toast, false, true).then(res => {
+  //     if (res.isSuccess) {
+  //       this.state.params = res.params
+  //     }
+  //   })
+  // }
 
   handleInput = (value, name) => {
     const { params } = this.state
     let p = { ...params }
     if (name === "picture") {
       p = { ...p, ...value }
+    }else if(name === "city"){
+      p.province = value.name[0]
+      p.city = value.name[1]
     } else {
       p[name] = value
     }
     this.props.onChange(p)
-    if (name === "city") this.state.city = value
+    // if (name === "city") this.state.city = value
     this.setState({ params: p })
   };
 
   render() {
-    const { city } = this.state
     const { subClassifyId } = this.props
     return (
       <View style={styles.wrap}>
@@ -101,14 +103,11 @@ export default class BaseInfo extends Component {
             onChange={v => this.handleInput(v, "qq")}
             placeholder="请填写联系人QQ"
           />
-          <InputItem
-            multipleLine={false}
-            style={styles.input}
-            value={city}
-            onChange={v => this.handleInput(v, "city")}
-            placeholder="请填写地域，如：全国、沧州市、河北省"
-          />
+          <View style={{paddingLeft:15,paddingVertical:3}}>
+            <LocationBtn isSelect onChange={v => this.handleInput(v, "city")} />
+          </View>
         </List>
+      
       </View>
     )
   }

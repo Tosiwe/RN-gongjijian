@@ -95,6 +95,20 @@ class FormInfo extends Component {
   onSave = () => {
     if (this.isLegal()) {
       this.setState({ animating: true,tip:"保存" })
+      const {params:oldParams} = this.state
+      if(oldParams.province&&oldParams.city){
+        this.props.dispatch({
+          type: "app/saveInfoDraft",
+          payload: oldParams,
+          callback: res => {
+            if (res.msg === "OK") {
+              Toast.success("发布成功！", 3, this.goHome,false)
+            }
+            this.setState({ animating: false })
+          }
+        })
+        return
+      }
       getPosition({ ...this },Toast,false,true)
         .then(result => {
           if (result.isSuccess) {
@@ -132,11 +146,25 @@ class FormInfo extends Component {
   onPublish = () => {
     if (this.isLegal()) {
       this.setState({ animating: true,tip:"发布" })
+      const {params:oldParams} = this.state
+      if(oldParams.province&&oldParams.city){
+        this.props.dispatch({
+          type: "app/saveInfo",
+          payload: oldParams,
+          callback: res => {
+            if (res.msg === "OK") {
+              Toast.success("发布成功！", 3, this.goHome,false)
+            }
+            this.setState({ animating: false })
+          }
+        })
+        return
+      }
       getPosition({ ...this },Toast,false,true)
         .then(result => {
           if (result.isSuccess) {
             this.state.params = result.params
-            const {shortAdcode,... params}  = result.params
+            const {shortAdcode,...params}  = result.params
 
             console.log("Publish Info", params)
             this.props.dispatch({
@@ -168,6 +196,8 @@ class FormInfo extends Component {
       p[name] = value
     }
     this.state.params = p
+    console.log("params---", this.state.params)
+
   };
 
   render() {
@@ -175,6 +205,7 @@ class FormInfo extends Component {
     const id = ids.classifyId
     const sid = ids.subClassifyId
     const {tip} = this.state
+
     // 选择发布分类
     return (
       <ScrollView

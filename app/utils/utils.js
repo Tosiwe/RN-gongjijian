@@ -29,12 +29,9 @@ export const getPosition = (that, Toast,geoCode, forceUpdate) =>
       res=>{
         if (res==="never_ask_again"||res==="denied") {
           resole({ isSuccess: true, params:{
-            latitude: 0,
-            longitude: 0,
-            adcode: "130902",
+            ...params,
             city: "沧州市",
             province: "河北省",
-            ...params
           } })
           
         }
@@ -96,12 +93,9 @@ export const getPosition = (that, Toast,geoCode, forceUpdate) =>
         console.warn(`失败：${JSON.stringify(error.message)}`)
         Toast && Toast.info(`失败：${JSON.stringify(error.message)}`, 3, null, false)
         resole({ isSuccess: true, params:{
-          latitude: 0,
-          longitude: 0,
-          adcode: "130902",
+          ...params,
           city: "沧州市",
           province: "河北省",
-          ...params
         } })
       },
       {
