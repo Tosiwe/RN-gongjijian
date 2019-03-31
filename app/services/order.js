@@ -2,7 +2,7 @@ import request from "../utils/request"
 
 // 创建订单
 export async function creatRechargeOrder(params) {
-    return request(`http://118.24.107.177:7001/order/recharge/create`, {
+    return request(`http://118.25.178.119:7001/order/recharge/create`, {
         method: "POST",
         body: params,
     })
@@ -10,7 +10,7 @@ export async function creatRechargeOrder(params) {
 
 // create vip order
 export async function createVipOrder(params) {
-    return request(`http://118.24.107.177:7001/order/vip/create`, {
+    return request(`http://118.25.178.119:7001/order/vip/create`, {
         method: "POST",
         body: params,
     })
@@ -18,7 +18,7 @@ export async function createVipOrder(params) {
 
 // // create settle order
 // export async function createSuperVipOrder(params) {
-//     return request(`http://118.24.107.177:7001/order/settle/create`, {
+//     return request(`http://118.25.178.119:7001/order/settle/create`, {
 //         method: "POST",
 //         body: params,
 //     })
@@ -26,7 +26,7 @@ export async function createVipOrder(params) {
 
 // create settle order
 export async function createSuperVipOrder(params) {
-    return request(`http://118.24.107.177:7001/order/supervip/create`, {
+    return request(`http://118.25.178.119:7001/order/supervip/create`, {
         method: "POST",
         body: params,
     })
@@ -34,7 +34,7 @@ export async function createSuperVipOrder(params) {
 
 // get vip order
 export async function getOrderList(params) {
-    return request(`http://118.24.107.177:7001/order/list`, {
+    return request(`http://118.25.178.119:7001/order/list`, {
         method: "POST",
         body: params,
     })
@@ -42,7 +42,7 @@ export async function getOrderList(params) {
 
 // create contact order
 export async function createOrderContact(params) {
-    return request(`http://118.24.107.177:7001/order/contact/create`, {
+    return request(`http://118.25.178.119:7001/order/contact/create`, {
         method: "POST",
         body: params,
     })
@@ -51,7 +51,7 @@ export async function createOrderContact(params) {
 // order list
 export async function queryOrder(params) {
     // debugger
-    return request(`http://118.24.107.177:7001/order/query`, {
+    return request(`http://118.25.178.119:7001/order/query`, {
         method: "POST",
         body: params,
     })
@@ -60,7 +60,7 @@ export async function queryOrder(params) {
 
 // order list
 export async function createOrderPaper(params) {
-    return request(`http://118.24.107.177:7001/order/paper/create`, {
+    return request(`http://118.25.178.119:7001/order/paper/create`, {
         method: "POST",
         body: params,
     })
@@ -69,7 +69,7 @@ export async function createOrderPaper(params) {
 
 // order list
 export async function createOrderAttach(params) {
-    return request(`http://118.24.107.177:7001/order/attach/create`, {
+    return request(`http://118.25.178.119:7001/order/attach/create`, {
         method: "POST",
         body: params,
     })
@@ -77,7 +77,7 @@ export async function createOrderAttach(params) {
 
 // order list
 export async function orderRecordQuery(params) {
-    return request(`http://118.24.107.177:7001/order/record/query`, {
+    return request(`http://118.25.178.119:7001/order/record/query`, {
         method: "POST",
         body: params,
     })
