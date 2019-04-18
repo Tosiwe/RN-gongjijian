@@ -6,11 +6,10 @@ import {
   View,
   Image,
   Platform,
-  BackHandler
+  BackHandler,
 } from "react-native"
 import Alipay from "react-native-yunpeng-alipay"
 import * as wechat from "react-native-wechat"
-import {  NavigationActions} from "react-navigation"
 import {
   Modal,
   Button,

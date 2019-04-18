@@ -2,7 +2,7 @@
 import React, { Component } from "react"
 import { connect } from "react-redux"
 
-import { StyleSheet, ScrollView, Text, View } from "react-native"
+import { StyleSheet, ScrollView, Text, View, KeyboardAvoidingView } from "react-native"
 import {
   Toast,
   List,
@@ -222,6 +222,7 @@ class FormInfo extends Component {
           size="small"
         />
         <Text style={styles.title}>{name}</Text>
+        <KeyboardAvoidingView behavior='padding'>
 
         <List style={styles.inputBox}>
           <InputItem
@@ -280,12 +281,14 @@ class FormInfo extends Component {
           )}
         </List>
         <BaseInfo
-        subClassifyId={ids.subClassifyId}
+          subClassifyId={ids.subClassifyId}
           onChange={v => this.handleChange(v, "baseInfo")}
           params={this.state.params}
         />
         <View style={{ height: 100 }} />
         <Buttons onPublish={this.onPublish} onSave={this.onSave} />
+        </KeyboardAvoidingView>
+
         <WhiteSpace style={styles.bottom} />
       </ScrollView>
     )

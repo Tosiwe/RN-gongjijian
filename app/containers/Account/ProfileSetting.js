@@ -33,10 +33,11 @@ class ProfileSetting extends Component {
 
   componentWillReceiveProps(nextProps) {
     // console.log("ProfileSetting componentWillReceiveProps")
-    
+    debugger
     if (
-      JSON.stringify(this.state.userInfo) !==
-      JSON.stringify(nextProps.userInfo)
+      this.state.userInfo&&nextProps.userInfo&&
+    (  JSON.stringify(this.state.userInfo) !==
+      JSON.stringify(nextProps.userInfo))
     ) {
       this.props.dispatch({
         type: "app/getProfile",

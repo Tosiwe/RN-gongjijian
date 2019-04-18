@@ -3,7 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 
-import { StyleSheet, ScrollView, Text, View } from "react-native";
+import { StyleSheet, ScrollView, Text, View, KeyboardAvoidingView } from "react-native";
 import {
   Toast,
   List,
@@ -202,6 +202,8 @@ class FormDemand extends Component {
         <Text style={styles.title}>
           {isReg ? "注册人员、资质" : "注册人员、资质、（所有行业）需求"}
         </Text>
+        <KeyboardAvoidingView behavior='padding'>
+
         <List style={styles.inputBox}>
           <InputItem
             multipleLine={false}
@@ -226,9 +228,9 @@ class FormDemand extends Component {
           onChange={v => this.handleChange(v, "baseInfo")}
           params={this.state.params}
         />
-
         <View style={{ height: 100 }} />
         <Buttons onPublish={this.onPublish} onSave={this.onSave} />
+        </KeyboardAvoidingView>
         <WhiteSpace style={styles.bottom} />
       </ScrollView>
     );

@@ -45,27 +45,31 @@ class MyHistory extends Component {
   };
 
   getBookmark = (pn = 1) => {
-    this.props.dispatch({
-      type: "app/getHistory",
-        payload: {
-          pn,
-          ps: 20
-        },
-      callback: res => {
-        if (res.msg === "OK") {
-          let likeList = []
-          if (pn !== 1) {
-            likeList = [...this.state.likeList, ...res.result.data]
-          } else {
-            likeList = res.result.data
+    // 等待页面布局完成以后，在让加载更多
+    if (this.isCanLoadMore) {
+      this.props.dispatch({
+        type: "app/getHistory",
+          payload: {
+            pn,
+            ps: 20
+          },
+        callback: res => {
+          if (res.msg === "OK") {
+            let likeList = []
+            if (pn !== 1) {
+              likeList = [...this.state.likeList, ...res.result.data]
+            } else {
+              likeList = res.result.data
+            }
+            this.setState({
+              likeList,
+              pageNum:pn
+            })
           }
-          this.setState({
-            likeList,
-            pageNum:pn
-          })
         }
-      }
-    })
+      })
+      this.isCanLoadMore = false // 加载更多时，不让再次的加载更多
+    }
   };
 
 
@@ -88,6 +92,9 @@ class MyHistory extends Component {
           refreshing={fetching}
           onEndReachedThreshold={0.2}
           onEndReached={() => this.getBookmark(pageNum+1)}
+          onContentSizeChange={() => {
+            this.isCanLoadMore = true // flatview内部组件布局完成以后会调用这个方法
+          }}
         />
       </View>
     )

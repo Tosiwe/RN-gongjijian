@@ -8,7 +8,8 @@ import {
   View,
   Text,
   TouchableOpacity,
-  ScrollView
+  ScrollView,
+  KeyboardAvoidingView
 } from "react-native"
 import {
   List,
@@ -124,6 +125,7 @@ class SettleForm extends Component {
           toast
           size="small"
         />
+        <KeyboardAvoidingView behavior='padding'>
         <List style={styles.inputBox}>
           <InputItem
             multipleLine={false}
@@ -219,6 +221,7 @@ class SettleForm extends Component {
         <TouchableOpacity style={styles.btn} onPress={this.onSave}>
           <Text style={styles.btnText}>入驻</Text>
         </TouchableOpacity>
+        </KeyboardAvoidingView>
         <View style={{ height: 100 }} />
         <Modal
           title="入驻成功！"

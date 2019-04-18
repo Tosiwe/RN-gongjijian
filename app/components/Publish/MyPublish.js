@@ -146,7 +146,12 @@ class MyPublish extends Component {
   };
 
   refresh = (pn = 1) => {
-    this.getInfoList(pn)
+     // 等待页面布局完成以后，在让加载更多
+     if (this.isCanLoadMore) {
+      this.getInfoList(pn)
+      this.isCanLoadMore = false // 加载更多时，不让再次的加载更多
+    }
+    
   };
 
   toDetail = data => {
@@ -226,6 +231,9 @@ class MyPublish extends Component {
           refreshing={fetching}
           onEndReachedThreshold={0.2}
           onEndReached={() => this.refresh(infoPageNum + 1)}
+          onContentSizeChange={() => {
+            this.isCanLoadMore = true // flatview内部组件布局完成以后会调用这个方法
+          }}
         />
       </View>
     )

@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import React, { Component } from "react"
-import { StyleSheet, View, Text } from "react-native"
+import { StyleSheet, View, Text ,KeyboardAvoidingView} from "react-native"
 import { connect } from "react-redux"
 import { List, InputItem, Button,Toast } from "@ant-design/react-native"
 import ImagePicker from "../../components/ImagePicker/ImagePicker"
@@ -54,8 +54,11 @@ class UserVerify extends Component {
 
     return (
       <View style={styles.container}>
+              <KeyboardAvoidingView behavior='padding'>
+
         <List>
           <InputItem
+          labelNumber={7}
             placeholder="请输入"
             clear
             onChange={value => this.onChange(value, "realName")}
@@ -66,6 +69,7 @@ class UserVerify extends Component {
             </Text>
           </InputItem>
           <InputItem
+          labelNumber={7}
             placeholder="请输入"
             clear
             maxLength={18}
@@ -93,6 +97,7 @@ class UserVerify extends Component {
             <Text style={{ color: "#FFF" }}>提交认证信息</Text>
           </Button>
         </View>
+        </KeyboardAvoidingView>
       </View>
     )
   }
