@@ -1,8 +1,8 @@
 /* eslint-disable no-underscore-dangle */
 import React, { Component } from "react"
 import { connect } from "react-redux"
-import {Modal, Toast} from '@ant-design/react-native'
-import { StyleSheet, View, FlatList, } from "react-native"
+import { Modal, Toast } from "@ant-design/react-native"
+import { StyleSheet, View, FlatList } from "react-native"
 import ListItem from "../../components/ListIem/ListItem"
 
 @connect(({ app }) => ({ ...app }))
@@ -26,10 +26,10 @@ class MyLike extends Component {
   getBookmark = (pn = 1) => {
     this.props.dispatch({
       type: "app/getBookmark",
-        payload: {
-          pn,
-          ps: 20
-        },
+      payload: {
+        pn,
+        ps: 20
+      },
       callback: res => {
         if (res.msg === "OK") {
           let likeList = []
@@ -48,7 +48,11 @@ class MyLike extends Component {
   };
 
   refresh = (pn = 1) => {
-    this.getBookmark(pn)
+    // 等待页面布局完成以后，在让加载更多
+    if (this.isCanLoadMore) {
+      this.getBookmark(pn)
+      this.isCanLoadMore = false // 加载更多时，不让再次的加载更多
+    }
   };
 
   onRemove = data => {
@@ -69,13 +73,17 @@ class MyLike extends Component {
       payload: {
         recordId: data.id
       },
-      callback:res=>{
-        Toast.success("删除成功", 3,  this.refresh(), false)
+      callback: res => {
+        Toast.success("删除成功", 3, this.refresh(), false)
       }
     })
   };
 
-  renderItem = ({ item }) =><View style={{paddingHorizontal:10}}><ListItem data={item} isMylike onRemove={this.onRemove}/></View> ;
+  renderItem = ({ item }) => (
+    <View style={{ paddingHorizontal: 10 }}>
+      <ListItem data={item} isMylike onRemove={this.onRemove} />
+    </View>
+  );
 
   render() {
     const { likeList, pageNum } = this.state
@@ -88,8 +96,11 @@ class MyLike extends Component {
           renderItem={this.renderItem}
           onRefresh={this.refresh}
           refreshing={fetching}
-          onEndReachedThreshold={0.2}
-          onEndReached={() => this.refresh(pageNum+1)}
+          onEndReachedThreshold={0.01}
+          onEndReached={() => this.refresh(pageNum + 1)}
+          onContentSizeChange={() => {
+            this.isCanLoadMore = true // flatview内部组件布局完成以后会调用这个方法
+          }}
         />
       </View>
     )
@@ -99,7 +110,7 @@ class MyLike extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#FFF",
-    flex: 1
+    height: "100%"
   },
   content: {
     flex: 1,

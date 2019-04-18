@@ -77,7 +77,20 @@ class FormDemand extends Component {
   onSave = () => {
     if (this.isLegal()) {
       this.setState({ animating: true , tip:"保存"});
-
+      const {params:oldParams} = this.state
+      if(oldParams.province&&oldParams.city){
+        this.props.dispatch({
+          type: "app/saveInfoDraft",
+          payload: oldParams,
+          callback: res => {
+            if (res.msg === "OK") {
+              Toast.success("发布成功！", 3, this.goHome,false)
+            }
+            this.setState({ animating: false })
+          }
+        })
+        return
+      }
       getPosition({ ...this },Toast,false,true)
         .then(result => {
           if (result.isSuccess) {
@@ -118,7 +131,20 @@ class FormDemand extends Component {
     const that = { ...this };
     if (this.isLegal()) {
       this.setState({ animating: true, tip:"发布" });
-
+      const {params:oldParams} = this.state
+      if(oldParams.province&&oldParams.city){
+        this.props.dispatch({
+          type: "app/saveInfo",
+          payload: oldParams,
+          callback: res => {
+            if (res.msg === "OK") {
+              Toast.success("发布成功！", 3, this.goHome,false)
+            }
+            this.setState({ animating: false })
+          }
+        })
+        return
+      }
       getPosition(that, Toast,false,true)
         .then(result => {
           if (result.isSuccess) {

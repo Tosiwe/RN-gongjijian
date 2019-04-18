@@ -89,7 +89,7 @@ class Login extends Component {
       if (isInstalled) {
         // 发送授权请求
         wechat
-          .sendAuthRequest(scope)
+          .sendAuthRequest(scope,state)
           .then(responseCode => {
             // 返回code码，通过code获取access_token
             this.getAccessToken(responseCode.code)

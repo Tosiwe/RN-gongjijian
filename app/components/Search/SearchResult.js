@@ -49,9 +49,14 @@ class SearchResult extends Component {
     }
   }
 
-  
-
   getList = (pageNum=1,geoCode,forceUpdate) => {
+
+
+     // 等待页面布局完成以后，在让加载更多
+     if (!this.isCanLoadMore) {
+     
+
+
     if(pageNum===this.state.pageNum&&!forceUpdate){
       return
     }
@@ -84,6 +89,12 @@ class SearchResult extends Component {
         
       }
       if (result.isSuccess) {
+
+        if( JSON.stringify(this.state.oldPayload) === JSON.stringify(payload)){
+          return null
+        }
+        this.state.oldPayload = payload
+        
         this.props.dispatch({
           type: "app/search",
           payload,
@@ -111,6 +122,8 @@ class SearchResult extends Component {
         })
       }
     })
+    this.isCanLoadMore = false // 加载更多时，不让再次的加载更多
+  }
   };
 
   renderItem = ({ item }) => <ListItem data={item} />;
@@ -127,19 +140,22 @@ class SearchResult extends Component {
       <View style={styles.container}>
       <Tabs
         tabs={tabs}
-        styles={{ topTabBarSplitLine: "#000" }}
+        styles={{ topTabBarSplitLine: "#000",height:"100%" }}
         tabBarUnderlineStyle={{ backgroundColor: "#FF7720" }}
         onChange={this.changeTab}
       >
         <View style={styles.content}>
           {(list[activeKey]&&list[activeKey].length) ? (
             <FlatList 
-            data={list[activeKey]}
-             renderItem={this.renderItem} 
-             onRefresh={this.getList}
-             refreshing={loading}
-             onEndReachedThreshold={0.2}
-             onEndReached={() => this.getList(pageNum+1)}
+              data={list[activeKey]}
+              renderItem={this.renderItem} 
+              onRefresh={this.getList}
+              refreshing={loading}
+              onEndReachedThreshold={0.5}
+              onEndReached={() => this.getList(pageNum+1)}
+              onContentSizeChange={() => {
+                this.isCanLoadMore = true // flatview内部组件布局完成以后会调用这个方法
+              }}
              />
           ) : (
             <Text
@@ -157,13 +173,13 @@ class SearchResult extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex:1,
+    height:"100%",
     // paddingHorizontal: 10,
     backgroundColor: "#FFF"
   },
   content: {
     backgroundColor: "#FFF",
-    flex: 1,
+    height: '100%',
     paddingTop: 20,
     paddingHorizontal: 10
   }

@@ -49,6 +49,7 @@
 		6D2666690B054B2F8AF124BA /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C99CEDD670094A778391E057 /* libRNFS.a */; };
 		6E41921167ED4939976C4638 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 32BAF0361A73486EA2198523 /* FontAwesome.ttf */; };
 		7999B00721DFC4C700803FE7 /* FileBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7999B00421DFC4A600803FE7 /* FileBrowser.framework */; };
+		799F3F5222677A76005103A0 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 799F3F5122677A76005103A0 /* Entitlements.plist */; };
 		79ABB87D21DE5E290036DD8B /* ios in Resources */ = {isa = PBXBuildFile; fileRef = 79ABB87C21DE5E290036DD8B /* ios */; };
 		79B4C2CC221ED123005ADAC8 /* FileBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7999B00421DFC4A600803FE7 /* FileBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		79D0506E2246955900947493 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 79D0506B2246903200947493 /* libsqlite3.dylib */; };
@@ -507,9 +508,11 @@
 		7233847D17CA4CA3B59C06F1 /* RNFileSelector.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFileSelector.xcodeproj; path = "../node_modules/react-native-file-selector/ios/RNFileSelector.xcodeproj"; sourceTree = "<group>"; };
 		7448C5ABCAD8438886B9D355 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		796386B822662FDD009172DD /* rn_gongjijian.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = rn_gongjijian.entitlements; path = rn_gongjijian/rn_gongjijian.entitlements; sourceTree = "<group>"; };
 		7999AFE321DFC12700803FE7 /* FileBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FileBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7999AFE521DFC14A00803FE7 /* Pods_RNFileSelector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = Pods_RNFileSelector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		7999AFFE21DFC4A600803FE7 /* Pods.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = Pods.xcodeproj; path = "../node_modules/react-native-file-selector/ios/Pods/Pods.xcodeproj"; sourceTree = "<group>"; };
+		799F3F5122677A76005103A0 /* Entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		79ABB87C21DE5E290036DD8B /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ios; path = "../node_modules/react-native-image-picker/ios"; sourceTree = "<group>"; };
 		79ABB88B21DE5FEE0036DD8B /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
 		79D0506722468E4F00947493 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
@@ -695,6 +698,7 @@
 		13B07FAE1A68108700A75B9A /* rn_gongjijian */ = {
 			isa = PBXGroup;
 			children = (
+				796386B822662FDD009172DD /* rn_gongjijian.entitlements */,
 				79F0B4E221BD6A3800249249 /* bundle */,
 				79E94B262247C414008582E7 /* bundle */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
@@ -897,6 +901,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				799F3F5122677A76005103A0 /* Entitlements.plist */,
 				79ABB88B21DE5FEE0036DD8B /* RNImagePicker.xcodeproj */,
 				79ABB87C21DE5E290036DD8B /* ios */,
 				13B07FAE1A68108700A75B9A /* rn_gongjijian */,
@@ -1049,14 +1054,48 @@
 					};
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = BHV6VG2H68;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.AccessWiFi = {
+								enabled = 0;
+							};
+							com.apple.InAppPurchase = {
+								enabled = 0;
+							};
+							com.apple.InterAppAudio = {
+								enabled = 0;
+							};
+							com.apple.Keychain = {
+								enabled = 0;
+							};
+							com.apple.Maps.iOS = {
+								enabled = 0;
+							};
+							com.apple.Multipath = {
+								enabled = 0;
+							};
+							com.apple.NearFieldCommunicationTagReading = {
+								enabled = 0;
+							};
+							com.apple.NetworkExtensions.iOS = {
+								enabled = 0;
+							};
+							com.apple.WAC = {
+								enabled = 0;
+							};
+							com.apple.iCloud = {
+								enabled = 0;
+							};
+						};
 					};
 					2D02E47A1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = BHV6VG2H68;
 						ProvisioningStyle = Automatic;
 					};
 					2D02E48F1E0B4A5D006451C7 = {
 						CreatedOnToolsVersion = 8.2.1;
+						DevelopmentTeam = BHV6VG2H68;
 						ProvisioningStyle = Automatic;
 						TestTargetID = 2D02E47A1E0B4A5D006451C7;
 					};
@@ -1535,6 +1574,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				79E94B272247C414008582E7 /* bundle in Resources */,
+				799F3F5222677A76005103A0 /* Entitlements.plist in Resources */,
 				13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */,
 				79F0B50C21BD6A3800249249 /* bundle in Resources */,
 				25BA79B89BCA4C3BA4C7B0C6 /* antfill.ttf in Resources */,
@@ -1749,8 +1789,8 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEAD_CODE_STRIPPING = NO;
 				DEVELOPMENT_TEAM = BHV6VG2H68;
@@ -1777,7 +1817,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gp.gongjijian;
 				PRODUCT_NAME = rn_gongjijian;
-				PROVISIONING_PROFILE_SPECIFIER = Gongjijian;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Debug;
@@ -1788,8 +1828,8 @@
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = BHV6VG2H68;
 				FRAMEWORK_SEARCH_PATHS = "${BUILT_PRODUCTS_DIR}/FileBrowser";
@@ -1815,7 +1855,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.gp.gongjijian;
 				PRODUCT_NAME = rn_gongjijian;
-				PROVISIONING_PROFILE_SPECIFIER = Gongjijian;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				VERSIONING_SYSTEM = "apple-generic";
 			};
 			name = Release;
@@ -1830,6 +1870,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = BHV6VG2H68;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1853,7 +1894,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.rn_gongjijian-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.gp.gongjijian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -1872,6 +1913,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = BHV6VG2H68;
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1894,7 +1936,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.facebook.REACT.rn_gongjijian-tvOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.gp.gongjijian;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = appletvos;
 				TARGETED_DEVICE_FAMILY = 3;
@@ -1911,6 +1953,7 @@
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = BHV6VG2H68;
 				ENABLE_TESTABILITY = YES;
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
@@ -1952,6 +1995,7 @@
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = BHV6VG2H68;
 				GCC_NO_COMMON_BLOCKS = YES;
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",

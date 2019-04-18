@@ -40,6 +40,12 @@ class Recommend extends Component {
   }
 
   getSysList = (pn = 1) => {
+
+    // if( JSON.stringify(this.state.oldPayload) === JSON.stringify(payload)){
+    //   return null
+    // }
+    // this.state.oldPayload = payload
+
     this.props.dispatch({
       type: "app/noticeList",
       //   payload: {
@@ -61,6 +67,8 @@ class Recommend extends Component {
         }
       }
     })
+
+    // return null
   };
 
   getRecList = (pn = 1) => {
@@ -185,8 +193,8 @@ class Recommend extends Component {
               renderItem={({item}) => this.renderItem(item, true)}
               onRefresh={this.refresh}
               refreshing={fetching}
-              onEndReachedThreshold={0.2}
-              onEndReached={() => this.refresh(1)}
+              // onEndReachedThreshold={0.2}
+              // onEndReached={() => this.refresh(1)}
             />
           </View>
           <View style={styles.content}>
@@ -195,8 +203,8 @@ class Recommend extends Component {
               renderItem={({item}) => this.renderItem(item)}
               onRefresh={this.refresh}
               refreshing={fetching}
-              onEndReachedThreshold={0.2}
-              onEndReached={() => this.refresh(1)}
+              // onEndReachedThreshold={0.2}
+              // onEndReached={() => this.refresh(1)}
             />
           </View>
         </Tabs>

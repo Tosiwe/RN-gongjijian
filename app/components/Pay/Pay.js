@@ -83,7 +83,6 @@ export default class App extends Component {
   // 支付宝支付
   aliPay = () => {
     const { data = {} } = this.props
-
     return new Promise(resole => {
       this.props.dispatch({
         type: "app/creatRechargeOrder",
