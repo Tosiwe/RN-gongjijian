@@ -60,6 +60,10 @@ class Detail extends Component {
           }
         })
         this.setState({ imgList, data })
+
+        setTimeout(() => {
+          this.setState({  render:true })
+        })
       }
     })
   }

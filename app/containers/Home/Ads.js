@@ -39,7 +39,7 @@ class Ads extends Component {
   render() {
     const {data}= this.props
     const { list } = this.state
-    const imgList =data||list
+    const imgList = data||list||[]
     return (
       <Carousel
         style={this.props.noRadius ? "" : styles.ads}
@@ -47,7 +47,7 @@ class Ads extends Component {
         autoplay
         infinite
       >
-        {imgList.length ? (
+        {
           imgList.map(item => (
             <TouchableWithoutFeedback onPress={()=>this.onOpen(item)} style={styles.containerHorizontal} key={Math.random()}>
               <Image
@@ -59,12 +59,7 @@ class Ads extends Component {
               />
             </TouchableWithoutFeedback>
           ))
-        ) : (
-          <Image
-            style={[styles.item, styles.block]}
-            imageStyle={{ borderRadius: 20 }}
-          />
-        )}
+        }
       </Carousel>
     )
   }

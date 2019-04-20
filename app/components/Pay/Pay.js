@@ -70,7 +70,7 @@ export default class App extends Component {
       this.setState({visible:false})
       return true
     }
-    
+    return null
   };
 
 

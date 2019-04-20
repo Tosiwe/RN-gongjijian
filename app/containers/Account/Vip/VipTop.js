@@ -69,10 +69,15 @@ class VipTop extends Component {
   };
 
   inputPrice = () => {
-    Modal.prompt("充值", "请输入您要充值的金额", [
-      { text: "取消" },
-      { text: "确认", onPress: this.toPay }
-    ])
+    Modal.prompt(
+      "充值",
+      "请输入您要充值的金额",
+      [
+        { text: "取消" },
+        { text: "确认", onPress: this.toPay }
+      ],
+      'number'
+    )
   };
 
   render() {
