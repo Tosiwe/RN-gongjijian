@@ -17,7 +17,7 @@ import { connect } from "react-redux"
 //   "http://h.hiphotos.baidu.com/zhidao/pic/item/6d81800a19d8bc3ed69473cb848ba61ea8d34516.jpg"
 
   @connect()
-export default class PanView extends Component {
+export default class ImageView extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -30,14 +30,20 @@ export default class PanView extends Component {
   // }
 
   render() {
-    const { url } = this.props.navigation.state.params
+    const { visible=false, index=0, imgs=[],onCancel } = this.props
+    const urls = imgs.map(item=>({url:item.url}))
     console.log( 'width: this.state.viewWidth',this.state.viewWidth)
     return (
-        <Modal visible transparent>
+        <Modal 
+        onRequestClose={onCancel}
+        visible={visible} 
+        transparent>
                 <ImageViewer 
-                onCancel={this.back}
-                enableSwipeDown
-                imageUrls={[{url}]}
+                    onCancel={onCancel}
+                    enableSwipeDown
+                    imageUrls={urls}
+                    index={index}
+                    saveToLocalByLongPress={false}
                 />
         </Modal>
     )

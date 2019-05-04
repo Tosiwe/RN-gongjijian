@@ -63,13 +63,14 @@ class Detail extends Component {
 
         setTimeout(() => {
           this.setState({  render:true })
-        })
+        },100)
       }
     })
   }
 
   render() {
-    const { imgList, data } = this.state
+    const { imgList, data,render } = this.state
+    console.log(render)
     return (
       <View style={styles.home}>
         <ScrollView

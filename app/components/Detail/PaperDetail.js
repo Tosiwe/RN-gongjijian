@@ -12,7 +12,10 @@ import { connect } from "react-redux"
 import { ActivityIndicator, Progress } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import Bottom from "./PaperBottom"
-import { statusBarHeight } from "../../styles/common"
+import Pics from "../../containers/Home/Ads"
+import ImageViewer from "./ImageViewer"
+
+// import { statusBarHeight } from "../../styles/common"
 
 @connect()
 class PaperDetail extends Component {
@@ -29,23 +32,13 @@ class PaperDetail extends Component {
     this.setState({ refreshing, percent })
   };
 
-  toImg = url => {
-    if (url) {
-      this.props.dispatch(
-        NavigationActions.navigate({
-          routeName: "ImageReader",
-          params: {
-            name: "查看图片",
-            url
-          }
-        })
-      )
-    }
+  toImg = () => {
+      this.setState({visible:true})
   };
 
   render() {
     const { data = {} } = this.props.navigation.state.params
-    const { percent } = this.state
+    const { percent ,visible} = this.state
     const Td = props => (
       <View style={styles.td}>
         <Text style={styles.tdLabel}>{props.label}</Text>
@@ -74,6 +67,8 @@ class PaperDetail extends Component {
               source={source}
             />
           </TouchableOpacity>
+          <ImageViewer visible={visible}  imgs={[{url:data.thumbUrl}]} onCancel={()=>this.setState({visible:false})}/>
+          {/* <Pics data={[{url:data.thumbUrl}]} noRadius /> */}
           <View style={[styles.row, styles.border]}>
             <Text style={styles.title}>{data.title}</Text>
           </View>
@@ -85,6 +80,9 @@ class PaperDetail extends Component {
             <View style={styles.row}>
               <Td label="图纸作者" text={data.author || "-"} />
               <Td label="下载次数" text={data.downloads || "0"} />
+            </View>
+            <View style={styles.row}>
+              <Td label="文件名称" text={data.fileKey || "-"} />
             </View>
             <View style={styles.row}>
               <Td label="图纸出处" text={data.source || "-"} />

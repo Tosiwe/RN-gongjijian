@@ -126,7 +126,7 @@ class SignUp extends Component {
         <View>
           <List style={styles.list}>
             <InputItem
-            multipleLine={false}
+              multipleLine={false}
               clear
               type="phone"
               placeholder="手机号"
@@ -193,7 +193,7 @@ class SignUp extends Component {
         <View style={styles.thirdLogin}>
           <Text style={{ color: "#666" }}>第三方登录</Text>
           <View style={styles.thirdIconWrap}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={this.wechatLogin}>
               <Image source={require("../img/login_btn_wechat.png")} />
             </TouchableOpacity>
             {/* <TouchableOpacity>

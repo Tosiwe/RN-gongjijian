@@ -6,15 +6,16 @@ import {
   Image,
   TouchableOpacity,
   Text,
-  Platform
+  Platform,
+  Linking,
 } from "react-native"
 import { connect } from "react-redux"
-import { InputItem, Button, List, Toast } from "@ant-design/react-native"
+import { InputItem, Button, List, Toast ,Modal} from "@ant-design/react-native"
 import Icon from "react-native-vector-icons/AntDesign"
 import * as wechat from "react-native-wechat"
 import { primaryColor } from "../../styles/common"
 import { createAction, NavigationActions, Storage } from "../../utils"
- 
+
 
 @connect(({ app }) => ({ ...app }))
 class Login extends Component {
@@ -30,6 +31,7 @@ class Login extends Component {
   }
 
   componentDidMount(){
+    this.checkVersion()
     if(this.props.login){
       this.props.dispatch(
         NavigationActions.navigate({
@@ -37,6 +39,36 @@ class Login extends Component {
         })
       )
     }
+  }
+  
+  update=()=>{
+    // if( Platform.OS === "ios"){
+    //   Linking.openURL('itms-apps://itunes.apple.com/cn/app/com.gp.gongjijian?mt=8&action=write-review')
+    // }else{
+      this.props.dispatch({
+        type:"app/getVersionUrl",
+        callback:res=>{
+          if(res.status==="OK"){
+            const url =  Platform.OS==="ios" ? res.result.iosUrl : res.result.url
+            Linking.openURL(url).catch(err => console.error('An error occurred', err))
+          }
+        }
+      })
+    // }
+  }
+
+  checkVersion=()=>{
+    this.props.dispatch({
+      type:"app/checkVersion",
+      callback:res=>{
+        if(res.status==="OK" && res.shouldForceUpdate){
+            Modal.alert('提示', '有新的工机建版本，请前去更新', [
+              { text: '好的', onPress: this.update },
+              { text: '取消', onPress: this.update },
+            ])
+        }
+      }
+    })
   }
 
   onClose = () => {

@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     height: 40,
     backgroundColor: '#fff',
     marginBottom: 10,
+    marginTop: 20,
   },
   cityButton: {
     height: 40,

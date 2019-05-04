@@ -68,7 +68,9 @@ class JoinList extends Component {
 
   render() {
     const { settleList } = this.state
-    const { userFinance={} } = this.props
+    let { userFinance={} } = this.props
+
+    userFinance = userFinance===null ? {} :userFinance
     return (
       <View style={styles.wrap}>
         <View style={styles.listHeader}>
@@ -80,7 +82,7 @@ class JoinList extends Component {
             <TouchableOpacity
             style={{ flexDirection: "row" ,marginLeft:10}}
             activeOpacity={1}
-            onPress={userFinance.superVip ? null: this.toVip}
+            onPress={userFinance.superVip ? undefined: this.toVip}
           >
             <Text style={{ fontSize: 14, color: "#009688" }}>{userFinance.superVip ? '已是超级商家': '成为超级商家'}</Text>
           </TouchableOpacity>
@@ -114,7 +116,7 @@ class JoinList extends Component {
                 </Item>
               )
             }
-            return null
+            return ""
           })}
         </List>
         <View style={styles.bottom} />

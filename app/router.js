@@ -315,9 +315,7 @@ class Router extends Component {
 
   backHandle = () => {
     const currentScreen = getActiveRouteName(this.props.router)
-    // if (currentScreen === "Login") {
-    //   return true
-    // }
+    debugger
     if (currentScreen !== "Home") {
       this.props.dispatch(NavigationActions.back())
       return true

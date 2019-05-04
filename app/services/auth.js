@@ -55,3 +55,18 @@ export async function getUserFinance(params) {
       body: params,
   })
 }
+
+// 版本
+export async function checkVersion(params) {
+  return request(`http://118.25.178.119:7001/public/upgrade/info`, {
+      method: "POST",
+      body: params,
+  })
+}
+
+// 版本地址
+export async function getVersionUrl(params) {
+  return request(`http://118.25.178.119:7001/public/apk/url`, {
+      body: params,
+  })
+}

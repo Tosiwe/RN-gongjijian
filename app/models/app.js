@@ -95,6 +95,28 @@ export default {
       yield put(createAction("updateState")({ code, fetching: false }))
     },
 
+    // 版本
+    *checkVersion({ payload, callback}, { call, put }) {
+      const code = yield call(authService.checkVersion, payload)
+
+      if (code && callback) {
+        callback(code)
+      }
+
+      yield put(createAction("updateState")({ code, fetching: false }))
+    },
+
+    // 版本地址
+    *getVersionUrl({ payload, callback}, { call, put }) {
+      const code = yield call(authService.getVersionUrl, payload)
+
+      if (code && callback) {
+        callback(code)
+      }
+
+      yield put(createAction("updateState")({ code, fetching: false }))
+    },
+
     // 注册
     *register({ payload }, { call, put }) {
       payload.noNendAuth = true

@@ -7,12 +7,11 @@ import {
   Text,
   TouchableOpacity,
   ImageBackground,
-  Image
+  Image,
 } from "react-native"
 import moment from "moment"
-import { Toast, Modal } from "@ant-design/react-native"
+import {   Button,  List, InputItem, Modal,Toast } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
-import Icon from "react-native-vector-icons/AntDesign"
 import { connect } from "react-redux"
 import Pay from "../../../components/Pay/Pay"
 
@@ -60,31 +59,32 @@ class VipTop extends Component {
     })
   };
 
-  toPay = price => {
+  toPay = () => {
+    if(this.state.price<0.01){
+      Toast.info("请输入正确的金额")
+      return
+    }
     this.setState({
-      price,
+      // price:this.state.inputNumber,
+      visible:false,
       payVisible: true,
       timeStamp: moment().format("x")
     })
   };
 
   inputPrice = () => {
-    Modal.prompt(
-      "充值",
-      "请输入您要充值的金额",
-      [
-        { text: "取消" },
-        { text: "确认", onPress: this.toPay }
-      ],
-      'number'
-    )
+    this.setState({visible:true})
+    // Modal.prompt("充值", "请输入您要充值的金额", [
+    //   { text: "取消" },
+    //   { text: "确认", onPress: this.toPay }
+    // ])
   };
 
   render() {
     let { data = {} } = this.props
     const { userFinance = {}, userInfo = {} } = this.props
 
-    const { payVisible, timeStamp, price } = this.state
+    const { payVisible, timeStamp, price ,visible} = this.state
 
     if (userFinance) {
       data = userFinance
@@ -172,6 +172,30 @@ class VipTop extends Component {
           timeStamp={timeStamp}
           data={payData}
         />
+        <Modal
+        title="充值"
+        visible={visible}
+        closable
+        maskClosable
+        onClose={()=>{this.setState({visible:false})}}
+        // popup
+        // animationType="slide-up"
+        transparent
+        >
+                <List style={{paddingVertical:10}}>
+                  <Text style={{textAlign:"center",marginTop:10}}>请输入您要充值的金额</Text>
+                  <InputItem 
+                    type="number"
+                    onChange={inputNumber => this.setState({price:inputNumber})}
+                    placeholder='0.00'
+                  >
+                     金额：
+                     </InputItem>
+                </List>
+                <Button type="primary" onPress={this.toPay}>
+            确认支付
+          </Button>
+        </Modal>
       </ImageBackground>
     )
   }
@@ -227,7 +251,7 @@ const styles = StyleSheet.create({
   avator: {
     width: 60,
     height: 60,
-    borderRadius: 50,
+    borderRadius: 30,
     borderWidth: 3,
     borderColor: "#FFF"
   },

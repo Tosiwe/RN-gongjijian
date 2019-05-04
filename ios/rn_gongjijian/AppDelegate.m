@@ -6,7 +6,7 @@
  */
 
 #import "AppDelegate.h"
-#import "AlipayModule.h"
+//#import "AlipayModule.h"
 
 
 #import <React/RCTBundleURLProvider.h>
@@ -28,7 +28,7 @@
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
 sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 {
-  [AlipayModule handleCallback:url];
+//  [AlipayModule handleCallback:url];
   return YES;
   
   return [RCTLinkingManager application:application openURL:url
@@ -39,6 +39,7 @@ sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
 - (BOOL)application:(UIApplication *)application openURL:(NSURL *)url
             options:(NSDictionary<NSString*, id> *)options
 {
+//  [AlipayModule handleCallback:url];
   return [RCTLinkingManager application:application openURL:url options:options];
 }
 

@@ -241,7 +241,7 @@ class IndustryEntry extends Component {
               暂无数据
             </Text>
           )}
-          <View style={{ height: 50 }} />
+          {/* <View style={{ height: 50 }} /> */}
         </View>
       </View>
     )
