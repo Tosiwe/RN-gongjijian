@@ -19,22 +19,23 @@ class About extends Component {
     super(props)
 
     this.state = {
-      // nick: "username"
+      url: "http://www.npsqsc.com/download.html"
     }
   }
 
-  componentDidMount() {
-    this.props.dispatch({
-      type:"app/getVersionUrl",
-      callback:res=>{
-        if(res.status==="OK"){
-         const url =  Platform.OS==="ios" ? res.result.iosUrl : res.result.url
-          this.setState({url})
-          // Linking.openURL(res.result).catch(err => console.error('An error occurred', err))
-        }
-      }
-    })
-  }
+  // componentDidMount() {
+  //   this.props.dispatch({
+  //     type:"app/getVersionUrl",
+  //     callback:res=>{
+  //       if(res.status==="OK"){
+  //        const url =  res.result.qrUrl
+  //       //  const url =  Platform.OS==="ios" ? res.result.iosUrl : res.result.url
+  //         this.setState({url})
+  //         // Linking.openURL(res.result).catch(err => console.error('An error occurred', err))
+  //       }
+  //     }
+  //   })
+  // }
 
   toSet = () => {
     this.props.dispatch(

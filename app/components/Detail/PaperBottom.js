@@ -384,7 +384,7 @@ class PaperBottom extends Component {
             if(Platform.OS==="android"){
                grand =  this.requestExternalStoragePermission()
             }
-          debugger
+          // debugger
             if (grand) {
               if (isPic) {
                 CameraRoll.saveToCameraRoll(path)
