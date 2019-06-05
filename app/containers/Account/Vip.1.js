@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import React, { Component } from "react"
 import {
   StyleSheet,
@@ -7,56 +8,58 @@ import {
   ScrollView,
   Text,
   ImageBackground,
-  Platform
+  Platform,
+  NativeModules
 } from "react-native"
 import { connect } from "react-redux"
 import { Modal } from "@ant-design/react-native"
 import moment from "moment"
-import { NavigationActions } from "react-navigation"
 import { primaryColor, iconSize } from "../../styles/common"
 import Pay from "../../components/Pay/Pay"
 import Result from "../../components/Pay/Result"
 import Top from "./Vip/VipTop"
 
-
+const { RNInAppPurchaseModule } = NativeModules
 const payArray = [
   {
     key: "vipMonth",
     title: "VIP包月",
-    price: "30.00",
+    price: "188",
     des: "月度可无限次获取联系方式"
   },
   {
     key: "vipQuarter",
     title: "VIP包季",
-    price: "80.00",
+    price: "518",
     des: "季度可无限次获取联系方式"
   },
   {
     key: "vipYear",
     title: "VIP包年",
-    price: "300.00",
+    price: "1998",
     des: "年度可无限次获取联系方式"
   },
   {
     key: "settleMonth",
     title: "超级商家包月",
-    price: "30.00",
+    price: "288",
     des: "月度所有入驻的行业享受超级商家权益"
   },
   {
     key: "settleQuarter",
     title: "超级商家包季",
-    price: "80.00",
+    price: "818",
     des: "季度所有入驻的行业享受超级商家权益"
   },
   {
     key: "settleYear",
     title: "超级商家包年",
-    price: "300.00",
+    price: "2998",
     des: "年度所有入驻的行业享受超级商家权益"
   }
 ]
+
+// const IAP_PRODUCT_IDS =['com.gp.gongjijian_vip_year']
 
 @connect(({ app }) => ({ ...app }))
 class Vip extends Component {
@@ -89,29 +92,93 @@ class Vip extends Component {
     this.state = {
       activeKey: 2,
       vipInfo: []
+      // iapProductIds: [
+      //   "com.gp.gongjijian_vip_season",
+      //   "com.gp.gongjijian_vip_year",
+      //   // 'com.gp.gongjijian_vip_month',
+      //   "com.gp.gongjijian_supervip_season",
+      //   "com.gp.gongjijian_supervip_year",
+      //   "com.gp.gongjijian_supervip_month"
+      // ]
     }
   }
 
   componentDidMount() {
     this.props.dispatch({
-      type: "app/getPriceList",
-      callback: res => {
-        if (res.msg === "OK") {
-          console.log("getPriceList", res.result)
-          const vipInfo = []
-          payArray.forEach(item => {
-            const data = { ...item }
-            data.price = res.result[item.key]
-            vipInfo.push(data)
-          })
-          this.setState({ vipInfo })
-        }
-      }
-    })
-
-    this.props.dispatch({
       type: "app/getUserFinance"
     })
+
+    if (Platform.OS === "ios") {
+      this.props.dispatch({
+        type: "app/getAppleProducts",
+        callback: res => {
+          if (res.status === "OK") {
+            const vipIds = []
+
+            res.result.vip.forEach(item => {
+              vipIds.push(item.id)
+            })
+
+            res.result.superVip.forEach(item => {
+              vipIds.push(item.id)
+            })
+
+            RNInAppPurchaseModule.loadProducts(
+              // vipIds,
+              [
+                "com.gp.gongjijian_vip_season",
+                "com.gp.gongjijian_vip_year",
+                "com.gp.gongjijian_vip_month_000",
+                "com.gp.gongjijian_supervip_season",
+                "com.gp.gongjijian_supervip_year",
+                "com.gp.gongjijian_supervip_month"
+              ],
+              (error, products) => {
+                if (!error) {
+                  this.setState({ vipProducts: products })
+                }
+              }
+            )
+          }
+        }
+      })
+
+      // 处理与服务器交互失败，缓存下来的漏单
+      const { iapUnverifyOrdersArray } = RNInAppPurchaseModule
+
+      for (const purchase of iapUnverifyOrdersArray) {
+        // TODO: 与服务器交互验证购买凭证
+        console.log(purchase)
+        // 验证成功，删除缓存的凭证
+        RNInAppPurchaseModule.removePurchase(purchase)
+      }
+
+      // 注册iap，监听并处理因App意外推出产生的漏单
+      RNInAppPurchaseModule.addTransactionObserverWithCallback(
+        (error, purchase) => {
+          // TODO: 与服务器交互验证购买凭证
+          console.log(purchase)
+          // 验证成功，删除缓存的凭证
+          RNInAppPurchaseModule.removePurchase(purchase)
+        }
+      )
+    } else {
+      this.props.dispatch({
+        type: "app/getPriceList",
+        callback: res => {
+          if (res.msg === "OK") {
+            console.log("getPriceList", res.result)
+            const vipInfo = []
+            payArray.forEach(item => {
+              const data = { ...item }
+              data.price = res.result[item.key]
+              vipInfo.push(data)
+            })
+            this.setState({ vipInfo })
+          }
+        }
+      })
+    }
   }
 
   paySuccess = () => {
@@ -130,7 +197,7 @@ class Vip extends Component {
     return (
       <TouchableOpacity
         activeOpacity={1}
-        key={payType.key}
+        key={payType.identifier || payType.key}
         onPress={() => {
           this.setState({ activeKey: index })
         }}
@@ -142,10 +209,10 @@ class Vip extends Component {
               {payType.title || "包月"}
             </Text>
             <Text style={[styles.text, styles.price]}>
-              ¥{payType.price || 30.0}
+              {payType.priceString || `¥${payType.price}`}
             </Text>
             <Text style={[styles.text, styles.des]}>
-              {payType.des || "月度可查100次联系方式"}
+              {payType.description || payType.des}
             </Text>
           </View>
         </View>
@@ -154,15 +221,57 @@ class Vip extends Component {
   };
 
   payByBalance = () => {
-    const { activeKey, vipInfo } = this.state
-    const { key } = vipInfo[activeKey]
-    const payload = {
-      type: key
-    }
+    const { activeKey, vipInfo = [], vipProducts } = this.state
+    let type = ""
+    let payload = {}
 
-    const type = key.includes("vip")
-      ? "app/createVipOrder"
-      : "app/createSuperVipOrder"
+    if (Platform.OS === "ios") {
+      const { identifier } = vipProducts[activeKey]
+      let key = ""
+      if (identifier.includes("super")) {
+        if (identifier.includes("month")) {
+          key = "settleMonth"
+        }
+        if (identifier.includes("season")) {
+          key = "settleQuarter"
+        }
+        if (identifier.includes("year")) {
+          key = "settleYear"
+        }
+
+        payload = {
+          type: key
+        }
+
+        type = "app/createSuperVipOrder"
+      } else {
+        if (identifier.includes("month")) {
+          key = "vipMonth"
+        }
+        if (identifier.includes("season")) {
+          key = "vipQuarter"
+        }
+        if (identifier.includes("year")) {
+          key = "vipYear"
+        }
+
+        payload = {
+          type: key
+        }
+
+        type = "app/createVipOrder"
+      }
+    } else {
+      const { key } = vipInfo[activeKey]
+
+      payload = {
+        type: key
+      }
+
+      type = key.includes("vip")
+        ? "app/createVipOrder"
+        : "app/createSuperVipOrder"
+    }
 
     this.props.dispatch({
       type,
@@ -174,9 +283,10 @@ class Vip extends Component {
             resultVisible: true,
             resultCode: Math.random()
           })
+          this.paySuccess()
         } else if (response.status === "ERROR") {
           if (response.errorCode === "12000") {
-            Modal.alert("提示", Platform.OS === "android"?"您的余额不足，直接购买":"您的余额不足，请先充值", [
+            Modal.alert("提示", "您的余额不足，直接购买", [
               {
                 text: "取消"
               },
@@ -189,14 +299,44 @@ class Vip extends Component {
   };
 
   pay = () => {
+    if (Platform.OS === "ios") {
+      const { vipProducts, activeKey } = this.state
+      RNInAppPurchaseModule.purchaseProduct(
+        vipProducts[activeKey].identifier,
+        (error, result) => {
+          if (error) {
+            // BXAlert.showTipAlert('提示', error || '购买失败')
+          } else {
+            // TODO: 与服务器交互购买凭证
+            console.log(result)
 
-    if(Platform.OS === "android"){
-      this.setState({
-        timeStamp: moment().format("x"),
-        payVisible: true
-      })
+            this.props.dispatch({
+              type: "app/appleVerify",
+              payload: {
+                id: result.productIdentifier,
+                receipt: result.receipt,
+                productIdentifier: result.productIdentifier,
+                transactionIdentifier: result.transactionIdentifier
+              },
+              callback: res => {
+                if (res.msg === "OK") {
+                  this.payByBalance()
+                  // this.paySuccess()
+                }
+              }
+            })
+            // 验证成功，删除缓存的凭证
+            RNInAppPurchaseModule.removePurchase(result)
+          }
+        }
+      )
+      return
     }
 
+    this.setState({
+      payVisible: true,
+      timeStamp: moment().format("x")
+    })
   };
 
   render() {
@@ -207,18 +347,28 @@ class Vip extends Component {
       timeStamp,
       resultVisible,
       resultCode,
-      orderId
+      orderId,
+      vipProducts = []
     } = this.state
-    const info = vipInfo[activeKey]
-    const payData = {
-      use: info && info.key.includes("vip") ? "购买vip" : "购买超级商家",
-      name: info && info.title,
-      price: info && info.price,
-      type: info && info.key.includes("vip") ? "vip" : "superVip",
-      vip: info && info.key
-    }
+    const info =
+      Platform.OS === "ios" ? vipProducts[activeKey] : vipInfo[activeKey]
+
+    const payData =
+      Platform.OS === "ios"
+        ? {
+            use: info && info.identifier.includes("super") ?  "购买超级商家":"购买vip" ,
+            price: info && info.priceString.split("¥")[0],
+          }
+        : {
+            use: info && info.key.includes("vip") ? "购买vip" : "购买超级商家",
+            name: info && info.title,
+            price: info && info.price,
+            type: info && info.key.includes("vip") ? "vip" : "superVip",
+            vip: info && info.key
+          }
 
     const resultData = { orderId, ...payData }
+
     return (
       <View style={styles.container}>
         <Result
@@ -238,7 +388,8 @@ class Vip extends Component {
             超级商家享有Vip的所有权限
           </Text>
           <View style={styles.payBox}>
-            {vipInfo.map(this.renderPayWays)}
+            {Platform.OS !== "ios" && vipInfo.map(this.renderPayWays)}
+            {Platform.OS === "ios" && vipProducts.map(this.renderPayWays)}
             <ImageBackground
               style={styles.rcmBg}
               source={require("./Vip/images/bg_recommend.png")}

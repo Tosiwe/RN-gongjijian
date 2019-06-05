@@ -82,3 +82,19 @@ export async function orderRecordQuery(params) {
         body: params,
     })
   }
+
+// order list
+export async function getAppleProducts(params) {
+    return request(`http://118.25.178.119:7001/apple/product/list`, {
+        method: "POST",
+        body: params,
+    })
+  }
+
+// order list
+export async function appleVerify(params) {
+    return request(`http://118.25.178.119:7001/apple/verify`, {
+        method: "POST",
+        body: params,
+    })
+  }

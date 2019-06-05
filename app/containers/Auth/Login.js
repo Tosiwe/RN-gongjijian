@@ -32,6 +32,11 @@ class Login extends Component {
 
   componentDidMount(){
     this.checkVersion()
+
+    wechat.isWXAppInstalled().then(isInstalled => {
+      this.setState({wechatIsInstalled:isInstalled})
+    })
+
     if(this.props.login){
       this.props.dispatch(
         NavigationActions.navigate({
@@ -148,6 +153,7 @@ class Login extends Component {
   };
 
   render() {
+    const { wechatIsInstalled } = this.state
     const { fetching } = this.props
     return (
       <View style={styles.container}>
@@ -194,7 +200,7 @@ class Login extends Component {
             <Text style={{ color: primaryColor }}>忘记密码</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.thirdLogin}>
+      { wechatIsInstalled && <View style={styles.thirdLogin}>
           <Text style={{ color: "#666" }}>第三方登录</Text>
           <View style={styles.thirdIconWrap}>
             <TouchableOpacity onPress={this.wechatLogin}>
@@ -204,7 +210,7 @@ class Login extends Component {
               <Icon name="QQ" style={styles.thirdIcon} />
             </TouchableOpacity> */}
           </View>
-        </View>
+        </View>}
         {/* {!fetching && (
           <TouchableOpacity style={styles.close} onPress={this.onClose}>
             <Image

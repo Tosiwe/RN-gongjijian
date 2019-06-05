@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /* eslint-disable react/prefer-stateless-function */
 // native
 import React, { Component } from "react"
@@ -8,14 +9,25 @@ import {
   TouchableOpacity,
   ImageBackground,
   Image,
+  NativeModules,
+  Platform
 } from "react-native"
 import moment from "moment"
-import {   Button,  List, InputItem, Modal,Toast } from "@ant-design/react-native"
+import {
+  Button,
+  List,
+  InputItem,
+  Modal,
+  Toast,
+  Picker
+} from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import { connect } from "react-redux"
 import Pay from "../../../components/Pay/Pay"
 
 import { statusBarHeight } from "../../../styles/common"
+
+const { RNInAppPurchaseModule } = NativeModules
 
 @connect(({ app }) => ({ ...app }))
 class VipTop extends Component {
@@ -26,6 +38,164 @@ class VipTop extends Component {
       // nick: "username"
     }
   }
+
+  componentDidMount() {
+    if (Platform.OS === "ios") {
+      // 处理与服务器交互失败，缓存下来的漏单
+      const { iapUnverifyOrdersArray } = RNInAppPurchaseModule
+
+      for (const purchase of iapUnverifyOrdersArray) {
+        // TODO: 与服务器交互验证购买凭证
+        console.log(purchase)
+        // 验证成功，删除缓存的凭证
+        RNInAppPurchaseModule.removePurchase(purchase)
+      }
+
+      // 注册iap，监听并处理因App意外推出产生的漏单
+      RNInAppPurchaseModule.addTransactionObserverWithCallback(
+        (error, purchase) => {
+          // TODO: 与服务器交互验证购买凭证
+          console.log(purchase)
+          // 验证成功，删除缓存的凭证
+          RNInAppPurchaseModule.removePurchase(purchase)
+        }
+      )
+
+      this.props.dispatch({
+        type: "app/getAppleProducts",
+        callback: res => {
+          if (res.status === "OK") {
+            const rechargeIds = []
+
+            res.result.recharge.forEach(item => {
+              rechargeIds.push(item.id)
+            })
+
+            RNInAppPurchaseModule.loadProducts(
+              rechargeIds,
+              // [
+              //   "com.gp.gongjijian_vip_season",
+              //   "com.gp.gongjijian_vip_year",
+              //   "com.gp.gongjijian_vip_month_000",
+              //   "com.gp.gongjijian_supervip_season",
+              //   "com.gp.gongjijian_supervip_year",
+              //   "com.gp.gongjijian_supervip_month"
+              // ],
+              // [
+              //    "com.gp.gongjijian_charge_18",
+              //    "com.gp.gongjijian_charge_68",
+              //    "com.gp.gongjijian_charge_108",
+              //    "com.gp.gongjijian_charge_158",
+              //    "com.gp.gongjijian_charge_198",
+              //    "com.gp.gongjijian_charge_298",
+              //    "com.gp.gongjijian_charge_588",
+              //    "com.gp.gongjijian_charge_998",
+              // ],
+
+              (error, products) => {
+                if (!error) {
+                  const list = []
+                  products.forEach(item => {
+                    list.push({
+                      label: item.title,
+                      value: item.identifier
+                    })
+                  }) 
+                  this.setState({ rechargeProducts: list })
+                }
+              }
+            )
+          }
+        }
+      })
+
+    }
+  }
+
+  recharge = id => {
+    RNInAppPurchaseModule.purchaseProduct(id[0], (error, result) => {
+      if (error) {
+        // BXAlert.showTipAlert('提示', error || '购买失败')
+      } else {
+        // TODO: 与服务器交互购买凭证
+        console.log(result)
+        const products = {}
+
+        this.state.rechargeProducts.forEach(item=>{
+          products[item.value] = item.label
+        })
+
+
+        this.props.dispatch({
+          type: "app/creatRechargeOrder",
+          payload: {
+            amount: Number(products[id]),
+            type: 3
+          },
+          callback: res => {
+            if (res.msg === "OK") {
+              this.props.dispatch({
+                type: "app/appleVerify",
+                payload: {
+                  id: res.result.id,
+                  receipt: result.receipt,
+                  productIdentifier: result.productIdentifier,
+                  transactionIdentifier: result.transactionIdentifier
+                },
+                callback: resp => {
+                  if (resp.msg === "OK") {
+                    this.paySuccess()
+                  }
+                }
+              })
+            }
+          }
+        })
+
+        // 验证成功，删除缓存的凭证
+        RNInAppPurchaseModule.removePurchase(result)
+      }
+    })
+  };
+
+  // 创建业务订单
+  createOrder = () => {
+    const { data } = this.props
+    const map = {
+      vip: "app/createVipOrder",
+      superVip: "app/createSuperVipOrder",
+      contact: "app/createOrderContact",
+      paper: "app/createOrderPaper"
+    }
+    const textMap = {
+      vip: "会员",
+      superVip: "超级商家",
+      contact: "联系方式",
+      paper: "图纸"
+    }
+
+    const payload = {}
+
+    if (data.type === "vip") {
+      payload.type = data.vip
+    } else {
+      payload.sourceId = data.id
+    }
+
+    this.props.dispatch({
+      type: map[data.type],
+      payload,
+      callback: response => {
+        if (response.status === "OK") {
+          this.paySuccess()
+        } else if (response.status === "ERROR") {
+          if (!response.msg) {
+            Toast.info(`创建${textMap[data.type]}订单失败`, 3, null, false)
+          }
+        }
+      }
+    })
+  };
 
   goBack = () => {
     this.props.dispatch(NavigationActions.back())
@@ -60,20 +230,20 @@ class VipTop extends Component {
   };
 
   toPay = () => {
-    if(this.state.price<0.01){
+    if (this.state.price < 0.01) {
       Toast.info("请输入正确的金额")
       return
     }
     this.setState({
       // price:this.state.inputNumber,
-      visible:false,
+      visible: false,
       payVisible: true,
       timeStamp: moment().format("x")
     })
   };
 
   inputPrice = () => {
-    this.setState({visible:true})
+    this.setState({ visible: true })
     // Modal.prompt("充值", "请输入您要充值的金额", [
     //   { text: "取消" },
     //   { text: "确认", onPress: this.toPay }
@@ -84,7 +254,13 @@ class VipTop extends Component {
     let { data = {} } = this.props
     const { userFinance = {}, userInfo = {} } = this.props
 
-    const { payVisible, timeStamp, price ,visible} = this.state
+    const {
+      payVisible,
+      timeStamp,
+      price,
+      visible,
+      rechargeProducts = []
+    } = this.state
 
     if (userFinance) {
       data = userFinance
@@ -105,7 +281,7 @@ class VipTop extends Component {
       >
         <View style={styles.head}>
           <TouchableOpacity onPress={this.goBack}>
-            <Text style={styles.topLeft} >取消</Text>
+            <Text style={styles.topLeft}>取消</Text>
           </TouchableOpacity>
           <Text style={styles.title}>VIP会员</Text>
           <TouchableOpacity onPress={this.toRecords}>
@@ -131,7 +307,7 @@ class VipTop extends Component {
               }
             />
           </TouchableOpacity>
-          <View style={[styles.flex5 ,{top:-5}]}>
+          <View style={[styles.flex5, { top: -5 }]}>
             <Text style={styles.text}>{userInfo.nick}</Text>
             <Text style={styles.gold}>
               {data.vip
@@ -140,30 +316,38 @@ class VipTop extends Component {
             </Text>
             <Text style={styles.gold}>
               {data.superVip
-                ? `超级商家 ${moment(data.superEndTime).format("YYYY-MM-DD")} 到期`
+                ? `超级商家 ${moment(data.superEndTime).format(
+                    "YYYY-MM-DD"
+                  )} 到期`
                 : "您还不是超级商家"}
             </Text>
           </View>
           <View style={styles.flex3}>
             <Text style={styles.gold}>余额：{data.balance || "0.00"}元</Text>
-
-            <TouchableOpacity
-              style={styles.vipPay}
-              // onPress={() => {
-              //   this.setState({
-              //     payVisible: true,
-              //     timeStamp: moment().format("x")
-              //   })
-              // }}
-              onPress={this.inputPrice}
-            >
-              <ImageBackground
-                style={styles.vipBg}
-                source={require("./images/btn_recharge_bg.png")}
-              >
-                <Text style={styles.vipText}>立即充值</Text>
-              </ImageBackground>
-            </TouchableOpacity>
+            {Platform.OS === "ios" ? (
+              <Picker data={rechargeProducts} cols={1} onChange={this.recharge}>
+                <TouchableOpacity
+                  style={styles.vipPay}
+                  // onPress={this.inputPrice}
+                >
+                  <ImageBackground
+                    style={styles.vipBg}
+                    source={require("./images/btn_recharge_bg.png")}
+                  >
+                    <Text style={styles.vipText}>立即充值</Text>
+                  </ImageBackground>
+                </TouchableOpacity>
+              </Picker>
+            ) : (
+              <TouchableOpacity style={styles.vipPay} onPress={this.inputPrice}>
+                <ImageBackground
+                  style={styles.vipBg}
+                  source={require("./images/btn_recharge_bg.png")}
+                >
+                  <Text style={styles.vipText}>立即充值</Text>
+                </ImageBackground>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
         <Pay
@@ -173,26 +357,30 @@ class VipTop extends Component {
           data={payData}
         />
         <Modal
-        title="充值"
-        visible={visible}
-        closable
-        maskClosable
-        onClose={()=>{this.setState({visible:false})}}
-        // popup
-        // animationType="slide-up"
-        transparent
+          title="充值"
+          visible={visible}
+          closable
+          maskClosable
+          onClose={() => {
+            this.setState({ visible: false })
+          }}
+          // popup
+          // animationType="slide-up"
+          transparent
         >
-                <List style={{paddingVertical:10}}>
-                  <Text style={{textAlign:"center",marginTop:10}}>请输入您要充值的金额</Text>
-                  <InputItem 
-                    type="number"
-                    onChange={inputNumber => this.setState({price:inputNumber})}
-                    placeholder='0.00'
-                  >
-                     金额：
-                     </InputItem>
-                </List>
-                <Button type="primary" onPress={this.toPay}>
+          <List style={{ paddingVertical: 10 }}>
+            <Text style={{ textAlign: "center", marginTop: 10 }}>
+              请输入您要充值的金额
+            </Text>
+            <InputItem
+              type="number"
+              onChange={inputNumber => this.setState({ price: inputNumber })}
+              placeholder="0.00"
+            >
+              金额：
+            </InputItem>
+          </List>
+          <Button type="primary" onPress={this.toPay}>
             确认支付
           </Button>
         </Modal>
@@ -205,7 +393,7 @@ const styles = StyleSheet.create({
   wrap: {
     height: 220,
     alignItems: "center",
-    paddingTop: statusBarHeight,
+    paddingTop: statusBarHeight + 10,
     textAlign: "center"
   },
   bgStyle: {
@@ -223,7 +411,7 @@ const styles = StyleSheet.create({
   body: {
     flexDirection: "row",
     top: 40,
-    paddingHorizontal:10
+    paddingHorizontal: 10
   },
   text: {
     fontSize: 24,
@@ -258,10 +446,10 @@ const styles = StyleSheet.create({
   title: {
     color: "#F8E3B1",
     fontSize: 22,
-    left:15
+    left: 15
   },
   topLeft: {
-    color: "#F8E3B1",
+    color: "#F8E3B1"
   },
   topRight: {
     color: "#F8E3B1"

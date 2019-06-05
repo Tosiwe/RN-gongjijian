@@ -38,12 +38,12 @@ class Result extends Component {
   render() {
     const { visible } = this.state
 
-    const { data = {} } = this.props
+    const { data = {}, timeStamp, } = this.props
 
     const {
       use = "查看联系方式",
       price = 0.01,
-      timeStamp,
+     
       orderId = "123"
     } = data
 

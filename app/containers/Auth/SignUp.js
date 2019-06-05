@@ -22,6 +22,14 @@ class SignUp extends Component {
     }
   }
 
+  componentDidMount(){
+
+    wechat.isWXAppInstalled().then(isInstalled => {
+      this.setState({wechatIsInstalled:isInstalled})
+    })
+ 
+  }
+
   onClose = () => {
     this.props.dispatch(NavigationActions.back())
   };
@@ -119,7 +127,7 @@ class SignUp extends Component {
 
   render() {
     const { fetching } = this.props
-    const { codeBtnDisable, count } = this.state
+    const { codeBtnDisable, count,wechatIsInstalled } = this.state
     return (
       <View style={styles.container}>
         <Image  style={{width:100, height:100, marginBottom:50}}  source={require("../img/img_logo.png")} />
@@ -190,7 +198,7 @@ class SignUp extends Component {
           </TouchableOpacity>
           <TouchableOpacity />
         </View>
-        <View style={styles.thirdLogin}>
+       { wechatIsInstalled &&<View style={styles.thirdLogin}>
           <Text style={{ color: "#666" }}>第三方登录</Text>
           <View style={styles.thirdIconWrap}>
             <TouchableOpacity onPress={this.wechatLogin}>
@@ -200,7 +208,7 @@ class SignUp extends Component {
               <Icon name="QQ" style={styles.thirdIcon} />
             </TouchableOpacity> */}
           </View>
-        </View>
+        </View>}
         {/* {!fetching && (
           <TouchableOpacity style={styles.close} onPress={this.onClose}>
             <Image

@@ -306,6 +306,7 @@ class Router extends Component {
   }
 
   componentDidMount (){
+
     wechat.registerApp('wx6da250551cee1eda')
   }
 

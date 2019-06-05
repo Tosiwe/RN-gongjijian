@@ -768,6 +768,24 @@ export default {
         callback(res)
       }
       yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
+    *getAppleProducts({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(orderService.getAppleProducts, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
+    *appleVerify({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(orderService.appleVerify, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
     }
   },
   subscriptions: {

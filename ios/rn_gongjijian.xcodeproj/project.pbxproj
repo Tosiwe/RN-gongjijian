@@ -48,6 +48,8 @@
 		6C9924A8E6ED47DDA0797BC4 /* FontAwesome5_Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = BF79CF5B429A4CF29462AFBD /* FontAwesome5_Regular.ttf */; };
 		6D2666690B054B2F8AF124BA /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C99CEDD670094A778391E057 /* libRNFS.a */; };
 		6E41921167ED4939976C4638 /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 32BAF0361A73486EA2198523 /* FontAwesome.ttf */; };
+		793B11AD228C2CFB002A9A2E /* RNInAppPurchaseModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 793B11AB228C2CFB002A9A2E /* RNInAppPurchaseModule.m */; };
+		793B11AF228C2D33002A9A2E /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 793B11AE228C2D33002A9A2E /* StoreKit.framework */; };
 		794871DA226A02F600DF3B5D /* bundle in Resources */ = {isa = PBXBuildFile; fileRef = 794871D9226A02F600DF3B5D /* bundle */; };
 		7999B00721DFC4C700803FE7 /* FileBrowser.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7999B00421DFC4A600803FE7 /* FileBrowser.framework */; };
 		799F3F5222677A76005103A0 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 799F3F5122677A76005103A0 /* Entitlements.plist */; };
@@ -506,6 +508,9 @@
 		7233847D17CA4CA3B59C06F1 /* RNFileSelector.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFileSelector.xcodeproj; path = "../node_modules/react-native-file-selector/ios/RNFileSelector.xcodeproj"; sourceTree = "<group>"; };
 		7448C5ABCAD8438886B9D355 /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
+		793B11AB228C2CFB002A9A2E /* RNInAppPurchaseModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RNInAppPurchaseModule.m; path = "../../../../Downloads/RNInAppPurchaseModule-master/RNInAppPurchaseModule.m"; sourceTree = "<group>"; };
+		793B11AC228C2CFB002A9A2E /* RNInAppPurchaseModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RNInAppPurchaseModule.h; path = "../../../../Downloads/RNInAppPurchaseModule-master/RNInAppPurchaseModule.h"; sourceTree = "<group>"; };
+		793B11AE228C2D33002A9A2E /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		794871D9226A02F600DF3B5D /* bundle */ = {isa = PBXFileReference; lastKnownFileType = folder; path = bundle; sourceTree = "<group>"; };
 		796386B822662FDD009172DD /* rn_gongjijian.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = rn_gongjijian.entitlements; path = rn_gongjijian/rn_gongjijian.entitlements; sourceTree = "<group>"; };
 		7999AFE321DFC12700803FE7 /* FileBrowser.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = FileBrowser.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -555,6 +560,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				793B11AF228C2D33002A9A2E /* StoreKit.framework in Frameworks */,
 				79BB5115227DB7DF00D1B073 /* libAlipayModule.a in Frameworks */,
 				79E94B282247DC06008582E7 /* Pods_RNFileSelector.framework in Frameworks */,
 				79D05077224698F700947493 /* libz.tbd in Frameworks */,
@@ -699,6 +705,8 @@
 				794871D9226A02F600DF3B5D /* bundle */,
 				796386B822662FDD009172DD /* rn_gongjijian.entitlements */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
+				793B11AC228C2CFB002A9A2E /* RNInAppPurchaseModule.h */,
+				793B11AB228C2CFB002A9A2E /* RNInAppPurchaseModule.m */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.m */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
@@ -735,6 +743,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				793B11AE228C2D33002A9A2E /* StoreKit.framework */,
 				79D05076224698F700947493 /* libz.tbd */,
 				79D05073224698D000947493 /* CoreTelephony.framework */,
 				79D05071224698C000947493 /* CoreMotion.framework */,
@@ -1657,6 +1666,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				793B11AD228C2CFB002A9A2E /* RNInAppPurchaseModule.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

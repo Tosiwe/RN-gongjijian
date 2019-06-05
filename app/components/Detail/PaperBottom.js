@@ -17,6 +17,7 @@ import moment from "moment"
 import RNFS from "react-native-fs"
 import Icon from "react-native-vector-icons/AntDesign"
 import FileOpener from "react-native-file-opener"
+import { NavigationActions } from "react-navigation"
 import Pay from "../Pay/Pay"
 import LikeBtn from "./LikeBtn"
 import { Storage } from "../../utils"
@@ -73,7 +74,7 @@ class PaperBottom extends Component {
           onRefresh(false)
           if (response.errorCode === '12000') {
             // 余额不够
-            Modal.alert("提示", "您的余额不足，直接购买", [
+            Modal.alert("提示", Platform.OS === "android"?"您的余额不足，直接购买":"您的余额不足，请先充值", [
               {
                 text: "取消"
               },
@@ -142,10 +143,16 @@ class PaperBottom extends Component {
 
   // 调支付组件
   showPayModal = () => {
-    this.setState({
-      timeStamp: moment().format("x"),
-      payVisible: true
-    })
+
+    if(Platform.OS === "android"){
+      this.setState({
+        timeStamp: moment().format("x"),
+        payVisible: true
+      })
+    }else{
+      this.props.dispatch(NavigationActions.navigate({ routeName: "Vip" }))
+    }
+
   };
 
   // 权限请求

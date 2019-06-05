@@ -15,8 +15,10 @@ import { Modal, Button, Toast } from "@ant-design/react-native"
 import * as wechat from "react-native-wechat"
 import { connect } from "react-redux"
 import moment from "moment"
+import { NavigationActions } from "react-navigation"
 import Pay from "../Pay/Pay"
 import LikeBtn from "./LikeBtn"
+
 
 @connect(({ app }) => ({ ...app }))
 class Bottom extends Component {
@@ -94,7 +96,7 @@ class Bottom extends Component {
           this.showModal()
         } else if (response.status === "ERROR") {
           if (response.errorCode === '12000') {
-            Modal.alert("提示", "您的余额不足，直接购买", [
+            Modal.alert("提示", Platform.OS === "android"?"您的余额不足，直接购买":"您的余额不足，请先充值", [
               {
                 text: "取消"
               },
@@ -108,10 +110,14 @@ class Bottom extends Component {
 
   // 调起支付
   showPayModal = () => {
-    this.setState({
-      timeStamp: moment().format("x"),
-      payVisible: true
-    })
+    if(Platform.OS === "android"){
+      this.setState({
+        timeStamp: moment().format("x"),
+        payVisible: true
+      })
+    }else{
+      this.props.dispatch(NavigationActions.navigate({ routeName: "Vip" }))
+    }
   };
 
   // 业务功能
