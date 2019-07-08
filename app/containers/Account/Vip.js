@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import React, { Component } from "react"
 import {
   StyleSheet,
@@ -7,16 +8,19 @@ import {
   ScrollView,
   Text,
   ImageBackground,
-  Platform
+  Platform,
+  NativeModules
 } from "react-native"
 import { connect } from "react-redux"
 import { Modal } from "@ant-design/react-native"
 import moment from "moment"
 import { NavigationActions } from "react-navigation"
 import { primaryColor, iconSize } from "../../styles/common"
-import Pay from "../../components/Pay/Pay"
+// import Pay from "../../components/Pay/Pay"
 import Result from "../../components/Pay/Result"
 import Top from "./Vip/VipTop"
+
+const { RNInAppPurchaseModule } = NativeModules
 
 
 const payArray = [
@@ -93,21 +97,67 @@ class Vip extends Component {
   }
 
   componentDidMount() {
-    this.props.dispatch({
-      type: "app/getPriceList",
-      callback: res => {
-        if (res.msg === "OK") {
-          console.log("getPriceList", res.result)
-          const vipInfo = []
-          payArray.forEach(item => {
-            const data = { ...item }
-            data.price = res.result[item.key]
-            vipInfo.push(data)
-          })
-          this.setState({ vipInfo })
-        }
+    // this.props.dispatch({
+    //   type: "app/getPriceList",
+    //   callback: res => {
+    //     if (res.msg === "OK") {
+    //       console.log("getPriceList", res.result)
+    //       const vipInfo = []
+    //       payArray.forEach(item => {
+    //         const data = { ...item }
+    //         data.price = res.result[item.key]
+    //         vipInfo.push(data)
+    //       })
+    //       this.setState({ vipInfo })
+    //     }
+    //   }
+    // })
+
+    if (Platform.OS === "ios") {
+      // 处理与服务器交互失败，缓存下来的漏单
+      const { iapUnverifyOrdersArray } = RNInAppPurchaseModule
+
+      for (const purchase of iapUnverifyOrdersArray) {
+        // TODO: 与服务器交互验证购买凭证
+        console.log(purchase)
+        // 验证成功，删除缓存的凭证
+        RNInAppPurchaseModule.removePurchase(purchase)
       }
-    })
+
+      // 注册iap，监听并处理因App意外推出产生的漏单
+      RNInAppPurchaseModule.addTransactionObserverWithCallback(
+        (error, purchase) => {
+          // TODO: 与服务器交互验证购买凭证
+          console.log(purchase)
+          // 验证成功，删除缓存的凭证
+          RNInAppPurchaseModule.removePurchase(purchase)
+        }
+      )
+
+      this.props.dispatch({
+        type: "app/getAppleProducts",
+        callback: res => {
+          if (res.status === "OK") {
+            const vipIds = []
+
+            res.result.vip.forEach(item => {
+              vipIds.push(item.id)
+            })
+
+            RNInAppPurchaseModule.loadProducts(
+              vipIds,
+              (error, products) => {
+                if (!error) {
+                  this.setState({ vipProducts: products })
+                }
+              }
+            )
+          }
+        }
+      })
+
+    }
+
 
     this.props.dispatch({
       type: "app/getUserFinance"
@@ -130,7 +180,7 @@ class Vip extends Component {
     return (
       <TouchableOpacity
         activeOpacity={1}
-        key={payType.key}
+        key={payType.identifier}
         onPress={() => {
           this.setState({ activeKey: index })
         }}
@@ -142,10 +192,10 @@ class Vip extends Component {
               {payType.title || "包月"}
             </Text>
             <Text style={[styles.text, styles.price]}>
-              ¥{payType.price || 30.0}
+              {payType.priceString || 30.0}
             </Text>
             <Text style={[styles.text, styles.des]}>
-              {payType.des || "月度可查100次联系方式"}
+              {payType.describe || "月度可查100次联系方式"}
             </Text>
           </View>
         </View>
@@ -153,37 +203,103 @@ class Vip extends Component {
     )
   };
 
-  payByBalance = () => {
-    const { activeKey, vipInfo } = this.state
-    const { key } = vipInfo[activeKey]
-    const payload = {
-      type: key
-    }
+  // payByBalance = () => {
+  //   const { activeKey, vipProducts } = this.state
+  //   const { identifier } = vipProducts[activeKey]
 
-    const type = key.includes("vip")
-      ? "app/createVipOrder"
-      : "app/createSuperVipOrder"
+  //   recharge
 
-    this.props.dispatch({
-      type,
-      payload,
-      callback: response => {
-        if (response.status === "OK") {
-          this.setState({
-            orderId: response.result.id,
-            resultVisible: true,
-            resultCode: Math.random()
-          })
-        } else if (response.status === "ERROR") {
-          if (response.errorCode === "12000") {
-            Modal.alert("提示", Platform.OS === "android"?"您的余额不足，直接购买":"您的余额不足，请先充值", [
-              {
-                text: "取消"
-              },
-              { text: "确认", onPress: this.pay }
-            ])
+  //   // const payload = {
+  //   //   type: key
+  //   // }
+
+  //   // const type = key.includes("vip")
+  //   //   ? "app/createVipOrder"
+  //   //   : "app/createSuperVipOrder"
+
+  //   // this.props.dispatch({
+  //   //   type,
+  //   //   payload,
+  //   //   callback: response => {
+  //   //     if (response.status === "OK") {
+  //   //       this.setState({
+  //   //         orderId: response.result.id,
+  //   //         resultVisible: true,
+  //   //         resultCode: Math.random()
+  //   //       })
+  //   //     } else if (response.status === "ERROR") {
+  //   //       if (response.errorCode === "12000") {
+  //   //         Modal.alert("提示", Platform.OS === "android"?"您的余额不足，直接购买":"您的余额不足，请先充值", [
+  //   //           {
+  //   //             text: "取消"
+  //   //           },
+  //   //           { text: "确认", onPress: this.pay }
+  //   //         ])
+  //   //       }
+  //   //     }
+  //   //   }
+  //   // })
+
+  // };
+
+  recharge = () => {
+    const { activeKey, vipProducts } = this.state
+    const { identifier,priceString } = vipProducts[activeKey]
+
+    RNInAppPurchaseModule.purchaseProduct(identifier, (error, result) => {
+      if (error) {
+        // BXAlert.showTipAlert('提示', error || '购买失败')
+      } else {
+        // TODO: 与服务器交互购买凭证
+        console.log(result)
+        const type = identifier.includes("super")
+          ? "app/createSuperVipOrderApple"
+          :"app/createVipOrderApple"
+
+        const payType ={
+          "vip_month":"vipMonth",
+          "vip_season":"vipQuarter",
+          "vip_year":"vipYear",
+          "supervip_month":"settleMonth",
+          "supervip_season":"settleQuarter",
+          "supervip_year":"settleYear",
+        }
+
+        let payload={}
+ 
+        for(const a in payType){
+          if(identifier.includes(a)){
+            payload={
+              type:payType[a]
+            }
           }
         }
+
+        this.props.dispatch({
+          type,
+          payload,
+          callback: res => {
+            if (res.msg === "OK") {
+              this.props.dispatch({
+                type: "app/appleVerify",
+                payload: {
+                  id: res.result.id,
+                  receipt: result.receiptData,
+                  productIdentifier: result.productIdentifier,
+                  transactionIdentifier: result.transactionIdentifier
+                },
+                callback: resp => {
+                  if (resp.msg === "OK") {
+                    this.paySuccess()
+                  }
+                }
+              })
+            }
+          }
+        })
+
+        // 验证成功，删除缓存的凭证
+        RNInAppPurchaseModule.removePurchase(result)
       }
     })
   };
@@ -207,7 +323,8 @@ class Vip extends Component {
       timeStamp,
       resultVisible,
       resultCode,
-      orderId
+      orderId,
+      vipProducts=[],
     } = this.state
     const info = vipInfo[activeKey]
     const payData = {
@@ -238,7 +355,7 @@ class Vip extends Component {
             超级商家享有Vip的所有权限
           </Text>
           <View style={styles.payBox}>
-            {vipInfo.map(this.renderPayWays)}
+            {vipProducts.map(this.renderPayWays)}
             <ImageBackground
               style={styles.rcmBg}
               source={require("./Vip/images/bg_recommend.png")}
@@ -253,17 +370,17 @@ class Vip extends Component {
             </ImageBackground>
           </View>
           <View />
-          <TouchableOpacity style={styles.btn} onPress={this.payByBalance}>
+          <TouchableOpacity style={styles.btn} onPress={this.recharge}>
             <Text style={styles.btnText}>立即开通</Text>
           </TouchableOpacity>
           <View style={{ height: 100 }} />
         </ScrollView>
-        <Pay
+        {/* <Pay
           onSuccess={this.paySuccess}
           visible={payVisible}
           timeStamp={timeStamp}
           data={payData}
-        />
+        /> */}
       </View>
     )
   }

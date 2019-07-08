@@ -18,7 +18,7 @@ import RNFS from "react-native-fs"
 import Icon from "react-native-vector-icons/AntDesign"
 import FileOpener from "react-native-file-opener"
 import { NavigationActions } from "react-navigation"
-import Pay from "../Pay/Pay"
+// import Pay from "../Pay/Pay"
 import LikeBtn from "./LikeBtn"
 import { Storage } from "../../utils"
 
@@ -439,7 +439,7 @@ class PaperBottom extends Component {
           </TouchableOpacity>
         </View>
         <View>
-          <Pay
+          {/* <Pay
             visible={payVisible}
             timeStamp={timeStamp}
             onSuccess={this.getFile}
@@ -450,7 +450,7 @@ class PaperBottom extends Component {
               price: data.price,
               type: "paper"
             }}
-          />
+          /> */}
         </View>
       </View>
     )

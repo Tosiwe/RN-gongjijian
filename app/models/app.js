@@ -725,6 +725,24 @@ export default {
       yield put(createAction("updateState")({ res, fetching: false }))
     },
 
+    *createVipOrderApple({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(orderService.createVipOrderApple, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
+    *createSuperVipOrderApple({ payload, callback }, { call, put }) {
+      yield put(createAction("updateState")({ fetching: true }))
+      const res = yield call(orderService.createSuperVipOrderApple, payload)
+      if (res && callback) {
+        callback(res)
+      }
+      yield put(createAction("updateState")({ res, fetching: false }))
+    },
+
     *createOrderContact({ payload, callback }, { call, put }) {
       yield put(createAction("updateState")({ fetching: true }))
       const res = yield call(orderService.createOrderContact, payload)

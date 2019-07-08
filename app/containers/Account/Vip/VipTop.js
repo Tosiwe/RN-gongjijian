@@ -23,7 +23,7 @@ import {
 } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
 import { connect } from "react-redux"
-import Pay from "../../../components/Pay/Pay"
+// import Pay from "../../../components/Pay/Pay"
 
 import { statusBarHeight } from "../../../styles/common"
 
@@ -66,32 +66,17 @@ class VipTop extends Component {
         callback: res => {
           if (res.status === "OK") {
             const rechargeIds = []
+            // const vipIds = []
 
             res.result.recharge.forEach(item => {
               rechargeIds.push(item.id)
             })
+            // res.result.vip.forEach(item => {
+            //   vipIds.push(item.id)
+            // })
 
             RNInAppPurchaseModule.loadProducts(
               rechargeIds,
-              // [
-              //   "com.gp.gongjijian_vip_season",
-              //   "com.gp.gongjijian_vip_year",
-              //   "com.gp.gongjijian_vip_month_000",
-              //   "com.gp.gongjijian_supervip_season",
-              //   "com.gp.gongjijian_supervip_year",
-              //   "com.gp.gongjijian_supervip_month"
-              // ],
-              // [
-              //    "com.gp.gongjijian_charge_18",
-              //    "com.gp.gongjijian_charge_68",
-              //    "com.gp.gongjijian_charge_108",
-              //    "com.gp.gongjijian_charge_158",
-              //    "com.gp.gongjijian_charge_198",
-              //    "com.gp.gongjijian_charge_298",
-              //    "com.gp.gongjijian_charge_588",
-              //    "com.gp.gongjijian_charge_998",
-              // ],
-
               (error, products) => {
                 if (!error) {
                   const list = []
@@ -105,6 +90,14 @@ class VipTop extends Component {
                 }
               }
             )
+            // RNInAppPurchaseModule.loadProducts(
+            //   vipIds,
+            //   (error, products) => {
+            //     if (!error) {
+            //       this.setState({ vipProducts: products })
+            //     }
+            //   }
+            // )
           }
         }
       })
@@ -125,7 +118,6 @@ class VipTop extends Component {
           products[item.value] = item.label
         })
 
-
         this.props.dispatch({
           type: "app/creatRechargeOrder",
           payload: {
@@ -138,7 +130,7 @@ class VipTop extends Component {
                 type: "app/appleVerify",
                 payload: {
                   id: res.result.id,
-                  receipt: result.receipt,
+                  receipt: result.receiptData,
                   productIdentifier: result.productIdentifier,
                   transactionIdentifier: result.transactionIdentifier
                 },
@@ -350,12 +342,12 @@ class VipTop extends Component {
             )}
           </View>
         </View>
-        <Pay
+        {/* <Pay
           onSuccess={this.paySuccess}
           visible={payVisible}
           timeStamp={timeStamp}
           data={payData}
-        />
+        /> */}
         <Modal
           title="充值"
           visible={visible}

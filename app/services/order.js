@@ -16,17 +16,27 @@ export async function createVipOrder(params) {
     })
   }
 
-// // create settle order
-// export async function createSuperVipOrder(params) {
-//     return request(`http://118.25.178.119:7001/order/settle/create`, {
-//         method: "POST",
-//         body: params,
-//     })
-//   }
+// create vip order
+export async function createVipOrderApple(params) {
+    return request(`http://118.25.178.119:7001/order/apple/vip/create`, {
+        method: "POST",
+        body: params,
+    })
+  }
+
 
 // create settle order
 export async function createSuperVipOrder(params) {
     return request(`http://118.25.178.119:7001/order/supervip/create`, {
+        method: "POST",
+        body: params,
+    })
+  }
+
+
+// create settle order
+export async function createSuperVipOrderApple(params) {
+    return request(`http://118.25.178.119:7001/order/apple/supervip/create`, {
         method: "POST",
         body: params,
     })

@@ -55,7 +55,6 @@
 		799F3F5222677A76005103A0 /* Entitlements.plist in Resources */ = {isa = PBXBuildFile; fileRef = 799F3F5122677A76005103A0 /* Entitlements.plist */; };
 		79ABB87D21DE5E290036DD8B /* ios in Resources */ = {isa = PBXBuildFile; fileRef = 79ABB87C21DE5E290036DD8B /* ios */; };
 		79B4C2CC221ED123005ADAC8 /* FileBrowser.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 7999B00421DFC4A600803FE7 /* FileBrowser.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		79BB5115227DB7DF00D1B073 /* libAlipayModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 79BB5114227DB7CF00D1B073 /* libAlipayModule.a */; };
 		79D0506E2246955900947493 /* libsqlite3.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 79D0506B2246903200947493 /* libsqlite3.dylib */; };
 		79D050702246970D00947493 /* JavaScriptCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79D0506F2246970D00947493 /* JavaScriptCore.framework */; };
 		79D05072224698C000947493 /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 79D05071224698C000947493 /* CoreMotion.framework */; };
@@ -360,13 +359,6 @@
 			remoteGlobalIDString = ED296FEE214C9CF800B7C4FE;
 			remoteInfo = "jsiexecutor-tvOS";
 		};
-		79BB5113227DB7CF00D1B073 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 79BB510F227DB7CF00D1B073 /* AlipayModule.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = 64971CAA1CE1BB7300BCD91E;
-			remoteInfo = AlipayModule;
-		};
 		79D04FDD2243D94600947493 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 79ABB88B21DE5FEE0036DD8B /* RNImagePicker.xcodeproj */;
@@ -519,7 +511,6 @@
 		799F3F5122677A76005103A0 /* Entitlements.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Entitlements.plist; sourceTree = "<group>"; };
 		79ABB87C21DE5E290036DD8B /* ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = ios; path = "../node_modules/react-native-image-picker/ios"; sourceTree = "<group>"; };
 		79ABB88B21DE5FEE0036DD8B /* RNImagePicker.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNImagePicker.xcodeproj; path = "../node_modules/react-native-image-picker/ios/RNImagePicker.xcodeproj"; sourceTree = "<group>"; };
-		79BB510F227DB7CF00D1B073 /* AlipayModule.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AlipayModule.xcodeproj; path = "../node_modules/react-native-yunpeng-alipay/ios/AlipayModule.xcodeproj"; sourceTree = "<group>"; };
 		79D0506722468E4F00947493 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		79D050692246900500947493 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		79D0506B2246903200947493 /* libsqlite3.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libsqlite3.dylib; path = ../../../../../../usr/lib/libsqlite3.dylib; sourceTree = "<group>"; };
@@ -533,7 +524,6 @@
 		9154B7E8673E41B69051B424 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
 		91626A4DD6A84300B5E82BDE /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
 		970FA51D146340A8A7C04231 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
-		97D5B9B1425A4BE6B8F15AD4 /* libAlipayModule.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAlipayModule.a; sourceTree = "<group>"; };
 		9B8AABA5B4394B57A359CB6B /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		A08D03F2FAD549ADB4F05724 /* RCTWeChatTests.xctest */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.cfbundle; path = RCTWeChatTests.xctest; sourceTree = "<group>"; };
 		A848E826D0564C40BAAC1D0C /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
@@ -561,7 +551,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				793B11AF228C2D33002A9A2E /* StoreKit.framework in Frameworks */,
-				79BB5115227DB7DF00D1B073 /* libAlipayModule.a in Frameworks */,
 				79E94B282247DC06008582E7 /* Pods_RNFileSelector.framework in Frameworks */,
 				79D05077224698F700947493 /* libz.tbd in Frameworks */,
 				79D05075224698E600947493 /* libc++.tbd in Frameworks */,
@@ -787,7 +776,6 @@
 				ED9E87F934224510BA35C11A /* libRNFileOpener.a */,
 				237B5984056543F4B2CA8021 /* libRCTWeChat.a */,
 				A08D03F2FAD549ADB4F05724 /* RCTWeChatTests.xctest */,
-				97D5B9B1425A4BE6B8F15AD4 /* libAlipayModule.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -805,14 +793,6 @@
 			isa = PBXGroup;
 			children = (
 				79D04FDE2243D94600947493 /* libRNImagePicker.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		79BB5110227DB7CF00D1B073 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				79BB5114227DB7CF00D1B073 /* libAlipayModule.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -871,7 +851,6 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				79BB510F227DB7CF00D1B073 /* AlipayModule.xcodeproj */,
 				7999AFFE21DFC4A600803FE7 /* Pods.xcodeproj */,
 				5E91572D1DD0AC6500FF2AA8 /* RCTAnimation.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -1120,10 +1099,6 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
-				{
-					ProductGroup = 79BB5110227DB7CF00D1B073 /* Products */;
-					ProjectRef = 79BB510F227DB7CF00D1B073 /* AlipayModule.xcodeproj */;
-				},
 				{
 					ProductGroup = 7999AFFF21DFC4A600803FE7 /* Products */;
 					ProjectRef = 7999AFFE21DFC4A600803FE7 /* Pods.xcodeproj */;
@@ -1475,13 +1450,6 @@
 			remoteRef = 79B4C2C4221ECB05005ADAC8 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
-		79BB5114227DB7CF00D1B073 /* libAlipayModule.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libAlipayModule.a;
-			remoteRef = 79BB5113227DB7CF00D1B073 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
 		79D04FDE2243D94600947493 /* libRNImagePicker.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -1738,15 +1706,11 @@
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
-					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 				);
 				INFOPLIST_FILE = rn_gongjijianTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1770,15 +1734,11 @@
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
-					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 				);
 				INFOPLIST_FILE = rn_gongjijianTests/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1813,7 +1773,6 @@
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
-					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 				);
 				INFOPLIST_FILE = rn_gongjijian/Info.plist;
 				INSTALL_PATH = "$(LOCAL_APPS_DIR)";
@@ -1861,7 +1820,6 @@
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
-					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 				);
 				INFOPLIST_FILE = rn_gongjijian/Info.plist;
 				INSTALL_PATH = "$(LOCAL_APPS_DIR)";
@@ -1905,14 +1863,10 @@
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
-					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 				);
 				INFOPLIST_FILE = "rn_gongjijian-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1946,14 +1900,10 @@
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
-					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 				);
 				INFOPLIST_FILE = "rn_gongjijian-tvOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -1986,14 +1936,10 @@
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
-					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 				);
 				INFOPLIST_FILE = "rn_gongjijian-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",
@@ -2026,14 +1972,10 @@
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
 					"$(SRCROOT)/../node_modules/react-native-file-opener/ios/RNFileOpener",
 					"$(SRCROOT)/../node_modules/react-native-wechat/ios",
-					"$(SRCROOT)/../node_modules/react-native-yunpeng-alipay/ios/AlipayModule/**",
 				);
 				INFOPLIST_FILE = "rn_gongjijian-tvOSTests/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				LIBRARY_SEARCH_PATHS = (
-					"$(inherited)",
-					"\"$(SRCROOT)/$(TARGET_NAME)\"",
-				);
+				LIBRARY_SEARCH_PATHS = "$(inherited)";
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lc++",

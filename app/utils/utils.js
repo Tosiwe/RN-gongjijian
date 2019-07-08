@@ -91,7 +91,7 @@ export const getPosition = (that, Toast,geoCode, forceUpdate) =>
       },
       error => {
         console.warn(`失败：${JSON.stringify(error.message)}`)
-        Toast && Toast.info(`失败：${JSON.stringify(error.message)}`, 3, null, false)
+        // Toast && Toast.info(`失败：${JSON.stringify(error.message)}`, 3, null, false)
         resole({ isSuccess: true, params:{
           ...params,
           city: "沧州市",

@@ -16,7 +16,7 @@ import * as wechat from "react-native-wechat"
 import { connect } from "react-redux"
 import moment from "moment"
 import { NavigationActions } from "react-navigation"
-import Pay from "../Pay/Pay"
+// import Pay from "../Pay/Pay"
 import LikeBtn from "./LikeBtn"
 
 
@@ -297,7 +297,7 @@ class Bottom extends Component {
           </TouchableOpacity>
         </View>
         <View>
-          <Pay
+          {/* <Pay
             visible={payVisible}
             timeStamp={timeStamp}
             onSuccess={this.showModal}
@@ -308,7 +308,7 @@ class Bottom extends Component {
               price,
               type: "contact"
             }}
-          />
+          /> */}
         </View>
       </View>
     )
