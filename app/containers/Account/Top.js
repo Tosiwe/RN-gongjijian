@@ -11,7 +11,7 @@ import {
   Linking
 } from "react-native"
 import { NavigationActions } from "react-navigation"
-
+import { Modal } from "@ant-design/react-native"
 import { connect } from "react-redux"
 import { statusBarHeight } from "../../styles/common"
 
@@ -42,17 +42,14 @@ class Top extends Component {
       })
     }
 
-
     this.props.dispatch({
       type: "app/getPriceList",
       callback: res => {
         if (res.msg === "OK") {
-          this.setState({ serviceTel:res.result.serviceTel })
+          this.setState({ serviceTel: res.result.serviceTel })
         }
       }
     })
-
-
   }
 
   componentWillReceiveProps(nextProps) {
@@ -101,8 +98,20 @@ class Top extends Component {
     )
   };
 
+  showModal = () => {
+    const { serviceTel } = this.state
+    Modal.operation(
+      serviceTel.split(",").map(item => ({
+        text: `客服电话：${item}`,
+        onPress: () => {
+          Linking.openURL(`tel:${item}`)
+        }
+      }))
+    )
+  };
+
   render() {
-    const { userInfo,serviceTel } = this.state
+    const { userInfo } = this.state
     return (
       <ImageBackground
         style={styles.wrap}
@@ -120,7 +129,10 @@ class Top extends Component {
               justifyContent: "flex-end"
             }}
           >
-            <TouchableOpacity onPress={() => Linking.openURL(`tel:${serviceTel ||10010}`)}>
+            <TouchableOpacity
+              onPress={this.showModal}
+              // onPress={() => Linking.openURL(`tel:${serviceTel || 10010}`)}
+            >
               <Image source={require("./images/icon_nav_service.png")} />
             </TouchableOpacity>
             <TouchableOpacity onPress={this.toMessage}>
@@ -147,7 +159,9 @@ class Top extends Component {
             }
           />
         </TouchableOpacity>
-        <Text style={styles.text} onPress={this.setProfil}>{userInfo.nick||"无昵称"}</Text>
+        <Text style={styles.text} onPress={this.setProfil}>
+          {userInfo.nick || "无昵称"}
+        </Text>
       </ImageBackground>
     )
   }

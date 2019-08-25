@@ -76,7 +76,16 @@ class Bottom extends Component {
     if (data.userId === userFinance.id) {
       this.showModal()
     } else {
-      this.payByBalance()
+      const {price} = this.state
+      Modal.alert(null, `消耗余额${price}元，以获取联系方式`, [
+        {
+          text: "取消"
+        },
+        { text: "好的", onPress: () => this.payByBalance() }
+      ])
+
+      // 需花费${price}元
+      // this.payByBalance()
     }
   };
 
@@ -100,7 +109,7 @@ class Bottom extends Component {
               {
                 text: "取消"
               },
-              { text: "确认", onPress: () => this.showPayModal() }
+              { text: "好的", onPress: () => this.showPayModal() }
             ])
           }
         }

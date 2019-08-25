@@ -123,7 +123,7 @@ class About extends Component {
         </View>
         <View style={styles.info}>
           <Text>Copyright@2017-2019</Text>
-          <Text>南皮县高品钢结构有限公司 版权所有</Text>
+          <Text>河北工机建建筑工程有限公司 版权所有</Text>
         </View>
       </View>
     )

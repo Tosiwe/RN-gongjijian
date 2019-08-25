@@ -76,15 +76,62 @@ class VipTop extends Component {
             // })
 
             RNInAppPurchaseModule.loadProducts(
+              // [
+              //   'com.gp.gongjijian_recharge_18',
+              //   'com.gp.gongjijian_recharge_68',
+              //   'com.gp.gongjijian_recharge_108',
+              //   'com.gp.gongjijian_recharge_158',
+              //   'com.gp.gongjijian_recharge_198',
+              //   'com.gp.gongjijian_recharge_298',
+              //   'com.gp.gongjijian_recharge_588',
+              //   // 'com.gp.gongjijian_recharge_998',
+              // ],
               rechargeIds,
               (error, products) => {
                 if (!error) {
                   const list = []
-                  products.forEach(item => {
-                    list.push({
-                      label: item.title,
-                      value: item.identifier
-                    })
+                  console.log("list", products)
+                  let length = 0
+                  products.forEach((item,index) => {
+                
+
+                    if(list.length){
+                      const array = item.identifier.split("_")
+                      const number = array[array.length - 1]
+                 
+                      list.forEach((it,i)=>{
+                        const arr = it.value.split("_")
+                        const num = arr[arr.length - 1]
+                      
+                        console.log("list index", i,"length", list.length-1)
+                        
+                        if(length< list.length){
+                          return null
+                        }
+
+                        if( Number(number) < Number(num) ){
+                          list.splice(i,0,{
+                            label: item.title,
+                            value: item.identifier
+                          })
+                        }else if(Number(number) > Number(num) && i === list.length-1){
+                          list.push({
+                            label: item.title,
+                            value: item.identifier
+                          })
+                        }
+                       
+                      })
+
+                    }else{
+                      list.push({
+                        label: item.title,
+                        value: item.identifier
+                      })
+                    }
+                    length = list.length
+                    console.log("products list", [...list])
+                  
                   }) 
                   this.setState({ rechargeProducts: list })
                 }
@@ -106,6 +153,7 @@ class VipTop extends Component {
   }
 
   recharge = id => {
+    debugger
     RNInAppPurchaseModule.purchaseProduct(id[0], (error, result) => {
       if (error) {
         // BXAlert.showTipAlert('提示', error || '购买失败')

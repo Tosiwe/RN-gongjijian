@@ -1,5 +1,6 @@
+/* eslint-disable react/no-unused-state */
 import React, { Component } from "react"
-import { BackHandler, TouchableOpacity } from "react-native"
+import { BackHandler, TouchableOpacity ,Platform} from "react-native"
 
 import {
   createStackNavigator,
@@ -13,9 +14,10 @@ import {
   createNavigationReducer
 } from "react-navigation-redux-helpers"
 
-import { Provider } from "@ant-design/react-native"
+import { Provider , Toast} from "@ant-design/react-native"
 import { connect } from "react-redux"
-import *as wechat from 'react-native-wechat'
+import * as wechat from "react-native-wechat"
+import JPushModule from "jpush-react-native"
 
 import StackViewStyleInterpolator from "react-navigation-stack/dist/views/StackView/StackViewStyleInterpolator"
 import Icon from "react-native-vector-icons/AntDesign"
@@ -75,11 +77,11 @@ HomeNavigator.navigationOptions = {
 
 // 主要业务页面页内路由设置
 const mainNavigationOptions = ({ navigation }) => ({
-  title: `${navigation.state.params ? navigation.state.params.name:""}`,
-  headerStyle: { backgroundColor: "#F9F9F9" , fontSize:20},
+  title: `${navigation.state.params ? navigation.state.params.name : ""}`,
+  headerStyle: { backgroundColor: "#F9F9F9", fontSize: 20 },
   headerLeft: (
     <TouchableOpacity
-    style={{height:40, justifyContent:"center",width:40}}
+      style={{ height: 40, justifyContent: "center", width: 40 }}
       onPress={() => {
         navigation.goBack()
       }}
@@ -87,7 +89,7 @@ const mainNavigationOptions = ({ navigation }) => ({
       <Icon name="left" size={20} color="black" style={{ marginLeft: 13 }} />
     </TouchableOpacity>
   ),
-  gesturesEnabled:true
+  gesturesEnabled: true
 })
 
 // 主要业务页面
@@ -121,7 +123,6 @@ const MainNavigator = createStackNavigator(
       // 发布页-商户选择
       screen: CompanyOrPerson,
       navigationOptions: mainNavigationOptions
-
     },
     FormDemand: {
       // 发布页-编辑需求
@@ -132,7 +133,6 @@ const MainNavigator = createStackNavigator(
       // 发布页-编辑信息
       screen: FormInfo,
       navigationOptions: mainNavigationOptions
-
     },
     Seconds: {
       // 发布页-二手信息分类
@@ -194,39 +194,37 @@ const MainNavigator = createStackNavigator(
       screen: SettleForm,
       navigationOptions: mainNavigationOptions
     },
-    Search: { 
+    Search: {
       screen: Search,
       navigationOptions: {
-        header:null
+        header: null
       }
-     },
-    
+    },
+
     SearchResult: {
       // 搜索结果
       screen: SearchResult,
       navigationOptions: mainNavigationOptions
     },
-    
+
     PayRecords: {
       // 消费记录
       screen: PayRecords,
       navigationOptions: mainNavigationOptions
     },
-    
-    
+
     Result: {
       // 支付结果
       screen: Result,
       navigationOptions: mainNavigationOptions
     },
-    
-    
+
     Recommend: {
       // 消息
       screen: Recommend,
       navigationOptions: mainNavigationOptions
     },
-    
+
     UserVerify: {
       // 消息
       screen: UserVerify,
@@ -241,8 +239,7 @@ const MainNavigator = createStackNavigator(
       // 消息详情
       screen: ImageReader,
       navigationOptions: mainNavigationOptions
-    },
-    
+    }
   },
   {
     transitionConfig: () => ({
@@ -262,7 +259,7 @@ const AppNavigator = createStackNavigator(
     ResetPassword: { screen: ResetPassword },
     SignUp: { screen: SignUp },
     Publish: { screen: Publish },
-    Vip: { screen: Vip },
+    Vip: { screen: Vip }
   },
   {
     headerMode: "none",
@@ -299,19 +296,124 @@ function getActiveRouteName(navigationState) {
 
 @connect(({ app, router }) => ({ app, router }))
 class Router extends Component {
-
-
   componentWillMount() {
     BackHandler.addEventListener("hardwareBackPress", this.backHandle)
   }
 
-  componentDidMount (){
+  componentDidMount() {
+    wechat.registerApp("wx6da250551cee1eda")
 
-    wechat.registerApp('wx6da250551cee1eda')
+    if (Platform.OS === 'android') {
+      JPushModule.initPush()
+      JPushModule.getInfo(map => {
+        this.setState({
+          appkey: map.myAppKey,
+          imei: map.myImei,
+          package: map.myPackageName,
+          deviceId: map.myDeviceId,
+          version: map.myVersion
+        })
+        console.log("appInfo:" ,map )
+      })
+      JPushModule.notifyJSDidLoad(resultCode => {
+        if (resultCode === 0) {
+          Toast.info("notifyJSDidLoad")
+        }else{
+          Toast.info("notifyJSDidLoad",resultCode)
+        }
+      })
+    } else {
+      JPushModule.setupPush()
+    }
+
+    this.onGetRegistrationIdPress()
+
+    this.setTag()
+
+    // 接收自定义消息事件
+    JPushModule.addReceiveCustomMsgListener(this.receiveCustomMsgListener)
+
+    // 接收推送事件
+    JPushModule.addReceiveNotificationListener(this.receiveNotificationListener)
+
+    // 点击推送事件
+    JPushModule.addReceiveOpenNotificationListener(this.openNotificationListener)
+
+    // 如果添加这个监听，设备注册成功后，打开应用将会回调这个事件。
+    JPushModule.getRegistrationID(this.getRegistrationIdListener)
+
+
   }
 
   componentWillUnmount() {
     BackHandler.removeEventListener("hardwareBackPress", this.backHandle)
+    
+    // 取消接收自定义消息事件
+    JPushModule.removeReceiveCustomMsgListener(this.receiveCustomMsgListener)
+    
+    // 取消接收推送事件
+    JPushModule.removeReceiveNotificationListener(this.receiveNotificationListener)
+
+    // 移除点击推送事件
+    JPushModule.removeReceiveOpenNotificationListener(this.openNotificationListener)
+
+    // 移除监听 registrationId 事件
+    JPushModule.removeGetRegistrationIdListener(this.getRegistrationIdListener)
+    Toast.info('Will clear all notifications')
+
+    // 清除所有通知
+    JPushModule.clearAllNotifications()
+
+  }
+
+  onGetRegistrationIdPress () {
+    JPushModule.getRegistrationID(registrationId => {
+      this.setState({
+        registrationId
+      })
+    })
+  }
+
+  setTag () {
+
+    this.props.dispatch({
+      type: "app/followList",
+      callback: res => {
+        if (res.msg === "OK") {
+          const chooseList = res.result||[]
+
+          if (chooseList) {
+            /**
+             * 请注意这个接口要传一个数组过去，这里只是个简单的示范
+             */
+            // Toast.info(`我关注了：${ chooseList}`)
+            
+            JPushModule.setTags(chooseList, map => {
+              if (map.errorCode === 0) {
+                Toast.info(`Tag operate succeed, tags: ${  map.tags}`)
+              } else {
+                Toast.info(`设置tag出错，error code: ${  map.errorCode}`)
+              }
+            })
+          }
+
+           
+        }
+      }
+    })
+   
+  }
+
+  setAlias () {
+    if (this.state.alias !== undefined) {
+      JPushModule.setAlias(this.state.alias, map => {
+        if (map.errorCode === 0) {
+          Toast.info('set alias succeed')
+        } else {
+          Toast.info(`set alias failed, errorCode: ${  map.errorCode}`)
+        }
+      })
+    }
   }
 
   backHandle = () => {
@@ -323,6 +425,39 @@ class Router extends Component {
     }
     return false
   };
+
+  receiveCustomMsgListener = map => {
+    this.setState({
+      pushMsg: map.content
+    })
+    Toast.info(`extras: ${  map.extras}`)
+  }
+
+  receiveNotificationListener = map => {
+    Toast.info(`alertContent: ${  map.alertContent}`)
+    Toast.info(`extras: ${  map.extras}`)
+  }
+
+  getRegistrationIdListener = registrationId => {
+    Toast.info(`Device register succeed, registrationId ${  registrationId}`)
+  }
+
+  openNotificationListener = map => {
+    Toast.info('Opening notification!')
+    Toast.info(`map.extra: ${  map.extras}`)
+    this.jumpSecondActivity(map)
+  }
+
+
+  jumpSecondActivity (data) {
+    Toast.info('jump to SecondActivity')
+    // this.props.navigation.navigate('Recommend')
+    this.props.dispatch(NavigationActions.navigate({ routeName: "Recommend", params: {name:"消息", data } }))
+
+
+  }
+  
+
 
   render() {
     const { app, dispatch, router } = this.props

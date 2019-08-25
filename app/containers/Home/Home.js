@@ -10,7 +10,7 @@ import {
 } from "react-native"
 
 import { connect } from "react-redux"
-import { Toast } from "@ant-design/react-native"
+import { Toast ,NoticeBar} from "@ant-design/react-native"
 import { Storage, NavigationActions } from "../../utils"
 import Ads from "./Ads"
 import Top from "./Top"
@@ -118,6 +118,7 @@ class Home extends Component {
             </View>
           </View>
           <View style={styles.gap} />
+          <NoticeBar>如遇虚假信息，请拨打官方客服电话举报</NoticeBar>
           <MsgList data={msgList} timeStamp={timeStamp} guesslikePage={guesslikePage}/>
         </ScrollView>
       </View>

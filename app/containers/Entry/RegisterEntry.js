@@ -107,7 +107,7 @@ class RegisterEntry extends Component {
             lat: result.params.latitude,
             lng: result.params.longitude
           }
-          if (result.params.adcode && result.params.adcode !== "000000" && result.params.shortAdcode &&result.params.shortAdcode !=="00") {
+          if (result.params.adcode && result.params.adcode !== "000000" || result.params.shortAdcode &&result.params.shortAdcode !=="00") {
             payload.adcode = Number(result.params.shortAdcode || result.params.adcode.substring(0, 2))
             
           }

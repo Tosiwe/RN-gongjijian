@@ -114,6 +114,7 @@ class MyPublish extends Component {
         payload: { id },
         callback: res => {
           if (res.msg === "OK") {
+            this.isCanLoadMore = true
             this.refresh()
           }
         }
@@ -139,6 +140,7 @@ class MyPublish extends Component {
       payload: { id },
       callback: res => {
         if (res.msg === "OK") {
+          this.isCanLoadMore = true
           this.refresh()
         }
       }
@@ -154,6 +156,7 @@ class MyPublish extends Component {
     
   };
 
+  
   toDetail = data => {
     this.props.dispatch(
       NavigationActions.navigate({

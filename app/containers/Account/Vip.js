@@ -177,6 +177,9 @@ class Vip extends Component {
     if (activeKey === index) {
       wrap = styles.activeWrap
     }
+
+    console.log("payType",payType)
+
     return (
       <TouchableOpacity
         activeOpacity={1}
@@ -192,10 +195,10 @@ class Vip extends Component {
               {payType.title || "包月"}
             </Text>
             <Text style={[styles.text, styles.price]}>
-              {payType.priceString || 30.0}
+              {(payType.description && payType.description.split("：")[1]) || 30.0}
             </Text>
             <Text style={[styles.text, styles.des]}>
-              {payType.describe || "月度可查100次联系方式"}
+              {(payType.description && payType.description.split("，")[0] )|| "月度可查100次联系方式"}
             </Text>
           </View>
         </View>
@@ -245,7 +248,6 @@ class Vip extends Component {
   recharge = () => {
     const { activeKey, vipProducts } = this.state
     const { identifier,priceString } = vipProducts[activeKey]
-
     RNInAppPurchaseModule.purchaseProduct(identifier, (error, result) => {
       if (error) {
         // BXAlert.showTipAlert('提示', error || '购买失败')

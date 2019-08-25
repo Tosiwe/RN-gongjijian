@@ -1,10 +1,11 @@
+/* eslint-disable react/sort-comp */
 /* eslint-disable react/prefer-stateless-function */
 // native
 import React, { Component } from "react"
 import { View, ScrollView, StyleSheet, Text } from "react-native"
 import { List, Switch } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
-
+import JPushModule from "jpush-react-native"
 import { connect } from "react-redux"
 import { ENTRY_ARRAY } from "../../utils/dataDic"
 
@@ -75,7 +76,16 @@ class ChooseIndustry extends Component {
       }
     })
 
-    this.setState({ list: newList })
+    console.log("ids666",ids)
+    this.setState({ list: newList },()=>{
+      JPushModule.setTags(ids, map => {
+        if (map.errorCode === 0) {
+          // Toast.info(`Tag operate succeed, tags: ${  map.tags}`)
+        } else {
+          // Toast.info(`设置tag出错，error code: ${  map.errorCode}`)
+        }
+      })
+    })
   };
 
   render() {

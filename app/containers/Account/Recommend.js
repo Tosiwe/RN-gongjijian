@@ -32,11 +32,22 @@ class Recommend extends Component {
     this.state.tabKey = 0
     // const { ids } = this.props.navigation.state.params
     // if (ids) {
+    const { data } = this.props.navigation.state.params
+    if(String.isString(data&&data.extra)){
+      const messgae = JSON.parse(data.extra)
+
+    }
     this.getRecList()
     // } else {
     //   this.getSysList()
     //   this.getRecList()
     // }
+  }
+
+  componentWillReceiveProps(nextProps){
+    const { data } = nextProps.navigation.state.params
+    debugger
+
   }
 
   getSysList = (pn = 1) => {
