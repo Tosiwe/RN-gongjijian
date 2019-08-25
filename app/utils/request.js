@@ -44,6 +44,9 @@ export default function request(url, options) {
           console.log(`${url}  response`,response._bodyText&& JSON.parse(response._bodyText))
           if (response.status === 500) {
             const msg =response._bodyText&& JSON.parse(response._bodyText).msg
+            if(msg === "消息已添加阅读记录"){
+              return response.json()
+            }
             Toast.info( msg|| '请求异常', 3, null, false)
             return response.json()
             // console.log("error", response)

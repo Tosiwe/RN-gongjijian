@@ -29,26 +29,26 @@ class Recommend extends Component {
   }
 
   componentDidMount() {
-    this.state.tabKey = 0
-    // const { ids } = this.props.navigation.state.params
-    // if (ids) {
+    
     const { data } = this.props.navigation.state.params
-    if(String.isString(data&&data.extra)){
-      const messgae = JSON.parse(data.extra)
 
+    if(data && typeof( data.extras) ==="string"){
+      this.state.tabKey =  JSON.parse(data.extras).type === "notice" ? 1 : 0
+    }else{
+      this.state.tabKey = 0
     }
-    this.getRecList()
+  
+    this.refresh()
     // } else {
     //   this.getSysList()
     //   this.getRecList()
     // }
   }
 
-  componentWillReceiveProps(nextProps){
-    const { data } = nextProps.navigation.state.params
-    debugger
+  componentWillReceiveProps(){
 
   }
+
 
   getSysList = (pn = 1) => {
 
@@ -120,6 +120,18 @@ class Recommend extends Component {
   read = (item, isRec) => {
     const { dispatch } = this.props
     const payload = { id: item.id }
+    if(item.readed){
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: "MessageDetail",
+          params: {
+            name: item.title,
+            data: item
+          }
+        })
+        )
+        return null
+    }
     if (isRec) {
       dispatch({
         type: "app/recommendRead",
@@ -183,13 +195,14 @@ class Recommend extends Component {
   };
 
   render() {
-    const { noticeList=[], recList=[] } = this.state
+    const { noticeList=[], recList=[], tabKey=0 } = this.state
     const { fetching } = this.props
 
     // 选择发布分类
     return (
       <View style={styles.container}>
         <Tabs
+          page={tabKey}
           tabs={tabs}
           initialPage={0}
           styles={{ topTabBarSplitLine: "#000" }}

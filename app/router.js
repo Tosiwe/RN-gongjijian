@@ -1,3 +1,4 @@
+/* eslint-disable react/sort-comp */
 /* eslint-disable react/no-unused-state */
 import React, { Component } from "react"
 import { BackHandler, TouchableOpacity ,Platform} from "react-native"
@@ -317,9 +318,9 @@ class Router extends Component {
       })
       JPushModule.notifyJSDidLoad(resultCode => {
         if (resultCode === 0) {
-          Toast.info("notifyJSDidLoad")
+          // Toast.info("notifyJSDidLoad")
         }else{
-          Toast.info("notifyJSDidLoad",resultCode)
+          // Toast.info("notifyJSDidLoad",resultCode)
         }
       })
     } else {
@@ -359,7 +360,7 @@ class Router extends Component {
 
     // 移除监听 registrationId 事件
     JPushModule.removeGetRegistrationIdListener(this.getRegistrationIdListener)
-    Toast.info('Will clear all notifications')
+    // Toast.info('Will clear all notifications')
 
     // 清除所有通知
     JPushModule.clearAllNotifications()
@@ -390,9 +391,9 @@ class Router extends Component {
             
             JPushModule.setTags(chooseList, map => {
               if (map.errorCode === 0) {
-                Toast.info(`Tag operate succeed, tags: ${  map.tags}`)
+                // Toast.info(`Tag operate succeed, tags: ${  map.tags}`)
               } else {
-                Toast.info(`设置tag出错，error code: ${  map.errorCode}`)
+                // Toast.info(`设置tag出错，error code: ${  map.errorCode}`)
               }
             })
           }
@@ -408,9 +409,9 @@ class Router extends Component {
     if (this.state.alias !== undefined) {
       JPushModule.setAlias(this.state.alias, map => {
         if (map.errorCode === 0) {
-          Toast.info('set alias succeed')
+          // Toast.info('set alias succeed')
         } else {
-          Toast.info(`set alias failed, errorCode: ${  map.errorCode}`)
+          // Toast.info(`set alias failed, errorCode: ${  map.errorCode}`)
         }
       })
     }
@@ -430,33 +431,86 @@ class Router extends Component {
     this.setState({
       pushMsg: map.content
     })
-    Toast.info(`extras: ${  map.extras}`)
+    // Toast.info(`extras: ${  map.extras}`)
   }
 
   receiveNotificationListener = map => {
-    Toast.info(`alertContent: ${  map.alertContent}`)
-    Toast.info(`extras: ${  map.extras}`)
+    // Toast.info(`alertContent: ${  map.alertContent}`)
+    // Toast.info(`extras: ${  map.extras}`)
   }
 
   getRegistrationIdListener = registrationId => {
-    Toast.info(`Device register succeed, registrationId ${  registrationId}`)
+    // Toast.info(`Device register succeed, registrationId ${  registrationId}`)
   }
 
   openNotificationListener = map => {
-    Toast.info('Opening notification!')
-    Toast.info(`map.extra: ${  map.extras}`)
+    // Toast.info('Opening notification!')
+    // Toast.info(`map.extra: ${  map.extras}`)
     this.jumpSecondActivity(map)
   }
 
 
   jumpSecondActivity (data) {
-    Toast.info('jump to SecondActivity')
+    // Toast.info('jump to SecondActivity')
     // this.props.navigation.navigate('Recommend')
-    this.props.dispatch(NavigationActions.navigate({ routeName: "Recommend", params: {name:"消息", data } }))
+    
+    // if(typeof(  data.extras) ==="string" && data.extras){
+    //   const messgae = JSON.parse(data.extras)
+     
+    //   this.read(messgae, messgae.type !== "notice")
+      
+    // }
 
+    this.props.dispatch(
+      NavigationActions.navigate({
+        routeName: "Recommend",
+        params: {
+          name: "消息",
+          data
+        }
+      })
+    )
 
   }
   
+
+  // read = (item, isRec) => {
+  //   const { dispatch } = this.props
+  //   const payload = { id: item.id }
+  //   if (isRec) {
+  //     dispatch({
+  //       type: "app/recommendRead",
+  //       payload,
+  //       callback: () => {
+  //         this.props.dispatch(
+  //           NavigationActions.navigate({
+  //             routeName: "MessageDetail",
+  //             params: {
+  //               name: item.title,
+  //               data: item
+  //             }
+  //           })
+  //         )
+  //       }
+  //     })
+  //   } else {
+  //     dispatch({
+  //       type: "app/noticeRead",
+  //       payload,
+  //       callback: () => {
+  //         this.props.dispatch(
+  //           NavigationActions.navigate({
+  //             routeName: "MessageDetail",
+  //             params: {
+  //               name: item.title,
+  //               data: item
+  //             }
+  //           })
+  //         )
+  //       }
+  //     })
+  //   }
+  // };
 
 
   render() {
