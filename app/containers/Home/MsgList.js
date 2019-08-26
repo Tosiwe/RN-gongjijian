@@ -46,7 +46,7 @@ componentWillReceiveProps(nextProps){
   getList = (pn = 1) => {
     const { list } = this.state
     this.setState({ refreshing: true })
-
+    // Toast.info("magList getList")
     getPosition({...this}, Toast,false,true).then(
       response=>{
         if (response.isSuccess) {

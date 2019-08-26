@@ -8,7 +8,7 @@ import {
   Platform,
   BackHandler,
 } from "react-native"
-// import Alipay from "react-native-yunpeng-alipay"
+import Alipay from "react-native-yunpeng-alipay"
 import * as wechat from "react-native-wechat"
 import {
   Modal,
@@ -79,47 +79,47 @@ export default class App extends Component {
     this.setState({ visible: false })
   };
 
-  // // 支付宝支付
-  // aliPay = () => {
-  //   const { data = {} } = this.props
-  //   return new Promise(resole => {
-  //     this.props.dispatch({
-  //       type: "app/creatRechargeOrder",
-  //       payload: {
-  //         amount: Number(data.price),
-  //         type: 0 // 0 支付宝
-  //       },
-  //       callback: res => {
-  //         if (res.msg === "OK") {
-  //           this.state.orderId = res.result.id
-  //           resole(res.result.data)
-  //         }
-  //       }
-  //     })
-  //   }).then(params => {
-  //     Alipay.pay(params).then(
-  //       res => {
-  //         // if (res.code === 10000) {
-  //         if (data.type === "charge") {
-  //           const { orderId } = this.state
-  //           const resultData = { orderId, ...data }
-  //           this.setState({
-  //             visible: false,
-  //             resultVisible: true,
-  //             resultData,
-  //             resultCode: Math.random()
-  //           })
-  //         } else {
-  //           this.createOrder()
-  //         }
-  //       },
-  //       err => {
-  //         console.log(err)
-  //         Toast.info("付款出错了", 3, null, false)
-  //       }
-  //     )
-  //   })
-  // };
+  // 支付宝支付
+  aliPay = () => {
+    const { data = {} } = this.props
+    return new Promise(resole => {
+      this.props.dispatch({
+        type: "app/creatRechargeOrder",
+        payload: {
+          amount: Number(data.price),
+          type: 0 // 0 支付宝
+        },
+        callback: res => {
+          if (res.msg === "OK") {
+            this.state.orderId = res.result.id
+            resole(res.result.data)
+          }
+        }
+      })
+    }).then(params => {
+      Alipay.pay(params).then(
+        res => {
+          // if (res.code === 10000) {
+          if (data.type === "charge") {
+            const { orderId } = this.state
+            const resultData = { orderId, ...data }
+            this.setState({
+              visible: false,
+              resultVisible: true,
+              resultData,
+              resultCode: Math.random()
+            })
+          } else {
+            this.createOrder()
+          }
+        },
+        err => {
+          console.log(err)
+          Toast.info("付款出错了", 3, null, false)
+        }
+      )
+    })
+  };
 
   // 创建业务订单
   createOrder = () => {
@@ -219,6 +219,7 @@ export default class App extends Component {
 
   // 选择支付方式
   pay = () => {
+    debugger
     const { payType } = this.state
     if (payType === "alipay") {
       this.aliPay()

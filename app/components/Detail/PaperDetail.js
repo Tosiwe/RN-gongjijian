@@ -11,7 +11,7 @@ import {
 import { connect } from "react-redux"
 import { ActivityIndicator, Progress } from "@ant-design/react-native"
 import { NavigationActions } from "react-navigation"
-import Bottom from "./PaperBottom"
+import Bottom from "./PaperBottom_android"
 import Pics from "../../containers/Home/Ads"
 import ImageViewer from "./ImageViewer"
 

@@ -102,7 +102,7 @@ class ListItem extends Component {
                     ? data.dist > 1000
                       ? `${Math.round(data.dist / 1000)}公里`
                       : `${Math.round(data.dist)}米`
-                    : "距离：未知"}
+                    : ""}
                 </Text>
               )}
             </View>

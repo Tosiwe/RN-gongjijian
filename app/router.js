@@ -37,7 +37,6 @@ import MyLike from "./containers/Account/MyLike"
 import MyDownload from "./containers/Account/MyDownload"
 import MyHistory from "./containers/Account/MyHistory"
 import EditProfile from "./containers/Account/EditProfile"
-import Vip from "./containers/Account/Vip"
 import PayRecords from "./containers/Account/PayRecords"
 import Recommend from "./containers/Account/Recommend"
 import UserVerify from "./containers/Account/UserVerify"
@@ -58,6 +57,9 @@ import MyPublish from "./components/Publish/MyPublish"
 import Settle from "./components/Settle/Settle"
 import SettleForm from "./components/Settle/SettleForm"
 import Result from "./components/Pay/Result"
+
+import Vip from "./containers/Account/Vip_android"
+
 // 底部标签导航
 const HomeNavigator = createBottomTabNavigator({
   Home: { screen: Home },

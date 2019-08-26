@@ -6,7 +6,7 @@ import { connect } from "react-redux"
 
 import Auth from "./Auth"
 import BaseInfo from "./BaseInfo"
-import Bottom from "./Bottom"
+import Bottom from "./Bottom_android"
 import Pics from "../../containers/Home/Ads"
 
 import { statusBarHeight, iconSize } from "../../styles/common"

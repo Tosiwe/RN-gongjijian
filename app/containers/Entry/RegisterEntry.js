@@ -80,7 +80,7 @@ class RegisterEntry extends Component {
             ? item.dist > 1000
               ? `${Math.round(item.dist / 1000)}公里`
               : `${Math.round(item.dist)}米`
-            : "距离：未知"}
+            : ""}
         </Text>
       </View>
     </TouchableOpacity>

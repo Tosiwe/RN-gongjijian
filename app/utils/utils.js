@@ -2,6 +2,7 @@
 /* eslint-disable default-case */
 /** 获取地理位置（经纬度） */
 import { PermissionsAndroid , Platform} from "react-native"
+import { Toast as m } from "@ant-design/react-native"
 
 const requestExternalStoragePermission = async () => {
   try {
@@ -20,8 +21,10 @@ const requestExternalStoragePermission = async () => {
   }
 }
 
-export const getPosition = (that, Toast,geoCode, forceUpdate) =>
+export const getPosition = (that, t,geoCode, forceUpdate,k) =>
   new Promise((resole, reject) => {
+   
+    const Toast = t||m
     const { params } = that.state
 
     if(Platform.OS==="android"){
@@ -73,15 +76,24 @@ export const getPosition = (that, Toast,geoCode, forceUpdate) =>
         if(forceUpdate){
           payload.forceUpdate = forceUpdate
         }
+        // Toast.info(`获取到经纬度了${longitude }${latitude}`)
+        if(k){
+          Toast.info("router did")
+        }
         that.props.dispatch({
           type: "app/getGeoCode",
           payload,
           callback: res => {
+            if(k){
+              Toast.info("router did")
+            }
             if (res.msg === "OK") {
               newParams = { ...newParams, ...res.result }
               // newParams.adcode = Number(newParams.adcode.substring(0,2))
               // this.state.params = newParams;
+              console.log("getGeoCode",res.result)
               resole({ isSuccess: true, params: newParams })
+
             } else {
               resole()
               Toast && Toast.info("获取定位失败", 1, null, false)
@@ -91,7 +103,6 @@ export const getPosition = (that, Toast,geoCode, forceUpdate) =>
       },
       error => {
         console.warn(`失败：${JSON.stringify(error.message)}`)
-        // Toast && Toast.info(`失败：${JSON.stringify(error.message)}`, 3, null, false)
         resole({ isSuccess: true, params:{
           ...params,
           city: "沧州市",
@@ -100,9 +111,9 @@ export const getPosition = (that, Toast,geoCode, forceUpdate) =>
       },
       {
         // 提高精确度，但是获取的速度会慢一点
-        // enableHighAccuracy: true,
+        enableHighAccuracy: false,
         // 设置获取超时的时间20秒
-        timeout: 20000,
+        timeout: 5000,
         // 示应用程序的缓存时间，每次请求都是立即去获取一个全新的对象内容
         maximumAge: 1000
       }
