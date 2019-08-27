@@ -32,11 +32,7 @@ class Recommend extends Component {
     
     const { data } = this.props.navigation.state.params
 
-    if(data && typeof( data.extras) ==="string"){
-      this.state.tabKey =  JSON.parse(data.extras).type === "notice" ? 1 : 0
-    }else{
-      this.state.tabKey = 0
-    }
+    this.state.tabKey = data.type === "notice" ? 1 : 0
   
     this.refresh()
     // } else {

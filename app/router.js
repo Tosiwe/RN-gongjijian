@@ -1,7 +1,7 @@
 /* eslint-disable react/sort-comp */
 /* eslint-disable react/no-unused-state */
 import React, { Component } from "react"
-import { BackHandler, TouchableOpacity ,Platform} from "react-native"
+import { BackHandler, TouchableOpacity ,Platform,NativeAppEventEmitter} from "react-native"
 
 import {
   createStackNavigator,
@@ -59,6 +59,10 @@ import SettleForm from "./components/Settle/SettleForm"
 import Result from "./components/Pay/Result"
 
 import Vip from "./containers/Account/Vip_android"
+
+let receiveNotification = ""
+let subscription=""
+let addOpenNotificationLaunchAppListener=""
 
 // 底部标签导航
 const HomeNavigator = createBottomTabNavigator({
@@ -326,7 +330,34 @@ class Router extends Component {
         }
       })
     } else {
-      JPushModule.setupPush()
+      // JPushModule.initPush()
+       JPushModule.setupPush()
+
+      receiveNotification =  NativeAppEventEmitter.addListener(
+        'ReceiveNotification',
+        (notification) => console.log(notification)
+      )
+
+      subscription = NativeAppEventEmitter.addListener(
+        'networkDidReceiveMessage',
+        (message) => console.log(message)
+      )
+
+      addOpenNotificationLaunchAppListener = JPushModule.addOpenNotificationLaunchAppListener(this.openNotificationListener)
+
+      NativeAppEventEmitter.addListener('networkDidStetup',()=>{
+        console.log("已连接")
+      })
+      NativeAppEventEmitter.addListener('networkDidClose',()=>{
+        console.log("连接已断开")
+      })
+      NativeAppEventEmitter.addListener('networkDidRegister',()=>{
+        console.log("已注册")
+      })
+      NativeAppEventEmitter.addListener('networkDidLogin',()=>{
+        console.log("已登陆")
+      })
+     
     }
 
     this.onGetRegistrationIdPress()
@@ -366,6 +397,10 @@ class Router extends Component {
 
     // 清除所有通知
     JPushModule.clearAllNotifications()
+
+    if(receiveNotification) receiveNotification.remove()
+    if(subscription) subscription.remove()
+    if(addOpenNotificationLaunchAppListener) addOpenNotificationLaunchAppListener.removeOpenNotificationLaunchAppEventListener()
 
   }
 
@@ -407,18 +442,6 @@ class Router extends Component {
    
   }
 
-  setAlias () {
-    if (this.state.alias !== undefined) {
-      JPushModule.setAlias(this.state.alias, map => {
-        if (map.errorCode === 0) {
-          // Toast.info('set alias succeed')
-        } else {
-          // Toast.info(`set alias failed, errorCode: ${  map.errorCode}`)
-        }
-      })
-    }
-  }
-
   backHandle = () => {
     const currentScreen = getActiveRouteName(this.props.router)
     // debugger
@@ -452,26 +475,38 @@ class Router extends Component {
   }
 
 
-  jumpSecondActivity (data) {
+  jumpSecondActivity (info) {
     // Toast.info('jump to SecondActivity')
     // this.props.navigation.navigate('Recommend')
-    
-    // if(typeof(  data.extras) ==="string" && data.extras){
-    //   const messgae = JSON.parse(data.extras)
-     
-    //   this.read(messgae, messgae.type !== "notice")
-      
-    // }
+    const extras = typeof(  info.extras) ==="string" ? JSON.parse( info.extras) :info.extras
 
-    this.props.dispatch(
-      NavigationActions.navigate({
-        routeName: "Recommend",
-        params: {
-          name: "消息",
-          data
-        }
-      })
-    )
+    if(Platform.OS !== 'android'){
+        JPushModule.setBadge(0, success => {})
+    }
+    if(extras.type === "info"){
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: "Detail",
+          params: {
+            name: extras.title,
+            data:extras,
+          }
+        })
+      )
+    }else{
+      this.props.dispatch(
+        NavigationActions.navigate({
+          routeName: "Recommend",
+          params: {
+            name: "消息",
+            data:extras,
+          }
+        })
+      )
+    }
+
+
+   
 
   }
   

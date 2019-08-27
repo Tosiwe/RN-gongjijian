@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -44,6 +45,7 @@
 		410128B11F7A471380C26E4D /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9154B7E8673E41B69051B424 /* libRNVectorIcons.a */; };
 		484481F87D57437EA6420291 /* FontAwesome5_Brands.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 2E8418BB35CE45AF8A5CD8BC /* FontAwesome5_Brands.ttf */; };
 		4EEC7836CDC644F5817E1740 /* Octicons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 47F6D8FEE7A14154A66A1858 /* Octicons.ttf */; };
+		5C1E14CFAB814F73AF320535 /* libAlipayModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DE31D79FC07419381DC7351 /* libAlipayModule.a */; };
 		5CEFF84F8AC74BBFA182117B /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 2BDCCE2513D54F6EB609DD72 /* libresolv.tbd */; };
 		5E9157361DD0AC6A00FF2AA8 /* libRCTAnimation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5E9157331DD0AC6500FF2AA8 /* libRCTAnimation.a */; };
 		5F924407F897446B89F0A024 /* FontAwesome5_Solid.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 7448C5ABCAD8438886B9D355 /* FontAwesome5_Solid.ttf */; };
@@ -86,7 +88,6 @@
 		F3998D66A3484731962E2FC9 /* libRNVectorIcons-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 4272A3F405A24978893150CA /* libRNVectorIcons-tvOS.a */; };
 		F883DB1DF142404C97CBB816 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 31AE6EFC67FB4F6CB01F13AD /* Foundation.framework */; };
 		FB72D6467E3E41599464E93D /* EvilIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 13FC33CB2BCC44D785EB6CC4 /* EvilIcons.ttf */; };
-		5C1E14CFAB814F73AF320535 /* libAlipayModule.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7DE31D79FC07419381DC7351 /* libAlipayModule.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -335,6 +336,13 @@
 			remoteGlobalIDString = 6212E9B41F3990DC00BDF51A;
 			remoteInfo = RCTJCoreModule;
 		};
+		79174CB5231409DE0002CDC0 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 81892AE8F9B94212BA38E04D /* AlipayModule.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 64971CAA1CE1BB7300BCD91E;
+			remoteInfo = AlipayModule;
+		};
 		7999B00321DFC4A600803FE7 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7999AFFE21DFC4A600803FE7 /* Pods.xcodeproj */;
@@ -553,6 +561,8 @@
 		79D05076224698F700947493 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		79E94B242247C1D8008582E7 /* Images-2.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = "Images-2.xcassets"; path = "rn_gongjijian/Images-2.xcassets"; sourceTree = "<group>"; };
 		7CCD4DA25E32411285CF8D65 /* CoreFoundation.framework */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		7DE31D79FC07419381DC7351 /* libAlipayModule.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libAlipayModule.a; sourceTree = "<group>"; };
+		81892AE8F9B94212BA38E04D /* AlipayModule.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = AlipayModule.xcodeproj; path = "../node_modules/react-native-yunpeng-alipay/ios/AlipayModule.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		8B4B60372C7D4F5F88DF5278 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		9154B7E8673E41B69051B424 /* libRNVectorIcons.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNVectorIcons.a; sourceTree = "<group>"; };
@@ -573,8 +583,6 @@
 		EB0A2B1FB8BE4EEF82ABD258 /* RNFS.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RNFS.xcodeproj; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; };
 		ED9E87F934224510BA35C11A /* libRNFileOpener.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNFileOpener.a; sourceTree = "<group>"; };
 		FD1BBE8357CB4BD894C6A8E3 /* SimpleLineIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = SimpleLineIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf"; sourceTree = "<group>"; };
-		81892AE8F9B94212BA38E04D /* AlipayModule.xcodeproj */ = {isa = PBXFileReference; name = "AlipayModule.xcodeproj"; path = "../node_modules/react-native-yunpeng-alipay/ios/AlipayModule.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		7DE31D79FC07419381DC7351 /* libAlipayModule.a */ = {isa = PBXFileReference; name = "libAlipayModule.a"; path = "libAlipayModule.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -842,6 +850,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		79174CB2231409DE0002CDC0 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				79174CB6231409DE0002CDC0 /* libAlipayModule.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		7989FFA621B812000065276E /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
@@ -855,6 +871,7 @@
 				A08D03F2FAD549ADB4F05724 /* RCTWeChatTests.xctest */,
 				6D2CA6A7184B4C49BB7102BF /* libRCTJPushModule.a */,
 				A2FE262247E349CAAFADECE3 /* libRCTJCoreModule.a */,
+				7DE31D79FC07419381DC7351 /* libAlipayModule.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -1185,6 +1202,10 @@
 			projectDirPath = "";
 			projectReferences = (
 				{
+					ProductGroup = 79174CB2231409DE0002CDC0 /* Products */;
+					ProjectRef = 81892AE8F9B94212BA38E04D /* AlipayModule.xcodeproj */;
+				},
+				{
 					ProductGroup = 7999AFFF21DFC4A600803FE7 /* Products */;
 					ProjectRef = 7999AFFE21DFC4A600803FE7 /* Pods.xcodeproj */;
 				},
@@ -1513,6 +1534,13 @@
 			fileType = archive.ar;
 			path = libRCTJCoreModule.a;
 			remoteRef = 7913093F230EAD0E00F7A602 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		79174CB6231409DE0002CDC0 /* libAlipayModule.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAlipayModule.a;
+			remoteRef = 79174CB5231409DE0002CDC0 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		7999B00421DFC4A600803FE7 /* FileBrowser.framework */ = {
