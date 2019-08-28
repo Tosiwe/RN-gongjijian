@@ -92,7 +92,7 @@ class Search extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 20,
+    paddingTop: 30,
     paddingLeft: 20,
     paddingRight: 20,
     alignItems: "flex-start",
